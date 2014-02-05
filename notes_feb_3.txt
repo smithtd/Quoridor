@@ -1,0 +1,54 @@
+Meeting Notes from 2/3/14
+
+Possible Class Structure of Project
+Here’s the class structure we brainstormed in the lab before class yesterday.
+
+Game Class
+	- Instance variables
+		- Board object to track player pawn & walls
+		- Player objects (array?) to track players
+		- Static variables (# players, # walls, etc.)
+	- Methods 
+		- Initialize game (constructor)
+		- Exit game (exit gracefully if fatal error is met)
+		- Send messages to server following protocol
+		- Parse messages from server following protocol
+		- Execute messages parsed from server
+		- Check validity of moves (from server and from user)
+		- Report errors
+Player Class
+	- Instance variables
+		- Name
+		- Number of available walls
+		- Maybe some info used by TCP depending on implementation?
+	- Methods
+		- Constructor
+		- Prompt user to take turn (move pawn, place wall)
+		- Place wall
+		- Move pawn
+AIPlayer Class (extends Player)
+	- Instance variables
+		- TBD
+	- Methods
+		- Constructor
+		- Add AI methods to determine turns
+Board Class
+	- Instance variables
+		- [structure] tracking pawns
+		- [structure] tracking vertical walls
+		- [structure] tracking horizontal walls
+	- Methods
+		- Constructor
+		- TBD
+
+----------------------------------------------------
+
+"Walking Skeleton" to-dos:
+- Set up class definitions
+- Stub in methods (and comments to define functionality, won’t actually do anything yet)
+- Write test framework for methods (won’t actually do anything yet)
+- Mock up GUI
+
+Proposed goals for this sprint: 
+- Get the walking skeleton compiling and running
+-  GUI: open window on start, be able to exit program on window close
