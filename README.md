@@ -10,6 +10,7 @@ This is our team repository for the Quoridor project.
 
 Team Members(please sign your name when you are able to clone):
 Marc Dean Jr.
+Eli Donahue
 
 From wikipedia :
 
