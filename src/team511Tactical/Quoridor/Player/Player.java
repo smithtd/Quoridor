@@ -23,6 +23,7 @@ public class Player implements Players {
 		this.wallTotal = walls;
 		/* This 
 		this.sc = new Scanner("System.in");
+		*/
 	}
 
 	/* Methods */
@@ -32,7 +33,6 @@ public class Player implements Players {
 	/* (non-Javadoc)
 	 * @see team511Tactical.Quoridor.Player.Players#wallTotal()
 	 */
-	@Override
 	public int wallTotal() {
 		// TODO Auto-generated method stub
 		return this.wallTotal;
@@ -41,7 +41,6 @@ public class Player implements Players {
 	/* (non-Javadoc)
 	 * @see team511Tactical.Quoridor.Player.Players#getMove()
 	 */
-	@Override
 	public String getMove() {
 		// TODO Auto-generated method stub
 		return this.name;
