@@ -21,7 +21,6 @@ public class GameBoard extends JPanel {
 	}
 	
 	public static void main(String[] args) {
-		// Auto-generated method stub
 		new GameBoard();
 
 	}
