@@ -9,6 +9,7 @@ import players.Player;
 public class GameBoard extends JPanel {
 
 	public JFrame frame;
+	ImageIcon redIcon = new ImageIcon("red.png")
 	
 	/*
 	 * Basic details of this Panel like the panel dimensions and what layout to 
@@ -49,7 +50,7 @@ public class GameBoard extends JPanel {
 			   GridBagLayout gridbag,
 			   GridBagConstraints c ){
 		c.fill = GridBagConstraints.BOTH;
-		c.weightx = 1.0;
+		c.weightx = 1.0;			//1.0
 		c.gridwidth = GridBagConstraints.REMAINDER;
 		JMenuBar menus = getMenus();
 		gridbag.setConstraints( menus, c );
@@ -67,12 +68,12 @@ public class GameBoard extends JPanel {
 	 * down the Items in the menu 
 	 */
 	public JMenuBar getMenus(){
-		JMenuBar menuBar = new JMenuBar();
+		JMenuBar menuBar = new JMenuBar();		
 		JMenu fileMenu = new JMenu( "FILE" );
 		JMenuItem quitOpt = new JMenuItem( "Quit" );
 		quitOpt.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
-				System.exit( 0 );
+				System.exit( 0 );	//When quit option is selected the program terminates and closes the window
 			}
 		});
 		fileMenu.add( quitOpt );
@@ -94,14 +95,21 @@ public class GameBoard extends JPanel {
 				JOptionPane.showMessageDialog(null,  "HELLO", "THIS MaSSAGE..", JOptionPane.PLAIN_MESSAGE);
 			}
 		});
-		clickMe.setBounds( 200, 200, 100, 50 );
+		clickMe.setBounds( 200, 200, 100, 100 );
 		this.add( clickMe, FlowLayout.LEFT );
 	}
 	
 	//OverRidden for JPanel graphics
 	public void paint( Graphics g ){
 		g.setColor( Color.black );
-		g.fillRect( 0, 0, 500, 500 );
+		g.fillRect( 50, 50, 400, 400 );
+		g.setColor( Color.white );
+		g.fillRect( 100, 100, 300, 300);
+		g.setColor( Color.black );
+		g.fillRect( 150, 150, 200, 200 );
+		g.setColor( Color.white );
+		g.fillRect( 200, 200, 100, 100);
+		
 	}	
 	
 	public static void main( String[] args ) {
