@@ -16,7 +16,7 @@ public class GameBoard extends JPanel {
 	 */
 	public GameBoard(){
 		this.setPreferredSize( new Dimension( 500,500 ) );	//Makes the JPanel 500px * 500px
-		this.setLayout( new FlowLayout() );
+		this.setLayout( null );
 		setFrameStats();
 	}
 	
@@ -32,7 +32,8 @@ public class GameBoard extends JPanel {
 		GridBagConstraints c = new GridBagConstraints();
 		frame.setLayout( gridbag );
 		addPanels( frame, gridbag, c );
-
+		addOtherJObjects();
+		
 		frame.add( this );						//Adds this JPanel to JFrame
 		frame.setVisible( true );				//Sets Frame to visible
 		frame.setResizable( false );			//Doesn't allow resizing of frame
@@ -68,7 +69,7 @@ public class GameBoard extends JPanel {
 	public JMenuBar getMenus(){
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu( "FILE" );
-		JMenuItem quitOpt = new JMenuItem( "QUIT" );
+		JMenuItem quitOpt = new JMenuItem( "Quit" );
 		quitOpt.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
 				System.exit( 0 );
@@ -79,34 +80,37 @@ public class GameBoard extends JPanel {
 		return menuBar;
 	}
 	
+	public void addOtherJObjects(){
+		addClickButton();
+	}
 	/*
 	 * Clickable button that displays dialog of "HELLO" when pressed. No other
 	 * functionality 
 	 */
 	public void addClickButton(){
-		JButton clickMe = new JButton();
+		JButton clickMe = new JButton("Click Me");
 		clickMe.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ) {
-				JOptionPane.showMessageDialog(null,  "HELLO", "THIS MESSAGE", JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(null,  "HELLO", "THIS MaSSAGE..", JOptionPane.PLAIN_MESSAGE);
 			}
 		});
-		clickMe.setPreferredSize( new Dimension( 250, 250 ) );
+		clickMe.setBounds( 200, 200, 100, 50 );
 		this.add( clickMe, FlowLayout.LEFT );
-	}
-	
-	
-	
-	public static void main( String[] args ) {
-		// Auto-generated method stub
-		new GameBoard();
-		Player p = new Player( "Dylan", 10 );
-		
-
 	}
 	
 	//OverRidden for JPanel graphics
 	public void paint( Graphics g ){
 		g.setColor( Color.black );
 		g.fillRect( 0, 0, 500, 500 );
+	}	
+	
+	public static void main( String[] args ) {
+		// Auto-generated method stub
+		new GameBoard();
+		Player p = new Player( "Player_1", 10 );
+		
+
 	}
+	
+
 }
