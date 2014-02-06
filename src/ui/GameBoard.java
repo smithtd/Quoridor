@@ -9,7 +9,6 @@ import players.Player;
 public class GameBoard extends JPanel {
 
 	public JFrame frame;
-	ImageIcon Square_red = new ImageIcon("../Images/Square_Red.png");
 	
 	/*
 	 * Basic details of this Panel like the panel dimensions and what layout to 
@@ -69,7 +68,7 @@ public class GameBoard extends JPanel {
 	 */
 	public JMenuBar getMenus(){
 		JMenuBar menuBar = new JMenuBar();		
-		JMenu fileMenu = new JMenu( "FILE" );
+		JMenu fileMenu = new JMenu( "File" );
 		JMenuItem quitOpt = new JMenuItem( "Quit" );
 		quitOpt.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
@@ -89,15 +88,9 @@ public class GameBoard extends JPanel {
 	 * functionality 
 	 */
 	public void addClickButton(){
-		JButton clickMe = new JButton( "Click Me" );
-		clickMe.setIcon( Square_red );
-		clickMe.addActionListener( new ActionListener(){
-			public void actionPerformed( ActionEvent e ) {
-				JOptionPane.showMessageDialog(null,  "HELLO", "THIS MaSSAGE..", JOptionPane.PLAIN_MESSAGE);
-			}
-		});
-		clickMe.setBounds( 200, 200, 100, 100 );
-		this.add( clickMe, FlowLayout.LEFT );
+		ClickButton cb = new ClickButton( "Click Me" );
+		cb.setBounds( 200, 200, 100, 100 );
+		this.add( cb, FlowLayout.LEFT );
 	}
 	
 	//OverRidden for JPanel graphics
