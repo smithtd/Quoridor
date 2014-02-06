@@ -52,3 +52,6 @@ Board Class
 Proposed goals for this sprint: 
 - Get the walking skeleton compiling and running
 -  GUI: open window on start, be able to exit program on window close
+
+Finished for this sprint:
+-   Window open and close
