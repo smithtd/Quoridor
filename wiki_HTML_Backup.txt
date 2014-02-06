@@ -1,0 +1,107 @@
+<p><strong>Current Sprint - </strong></p>
+<p><strong>     </strong>     <span style="text-decoration: underline;">Features</span>:</p>
+<ul>
+<li><span style="background-color: #ffffff;">Set Up Backlog</span></li>
+<li><span style="background-color: #ffffff;">Class Organization</span></li>
+</ul>
+<p> </p>
+<p><strong>SCRUM Backlog - </strong></p>
+<p>     <span style="text-decoration: underline;">Features</span>:</p>
+<ul>
+<li><span style="background-color: #00ff00;">Board: <br /></span>
+<ul>
+<li><span style="background-color: #00ff00;">Matricies to track players, walls, etc.<br /></span></li>
+<li><span style="background-color: #00ff00;">9x9 grid</span></li>
+<li><span style="background-color: #00ff00;"><span style="background-color: #00ff00;"><span style="background-color: #ffff00;">Wall Implementation</span></span></span>
+<ul>
+<li><span style="background-color: #ffff00;">Intersection</span></li>
+<li><span style="background-color: #ffff00;">Horizontal/Vertical</span></li>
+<li><span style="background-color: #ffff00;">Number of Walls left</span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><span style="background-color: #00ff00;">GUI</span>
+<ul>
+<li><span style="background-color: #00ff00;">JButtons</span></li>
+<li><span style="background-color: #00ff00;">.png/Icons</span></li>
+<li>Menus
+<ul>
+<li><span style="background-color: #ff0000;">New Game</span></li>
+<li><span style="background-color: #ff0000;">Quit</span></li>
+<li><span style="background-color: #ff0000;">Player Number/Type</span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><span style="background-color: #ffff00;">Players</span>
+<ul>
+<li><span style="background-color: #ffff00;">Human Players (2-4)<br /></span></li>
+</ul>
+<ul>
+<li><span style="background-color: #ff0000;">Machine Players<br /></span></li>
+<li><span style="background-color: #ff0000;">ability to place walls</span></li>
+<li><span style="background-color: #ff0000;">ability to move pieces</span></li>
+</ul>
+</li>
+<li><span style="background-color: #ff0000;">AI</span>
+<ul>
+<li><span style="background-color: #ff0000;">Different Difficulties of AI</span></li>
+<li><span style="background-color: #ff0000;">Strategy</span></li>
+</ul>
+</li>
+<li><span style="background-color: #00ff00;">Server/Network</span>
+<ul>
+<li><span style="background-color: #00ff00;">Following Protocol</span></li>
+<li><span style="background-color: #00ff00;">Find out what protocol will be</span></li>
+</ul>
+</li>
+<li><span style="background-color: #ffff00;">Game <br /></span>
+<ul>
+<li><span style="background-color: #ffff00;">verify validity of moves</span></li>
+<li><span style="background-color: #ffff00;">initialize board</span></li>
+<li><span style="background-color: #ffff00;">prompt players</span></li>
+<li><span style="background-color: #ffff00;">communicate with server</span></li>
+<li><span style="background-color: #ffff00;">figure out static variables</span>
+<ul>
+<li><span style="background-color: #ffff00;">number of walls allowed</span></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p style="text-align: left; padding-left: 90px;" dir="ltr"> </p>
+<p>     <span style="text-decoration: underline;">Research</span>:</p>
+<ul>
+<li>Rules
+<ul>
+<li>Wall count</li>
+<li>movement</li>
+<li>Legal wall placement</li>
+</ul>
+</li>
+<li>Swing
+<ul>
+<li>Frames/Panels</li>
+<li>Buttons</li>
+<li>Dimensions</li>
+<li>Grid</li>
+</ul>
+</li>
+</ul>
+<p>     <span style="text-decoration: underline;">Technical Work</span>:</p>
+<ul>
+<li>Frame up classes</li>
+<li>Stub in methods, define methods</li>
+</ul>
+<p>     <span style="text-decoration: underline;">Bugs</span>:</p>
+<ul>
+<li>None available</li>
+</ul>
+<p> </p>
+<p> </p>
+<p><strong>Completed - </strong></p>
+<ul>
+<li>Backlog</li>
+<li>Discuss classes</li>
+</ul>
