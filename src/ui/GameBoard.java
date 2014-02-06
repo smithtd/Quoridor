@@ -3,6 +3,7 @@ package ui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import players.Player;
 
 @SuppressWarnings("serial")
 public class GameBoard extends JPanel {
@@ -98,6 +99,8 @@ public class GameBoard extends JPanel {
 	public static void main( String[] args ) {
 		// Auto-generated method stub
 		new GameBoard();
+		Player p = new Player( "Dylan", 10 );
+		
 
 	}
 	
