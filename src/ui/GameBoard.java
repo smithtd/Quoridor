@@ -9,7 +9,7 @@ import players.Player;
 public class GameBoard extends JPanel {
 
 	public JFrame frame;
-	ImageIcon redIcon = new ImageIcon("red.png")
+	ImageIcon Square_red = new ImageIcon("../Images/Square_Red.png");
 	
 	/*
 	 * Basic details of this Panel like the panel dimensions and what layout to 
@@ -89,7 +89,8 @@ public class GameBoard extends JPanel {
 	 * functionality 
 	 */
 	public void addClickButton(){
-		JButton clickMe = new JButton("Click Me");
+		JButton clickMe = new JButton( "Click Me" );
+		clickMe.setIcon( Square_red );
 		clickMe.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ) {
 				JOptionPane.showMessageDialog(null,  "HELLO", "THIS MaSSAGE..", JOptionPane.PLAIN_MESSAGE);
@@ -116,7 +117,7 @@ public class GameBoard extends JPanel {
 		// Auto-generated method stub
 		new GameBoard();
 		Player p = new Player( "Player_1", 10 );
-		
+		p.getMove();
 
 	}
 	
