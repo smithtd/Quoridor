@@ -17,7 +17,7 @@ public class ClickButton extends JButton {
 		setIcon( Square_red );
 		addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ) {
-				JOptionPane.showMessageDialog(null,  "HELLO", "THIS MaSSAGE..", JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(null,  "HELLO", "THIS MESSAGE..", JOptionPane.PLAIN_MESSAGE);
 			}
 		});
 	}
