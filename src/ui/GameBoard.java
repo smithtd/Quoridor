@@ -84,12 +84,13 @@ public class GameBoard extends JPanel {
 		addClickButton();
 	}
 	/*
-	 * Clickable button that displays dialog of "HELLO" when pressed. No other
+	 * Click-able button that displays dialog of "HELLO" when pressed. No other
 	 * functionality 
 	 */
 	public void addClickButton(){
-		ClickButton cb = new ClickButton( "Click Me" );
+		ClickButton cb = new ClickButton( 100 );
 		cb.setBounds( 200, 200, 100, 100 );
+		cb.addButtonListener();
 		this.add( cb, FlowLayout.LEFT );
 	}
 	

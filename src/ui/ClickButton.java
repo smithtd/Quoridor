@@ -10,11 +10,21 @@ import javax.swing.JOptionPane;
 @SuppressWarnings("serial")
 public class ClickButton extends JButton {
 
-	ImageIcon Square_red = new ImageIcon("../Images/Square_Red.png");
+	public ImageIcon Square_Red = new ImageIcon("Square_Red.png");
+	public int buttonSize;
+	public ClickButton( int buttonSize ){
+		super();
+		this.buttonSize = buttonSize;
+	}
 	
-	public ClickButton( String label ){
+	public ClickButton( String label, int buttonSize ){
 		super( label );
-		setIcon( Square_red );
+		this.buttonSize = buttonSize;
+	}
+	
+	public void addButtonListener(){
+		System.out.println( Square_Red );
+		setIcon( new ButtonIcon( buttonSize ).getIcon( "Square_Red" ) );
 		addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ) {
 				JOptionPane.showMessageDialog(null,  "HELLO", "THIS MESSAGE..", JOptionPane.PLAIN_MESSAGE);
@@ -22,3 +32,4 @@ public class ClickButton extends JButton {
 		});
 	}
 }
+///home/student/woythadc194/Classes/405/team-511Tactical/src/Images/Square_Blue.png
