@@ -28,9 +28,14 @@ public class Player implements Players {
 		
 		/* Methods */
 		
-	/* (non-Javadoc)
-	 * @see players.Players#getMove()
+	/* 
+	 * Purpose: Prompts the user for a move
+	 * Precondition: Player's turn, assumes legal move for now
+	 * Postcondition: Player will have moved to spot
+	 * Returns: Coordinates of movements
+	 * 
 	 */
+	
 	public String getMove() {
 		//Verify move is entered
 		// valid, is legal move, when the person's turn
@@ -39,8 +44,12 @@ public class Player implements Players {
 		return sc.nextLine();
 	}
 
-	/* (non-Javadoc)
-	 * @see players.Players#getWalls()
+	/* 
+	 * Purpose: checks for available walls, if any for 
+	 * player to place
+	 * Precondition: none
+	 * Postcondition: none
+	 * Returns: # of walls available to place
 	 */
 	public int getWalls() {
 		// Auto-generated method stub
