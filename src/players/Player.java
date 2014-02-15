@@ -3,6 +3,7 @@
  */
 package players;
 
+import java.awt.Point;
 import java.util.Scanner;
 
 /**
@@ -17,6 +18,8 @@ public class Player implements Players {
 		private String name; 	// players name
 		private int wallTotal;	// how many walls player has
 		private Scanner sc;		// prompt player for moves
+		@SuppressWarnings("unused")
+		private Point position; // current position of the player
 		
 		/* Constructor(s) */
 		public Player(String name, int walls) {
@@ -24,6 +27,7 @@ public class Player implements Players {
 			this.wallTotal = walls;
 			// to get moves
 			this.sc = new Scanner("System.in");
+			//TODO implement way to find initial position
 		}
 		
 		/* Methods */
