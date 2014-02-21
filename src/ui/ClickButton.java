@@ -12,8 +12,10 @@ public class ClickButton extends JButton {
 
 	public ImageIcon Square_Red = new ImageIcon("Square_Red.png");
 	public int buttonSize;
-	public ClickButton( int buttonSize ){
+	public String pos;
+	public ClickButton( int buttonSize , String pos){
 		super();
+		this.pos = pos;
 		this.buttonSize = buttonSize;
 	}
 	
@@ -21,13 +23,13 @@ public class ClickButton extends JButton {
 		super( label );
 		this.buttonSize = buttonSize;
 	}
-	
+	//random comment here
 	public void addButtonListener(){
 		System.out.println( Square_Red );
 		setIcon( new ButtonIcon( buttonSize ).getIcon( "Square_Red" ) );
 		addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ) {
-				JOptionPane.showMessageDialog(null,  "HELLO", "THIS MESSAGE..", JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Position: " + pos, "THIS MESSAGE..", JOptionPane.PLAIN_MESSAGE);
 			}
 		});
 	}
