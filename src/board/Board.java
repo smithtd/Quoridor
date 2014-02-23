@@ -16,8 +16,19 @@ public class Board {
 	
 	// Methods
 	// constructor(s)
-	public Board(){
+	public Board() {
 		bitmap = new int[9][9];
+	}
+	
+	// if we know number of players, we know where to start pawns
+	public Board(int players){
+		bitmap = new int[9][9];
+		// place pawns depending on number of players
+	}
+	
+	// produce a board based on an existing matrix
+	public Board(int[][] map) {
+		bitmap = map;
 	}
 	
 	/*
@@ -29,7 +40,7 @@ public class Board {
 	public boolean isEmpty(int x, int y) {
 		// check bitmap to see if there's a 0 (empty) or 1 (occupied)
 		// return results
-		return false;
+		return true;
 	}
 	
 	/*
@@ -37,28 +48,30 @@ public class Board {
 	 * Parameters: player making move, x and y coordinates
 	 * Preconditions: a player wants to move its pawn
 	 * Postconditions: if move is valid, set new loc=1 and old loc=0
-	 * 		return Point to Player. New if move successful, old if not.
+	 * 		return T/F based on success
 	 */
-	public Point placePawn(Player p, int x, int y) {
-		Point pt = new Point(x,y);
+	public boolean placePawn(Player p, int x, int y) {
 		// if isLegalMove(pawn, x, y)
 			// set bitmap[p.x][p.y] to 0
 			// set bitmap[x][y] to 1
-			// return new point
-			return pt;
-		// else return old point
+			// return true
+			return true;
+		// else return false
+		
 	}
 	
 	/*
 	 * Purpose: place a wall of given orientation starting at (x,y)
 	 * Parameters: orientation of wall, x and y coordinates
 	 * Preconditions: player has decided to place wall
-	 * Postconditions: marked bitmap if move was legal
+	 * Postconditions: marked bitmap if move was legal, 
+	 * 			return T/F based on success
 	 */
-	public void placeWall(String orientation, int x, int y) {
+	public boolean placeWall(String orientation, int x, int y) {
 		// if isLegalMove(horizontal/vertical, x, y)
 		// set bitmap[x][y] and bitmap[x+1][y] for horizontal
 		// set bitmap[x][y] and bitmap[x][y+1] for vertical
+		return true;
 	}
 	
 	/*
