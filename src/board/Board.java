@@ -6,20 +6,79 @@
 
 package board;
 
+import players.Player;
+import java.awt.Point;
+
 public class Board {
 	
 	// Instance variables
-	// matrix of horizontal walls
-	// matrix of vertical walls
-	// matrix of player pieces
-	
-	// there must be a better way of tracking data
-	// simple bitmap maybe?
+	int[][] bitmap;	// tracks whether square is available
 	
 	// Methods
-	// constructor
-	// is empty
-	// place piece
-	// place wall
-	// validate moves
+	// constructor(s)
+	public Board(){
+		bitmap = new int[9][9];
+	}
+	
+	/*
+	 * Purpose: check whether a square is occupied
+	 * Parameters: x and y coordinates
+	 * Preconditions: a method needs to know if a square is empty
+	 * Postconditions: report T/F, whether square is empty 
+	 */
+	public boolean isEmpty(int x, int y) {
+		// check bitmap to see if there's a 0 (empty) or 1 (occupied)
+		// return results
+		return false;
+	}
+	
+	/*
+	 * Purpose: place a pawn at given coordinates
+	 * Parameters: player making move, x and y coordinates
+	 * Preconditions: a player wants to move its pawn
+	 * Postconditions: if move is valid, set new loc=1 and old loc=0
+	 * 		return Point to Player. New if move successful, old if not.
+	 */
+	public Point placePawn(Player p, int x, int y) {
+		Point pt = new Point(x,y);
+		// if isLegalMove(pawn, x, y)
+			// set bitmap[p.x][p.y] to 0
+			// set bitmap[x][y] to 1
+			// return new point
+			return pt;
+		// else return old point
+	}
+	
+	/*
+	 * Purpose: place a wall of given orientation starting at (x,y)
+	 * Parameters: orientation of wall, x and y coordinates
+	 * Preconditions: player has decided to place wall
+	 * Postconditions: marked bitmap if move was legal
+	 */
+	public void placeWall(String orientation, int x, int y) {
+		// if isLegalMove(horizontal/vertical, x, y)
+		// set bitmap[x][y] and bitmap[x+1][y] for horizontal
+		// set bitmap[x][y] and bitmap[x][y+1] for vertical
+	}
+	
+	/*
+	 * Purpose: check whether move is legal
+	 * Parameters: player, move type, x and y coordinates
+	 * Preconditions: player is trying to make move, need to check if legal
+	 * Postconditions: return true if ok, else report error and return false
+	 */
+	public boolean isLegalMove(Player p, String type, int x, int y) {
+		// check that it's the player's turn
+		// check that (x,y) is on grid
+		// check that square(s) not occupied
+		// if pawn:
+			// make sure not more than one space unless jumping another pawn
+		// if wall: 
+			// make sure player has enough walls left (p.wallTotal > 0)
+			// make sure it doesn't prevent a player from reaching end
+			// make sure wall doesn't hang off edge of board
+			// make sure wall doesn't intersect another wall
+		// report error
+		return true;
+	}
 }

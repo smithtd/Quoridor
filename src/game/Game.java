@@ -13,6 +13,8 @@ public class Game {
 	// Player[] to hold players
 	// int players
 	// int numWalls
+	// Player or index to track whose turn it is
+	// Move count
 	
 	// Methods
 	
