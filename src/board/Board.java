@@ -40,7 +40,7 @@ public class Board {
 	public boolean isEmpty(int x, int y) {
 		// check bitmap to see if there's a 0 (empty) or 1 (occupied)
 		// return results
-		return true;
+		return this.bitmap[x][y] == 0;
 	}
 	
 	/*

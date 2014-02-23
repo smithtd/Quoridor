@@ -35,4 +35,13 @@ public class BoardTest {
 		testResults(x, y, expected);
 	}
 	
+	@Test 
+	public void checkIfSingleOccupiedSquareIsEmpty() {
+		int x = 0;
+		int y = 1; 
+		boolean expected = false;
+		
+		testResults(x, y, expected);
+	}
+	
 }
