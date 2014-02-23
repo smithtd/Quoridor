@@ -44,4 +44,21 @@ public class BoardTest {
 		testResults(x, y, expected);
 	}
 	
+	@Test 
+	public void checkIfOutOfBoundsHighSquareIsEmpty() {
+		int x = 0;
+		int y = 10; 
+		boolean expected = false;
+		
+		testResults(x, y, expected);
+	}
+	
+	@Test 
+	public void checkIfOutOfBoundsLowSquareIsEmpty() {
+		int x = -1;
+		int y = 0; 
+		boolean expected = false;
+		
+		testResults(x, y, expected);
+	}
 }

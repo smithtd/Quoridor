@@ -36,10 +36,14 @@ public class Board {
 	 * Parameters: x and y coordinates
 	 * Preconditions: a method needs to know if a square is empty
 	 * Postconditions: report T/F, whether square is empty 
+	 * 			returns false if out of bounds since can't place piece
 	 */
 	public boolean isEmpty(int x, int y) {
-		// check bitmap to see if there's a 0 (empty) or 1 (occupied)
-		// return results
+		// check xy to make sure in range
+		if (x > 8 || y > 8 || x < 0 || y < 0)
+			return false;
+		
+		// return whether square value = 0
 		return this.bitmap[x][y] == 0;
 	}
 	
