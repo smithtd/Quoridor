@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import players.Player;
+import java.awt.Point;
 
 @SuppressWarnings("serial")
 public class GameBoard extends JPanel {
@@ -23,7 +24,7 @@ public class GameBoard extends JPanel {
 	/*
 	 * The JFrame is what holds JPanel, which is what class type this file is,
 	 * so we need to set it up internally so that it can hold a GameBoard object
-	 * and suport it
+	 * and support it
 	 */
 	public void setFrameStats(){
 		frame = new JFrame( "Quoridor" ); 		//Title of JFrame window is "Quoridor"
@@ -72,7 +73,9 @@ public class GameBoard extends JPanel {
 		JMenuItem quitOpt = new JMenuItem( "Quit" );
 		quitOpt.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
-				System.exit( 0 );	//When quit option is selected the program terminates and closes the window
+				//When quit option is selected the program terminates
+				// closes the window
+				System.exit( 0 );	
 			}
 		});
 		fileMenu.add( quitOpt );
@@ -80,105 +83,32 @@ public class GameBoard extends JPanel {
 		return menuBar;
 	}
 	
+	// what is this??
 	public void addOtherJObjects(){
 		addClickButton();
 	}
+	
 	/*
-	 * Click-able buttons that displays dialog of its position when pressed. No other
-	 * functionality 
-	 * 
-	 * Each button name corresponds to its position on the gameboard. For example, 
-	 * cba1 refers to the first button in the top left corner. 
+	 * Click-able buttons that displays options dialog to gather action from user
 	 */
 	public void addClickButton(){
+		// start top left at (5,5)
 		int x = 5;
 		int y = 5;
-		for(int i = 1; i<10; i++){
-			ClickButton cb = new ClickButton( 100, "a"+i);
-			cb.setBounds(x,y,50,50);
-			cb.addButtonListener();
-			this.add(cb , FlowLayout.LEFT);
-			x+=55;
-		}
-		////////////////////////////////////////////////
-		x = 5;
-		y = 60;
-		for(int i = 1; i<10; i++){
-			ClickButton cb = new ClickButton( 100, "b"+i);
-			cb.setBounds(x,y,50,50);
-			cb.addButtonListener();
-			this.add(cb , FlowLayout.LEFT);
-			x+=55;
-		}
-		//////////////////////////////////////////////////
-		x = 5;
-		y = 115;
-		for(int i = 1; i<10; i++){
-			ClickButton cb = new ClickButton( 100, "c"+i);
-			cb.setBounds(x,y,50,50);
-			cb.addButtonListener();
-			this.add(cb , FlowLayout.LEFT);
-			x+=55;
-		}
-		/////////////////////////////////////////////////
-		x = 5;
-		y = 170;
-		for(int i = 1; i<10; i++){
-			ClickButton cb = new ClickButton( 100, "d"+i);
-			cb.setBounds(x,y,50,50);
-			cb.addButtonListener();
-			this.add(cb , FlowLayout.LEFT);
-			x+=55;
-		}
-		/////////////////////////////////////////////////
-		x = 5;
-		y = 225;
-		for(int i = 1; i<10; i++){
-			ClickButton cb = new ClickButton( 100, "e"+i);
-			cb.setBounds(x,y,50,50);
-			cb.addButtonListener();
-			this.add(cb , FlowLayout.LEFT);
-			x+=55;
-		}
-		/////////////////////////////////////////////////
-		x = 5;
-		y = 280;
-		for(int i = 1; i<10; i++){
-			ClickButton cb = new ClickButton( 100, "f"+i);
-			cb.setBounds(x,y,50,50);
-			cb.addButtonListener();
-			this.add(cb , FlowLayout.LEFT);
-			x+=55;
-		}
-		//////////////////////////////////////////////////
-		x = 5;
-		y = 335;
-		for(int i = 1; i<10; i++){
-			ClickButton cb = new ClickButton( 100, "g"+i);
-			cb.setBounds(x,y,50,50);
-			cb.addButtonListener();
-			this.add(cb , FlowLayout.LEFT);
-			x+=55;
-		}
-		////////////////////////////////////////////////////
-		x = 5;
-		y = 390;
-		for(int i = 1; i<10; i++){
-			ClickButton cb = new ClickButton( 100, "h"+i);
-			cb.setBounds(x,y,50,50);
-			cb.addButtonListener();
-			this.add(cb , FlowLayout.LEFT);
-			x+=55;
-		}
-		///////////////////////////////////////////////////
-		x = 5;
-		y = 445;
-		for(int i = 1; i<10; i++){
-			ClickButton cb = new ClickButton( 100, "i"+i);
-			cb.setBounds(x,y,50,50);
-			cb.addButtonListener();
-			this.add(cb , FlowLayout.LEFT);
-			x+=55;
+		// outer loop adds rows
+		for(int i=0; i<9; i++){
+			// inner loop adds columns
+			for(int j = 0; j<9; j++){
+				ClickButton cb = new ClickButton(100, new Point(i, j));
+				cb.setBounds(x,y,50,50);
+				cb.addButtonListener();
+				this.add(cb, FlowLayout.LEFT);
+				// increment x to create next column over
+				x+=55;
+			}
+			// reset x, increment y
+			x = 5;
+			y += 55;
 		}
 	}
 	
@@ -194,14 +124,4 @@ public class GameBoard extends JPanel {
 		g.fillRect( 200, 200, 100, 100);
 		
 	}	*/
-	
-	public static void main( String[] args ) {
-		// Auto-generated method stub
-		new GameBoard();
-		Player p = new Player( "Player_1", 10 );
-		p.getMove();
-
-	}
-	
-
 }
