@@ -59,5 +59,56 @@ public class Player implements Players {
 		// Auto-generated method stub
 		return this.wallTotal;
 	}
+	
+	/* 
+	 * Purpose: gets player's x position 
+	 * Precondition: none
+	 * Postcondition: none
+	 * Returns: player's x position 
+	 */
+	public int x() {
+		return (int)this.position.getX();
+	}
+	
+	/* 
+	 * Purpose: gets player's y position 
+	 * Precondition: none
+	 * Postcondition: none
+	 * Returns: player's y position 
+	 */
+	public int y() {
+		return (int)this.position.getY();
+	}
+	
+	/* 
+	 * Purpose: sets player's x position 
+	 * Precondition: none
+	 * Postcondition: none
+	 * Returns: none
+	 */
+	public void setX(int x) {
+		this.position.setLocation(x, this.y());
+	}
+	
+	/* 
+	 * Purpose: sets player's y position 
+	 * Precondition: none
+	 * Postcondition: none
+	 * Returns: none
+	 */
+	public void setY(int y) {
+		this.position.setLocation(this.x(), y);
+	}
+	
+	/* 
+	 * Purpose: sets player's position 
+	 * Precondition: none
+	 * Postcondition: none
+	 * Returns: none
+	 */
+	public void setPos(int x, int y) {
+		Point tmp = new Point(x, y);
+		this.position = tmp;
+	}
 
 }

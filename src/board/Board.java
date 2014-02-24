@@ -7,7 +7,6 @@
 package board;
 
 import players.Player;
-import java.awt.Point;
 
 public class Board {
 	
@@ -55,13 +54,17 @@ public class Board {
 	 * 		return T/F based on success
 	 */
 	public boolean placePawn(Player p, int x, int y) {
-		// if isLegalMove(pawn, x, y)
+		// if is legal move, remove old marker and place new
+		if(this.isLegalMove(p, "pawn", x, y)){
 			// set bitmap[p.x][p.y] to 0
+		//	bitmap[p.x()][p.y()] = 0;
 			// set bitmap[x][y] to 1
+			bitmap[x][y] = 1;
 			// return true
 			return true;
+		}
 		// else return false
-		
+		return false;
 	}
 	
 	/*
@@ -71,11 +74,31 @@ public class Board {
 	 * Postconditions: marked bitmap if move was legal, 
 	 * 			return T/F based on success
 	 */
-	public boolean placeWall(String orientation, int x, int y) {
-		// if isLegalMove(horizontal/vertical, x, y)
+	public boolean placeWall(Player p, String orientation, int x, int y) {
 		// set bitmap[x][y] and bitmap[x+1][y] for horizontal
-		// set bitmap[x][y] and bitmap[x][y+1] for vertical
-		return true;
+		if(orientation=="horizontal") {
+			// if isLegalMove(horizontal/vertical, x, y)
+			if(isLegalMove(p, "horizontal", x, y)){
+				bitmap[x][y] = 1;
+				bitmap[x+1][y] = 1;
+				
+				// return true
+				return true;
+			}
+		} else if(orientation=="vertical") {				
+			// if isLegalMove(horizontal/vertical, x, y)
+			if(isLegalMove(p, "vertical", x, y)){
+				// set bitmap[x][y] and bitmap[x][y+1] for vertical
+				bitmap[x][y] = 1;
+				bitmap[x][y+1] = 1;
+				
+				// return true
+				return true;
+			}
+		}
+		
+		// else return false
+		return false;
 	}
 	
 	/*
@@ -85,17 +108,51 @@ public class Board {
 	 * Postconditions: return true if ok, else report error and return false
 	 */
 	public boolean isLegalMove(Player p, String type, int x, int y) {
+		// check that type is valid
+		if(!(type.equals("horizontal") || type.equals("vertical") || type.equals("pawn")))
+			return false;
+		
 		// check that it's the player's turn
+		
 		// check that (x,y) is on grid
-		// check that square(s) not occupied
-		// if pawn:
+		if (x > 8 || y > 8 || x < 0 || y < 0)
+			return false;
+		
+		// check that (x,y) not occupied
+		if(!this.isEmpty(x, y))
+			return false;
+		
+		// if type = horizontal
+		if(type.equals("horizontal")){
+			// check that player has wall to place
+			if(p.getWalls()<=0)
+				return false;
+			// check (x+1, y)
+			if(!this.isEmpty(x+1, y))
+				return false;
+			// check that x+1 < 9
+			if(x+1>8)
+				return false;
+		}
+			
+		// if type = vertical
+		if(type.equals("vertical")){
+			// check that player has wall to place
+			if(p.getWalls()<=0)
+				return false;
+			// check (x, y+1)
+			if(!this.isEmpty(x, y+1))
+				return false;
+			// check that y+1 < 9
+			if(y+1>8)
+				return false;
+		}
+				
+		// if type = pawn
 			// make sure not more than one space unless jumping another pawn
+		
 		// if wall: 
-			// make sure player has enough walls left (p.wallTotal > 0)
 			// make sure it doesn't prevent a player from reaching end
-			// make sure wall doesn't hang off edge of board
-			// make sure wall doesn't intersect another wall
-		// report error
 		return true;
 	}
 }
