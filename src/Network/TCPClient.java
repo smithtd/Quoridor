@@ -19,8 +19,7 @@ public class TCPClient{
         Socket clientSocket = new Socket("localhost", 6789);
 
         while(true){
-            System.out.println( "CLIENT Debug" );
-            System.out.print( "CLIENT input: " );
+            System.out.print( "\nCLIENT input: " );
             DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
             BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             input = inFromUser.nextLine();
