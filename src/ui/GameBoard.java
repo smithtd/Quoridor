@@ -124,4 +124,7 @@ public class GameBoard extends JPanel {
 		g.fillRect( 200, 200, 100, 100);
 		
 	}	*/
+	public static void main(String [] args){
+		GameBoard g = new GameBoard();
+	}
 }
