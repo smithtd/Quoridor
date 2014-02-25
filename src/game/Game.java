@@ -48,7 +48,6 @@ public class Game {
 	// client/server communication methods (Dylan)
 	
 	// report errors
-	
 	public static void main(String[] args) {
 		Game game = new Game(2, 10);
 		game.startGame();

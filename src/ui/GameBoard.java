@@ -34,13 +34,14 @@ public class GameBoard extends JPanel {
 		frame.setLayout( gridbag );
 		addPanels( frame, gridbag, c );
 		addOtherJObjects();
-		
 		frame.add( this );						//Adds this JPanel to JFrame
 		frame.setVisible( true );				//Sets Frame to visible
 		frame.setResizable( false );			//Doesn't allow resizing of frame
 		frame.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );	//when frame is closed, the program terminates
 		frame.setLocation( 150, 150 );
 		frame.pack();	//collapses frame to minimum size around all JObjects inside it
+		
+		
 	}
 	
 	/*
@@ -102,6 +103,7 @@ public class GameBoard extends JPanel {
 				ClickButton cb = new ClickButton(100, new Point(i, j));
 				cb.setBounds(x,y,50,50);
 				cb.addButtonListener();
+				cb.setBackground(new java.awt.Color(205,133,33));
 				this.add(cb, FlowLayout.LEFT);
 				// increment x to create next column over
 				x+=55;
@@ -124,7 +126,4 @@ public class GameBoard extends JPanel {
 		g.fillRect( 200, 200, 100, 100);
 		
 	}	*/
-	public static void main(String [] args){
-		GameBoard g = new GameBoard();
-	}
 }
