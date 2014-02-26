@@ -1,1 +1,6 @@
-/bin
+# disregard all class files, since they are pointless
+# if you want to add to this file and have already commited
+# what you are trying to ignore, add to the list and then
+# run git rm --cached name_of_file
+
+bin/*/*.class
