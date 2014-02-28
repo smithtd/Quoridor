@@ -4,3 +4,4 @@
 # run git rm --cached name_of_file
 
 bin/*/*.class
+/bin

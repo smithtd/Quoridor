@@ -10,19 +10,22 @@ import java.util.Scanner;
  * @author marc dean jr
  *
  */
+
+
+/*
+ * Player handles what happens when you make new players and
+ * defines what types of actions the player has.
+ */
 public class Player implements Players {
 
 		/* Fields */
-	
-		@SuppressWarnings("unused")
 		private String name; 	// players name
 		private int wallTotal;	// how many walls player has
 		private Scanner sc;		// prompt player for moves
-		@SuppressWarnings("unused")
 		private Point position; // current position of the player
 		
 		/* Constructor(s) */
-		public Player(String name, int walls) {
+		public Player(String name, int walls, String pos) {
 			this.name = name;
 			this.wallTotal = walls;
 			// to get moves
