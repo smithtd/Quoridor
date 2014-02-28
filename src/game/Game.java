@@ -29,6 +29,7 @@ public class Game {
 		Player[] initPlayer = new Player[MAX_NUMBER_PLAYERS];
 		this.numPlayers = numPlayers;
 		int wallRations = (NUM_OF_WALLS / this.numPlayers);
+		this.players = new Player[numPlayers];
 		/*
 		 * Initialize Players
 		 * Order of players (clockwise from the top of the board)

@@ -3,7 +3,6 @@ package ui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import players.Player;
 import java.awt.Point;
 
 @SuppressWarnings("serial")

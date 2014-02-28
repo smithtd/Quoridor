@@ -19,10 +19,12 @@ import java.util.Scanner;
 public class Player implements Players {
 
 		/* Fields */
+		@SuppressWarnings("unused")
 		private String name; 	// players name
 		private int wallTotal;	// how many walls player has
 		private Scanner sc;		// prompt player for moves
 		private Point position; // current position of the player
+		@SuppressWarnings("unused")
 		private Point winArea;  // where to win
 		
 		
