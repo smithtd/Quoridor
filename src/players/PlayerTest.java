@@ -5,6 +5,7 @@ package players;
 
 import static org.junit.Assert.*;
 
+import java.awt.Point;
 import java.util.Scanner;
 
 import org.junit.Before;
@@ -15,9 +16,11 @@ import org.junit.Test;
  *
  */
 public class PlayerTest extends Player {
+	
+	public PlayerTest p;
 
 	public PlayerTest(){
-	   super("TestPlayer", 5);
+	   super("TestPlayer", 5, "e5");
 	}
 
 	/**
@@ -25,6 +28,7 @@ public class PlayerTest extends Player {
 	 */
 	@Before
 	public void setUp() throws Exception {	
+		this.p = new PlayerTest();
 		
 	}
 
@@ -73,6 +77,17 @@ public class PlayerTest extends Player {
 		int walls = p.getWalls();
 		assertEquals(5, walls);
 	
+	}
+	
+	/*
+	 * Tests for setPosition(String)
+	 */
+	@Test
+	public void testSetPosition() {
+		Point testPoint = Player.setPosition(" ");
+		assertEquals(testPoint.getX(), 0.0, 0);
+		
+		
 	}
 
 }
