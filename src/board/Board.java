@@ -11,7 +11,7 @@ import players.Player;
 public class Board {
 	
 	// Instance variables
-	int[][] bitmap;	// tracks whether square is available
+	static int[][] bitmap;	// tracks whether square is available
 	
 	// Methods
 	// constructor(s)
@@ -37,13 +37,13 @@ public class Board {
 	 * Postconditions: report T/F, whether square is empty 
 	 * 			returns false if out of bounds since can't place piece
 	 */
-	public boolean isEmpty(int x, int y) {
+	public static boolean isEmpty(int x, int y) {
 		// check xy to make sure in range
 		if (x > 8 || y > 8 || x < 0 || y < 0)
 			return false;
 		
 		// return whether square value = 0
-		return this.bitmap[x][y] == 0;
+		return bitmap[x][y] == 0;
 	}
 	
 	/*
@@ -53,11 +53,11 @@ public class Board {
 	 * Postconditions: if move is valid, set new loc=1 and old loc=0
 	 * 		return T/F based on success
 	 */
-	public boolean placePawn(Player p, int x, int y) {
+	public static boolean placePawn(Player p, int x, int y) {
 		// if is legal move, remove old marker and place new
-		if(this.isLegalMove(p, "pawn", x, y)){
+		if(isLegalMove(p, "pawn", x, y)){
 			// set bitmap[p.x][p.y] to 0
-		//	bitmap[p.x()][p.y()] = 0;
+		    //bitmap[p.x()][p.y()] = 0;
 			// set bitmap[x][y] to 1
 			bitmap[x][y] = 1;
 			// return true
@@ -107,7 +107,7 @@ public class Board {
 	 * Preconditions: player is trying to make move, need to check if legal
 	 * Postconditions: return true if ok, else report error and return false
 	 */
-	public boolean isLegalMove(Player p, String type, int x, int y) {
+	public static boolean isLegalMove(Player p, String type, int x, int y) {
 		// check that type is valid
 		if(!(type.equals("horizontal") || type.equals("vertical") || type.equals("pawn")))
 			return false;
@@ -119,7 +119,7 @@ public class Board {
 			return false;
 		
 		// check that (x,y) not occupied
-		if(!this.isEmpty(x, y))
+		if(!isEmpty(x, y))
 			return false;
 		
 		// if type = horizontal
@@ -128,7 +128,7 @@ public class Board {
 			if(p.getWalls()<=0)
 				return false;
 			// check (x+1, y)
-			if(!this.isEmpty(x+1, y))
+			if(!isEmpty(x+1, y))
 				return false;
 			// check that x+1 < 9
 			if(x+1>8)
@@ -141,7 +141,7 @@ public class Board {
 			if(p.getWalls()<=0)
 				return false;
 			// check (x, y+1)
-			if(!this.isEmpty(x, y+1))
+			if(!isEmpty(x, y+1))
 				return false;
 			// check that y+1 < 9
 			if(y+1>8)

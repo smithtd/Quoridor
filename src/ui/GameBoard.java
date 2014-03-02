@@ -102,7 +102,7 @@ public class GameBoard extends JPanel {
 				ClickButton cb = new ClickButton(100, new Point(i, j));
 				cb.setBounds(x,y,50,50);
 				cb.addButtonListener();
-				cb.setBackground(new java.awt.Color(205,133,33));
+				cb.setBackground(new java.awt.Color(77,77,77));
 				this.add(cb, FlowLayout.LEFT);
 				// increment x to create next column over
 				x+=55;

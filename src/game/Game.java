@@ -16,7 +16,7 @@ public class Game {
 	private static final int MAX_NUMBER_PLAYERS = 4;
 	// Instance variables
 	Board board;				// Board to track data about board's contents
-	Player[] players;			// Player[] to hold players
+	public static Player[] players;			// Player[] to hold players
 	int numPlayers;				// number of players
 	Player curr; 				// Player or index to track whose turn it is
 	int moves;					// Move count
@@ -29,7 +29,7 @@ public class Game {
 		Player[] initPlayer = new Player[MAX_NUMBER_PLAYERS];
 		this.numPlayers = numPlayers;
 		int wallRations = (NUM_OF_WALLS / this.numPlayers);
-		this.players = new Player[numPlayers];
+		Game.players = new Player[numPlayers];
 		/*
 		 * Initialize Players
 		 * Order of players (clockwise from the top of the board)
@@ -43,10 +43,10 @@ public class Game {
 		if(this.numPlayers == MAX_NUMBER_PLAYERS){
 			initPlayer[1] = new Player("4", wallRations, "i5");
 			initPlayer[3] = new Player("3", wallRations, "a5");
-			this.players = initPlayer;
+			Game.players = initPlayer;
 		} else {
-			this.players[0] = initPlayer[0];
-			this.players[1] = initPlayer[2];
+			Game.players[0] = initPlayer[0];
+			Game.players[1] = initPlayer[2];
 		}
 		
 		
@@ -70,6 +70,7 @@ public class Game {
 	public static void main(String[] args) {
 		Game game = new Game(2, NUM_OF_WALLS);
 		game.startGame();
+		Board.placePawn(players[0], players[0].x(), players[0].y());
 	}
 
 }
