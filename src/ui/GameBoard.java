@@ -8,14 +8,14 @@ import java.awt.Point;
 @SuppressWarnings("serial")
 public class GameBoard extends JPanel {
 
-	public JFrame frame;
+	public static JFrame frame;
 	
 	/*
 	 * Basic details of this Panel like the panel dimensions and what layout to 
 	 * use to add JObjects 
 	 */
 	public GameBoard(){
-		this.setPreferredSize( new Dimension( 500,500 ) );	//Makes the JPanel 500px * 500px
+		this.setPreferredSize( new Dimension( 1000,1000 ) );	//Makes the JPanel 500px * 500px
 		this.setLayout( null );
 		setFrameStats();
 	}
@@ -70,6 +70,13 @@ public class GameBoard extends JPanel {
 	public JMenuBar getMenus(){
 		JMenuBar menuBar = new JMenuBar();		
 		JMenu fileMenu = new JMenu( "File" );
+		/*JMenuItem undoOpt = new JMenuItem ("undo");
+		undoOpt.addActionListener(new ActionListener()){
+			public void actionPerformed(ActionEvent e){
+				//decrement the wall placing int so players 
+				//can take back wall placements if need be
+			}
+		}*/
 		JMenuItem quitOpt = new JMenuItem( "Quit" );
 		quitOpt.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
@@ -86,6 +93,8 @@ public class GameBoard extends JPanel {
 	// what is this??
 	public void addOtherJObjects(){
 		addClickButton();
+		addWalls();
+		addWallButtons();
 	}
 	
 	/*
@@ -93,36 +102,56 @@ public class GameBoard extends JPanel {
 	 */
 	public void addClickButton(){
 		// start top left at (5,5)
-		int x = 5;
-		int y = 5;
+		int x = 10;
+		int y = 10;
 		// outer loop adds rows
 		for(int i=0; i<9; i++){
 			// inner loop adds columns
 			for(int j = 0; j<9; j++){
-				ClickButton cb = new ClickButton(100, new Point(i, j));
-				cb.setBounds(x,y,50,50);
+				ClickButton cb = new ClickButton(500, new Point(i, j));
+				cb.setBounds(x,y,100,100);
 				cb.addButtonListener();
-				cb.setBackground(new Color(100,100,100,0));
+				cb.setBackground(new Color(179,150,70));
 				this.add(cb, FlowLayout.LEFT);
 				// increment x to create next column over
-				x+=55;
+				x+=110;
 			}
 			// reset x, increment y
-			x = 5;
-			y += 55;
+			x = 10;
+			y += 110;
 		}
 	}
 	
-	//OverRidden for JPanel graphics
-	/*public void paint( Graphics g ){
-		g.setColor( Color.black );
-		g.fillRect( 50, 50, 400, 400 );
-		g.setColor( Color.white );
-		g.fillRect( 100, 100, 300, 300);
-		g.setColor( Color.black );
-		g.fillRect( 150, 150, 200, 200 );
-		g.setColor( Color.white );
-		g.fillRect( 200, 200, 100, 100);
-		
-	}	*/
+	//Builds walls out of un-click-able buttons
+	public void addWalls(){
+		int x = 111;
+		int y = 10;
+		JButton wall = new JButton();
+		wall.setBounds(x,y,8,100);
+		wall.setBackground(new Color(255,0,255));
+		frame.add(wall);
+	}
+	
+	/*
+	 * click-able buttons that build walls
+	 */
+	public void addWallButtons(){
+		int x = 110;
+		int y = 110;
+		//adds rows
+		for(int i = 0;i<8; i++){
+			//adds columns
+			for(int j = 0;j<8; j++){
+				WallButton wb = new WallButton(x,y,10, new Point(i, j));
+				wb.setBounds(x,y,10,10);
+				wb.addButtonListener();
+				wb.setBackground(new Color(255,0,255));
+				this.add(wb, FlowLayout.LEFT);
+				x+=110;
+			}
+			//resets x, and increments y
+			x = 110;
+			y += 110;
+		}
+	}
 }
