@@ -22,7 +22,7 @@ public class GameBoard extends JPanel {
 		this.setPreferredSize( new Dimension( 1000,1000 ) );	//Makes the JPanel 500px * 500px
 		this.setLayout( null );
 		setFrameStats();
-		this.g = g;
+		GameBoard.g = g;
 	}
 	
 	/*
@@ -47,7 +47,7 @@ public class GameBoard extends JPanel {
 	}
 	
 	public JFrame getFrame(){
-		return this.frame;
+		return GameBoard.frame;
 	}
 	
 	/*
@@ -141,6 +141,7 @@ public class GameBoard extends JPanel {
 		});
 		helpMenu.add( rulesOpt );
 		
+		//the About tab in the Help menu
 		JMenuItem aboutOpt = new JMenuItem( "About" );
 		aboutOpt.addActionListener( new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -150,7 +151,6 @@ public class GameBoard extends JPanel {
 				temp += "Eli Donahue \n";
 				temp += "Marc Dean \n";
 				temp += "Tyler Smith ";
-					
 				JOptionPane.showMessageDialog( frame , temp, "About",JOptionPane.PLAIN_MESSAGE);
 			}
 		});
