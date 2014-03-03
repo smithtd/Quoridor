@@ -12,6 +12,9 @@ public class GameBoard extends JPanel {
 
 	public static JFrame frame;
 	public static Game g;
+	private static Wall[][] vertWalls;
+	private static Wall[][] horzWalls;
+	private static ClickButton [][] cbAry;
 	
 	
 	/*
@@ -172,6 +175,7 @@ public class GameBoard extends JPanel {
 	 * Click-able buttons that displays options dialog to gather action from user
 	 */
 	public void addClickButton(){
+		cbAry = new ClickButton[9][9];
 		// start top left at (5,5)
 		int x = 10;
 		int y = 10;
@@ -185,6 +189,7 @@ public class GameBoard extends JPanel {
 				cb.setBackground(new Color(179,150,70));
 				this.add(cb, FlowLayout.LEFT);
 				// increment x to create next column over
+				cbAry[i][j] = cb;
 				x+=110;
 			}
 			// reset x, increment y
@@ -195,14 +200,19 @@ public class GameBoard extends JPanel {
 	
 	//Builds walls out of un-click-able buttons
 	public void addWalls(){
+		vertWalls = new Wall[9][9];
+		horzWalls = new Wall[9][8];
+		
 		int x = 111;
 		int y = 10;
+		// Vertical Walls
 		for(int i = 0;i<9;i++){
 			for(int j = 0;j<8;j++){
-				Wall w = new Wall(x,y);
-				w.setBounds(x,y,8,100);
-				w.setBackground(new Color(255,0,255));
-				this.add(w,FlowLayout.LEFT);
+				Wall vWall = new Wall(x,y);
+				vWall.setBounds(x,y,8,100);
+				vWall.setBackground(new Color(255,0,255));
+				this.add(vWall,FlowLayout.LEFT);
+				vertWalls[i][j] = vWall;
 				x+=110;
 			}
 			x = 111;
@@ -210,12 +220,15 @@ public class GameBoard extends JPanel {
 		}
 		x = 10;
 		y = 111;
+		
+		//Horizontal Walls
 		for(int i = 0;i<9;i++){
 			for(int j = 0;j<8;j++){
-				Wall w = new Wall(x,y);
-				w.setBounds(x,y,100,8);
-				w.setBackground(new Color(255,0,255));
-				this.add(w, FlowLayout.LEFT);
+				Wall hWall = new Wall(x,y);
+				hWall.setBounds(x,y,100,8);
+				hWall.setBackground(new Color(255,0,255));
+				this.add(hWall, FlowLayout.LEFT);
+				horzWalls[i][j] = hWall;
 				y+=110;
 			}
 			x+=110;

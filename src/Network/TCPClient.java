@@ -15,7 +15,8 @@ public class TCPClient{
         String input;
         String returned;
 
-        Scanner inFromUser = new Scanner( System.in );
+        @SuppressWarnings("resource")
+		Scanner inFromUser = new Scanner( System.in );
         Socket clientSocket = new Socket("localhost", 6789);
 
         while(true){
