@@ -1,5 +1,7 @@
 package ui;
 
+import game.Game;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -9,15 +11,18 @@ import java.awt.Point;
 public class GameBoard extends JPanel {
 
 	public static JFrame frame;
+	public static Game g;
+	
 	
 	/*
 	 * Basic details of this Panel like the panel dimensions and what layout to 
 	 * use to add JObjects 
 	 */
-	public GameBoard(){
+	public GameBoard( Game g ){
 		this.setPreferredSize( new Dimension( 1000,1000 ) );	//Makes the JPanel 500px * 500px
 		this.setLayout( null );
 		setFrameStats();
+		this.g = g;
 	}
 	
 	/*
@@ -39,8 +44,10 @@ public class GameBoard extends JPanel {
 		frame.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );	//when frame is closed, the program terminates
 		frame.setLocation( 150, 150 );
 		frame.pack();	//collapses frame to minimum size around all JObjects inside it
-		
-		
+	}
+	
+	public JFrame getFrame(){
+		return this.frame;
 	}
 	
 	/*
@@ -70,13 +77,24 @@ public class GameBoard extends JPanel {
 	public JMenuBar getMenus(){
 		JMenuBar menuBar = new JMenuBar();		
 		JMenu fileMenu = new JMenu( "File" );
-		/*JMenuItem undoOpt = new JMenuItem ("undo");
+		/*
+		 JMenuItem undoOpt = new JMenuItem ("undo");
 		undoOpt.addActionListener(new ActionListener()){
 			public void actionPerformed(ActionEvent e){
 				//decrement the wall placing int so players 
 				//can take back wall placements if need be
 			}
-		}*/
+		}
+		*/
+		
+		JMenuItem newGameOpt = new JMenuItem( "New Game" );
+		newGameOpt.addActionListener( new ActionListener(){
+			public void actionPerformed( ActionEvent e ){
+				g.newGame();
+			}
+		});
+		fileMenu.add(newGameOpt);
+		
 		JMenuItem quitOpt = new JMenuItem( "Quit" );
 		quitOpt.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){

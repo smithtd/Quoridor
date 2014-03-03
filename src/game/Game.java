@@ -20,6 +20,7 @@ public class Game {
 	int numPlayers;				// number of players
 	Player curr; 				// Player or index to track whose turn it is
 	int moves;					// Move count
+	public GameBoard gb;
 	
 	// Methods
 	
@@ -56,7 +57,12 @@ public class Game {
 	
 	// start game
 	public void startGame(){
-		new GameBoard();
+		gb = new GameBoard( this );
+	}
+	
+	public void newGame(){
+		gb.getFrame().dispose();
+		gb = new GameBoard( this );
 	}
 	
 	// exit game (report errors if any)
