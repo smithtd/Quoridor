@@ -14,19 +14,19 @@ import java.awt.event.*;
 public class ClickButton extends JButton {
 
 	// Instance variables
-	public ImageIcon Square_Red = new ImageIcon("Square_Red.png");	// what is this???
+	public static Icon Square_Red = new ImageIcon("../Images/Square_Red.png");	// what is this???
 	public int buttonSize;
 	public Point pos;
 	
 	// Constructors
 	public ClickButton( int buttonSize , Point p){
-		super();
+		super(Square_Red);
 		this.pos = p;
 		this.buttonSize = buttonSize;
 	}
 	
 	public ClickButton( String label, int buttonSize ){
-		super( label );
+		super(label, Square_Red );
 		this.buttonSize = buttonSize;
 	}
 	
