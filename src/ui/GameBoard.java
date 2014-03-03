@@ -197,10 +197,31 @@ public class GameBoard extends JPanel {
 	public void addWalls(){
 		int x = 111;
 		int y = 10;
-		JButton wall = new JButton();
-		wall.setBounds(x,y,8,100);
-		wall.setBackground(new Color(255,0,255));
-		frame.add(wall);
+		for(int i = 0;i<9;i++){
+			for(int j = 0;j<8;j++){
+				Wall w = new Wall(x,y);
+				w.setBounds(x,y,8,100);
+				w.setBackground(new Color(255,0,255));
+				this.add(w,FlowLayout.LEFT);
+				x+=110;
+			}
+			x = 111;
+			y+=110;
+		}
+		x = 10;
+		y = 111;
+		for(int i = 0;i<9;i++){
+			for(int j = 0;j<8;j++){
+				Wall w = new Wall(x,y);
+				w.setBounds(x,y,100,8);
+				w.setBackground(new Color(255,0,255));
+				this.add(w, FlowLayout.LEFT);
+				y+=110;
+			}
+			x+=110;
+			y = 111;
+		}
+		
 	}
 	
 	/*

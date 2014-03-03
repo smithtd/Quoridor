@@ -36,33 +36,32 @@ public class WallButton extends JButton {
 		addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ) {
 				//creates walls vertically
-				clicks++;
-				if(clicks%3==1){
-					JButton wall = new JButton();
-					wall.setBounds(x-11,y-101,8,100);
-					wall.setBackground(new Color(51,235,51));
-					GameBoard.frame.add(wall);
-					JButton wall2 = new JButton();
-					wall.setBounds(x-11,y+11,8,100);
-					wall.setBackground(new Color(51,235,51));
-					GameBoard.frame.add(wall);
-					GameBoard.frame.add(wall2);
-					GameBoard.frame.repaint();
-				}
-				//creates walls horizontally
-				else if(clicks%3==2){
-					JButton wall = new JButton();
-					wall.setBounds(x-101,y+11,8,100);
-					wall.setBackground(new Color(51,235,51));
-					GameBoard.frame.add(wall);
-					JButton wall2 = new JButton();
-					wall.setBounds(x+11,y+11,8,100);
-					wall.setBackground(new Color(51,235,51));
-					GameBoard.frame.add(wall);	
-					GameBoard.frame.add(wall2);
-					GameBoard.frame.repaint();
-				}
+				// swapped out message reporting pos for dialog with options
+				JPanel p = new JPanel(new GridLayout(3,5));
+				// create an array of radio button options
+				JRadioButton[] rb = {new JRadioButton("Place a horizontal wall starting here."), 
+						new JRadioButton("Place a vertical wall starting here.")};
+			    // add the buttons to the panel
+				p.add(rb[0]);
+			    p.add(rb[1]);
+			    // call a JOptionPane to display the radio buttons
+			    JOptionPane.showMessageDialog(null,p);
+			    
+			    // perform action based on user's selection
+			    //still not working    >:(
+			    if(rb[0].isSelected()){
+			    	Wall w = new Wall(x,y);
+					w.setBounds(x+11,y,8,100);
+					w.setBackground(new Color(0,0,255));
+					GameBoard.frame.add(w,FlowLayout.LEFT);
+			    } else if(rb[1].isSelected()){
+			    	Wall w = new Wall(x,y);
+					w.setBounds(x,y,8,100);
+					w.setBackground(new Color(0,0,255));
+					GameBoard.frame.add(w,FlowLayout.LEFT);
+			    }
 			}
 		});
 	}
+	
 }

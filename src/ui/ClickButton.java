@@ -38,22 +38,16 @@ public class ClickButton extends JButton {
 				// swapped out message reporting pos for dialog with options
 				JPanel p = new JPanel(new GridLayout(3,5));
 				// create an array of radio button options
-				JRadioButton[] rb = {new JRadioButton("Move your pawn here."), new JRadioButton("Place a horizontal wall starting here."), new JRadioButton("Place a vertical wall starting here.")};
+				JRadioButton rb = new JRadioButton("Move your pawn here.");
 			    // add the buttons to the panel
-				p.add(rb[0]);
-			    p.add(rb[1]);
-			    p.add(rb[2]);
+				p.add(rb);
 			    // call a JOptionPane to display the radio buttons
 			    JOptionPane.showMessageDialog(null,p);
 			    
 			    // perform action based on user's selection
-			    if(rb[0].isSelected()){
+			    if(rb.isSelected()){
 			    	JOptionPane.showMessageDialog(null,"Selected move pawn to ("+pos.getX()+","+pos.getY()+").");
-			    } else if(rb[1].isSelected()){
-			    	JOptionPane.showMessageDialog(null,"Selected place horizontal wall at ("+pos.getX()+","+pos.getY()+").");
-			    } else if(rb[2].isSelected()){
-			    	JOptionPane.showMessageDialog(null,"Selected place vertical wall at ("+pos.getX()+","+pos.getY()+").");
-			    }
+			    } 
 			}
 		});
 	}
