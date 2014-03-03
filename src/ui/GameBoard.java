@@ -14,7 +14,7 @@ public class GameBoard extends JPanel {
 	public static Game g;
 	private static Wall[][] vertWalls;
 	private static Wall[][] horzWalls;
-	private static ClickButton [][] cbAry;
+	private static WallButton [][] wbAry;
 	
 	
 	/*
@@ -166,16 +166,16 @@ public class GameBoard extends JPanel {
 	
 	// what is this??
 	public void addOtherJObjects(){
-		addClickButton();
+		addPlayerButton();
 		addWalls();
 		addWallButtons();
+		//addArysToButtons();
 	}
 	
 	/*
 	 * Click-able buttons that displays options dialog to gather action from user
 	 */
-	public void addClickButton(){
-		cbAry = new ClickButton[9][9];
+	public void addPlayerButton(){
 		// start top left at (5,5)
 		int x = 10;
 		int y = 10;
@@ -183,13 +183,12 @@ public class GameBoard extends JPanel {
 		for(int i=0; i<9; i++){
 			// inner loop adds columns
 			for(int j = 0; j<9; j++){
-				ClickButton cb = new ClickButton(500, new Point(i, j));
+				PlayerButton cb = new PlayerButton(500, new Point(i, j));
 				cb.setBounds(x,y,100,100);
 				cb.addButtonListener();
 				cb.setBackground(new Color(179,150,70));
 				this.add(cb, FlowLayout.LEFT);
 				// increment x to create next column over
-				cbAry[i][j] = cb;
 				x+=110;
 			}
 			// reset x, increment y
@@ -200,7 +199,7 @@ public class GameBoard extends JPanel {
 	
 	//Builds walls out of un-click-able buttons
 	public void addWalls(){
-		vertWalls = new Wall[9][9];
+		vertWalls = new Wall[9][8];
 		horzWalls = new Wall[9][8];
 		
 		int x = 111;
@@ -241,22 +240,36 @@ public class GameBoard extends JPanel {
 	 * click-able buttons that build walls
 	 */
 	public void addWallButtons(){
+		WallButton[][] wbAry = new WallButton[8][8];
 		int x = 110;
 		int y = 110;
 		//adds rows
 		for(int i = 0;i<8; i++){
 			//adds columns
 			for(int j = 0;j<8; j++){
-				WallButton wb = new WallButton(x,y,10, new Point(i, j));
+				WallButton wb = new WallButton(x,y,10, new Point(i, j), vertWalls, horzWalls );
 				wb.setBounds(x,y,10,10);
 				wb.addButtonListener();
 				wb.setBackground(new Color(255,0,255));
 				this.add(wb, FlowLayout.LEFT);
 				x+=110;
+				wbAry[i][j] = wb;
 			}
 			//resets x, and increments y
 			x = 110;
 			y += 110;
 		}
 	}
+	
+	public void addArysToButtons(){
+		for(int x=0; x<8; x++)
+			for( int y=0; y<8; y++){
+				System.out.println( ( wbAry[x][y] == null ));
+			}
+				//wbAry[x][y].addAry( horzWalls, vertWalls );
+			
+		
+	}
+	
+	
 }
