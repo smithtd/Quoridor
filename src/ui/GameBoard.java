@@ -86,7 +86,46 @@ public class GameBoard extends JPanel {
 			}
 		});
 		fileMenu.add( quitOpt );
+		//creates "help" in menubar
+		JMenu helpMenu = new JMenu("Help");
+		menuBar.add(helpMenu);
+		helpMenu.setName("Help");
+		
+		//the rules tab in the help menu
+		JMenuItem rulesOpt = new JMenuItem("Rules");
+		rulesOpt.setName("Rules");
+		rulesOpt.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String temp = "";
+				temp += "Quoridor is played on a game board of 81 square spaces (9x9). \n" +
+						"Each player is represented by a pawn which begins at the center \n" +
+						"space of one edge of the board (in a two-player game, the pawns \n" +
+						"begin opposite each other). The object is to be the first player \n" +
+						"to move their pawn to any space on the opposite side of the \n" +
+						"gameboard from which it begins.\n\n";
+				temp += "The distinguishing characteristic of Quoridor is its twenty walls. \n" +
+						"Walls are flat two-space-wide pieces which can be placed in the \n" +
+						"groove that runs between the spaces. Walls block the path of all \n" +
+						"pawns, which must go around them. The walls are divided equally \n" +
+						"among the players at the start of the game, and once placed, cannot \n" +
+						"be moved or removed. On a turn, a player may either move their \n" +
+						"pawn, or, if possible, place a wall. \n\n";
+				temp += "Pawns can be moved to an adjacent space (not diagonally), or, if \n" +
+						"adjacent to another pawn, jump over that pawn. If an adjacent pawn \n" +
+						"has a third pawn or a wall on the other side of it, the player may \n" +
+						"move to any space that is immediately adjacent to other adjacent pawns.\n" +
+						"The official rules are ambiguous concerning the edge of the board. \n\n";
+				temp += "Walls can be placed directly between two spaces, in any groove not \n" +
+						"already occupied by a wall. However, a wall may not be placed which \n" +
+						"cuts off the only remaining path of any pawn to the side of the board \n" +
+						"it must reach.\n";
+				JOptionPane.showMessageDialog( frame , temp, "Rules of Quoridor",JOptionPane.PLAIN_MESSAGE);
+			}
+		});
+		helpMenu.add(rulesOpt);
+		
 		menuBar.add( fileMenu );
+		menuBar.add(helpMenu);
 		return menuBar;
 	}
 	
