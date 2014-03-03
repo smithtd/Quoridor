@@ -111,7 +111,6 @@ public class GameBoard extends JPanel {
 		
 		//the rules tab in the help menu
 		JMenuItem rulesOpt = new JMenuItem("Rules");
-		rulesOpt.setName("Rules");
 		rulesOpt.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				String temp = "";
@@ -140,7 +139,22 @@ public class GameBoard extends JPanel {
 				JOptionPane.showMessageDialog( frame , temp, "Rules of Quoridor",JOptionPane.PLAIN_MESSAGE);
 			}
 		});
-		helpMenu.add(rulesOpt);
+		helpMenu.add( rulesOpt );
+		
+		JMenuItem aboutOpt = new JMenuItem( "About" );
+		aboutOpt.addActionListener( new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String temp = "";
+				temp += "Authors: \n";
+				temp += "Dylan Woythal \n";
+				temp += "Eli Donahue \n";
+				temp += "Marc Dean \n";
+				temp += "Tyler Smith ";
+					
+				JOptionPane.showMessageDialog( frame , temp, "About",JOptionPane.PLAIN_MESSAGE);
+			}
+		});
+		helpMenu.add( aboutOpt );
 		
 		menuBar.add( fileMenu );
 		menuBar.add(helpMenu);
