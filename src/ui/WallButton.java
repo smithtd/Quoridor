@@ -117,6 +117,7 @@ public class WallButton extends JButton {
 						//FIXME Stuck in never ending loop
 						System.out.println("DEBUG 1");
 						tempFrame.dispose();
+						ready.setSelected(true);
 						
 					}else{
 						try{
