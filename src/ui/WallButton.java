@@ -23,7 +23,7 @@ public class WallButton extends JButton {
 		super();
 		this.x = x;
 		this.y = y;
-		this.cont = cont;
+		WallButton.cont = cont;
 		this.setPreferredSize( new Dimension( 10, 10 ) );
 		this.setBackground( Color.BLUE );
 		addButtonListener();
@@ -90,22 +90,6 @@ public class WallButton extends JButton {
 							Thread.sleep(100);
 						}catch(Exception e2){}
 				}
-			    
-			    
-			    // perform action based on user's selection
-			   /* 
-			    if(rb1.isSelected()){
-			    	Wall w = new Wall(x,y);
-					w.setBounds(x+11,y,8,100);
-					w.setBackground(new Color(0,0,255));
-					GameBoard.frame.add(w,FlowLayout.LEFT);
-			    } else if(rb2.isSelected()){
-			    	Wall w = new Wall(x,y);
-					w.setBounds(x,y,8,100);
-					w.setBackground(new Color(0,0,255));
-					GameBoard.frame.add(w,FlowLayout.LEFT);
-			    }
-			    */
 			}
 		});
 	}

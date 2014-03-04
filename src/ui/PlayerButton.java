@@ -17,8 +17,14 @@ public class PlayerButton extends JButton {
 	public static Icon Square_Red = new ImageIcon("../Images/Square_Red.png");	// what is this???
 	public int buttonSize;
 	public Point pos;
+
+	@SuppressWarnings("unused") //For now
 	private int x;
+	
+	@SuppressWarnings("unused") //For now
 	private int y;
+
+	@SuppressWarnings("unused") //For now
 	private static Controller cont;
 	
 	// Constructors
@@ -26,7 +32,7 @@ public class PlayerButton extends JButton {
 		super();
 		this.x = y;
 		this.y = y;
-		this.cont = cont;
+		PlayerButton.cont = cont;
 		this.setPreferredSize( new Dimension( 50, 50 ) );
 		this.setBackground( Color.RED );
 	}

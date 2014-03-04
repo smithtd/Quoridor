@@ -1,5 +1,15 @@
 package ui;
 
+/*
+ * The purpose of this class is to hold all variables of the game state as 
+ * static this class is added as a static object to every other object so that 
+ * any other object can access it and get a hold of the variables that should be 
+ * shared by the entire game
+ * 
+ * Not sure if any other comments are needed at this point since the methods are
+ * all one liners and self explanatory
+ */
+
 public class Controller {
 
 	private static Wall[][] vertWalls;
@@ -12,34 +22,34 @@ public class Controller {
 	}
 	
 	public void addVertWalls( Wall[][] vertWalls ){
-		this.vertWalls = vertWalls;
+		Controller.vertWalls = vertWalls;
 	}
 
 	public void addHorzWalls( Wall[][] horzWalls ){
-		this.horzWalls = horzWalls;
+		Controller.horzWalls = horzWalls;
 	}
 	
 	public void addPlayerButtons( PlayerButton[][] pbAry ){
-		this.pbAry = pbAry;
+		Controller.pbAry = pbAry;
 	}
 	
 	public void addWallButtons( WallButton[][] wbAry ){
-		this.wbAry = wbAry;
+		Controller.wbAry = wbAry;
 	}
 	
 	public Wall[][] getVertWalls(){
-		return this.vertWalls;
+		return Controller.vertWalls;
 	}
 	
 	public Wall[][] getHorzWalls(){
-		return this.horzWalls;
+		return Controller.horzWalls;
 	}
 	
 	public PlayerButton[][] getPlayerButtons(){
-		return this.pbAry;
+		return Controller.pbAry;
 	}
 	
 	public WallButton[][] getWallButtons(){
-		return this.wbAry;
+		return Controller.wbAry;
 	}
 }
