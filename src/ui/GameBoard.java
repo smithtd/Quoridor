@@ -213,7 +213,7 @@ public class GameBoard extends JPanel {
 			}
 		}
 	}
-/*
+
 	public void addArysToButtons(){
 		for(int x=0; x<8; x++)
 			for( int y=0; y<8; y++){
@@ -223,6 +223,6 @@ public class GameBoard extends JPanel {
 			
 		
 	}
-*/
+
 	
 }

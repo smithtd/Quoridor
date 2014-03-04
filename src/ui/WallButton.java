@@ -61,24 +61,25 @@ public class WallButton extends JButton {
 					if( ready.isSelected() && !rb1.isSelected() && !rb2.isSelected() && !rb3.isSelected() )
 				    	ready.setSelected( false );
 					else if( ready.isSelected() && (rb1.isSelected() || rb2.isSelected()) || !rb3.isSelected() ){
+						System.out.println( "X:" + x + " Y:" + y );
 						if( rb1.isSelected() ){
-							try{
-								horzWalls[x][y].setBackground( Color.GREEN );
+//							try{
+								horzWalls[x][y+1].setBackground( Color.GREEN );
+								horzWalls[x][y+1].repaint();
+								horzWalls[x][y].setBackground(  Color.GREEN );
 								horzWalls[x][y].repaint();
-								horzWalls[x+1][y].setBackground(  Color.GREEN );
-								horzWalls[x+1][y].repaint();
-							}catch(Exception ex){
-								System.out.println("ERROR IN HORZ");
-							}
+//							}catch(Exception ex){
+//								System.out.println("ERROR IN HORZ");
+//							}
 						}else if( rb2.isSelected() ){
-							try{
+//							try{
 								vertWalls[x][y].setBackground( Color.GREEN );
 								vertWalls[x][y].repaint();
-								vertWalls[x][y+1].setBackground( Color.GREEN );
-								vertWalls[x][y+1].repaint();
-							}catch(Exception ex){
-								System.out.println("ERROR IN VERT");
-							}
+								vertWalls[x+1][y].setBackground( Color.GREEN );
+								vertWalls[x+1][y].repaint();
+//							}catch(Exception ex){
+//								System.out.println("ERROR IN VERT");
+//							}
 						}else if( rb3.isSelected() ){
 							System.out.println("NONE SELECTED");
 						}
