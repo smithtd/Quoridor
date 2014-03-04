@@ -19,30 +19,15 @@ public class WallButton extends JButton {
 	public static Wall[][] vertWalls;
 	public static Wall[][] horzWalls;
 	
-	
 	//Constructor
-	public WallButton(int x, int y, int buttonSize , Point p, Wall[][] vertWalls, Wall[][] horzWalls){
-		this.x = x;
-		this.y = y;
-		this.pos = p;
-		this.buttonSize = buttonSize;
-		WallButton.vertWalls = vertWalls;
-		WallButton.horzWalls = horzWalls;
-	}
-	
-	public WallButton( int x, int y ){
+	public WallButton( int x, int y, Wall[][] vertWalls, Wall[][] horzWalls ){
 		super();
 		this.x = x;
 		this.y = y;
 		this.setPreferredSize( new Dimension( 10, 10 ) );
 		this.setBackground( Color.BLUE );
+		addButtonListener();
 	}
-	
-	//More basic Constructor
-	public WallButton( String label, int buttonSize ){
-		this.buttonSize = buttonSize;
-	}
-	
 	
 	//makes walls around wall buttons based on amount of times clicked
 	//Having trouble getting walls to work :/
