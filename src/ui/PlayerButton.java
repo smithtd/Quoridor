@@ -35,6 +35,7 @@ public class PlayerButton extends JButton {
 		PlayerButton.cont = cont;
 		this.setPreferredSize( new Dimension( 50, 50 ) );
 		this.setBackground( Color.RED );
+		addButtonListener();
 	}
 	
 	// adds an action listener to a ClickButton

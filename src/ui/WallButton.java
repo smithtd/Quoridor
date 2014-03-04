@@ -25,7 +25,7 @@ public class WallButton extends JButton {
 		this.y = y;
 		WallButton.cont = cont;
 		this.setPreferredSize( new Dimension( 10, 10 ) );
-		this.setBackground( Color.BLUE );
+		this.setBackground( Color.BLACK );
 		addButtonListener();
 	}
 	
