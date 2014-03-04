@@ -9,8 +9,9 @@ import javax.swing.*;
 public class Wall extends JButton {
 	public int x;
 	public int y;
+	private static Controller cont;
 	
-	public Wall(int x, int y, String type){
+	public Wall(int x, int y, String type, Controller cont){
 		super();
 		this.x = x;
 		this.y = y;

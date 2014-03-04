@@ -19,25 +19,16 @@ public class PlayerButton extends JButton {
 	public Point pos;
 	private int x;
 	private int y;
+	private static Controller cont;
 	
 	// Constructors
-	public PlayerButton( int buttonSize , Point p){
-		super(Square_Red);
-		this.pos = p;
-		this.buttonSize = buttonSize;
-	}
-	
-	public PlayerButton( int x, int y ){
+	public PlayerButton( int x, int y, Controller cont ){
 		super();
 		this.x = y;
 		this.y = y;
+		this.cont = cont;
 		this.setPreferredSize( new Dimension( 50, 50 ) );
 		this.setBackground( Color.RED );
-	}
-	
-	public PlayerButton( String label, int buttonSize ){
-		super(label, Square_Red );
-		this.buttonSize = buttonSize;
 	}
 	
 	// adds an action listener to a ClickButton

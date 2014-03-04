@@ -16,14 +16,14 @@ public class WallButton extends JButton {
 	//keep track of height for the walls
 	public int x;
 	public int y;
-	public static Wall[][] vertWalls;
-	public static Wall[][] horzWalls;
+	private static Controller cont;
 	
 	//Constructor
-	public WallButton( int x, int y, Wall[][] vertWalls, Wall[][] horzWalls ){
+	public WallButton( int x, int y, Controller cont ){
 		super();
 		this.x = x;
 		this.y = y;
+		this.cont = cont;
 		this.setPreferredSize( new Dimension( 10, 10 ) );
 		this.setBackground( Color.BLUE );
 		addButtonListener();
@@ -64,19 +64,19 @@ public class WallButton extends JButton {
 						System.out.println( "X:" + x + " Y:" + y );
 						if( rb1.isSelected() ){
 //							try{
-								horzWalls[x][y+1].setBackground( Color.GREEN );
-								horzWalls[x][y+1].repaint();
-								horzWalls[x][y].setBackground(  Color.GREEN );
-								horzWalls[x][y].repaint();
+								cont.getHorzWalls()[x][y+1].setBackground( Color.GREEN );
+								cont.getHorzWalls()[x][y+1].repaint();
+								cont.getHorzWalls()[x][y].setBackground(  Color.GREEN );
+								cont.getHorzWalls()[x][y].repaint();
 //							}catch(Exception ex){
 //								System.out.println("ERROR IN HORZ");
 //							}
 						}else if( rb2.isSelected() ){
 //							try{
-								vertWalls[x][y].setBackground( Color.GREEN );
-								vertWalls[x][y].repaint();
-								vertWalls[x+1][y].setBackground( Color.GREEN );
-								vertWalls[x+1][y].repaint();
+								cont.getVertWalls()[x][y].setBackground( Color.GREEN );
+								cont.getVertWalls()[x][y].repaint();
+								cont.getVertWalls()[x+1][y].setBackground( Color.GREEN );
+								cont.getVertWalls()[x+1][y].repaint();
 //							}catch(Exception ex){
 //								System.out.println("ERROR IN VERT");
 //							}

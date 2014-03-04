@@ -11,11 +11,7 @@ public class GameBoard extends JPanel {
 
 	public static JFrame frame;
 	public static Game g;
-	private static Wall[][] vertWalls;
-	private static Wall[][] horzWalls;
-	private static WallButton [][] wbAry;
-	private static PlayerButton[][] pbAry;
-	
+	private static Controller cont;
 	
 	/*
 	 * Basic details of this Panel like the panel dimensions and what layout to 
@@ -23,6 +19,7 @@ public class GameBoard extends JPanel {
 	 */
 	public GameBoard( Game g ){
 		super();
+		cont = new Controller();
 		FlowLayout flow = new FlowLayout();
 		flow.setHgap( 0 );
 		flow.setVgap( 0 );
@@ -179,10 +176,10 @@ public class GameBoard extends JPanel {
 	}
 
 	public void addJButtons(){
-		pbAry = new PlayerButton[9][9];
-		vertWalls = new Wall[9][8];
-		horzWalls = new Wall[8][9];
-		wbAry = new WallButton[8][8];
+		PlayerButton[][] pbAry = new PlayerButton[9][9];
+		Wall[][] vertWalls = new Wall[9][8];
+		Wall[][] horzWalls = new Wall[8][9];
+		WallButton[][] wbAry = new WallButton[8][8];
 
 		//9x9 board
 		for( int x = 0; x<9; x++ ){
@@ -191,20 +188,20 @@ public class GameBoard extends JPanel {
 				//layer 0 is PlayerButton && Vert Walls
 				//Layer 1 is HorzWalls && WallButton
 					if( layer == 0 ){
-						PlayerButton plyrBtn = new PlayerButton( x, y );
+						PlayerButton plyrBtn = new PlayerButton( x, y, cont );
 						this.add( plyrBtn );
 						pbAry[x][y] = plyrBtn;
 						if( y!= 8 ){
-							Wall w = new Wall( x, y, "vert" );
+							Wall w = new Wall( x, y, "vert", cont );
 							this.add( w );
 							vertWalls[x][y] = w;
 						}
 					} else if( x!= 8 ) {
-						Wall w = new Wall( x, y, "horz" );
+						Wall w = new Wall( x, y, "horz", cont );
 						this.add( w );
 						horzWalls[x][y] = w;
 						if( y!= 8 && x!=8 ){
-							WallButton wb = new WallButton( x, y, vertWalls, horzWalls );
+							WallButton wb = new WallButton( x, y, cont );
 							this.add( wb );
 							wbAry[x][y] = wb;
 						}
@@ -212,17 +209,10 @@ public class GameBoard extends JPanel {
 				}
 			}
 		}
+		cont.addHorzWalls( horzWalls );
+		cont.addVertWalls( vertWalls );
+		cont.addPlayerButtons( pbAry );
+		cont.addWallButtons( wbAry );
 	}
-
-	public void addArysToButtons(){
-		for(int x=0; x<8; x++)
-			for( int y=0; y<8; y++){
-				System.out.println( ( wbAry[x][y] == null ));
-			}
-				//wbAry[x][y].addAry( horzWalls, vertWalls );
-			
-		
-	}
-
 	
 }
