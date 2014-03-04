@@ -15,6 +15,7 @@ public class GameBoard extends JPanel {
 	private static Wall[][] vertWalls;
 	private static Wall[][] horzWalls;
 	private static WallButton [][] wbAry;
+	private static PlayerButton[][] pbAry;
 	
 	
 	/*
@@ -22,8 +23,11 @@ public class GameBoard extends JPanel {
 	 * use to add JObjects 
 	 */
 	public GameBoard( Game g ){
-		this.setPreferredSize( new Dimension( 1000,1000 ) );	//Makes the JPanel 500px * 500px
-		this.setLayout( null );
+		super();
+		FlowLayout flow = new FlowLayout();
+		flow.setHgap( 0 );
+		flow.setVgap( 0 );
+		this.setLayout( flow );
 		setFrameStats();
 		GameBoard.g = g;
 	}
@@ -39,8 +43,8 @@ public class GameBoard extends JPanel {
 		GridBagLayout gridbag = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
 		frame.setLayout( gridbag );
-		addPanels( frame, gridbag, c );
-		addOtherJObjects();
+		addOtherJObjectsToThis();
+		addPanelsToJFrame( frame, gridbag, c );
 		frame.add( this );						//Adds this JPanel to JFrame
 		frame.setVisible( true );				//Sets Frame to visible
 		frame.setResizable( false );			//Doesn't allow resizing of frame
@@ -56,7 +60,7 @@ public class GameBoard extends JPanel {
 	/*
 	 * Sets up the GridBag Layout with JFrame and JPanel
 	 */
-	public void addPanels( JFrame frame, 
+	public void addPanelsToJFrame( JFrame frame, 
 			   GridBagLayout gridbag,
 			   GridBagConstraints c ){
 		c.fill = GridBagConstraints.BOTH;
@@ -67,6 +71,7 @@ public class GameBoard extends JPanel {
 		frame.add( menus );
 		c.weighty = 1.0;
 		c.gridheight = GridBagConstraints.REMAINDER;
+		this.setPreferredSize( new Dimension( 50*9 + 10*8, 50*9 + 10*8 ) );
 		gridbag.setConstraints( this, c );
 		frame.add( this );
 	}
@@ -165,13 +170,50 @@ public class GameBoard extends JPanel {
 	}
 	
 	// what is this??
-	public void addOtherJObjects(){
-		addPlayerButton();
-		addWalls();
-		addWallButtons();
+	public void addOtherJObjectsToThis(){
+		addJButtons();
+		//addPlayerButton();
+		//addWalls();
+		//addWallButtons();
 		//addArysToButtons();
+		repaint();
 	}
-	
+
+	public void addJButtons(){
+		pbAry = new PlayerButton[9][9];
+		vertWalls = new Wall[9][8];
+		horzWalls = new Wall[8][9];
+		wbAry = new WallButton[8][8];
+
+		//9x9 board
+		for( int x = 0; x<9; x++ ){
+			for( int layer=0; layer<2; layer++ ){
+				for( int y=0; y<9; y++ ){
+				//layer 0 is PlayerButton && Vert Walls
+				//Layer 1 is HorzWalls && WallButton
+					if( layer == 0 ){
+						PlayerButton plyrBtn = new PlayerButton( x, y );
+						this.add( plyrBtn );
+						pbAry[x][y] = plyrBtn;
+						if( y!= 8 ){
+							Wall w = new Wall( x, y, "vert" );
+							this.add( w );
+							vertWalls[x][y] = w;
+						}
+					} else if( x!= 8 ) {
+						Wall w = new Wall( x, y, "horz" );
+						this.add( w );
+						horzWalls[x][y] = w;
+						if( y!= 8 && x!=8 ){
+							WallButton wb = new WallButton( x, y );
+							this.add( wb );
+							wbAry[x][y] = wb;
+						}
+					}
+				}
+			}
+		}
+	}
 	/*
 	 * Click-able buttons that displays options dialog to gather action from user
 	 */
@@ -198,9 +240,8 @@ public class GameBoard extends JPanel {
 	}
 	
 	//Builds walls out of un-click-able buttons
+/*
 	public void addWalls(){
-		vertWalls = new Wall[9][8];
-		horzWalls = new Wall[9][8];
 		
 		int x = 111;
 		int y = 10;
@@ -235,10 +276,11 @@ public class GameBoard extends JPanel {
 		}
 		
 	}
-	
+*/	
 	/*
 	 * click-able buttons that build walls
 	 */
+/*
 	public void addWallButtons(){
 		WallButton[][] wbAry = new WallButton[8][8];
 		int x = 110;
@@ -260,7 +302,8 @@ public class GameBoard extends JPanel {
 			y += 110;
 		}
 	}
-	
+*/
+/*
 	public void addArysToButtons(){
 		for(int x=0; x<8; x++)
 			for( int y=0; y<8; y++){
@@ -270,6 +313,6 @@ public class GameBoard extends JPanel {
 			
 		
 	}
-	
+*/
 	
 }

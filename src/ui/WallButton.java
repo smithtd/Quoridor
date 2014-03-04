@@ -30,6 +30,14 @@ public class WallButton extends JButton {
 		WallButton.horzWalls = horzWalls;
 	}
 	
+	public WallButton( int x, int y ){
+		super();
+		this.x = x;
+		this.y = y;
+		this.setPreferredSize( new Dimension( 10, 10 ) );
+		this.setBackground( Color.BLUE );
+	}
+	
 	//More basic Constructor
 	public WallButton( String label, int buttonSize ){
 		this.buttonSize = buttonSize;
