@@ -32,6 +32,7 @@ public class WallButton extends JButton {
 	//makes walls around wall buttons based on amount of times clicked
 	//Having trouble getting walls to work :/
 	public void addButtonListener(){
+		final WallButton b = this;
 		addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ) {
 				//creates walls vertically
@@ -98,6 +99,7 @@ public class WallButton extends JButton {
 								cont.getHorzWalls()[x][y+1].repaint();
 								cont.getHorzWalls()[x][y].setBackground(  Color.GREEN );
 								cont.getHorzWalls()[x][y].repaint();
+								b.setBackground( Color.GREEN );
 							}catch(Exception ex){
 								System.out.println("ERROR IN HORZ");
 							}
@@ -107,6 +109,7 @@ public class WallButton extends JButton {
 								cont.getVertWalls()[x][y].repaint();
 								cont.getVertWalls()[x+1][y].setBackground( Color.GREEN );
 								cont.getVertWalls()[x+1][y].repaint();
+								b.setBackground( Color.GREEN );
 							}catch(Exception ex){
 								System.out.println("ERROR IN VERT");
 							}
