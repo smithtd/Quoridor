@@ -94,24 +94,35 @@ public class WallButton extends JButton {
 						 * 
 						 */
 						if( rb1.isSelected() ){
+							Wall wb1;
+							Wall wb2;
 							try{
-								cont.getHorzWalls()[x][y+1].setBackground( Color.GREEN );
-								cont.getHorzWalls()[x][y+1].repaint();
-								cont.getHorzWalls()[x][y].setBackground(  Color.GREEN );
-								cont.getHorzWalls()[x][y].repaint();
-								b.setBackground( Color.GREEN );
+								wb1 = cont.getHorzWalls()[x][y+1];
+								wb2 = cont.getHorzWalls()[x][y];
 							}catch(Exception ex){
 								System.out.println("ERROR IN HORZ");
+								return;
 							}
+							if(wb1.getBackground() != Color.green && wb2.getBackground() != Color.green && b.getBackground()!= Color.green ){
+								wb1.setBackground( Color.GREEN);
+								wb2.setBackground( Color.green );
+								b.setBackground( Color.green );
+							}
+								
 						}else if( rb2.isSelected() ){
+							Wall wb1;
+							Wall wb2;
 							try{
-								cont.getVertWalls()[x][y].setBackground( Color.GREEN );
-								cont.getVertWalls()[x][y].repaint();
-								cont.getVertWalls()[x+1][y].setBackground( Color.GREEN );
-								cont.getVertWalls()[x+1][y].repaint();
-								b.setBackground( Color.GREEN );
+								wb1 = cont.getVertWalls()[x+1][y];
+								wb2 = cont.getVertWalls()[x][y];
 							}catch(Exception ex){
 								System.out.println("ERROR IN VERT");
+								return;
+							}
+							if(wb1.getBackground() != Color.green && wb2.getBackground() != Color.green && b.getBackground()!= Color.green ){
+								wb1.setBackground( Color.GREEN);
+								wb2.setBackground( Color.green );
+								b.setBackground( Color.green );
 							}
 						}else if( rb3.isSelected() ){
 							System.out.println("NONE SELECTED");

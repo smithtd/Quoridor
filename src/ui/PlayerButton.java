@@ -18,10 +18,7 @@ public class PlayerButton extends JButton {
 	public int buttonSize;
 	public Point pos;
 
-	@SuppressWarnings("unused") //For now
 	private int x;
-	
-	@SuppressWarnings("unused") //For now
 	private int y;
 
 	@SuppressWarnings("unused") //For now
@@ -34,8 +31,16 @@ public class PlayerButton extends JButton {
 		this.y = y;
 		PlayerButton.cont = cont;
 		this.setPreferredSize( new Dimension( 50, 50 ) );
-		this.setBackground( Color.RED );
+		this.setBackground( Color.BLACK );
 		addButtonListener();
+	}
+	
+	public int getXLocal(){
+		return this.x;
+	}
+	
+	public int getYLocal(){
+		return this.y;
 	}
 	
 	// adds an action listener to a ClickButton
@@ -53,7 +58,7 @@ public class PlayerButton extends JButton {
 			    
 			    // perform action based on user's selection
 			    if(rb.isSelected()){
-			    	JOptionPane.showMessageDialog(null,"Selected move pawn to ("+pos.getX()+","+pos.getY()+").");
+			    	JOptionPane.showMessageDialog( null, "Selected move pawn to (" + getXLocal() + "," + getYLocal() + ")." );
 			    } 
 			}
 		});
