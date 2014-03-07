@@ -66,9 +66,9 @@ public class WallButton extends JButton {
 		tempFrame.setLayout( new BorderLayout() );
 
 		ButtonGroup btnGrp = new ButtonGroup();
-		JRadioButton b1 = new JRadioButton("Horizontal", false );
-		JRadioButton b2 = new JRadioButton("Vertical", false );
-		JRadioButton b3 = new JRadioButton("Neither", false );
+		final JRadioButton b1 = new JRadioButton("Horizontal", false );
+		final JRadioButton b2 = new JRadioButton("Vertical", false );
+		final JRadioButton b3 = new JRadioButton("Neither", false );
 		b1.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
 				Wall right = cont.getHorzWalls()[x][y+1];
@@ -131,10 +131,13 @@ public class WallButton extends JButton {
 	    jp1.add(b2, FlowLayout.LEFT);
 		jp1.add(b1, FlowLayout.LEFT);
 	   
-	    JRadioButton ready = new JRadioButton("Okay!", false);
+	    JButton ready = new JButton("Okay!");
 	    ready.addActionListener( new ActionListener(){
 	    	public void actionPerformed( ActionEvent e ){
-	    		tempFrame.dispose();
+	    		if(!(b1.isSelected() || b2.isSelected() || b3.isSelected() ) )
+	    			;
+	    		else
+	    			tempFrame.dispose();
 	    	}
 	    });
 		jp2.add( ready ); 
