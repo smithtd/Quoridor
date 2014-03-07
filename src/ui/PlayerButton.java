@@ -60,7 +60,9 @@ public class PlayerButton extends JButton {
 			// we want the user to choose an action when they click a grid button
 			public void actionPerformed( ActionEvent e ) {
 				// swapped out message reporting pos for dialog with options
-				JPanel p = new JPanel(new GridLayout(3,5));
+				JPanel p = new JPanel();
+				p.setLayout( new FlowLayout() ) ;
+				p.setPreferredSize( new Dimension( 100, 50 ) );
 				JRadioButton rb = new JRadioButton("Move your pawn here.");
 			    // add the buttons to the panel
 				p.add(rb);

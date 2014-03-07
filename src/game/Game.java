@@ -37,13 +37,13 @@ public class Game {
 		 * 1, 4, 2, 3.
 		 */
 		// player one
-		initPlayer[0] = new Player("1",wallRations, "e1");
+		initPlayer[0] = new Player("1",wallRations, "a5");
 		// player two
-		initPlayer[2] = new Player("2", wallRations, "e9");
+		initPlayer[2] = new Player("2", wallRations, "i5");
 		
 		if(this.numPlayers == MAX_NUMBER_PLAYERS){
-			initPlayer[1] = new Player("4", wallRations, "i5");
-			initPlayer[3] = new Player("3", wallRations, "a5");
+			initPlayer[1] = new Player("4", wallRations, "e1");
+			initPlayer[3] = new Player("3", wallRations, "e9");
 			Game.players = initPlayer;
 		} else {
 			Game.players[0] = initPlayer[0];
