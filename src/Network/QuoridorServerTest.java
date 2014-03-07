@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class QuoridorClientTester {
+public class QuoridorServerTest {
 	
-	private QuoridorClient client = new QuoridorClient("localhost", 3939);
+	private QuoridorServer client = new QuoridorServer("localhost", 3939);
 	private String move = "e4b";
 
 	
@@ -21,9 +21,15 @@ public class QuoridorClientTester {
 	/**
 	 * Need to multithread this, since it waits for the
 	 * getMove() method.
+	 * @throws InterruptedException 
+	 * 
+	 * Right now the getMove() function will check if the queue
+	 * is empty, and if so prompts for a move and adds it to the 
+	 * queue. 
+	 * 
 	 */
 	@Test
-	public void testAddMoveWhenWeWait() {
+	public void testAddMoveWhenWeWait() throws InterruptedException {
 		
 		String waitMove = null;
 		waitMove = this.client.getMove();
