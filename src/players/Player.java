@@ -25,8 +25,9 @@ public class Player implements Players {
 		private Scanner sc;		// prompt player for moves
 		private Point position; // current position of the player
 		@SuppressWarnings("unused")
+		// TODO
 		private Point winArea;  // where to win
-		
+		// TODO - Incorporate a QuoridorClient for each player to connect to a server through the client
 		
 		/* Constructor(s) */
 		public Player(String name, int walls, String pos) {

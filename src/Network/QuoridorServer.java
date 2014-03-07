@@ -1,5 +1,5 @@
 /**
- * Quoridor Network Client
+ * Quoridor Network Server
  * @author Marc Dean
  * Team - 511 Tactical
  */
@@ -8,11 +8,10 @@
 
 package Network;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -23,6 +22,13 @@ import java.util.concurrent.LinkedBlockingQueue;
  * The QuoridorClient is used for the networking portion
  * of the Quoridor game. Each player will have an instance of
  * this client where they will be able to input moves. 
+ * 
+ * 
+ * How to use this: Netcat provides an easy to use tool to generate a server 
+ * to connect to it.
+ * 
+ * In the terminal on the lab machines say: nc -l 3939
+ * This starts netcat and allows you to run the tests I have written
  *
  */
 
@@ -36,7 +42,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * 
  */
 
-public class QuoridorClient extends Thread  {
+public class QuoridorServer extends Thread  {
 	
 	/** Store input from player/ai */
 	private BlockingQueue<String> moveQueue;
@@ -58,7 +64,7 @@ public class QuoridorClient extends Thread  {
 	 * Creates a new instance of the QuoridorClient with the input stream, 
 	 * name, and port number to connect to.
 	 */
-	public QuoridorClient(String name, int port) {
+	public QuoridorServer(String name, int port) {
 		this.moveQueue = new LinkedBlockingQueue<String>();
 		this.serverMachineName = name;
 		this.portNumber = port;
@@ -82,7 +88,6 @@ public class QuoridorClient extends Thread  {
 			try {
 				this.moveQueue.put(move);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	}
@@ -90,12 +95,13 @@ public class QuoridorClient extends Thread  {
 	/**
 	 * 
 	 * @return the next move/placement in the queue
-	 * 
-	 * Assumes the queue has a move waiting
+	 *
+	 * If there is nothing waiting in the queue when called it will automatically
+	 * prompt for a move
 	 * @throws InterruptedException 
 	 * 
 	 */
-	public String getMove() {
+	public String getMove() throws InterruptedException  {
 		
 			/**
 			 *  take(), according to Java will wait until an element
@@ -106,13 +112,17 @@ public class QuoridorClient extends Thread  {
 			 *  We could implement some sort of timeout feature by using
 			 *  poll()
 			 */
-			try {
-				return this.moveQueue.take();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return null;	
+		if(this.moveQueue.peek() == null){
+			Scanner sc = new Scanner(System.in);
+			System.out.print("\nMove:>");
+			this.addMove(sc.nextLine());
+		}
+		
+		return this.moveQueue.take();
+	}
+	
+	public void run() {
+		
 	}
 	
 	
