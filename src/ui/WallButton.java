@@ -53,6 +53,8 @@ public class WallButton extends JButton {
 		final Color rightC = cont.getHorzWalls()[x][y+1].getBackground();
 		final Color bC = b.getBackground();
 		
+		if( bC == Color.GREEN )
+			return;
 		
 		JPanel jp1 = new JPanel();
 		jp1.setLayout( new FlowLayout() ) ;
@@ -130,6 +132,11 @@ public class WallButton extends JButton {
 		jp1.add(b1, FlowLayout.LEFT);
 	   
 	    JRadioButton ready = new JRadioButton("Okay!", false);
+	    ready.addActionListener( new ActionListener(){
+	    	public void actionPerformed( ActionEvent e ){
+	    		tempFrame.dispose();
+	    	}
+	    });
 		jp2.add( ready ); 
 	    
 		tempFrame.add( jp1, BorderLayout.NORTH );
@@ -139,9 +146,8 @@ public class WallButton extends JButton {
 		tempFrame.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
 		tempFrame.setVisible( true );
 		tempFrame.pack();
-		
-		/*
-			if( ready.isSelected() && !b1.isSelected() && !b2.isSelected() && !b3.isSelected() ){
+
+		if( ready.isSelected() && !b1.isSelected() && !b2.isSelected() && !b3.isSelected() ){
 		    	ready.setSelected( false );
 		    	System.out.println( "DEBUG WallButton 1" );
 			}else if( ready.isSelected() && (b1.isSelected() || b2.isSelected() || b3.isSelected()) ){
@@ -167,9 +173,6 @@ public class WallButton extends JButton {
 				System.out.println( "DEBUG WallButton " + tempFrame );
 				System.out.println();
 				System.out.println();
-
 			}
-			*/
 	}
-	
 }
