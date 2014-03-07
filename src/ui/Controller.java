@@ -14,7 +14,7 @@ public class Controller {
 
 	private static Wall[][] vertWalls;
 	private static Wall[][] horzWalls;
-	private static PlayerButton[][] pbAry;
+	public static PlayerButton[][] pbAry;
 	private static WallButton[][] wbAry;
 	
 	public Controller(){
