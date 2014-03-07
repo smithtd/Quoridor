@@ -168,10 +168,6 @@ public class GameBoard extends JPanel {
 	// what is this??
 	public void addOtherJObjectsToThis(){
 		addJButtons();
-		//addPlayerButton();
-		//addWalls();
-		//addWallButtons();
-		//addArysToButtons();
 		repaint();
 	}
 
@@ -209,6 +205,7 @@ public class GameBoard extends JPanel {
 				}
 			}
 		}
+		
 		cont.addHorzWalls( horzWalls );
 		cont.addVertWalls( vertWalls );
 		cont.addPlayerButtons( pbAry );
