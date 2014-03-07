@@ -17,7 +17,9 @@ public class WallButton extends JButton {
 	public int x;
 	public int y;
 	private static Controller cont;
+	private int boardW = 600, boardH = 400;
 	private JFrame tempFrame;
+	
 	
 	//Constructor
 	public WallButton( int x, int y, Controller cont ){
@@ -47,57 +49,59 @@ public class WallButton extends JButton {
 		final WallButton b = this;
 		final Color upC = cont.getVertWalls()[x][y].getBackground();
 		final Color downC = cont.getVertWalls()[x+1][y].getBackground();
-		final Color leftC = cont.getVertWalls()[x][y].getBackground();
-		final Color rightC = cont.getVertWalls()[x][y+1].getBackground();
+		final Color leftC = cont.getHorzWalls()[x][y].getBackground();
+		final Color rightC = cont.getHorzWalls()[x][y+1].getBackground();
+		final Color bC = b.getBackground();
 		
-		int boardW = 600;
-		int boardH = 400;
-
+		if( bC == Color.GREEN )
+			return;
+		
 		JPanel jp1 = new JPanel();
-		jp1.setSize(boardW, boardH/2);
+		jp1.setLayout( new FlowLayout() ) ;
+		jp1.setPreferredSize( new Dimension( 300, 50 ) );
 		JPanel jp2 = new JPanel();
-		jp2.setSize(boardW, boardH/2);
+		jp2.setPreferredSize( new Dimension( 300, 50 ) );
 		
 		tempFrame = new JFrame( "Wall Options" );
-		tempFrame.setLayout( new GridLayout(1,2) );
+		tempFrame.setLayout( new BorderLayout() );
 
 		ButtonGroup btnGrp = new ButtonGroup();
-		JRadioButton b1 = new JRadioButton("Place a horizontal wall starting here.", false );
-		JRadioButton b2 = new JRadioButton("Place a vertical wall starting here.", false );
-		JRadioButton b3 = new JRadioButton("Neither.", false );
+		final JRadioButton b1 = new JRadioButton("Horizontal", false );
+		final JRadioButton b2 = new JRadioButton("Vertical", false );
+		final JRadioButton b3 = new JRadioButton("Neither", false );
 		b1.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
-
-					Wall right = cont.getHorzWalls()[x][y+1];
-					Wall left = cont.getHorzWalls()[x][y];
-					Wall up = cont.getHorzWalls()[x][y];
-					Wall down = cont.getHorzWalls()[x+1][y];
-					right.setBackground(rightC);
-					left.setBackground(leftC);
-					down.setBackground(downC);
-					up.setBackground(upC);
-					
-					
-					if(right.getBackground() != Color.green && left.getBackground() != Color.green && b.getBackground()!= Color.green ){
-						right.setBackground( Color.GREEN);
-						left.setBackground( Color.green );
-						b.setBackground( Color.green );
-					}
+				Wall right = cont.getHorzWalls()[x][y+1];
+				Wall left = cont.getHorzWalls()[x][y];
+				Wall up = cont.getVertWalls()[x][y];
+				Wall down = cont.getVertWalls()[x+1][y];
+				right.setBackground(rightC);
+				left.setBackground(leftC);
+				down.setBackground(downC);
+				up.setBackground(upC);
+				b.setBackground( bC );
+				
+				
+				if(right.getBackground() != Color.green && left.getBackground() != Color.green && b.getBackground()!= Color.green ){
+					right.setBackground( Color.GREEN);
+					left.setBackground( Color.green );
+					b.setBackground( Color.green );
+				}
 			}
 		});
 		
 		b2.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
-
 				Wall right = cont.getHorzWalls()[x][y+1];
 				Wall left = cont.getHorzWalls()[x][y];
-				Wall up = cont.getHorzWalls()[x][y];
-				Wall down = cont.getHorzWalls()[x+1][y];
+				Wall up = cont.getVertWalls()[x][y];
+				Wall down = cont.getVertWalls()[x+1][y];
 				right.setBackground(rightC);
 				left.setBackground(leftC);
 				down.setBackground(downC);
 				up.setBackground(upC);
-				
+				b.setBackground( bC );
+
 				if(down.getBackground() != Color.green && up.getBackground() != Color.green && b.getBackground()!= Color.green ){
 					down.setBackground( Color.GREEN);
 					up.setBackground( Color.green );
@@ -109,12 +113,13 @@ public class WallButton extends JButton {
 			public void actionPerformed( ActionEvent e ){
 				Wall right = cont.getHorzWalls()[x][y+1];
 				Wall left = cont.getHorzWalls()[x][y];
-				Wall up = cont.getHorzWalls()[x][y];
-				Wall down = cont.getHorzWalls()[x+1][y];
+				Wall up = cont.getVertWalls()[x][y];
+				Wall down = cont.getVertWalls()[x+1][y];
 				right.setBackground(rightC);
 				left.setBackground(leftC);
 				down.setBackground(downC);
-				up.setBackground(upC);
+				up.setBackground(upC);				
+				b.setBackground( bC );
 			}
 		});
 		
@@ -122,11 +127,19 @@ public class WallButton extends JButton {
 	    btnGrp.add(b1);
 	    btnGrp.add(b2);
 	    btnGrp.add(b3);
-		jp1.add(b1);
-	    jp1.add(b2);
-	    jp1.add(b3);
+	    jp1.add(b3, FlowLayout.LEFT);
+	    jp1.add(b2, FlowLayout.LEFT);
+		jp1.add(b1, FlowLayout.LEFT);
 	   
-	    JRadioButton ready = new JRadioButton("Okay!", false);
+	    JButton ready = new JButton("Okay!");
+	    ready.addActionListener( new ActionListener(){
+	    	public void actionPerformed( ActionEvent e ){
+	    		if(!(b1.isSelected() || b2.isSelected() || b3.isSelected() ) )
+	    			;
+	    		else
+	    			tempFrame.dispose();
+	    	}
+	    });
 		jp2.add( ready ); 
 	    
 		tempFrame.add( jp1, BorderLayout.NORTH );
@@ -135,49 +148,34 @@ public class WallButton extends JButton {
 		tempFrame.setSize( 250, 100 );
 		tempFrame.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
 		tempFrame.setVisible( true );
-		
-		
-		/*
-		 * FIXME
-		 * 
-		 * While none of the button group radio buttons are selected you 
-		 * cannot select the okay button
-		 */
-		
-		/*
-		 * 
-		 * THE SWITCHING OF THE X AND Y COORDINATES IS NOT 
-		 * ACCIDENTAL DUE TO HOW MATRICIES WORK IN THIS CASE!!
-		 * THE FIRST VALUE IS ACTUALLY THE VERTICAL AND SECOND 
-		 * IS THE HORIZONTAL
-		 * 
-		 * It doesn't make sense but thats how this
-		 *
-		 *		cont.getHorzWalls()[x][y+1];
-		 *		cont.getHorzWalls()[x][y];
-		 *
-		 * changes the horizontal walls even though it looks 
-		 * like the vertical should be changed
-		 * 
-		 */
-		while(true)
-			if( ready.isSelected()  && 
-			    !b1.isSelected()    && 
-			    !b2.isSelected()    && 
-			    !b3.isSelected() )
+		tempFrame.pack();
+
+		if( ready.isSelected() && !b1.isSelected() && !b2.isSelected() && !b3.isSelected() ){
 		    	ready.setSelected( false );
-			else if( ready.isSelected() && 
-			        (b1.isSelected()    || 
-			         b2.isSelected()    || 
-			         b3.isSelected()) ){
+		    	System.out.println( "DEBUG WallButton 1" );
+			}else if( ready.isSelected() && (b1.isSelected() || b2.isSelected() || b3.isSelected()) ){
 				tempFrame.dispose();
+		    	System.out.println( "DEBUG WallButton 2" );
 				return;
-			}else
+			}else{
 				try{
 					Thread.sleep(100);
-					jp1.repaint();
-					jp2.repaint();
 				}catch(Exception e2){}
+				if( b1.isSelected() )
+			    	System.out.println( "DEBUG WallButton 3" );
+				if( b2.isSelected() )
+			    	System.out.println( "DEBUG WallButton 4" );
+				if( b3.isSelected() )
+			    	System.out.println( "DEBUG WallButton 5" );
+				if( ready.isSelected() )
+			    	System.out.println( "DEBUG WallButton 6" );
+					
+		    	//System.out.println( "DEBUG WallButton " + b1.isSelected() + ( b2.isSelected() )  + ( b3.isSelected() ) + ( ready.isSelected() ));
+				System.out.println( "DEBUG WallButton " + jp1 );
+				System.out.println( "DEBUG WallButton " + jp2 );
+				System.out.println( "DEBUG WallButton " + tempFrame );
+				System.out.println();
+				System.out.println();
+			}
 	}
-	
 }
