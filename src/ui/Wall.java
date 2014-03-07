@@ -15,6 +15,7 @@ public class Wall extends JButton {
 	
 	public Wall(int x, int y, String type, Controller cont){
 		super();
+		this.setBorder(null);
 		this.x = x;
 		this.y = y;
 		Wall.cont = cont;

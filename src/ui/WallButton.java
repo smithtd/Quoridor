@@ -17,10 +17,12 @@ public class WallButton extends JButton {
 	public int x;
 	public int y;
 	private static Controller cont;
+	private JFrame tempFrame;
 	
 	//Constructor
 	public WallButton( int x, int y, Controller cont ){
 		super();
+		this.setBorder(null);
 		this.x = x;
 		this.y = y;
 		WallButton.cont = cont;
@@ -35,117 +37,147 @@ public class WallButton extends JButton {
 		final WallButton b = this;
 		addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ) {
-				//creates walls vertically
-				
-				// swapped out message reporting pos for dialog with options
-				JFrame tempFrame = new JFrame( " Wall Options" );
-				JPanel p1 = new JPanel(new GridLayout(3,5));
-				JPanel p2 = new JPanel(); 
-				
-				// create an array of radio button options
-				JRadioButton rb1 = new JRadioButton("Place a horizontal wall starting here.");
-				JRadioButton rb2 = new JRadioButton("Place a vertical wall starting here.");
-				JRadioButton rb3 = new JRadioButton("Neither.");
-				
-				// setSelected = false
-				rb1.setSelected(false);
-				rb2.setSelected(false);
-				rb3.setSelected(false);
-				
-				// add the buttons to the panel and buttongroup
-				ButtonGroup btnGrp = new ButtonGroup();
-				p1.add(rb1);
-			    p1.add(rb2);
-			    p1.add(rb3);
-			    btnGrp.add(rb1);
-			    btnGrp.add(rb2);
-			    btnGrp.add(rb3);
-			   
-			    // call a JOptionPane to display the radio buttons
-			    JOptionPane.showMessageDialog(null,p1);
-			    
-			    JRadioButton ready = new JRadioButton("Okay!", false);
-				p2.add( ready ); 
-				
-				/*
-				 * FIXME
-				 * 
-				 * While none of the button group radio buttons are selected you 
-				 * cannot select the okay button
-				 */
-				while( ready.isSelected() == false ){
-					if( ready.isSelected() && !(rb1.isSelected() || rb2.isSelected() || rb3.isSelected() ) ){
-				    	ready.setSelected( false );
-					}else if( ready.isSelected() && (rb1.isSelected() || rb2.isSelected()) || !rb3.isSelected() ){
-						/*
-						 * 
-						 * THE SWITCHING OF THE X AND Y COORDINATES IS NOT 
-						 * ACCIDENTAL DUE TO HOW MATRICIES WORK IN THIS CASE!!
-						 * THE FIRST VALUE IS ACTUALLY THE VERTICAL AND SECOND 
-						 * IS THE HORIZONTAL
-						 * 
-						 * It doesn't make sense but thats how this
-						 *
-						 *		cont.getHorzWalls()[x][y+1];
-						 *		cont.getHorzWalls()[x][y];
-						 *
-						 * changes the horizontal walls even though it looks 
-						 * like the vertical should be changed
-						 * 
-						 */
-						if( rb1.isSelected() ){
-							Wall wb1;
-							Wall wb2;
-							try{
-								wb1 = cont.getHorzWalls()[x][y+1];
-								wb2 = cont.getHorzWalls()[x][y];
-							}catch(Exception ex){
-								System.out.println("ERROR IN HORZ");
-								return;
-							}
-							if(wb1.getBackground() != Color.green && wb2.getBackground() != Color.green && b.getBackground()!= Color.green ){
-								wb1.setBackground( Color.GREEN);
-								wb2.setBackground( Color.green );
-								b.setBackground( Color.green );
-							}
-								
-						}else if( rb2.isSelected() ){
-							Wall wb1;
-							Wall wb2;
-							try{
-								wb1 = cont.getVertWalls()[x+1][y];
-								wb2 = cont.getVertWalls()[x][y];
-							}catch(Exception ex){
-								System.out.println("ERROR IN VERT");
-								return;
-							}
-							if(wb1.getBackground() != Color.green && wb2.getBackground() != Color.green && b.getBackground()!= Color.green ){
-								wb1.setBackground( Color.GREEN);
-								wb2.setBackground( Color.green );
-								b.setBackground( Color.green );
-							}
-						}else if( rb3.isSelected() ){
-							System.out.println("NONE SELECTED");
-						}
-						
-						//FIXME Stuck in never ending loop
-						System.out.println("DEBUG 1");
-						tempFrame.dispose();
-						ready.setSelected(true);
-						
-					}else{
-						try{
-							/*
-							 * Just to stop the system from lagging. The pauses 
-							 * stop it from working hard to do nothing while 
-							 * waiting for a selection to be made
-							 */
-							Thread.sleep(100);
-						}catch(Exception e2){}
+				b.clicked();
+			}
+		});
+	}
+	
+	public void clicked(){
+		//creates walls vertically
+		final WallButton b = this;
+		final Color upC = cont.getVertWalls()[x][y].getBackground();
+		final Color downC = cont.getVertWalls()[x+1][y].getBackground();
+		final Color leftC = cont.getVertWalls()[x][y].getBackground();
+		final Color rightC = cont.getVertWalls()[x][y+1].getBackground();
+		
+		int boardW = 600;
+		int boardH = 400;
+
+		JPanel jp1 = new JPanel();
+		jp1.setSize(boardW, boardH/2);
+		JPanel jp2 = new JPanel();
+		jp2.setSize(boardW, boardH/2);
+		
+		tempFrame = new JFrame( "Wall Options" );
+		tempFrame.setLayout( new GridLayout(1,2) );
+
+		ButtonGroup btnGrp = new ButtonGroup();
+		JRadioButton b1 = new JRadioButton("Place a horizontal wall starting here.", false );
+		JRadioButton b2 = new JRadioButton("Place a vertical wall starting here.", false );
+		JRadioButton b3 = new JRadioButton("Neither.", false );
+		b1.addActionListener( new ActionListener(){
+			public void actionPerformed( ActionEvent e ){
+
+					Wall right = cont.getHorzWalls()[x][y+1];
+					Wall left = cont.getHorzWalls()[x][y];
+					Wall up = cont.getHorzWalls()[x][y];
+					Wall down = cont.getHorzWalls()[x+1][y];
+					right.setBackground(rightC);
+					left.setBackground(leftC);
+					down.setBackground(downC);
+					up.setBackground(upC);
+					
+					
+					if(right.getBackground() != Color.green && left.getBackground() != Color.green && b.getBackground()!= Color.green ){
+						right.setBackground( Color.GREEN);
+						left.setBackground( Color.green );
+						b.setBackground( Color.green );
 					}
+			}
+		});
+		
+		b2.addActionListener( new ActionListener(){
+			public void actionPerformed( ActionEvent e ){
+
+				Wall right = cont.getHorzWalls()[x][y+1];
+				Wall left = cont.getHorzWalls()[x][y];
+				Wall up = cont.getHorzWalls()[x][y];
+				Wall down = cont.getHorzWalls()[x+1][y];
+				right.setBackground(rightC);
+				left.setBackground(leftC);
+				down.setBackground(downC);
+				up.setBackground(upC);
+				
+				if(down.getBackground() != Color.green && up.getBackground() != Color.green && b.getBackground()!= Color.green ){
+					down.setBackground( Color.GREEN);
+					up.setBackground( Color.green );
+					b.setBackground( Color.green );
 				}
 			}
 		});
+		b3.addActionListener( new ActionListener(){
+			public void actionPerformed( ActionEvent e ){
+				Wall right = cont.getHorzWalls()[x][y+1];
+				Wall left = cont.getHorzWalls()[x][y];
+				Wall up = cont.getHorzWalls()[x][y];
+				Wall down = cont.getHorzWalls()[x+1][y];
+				right.setBackground(rightC);
+				left.setBackground(leftC);
+				down.setBackground(downC);
+				up.setBackground(upC);
+			}
+		});
+		
+		// add the buttons to the panel and buttongroup
+	    btnGrp.add(b1);
+	    btnGrp.add(b2);
+	    btnGrp.add(b3);
+		jp1.add(b1);
+	    jp1.add(b2);
+	    jp1.add(b3);
+	   
+	    JRadioButton ready = new JRadioButton("Okay!", false);
+		jp2.add( ready ); 
+	    
+		tempFrame.add( jp1, BorderLayout.NORTH );
+		tempFrame.add( jp2, BorderLayout.SOUTH );
+		tempFrame.setLocation( 350, 300 );
+		tempFrame.setSize( 250, 100 );
+		tempFrame.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
+		tempFrame.setVisible( true );
+		
+		
+		/*
+		 * FIXME
+		 * 
+		 * While none of the button group radio buttons are selected you 
+		 * cannot select the okay button
+		 */
+		
+		/*
+		 * 
+		 * THE SWITCHING OF THE X AND Y COORDINATES IS NOT 
+		 * ACCIDENTAL DUE TO HOW MATRICIES WORK IN THIS CASE!!
+		 * THE FIRST VALUE IS ACTUALLY THE VERTICAL AND SECOND 
+		 * IS THE HORIZONTAL
+		 * 
+		 * It doesn't make sense but thats how this
+		 *
+		 *		cont.getHorzWalls()[x][y+1];
+		 *		cont.getHorzWalls()[x][y];
+		 *
+		 * changes the horizontal walls even though it looks 
+		 * like the vertical should be changed
+		 * 
+		 */
+		while(true)
+			if( ready.isSelected()  && 
+			    !b1.isSelected()    && 
+			    !b2.isSelected()    && 
+			    !b3.isSelected() )
+		    	ready.setSelected( false );
+			else if( ready.isSelected() && 
+			        (b1.isSelected()    || 
+			         b2.isSelected()    || 
+			         b3.isSelected()) ){
+				tempFrame.dispose();
+				return;
+			}else
+				try{
+					Thread.sleep(100);
+					jp1.repaint();
+					jp2.repaint();
+				}catch(Exception e2){}
 	}
 	
 }
