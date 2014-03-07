@@ -34,7 +34,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  *  LOG :
- * 	TODO 1: setup connection
+ * 	TODO 1: setup connection - works with netcat
  *  TODO 2: Take input
  *  TODO 3: Make a parser to decode input for moves/wall placements
  *  TODO 4: Allow GUI to send input to this input mechanism so players
@@ -53,7 +53,7 @@ public class QuoridorServer extends Thread  {
 	/** Port number of distant machine */
 	private int portNumber;
 	
-	/** Socket to connect to the server */
+	/** Socket to connect to the client */
 	private Socket socket;
 	
 	/**
