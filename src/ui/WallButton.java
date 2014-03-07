@@ -118,7 +118,6 @@ public class WallButton extends JButton {
 				down.setBackground(downC);
 				up.setBackground(upC);				
 				b.setBackground( bC );
-
 			}
 		});
 		
