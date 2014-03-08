@@ -1,7 +1,5 @@
 package ui;
 
-import game.Game;
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -11,7 +9,8 @@ public class GameBoard extends JPanel {
 
 	public static JFrame frame;
 	public static Game g;
-	private static Controller cont;
+	public static Controller cont;
+	public static PlayerButton[][] pbAry;
 	
 	/*
 	 * Basic details of this Panel like the panel dimensions and what layout to 
@@ -35,7 +34,6 @@ public class GameBoard extends JPanel {
 	 */
 	public void setFrameStats(){
 		frame = new JFrame( "Quoridor" ); 		//Title of JFrame window is "Quoridor"
-
 		GridBagLayout gridbag = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
 		frame.setLayout( gridbag );
@@ -72,7 +70,6 @@ public class GameBoard extends JPanel {
 		frame.add( this );
 	}
 	
-	
 	/*
 	 * A MenuBar holds a Menu which in turn hold a MenuItem. That MenuItem 
 	 * is what has the changeable consequence if clicked. The Menu just drops 
@@ -90,7 +87,6 @@ public class GameBoard extends JPanel {
 			}
 		}
 		*/
-		
 		JMenuItem newGameOpt = new JMenuItem( "New Game" );
 		newGameOpt.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
@@ -98,7 +94,6 @@ public class GameBoard extends JPanel {
 			}
 		});
 		fileMenu.add(newGameOpt);
-		
 		JMenuItem quitOpt = new JMenuItem( "Quit" );
 		quitOpt.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
@@ -112,7 +107,6 @@ public class GameBoard extends JPanel {
 		JMenu helpMenu = new JMenu("Help");
 		menuBar.add(helpMenu);
 		helpMenu.setName("Help");
-		
 		//the rules tab in the help menu
 		JMenuItem rulesOpt = new JMenuItem("Rules");
 		rulesOpt.addActionListener(new ActionListener(){
@@ -144,7 +138,6 @@ public class GameBoard extends JPanel {
 			}
 		});
 		helpMenu.add( rulesOpt );
-		
 		//the About tab in the Help menu
 		JMenuItem aboutOpt = new JMenuItem( "About" );
 		aboutOpt.addActionListener( new ActionListener(){
@@ -159,7 +152,6 @@ public class GameBoard extends JPanel {
 			}
 		});
 		helpMenu.add( aboutOpt );
-		
 		menuBar.add( fileMenu );
 		menuBar.add(helpMenu);
 		return menuBar;
@@ -172,11 +164,10 @@ public class GameBoard extends JPanel {
 	}
 
 	public void addJButtons(){
-		PlayerButton[][] pbAry = new PlayerButton[9][9];
+		pbAry = new PlayerButton[9][9];
 		Wall[][] vertWalls = new Wall[9][8];
 		Wall[][] horzWalls = new Wall[8][9];
 		WallButton[][] wbAry = new WallButton[8][8];
-
 		//9x9 board
 		for( int x = 0; x<9; x++ ){
 			for( int layer=0; layer<2; layer++ ){
@@ -205,7 +196,6 @@ public class GameBoard extends JPanel {
 				}
 			}
 		}
-		
 		cont.addHorzWalls( horzWalls );
 		cont.addVertWalls( vertWalls );
 		cont.addPlayerButtons( pbAry );

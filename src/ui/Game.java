@@ -4,9 +4,10 @@
  * client.
  */
 
-package game;
+package ui;
 
-import ui.GameBoard;
+import java.awt.Color;
+
 import players.Player;
 import board.Board;
 
@@ -38,8 +39,10 @@ public class Game {
 		 */
 		// player one
 		initPlayer[0] = new Player("1",wallRations, "a5");
+		//GameBoard.pbAry[0][4].setBackground(Color.RED);
 		// player two
 		initPlayer[2] = new Player("2", wallRations, "i5");
+		//GameBoard.pbAry[4][8].setBackground(Color.BLUE);
 		
 		if(this.numPlayers == MAX_NUMBER_PLAYERS){
 			initPlayer[1] = new Player("4", wallRations, "e1");
@@ -49,8 +52,6 @@ public class Game {
 			Game.players[0] = initPlayer[0];
 			Game.players[1] = initPlayer[2];
 		}
-		
-		
 		curr = players[0];
 		moves = 0;
 	}
@@ -71,12 +72,10 @@ public class Game {
 	}
 	
 	// client/server communication methods (Dylan)
-	
 	// report errors
 	public static void main(String[] args) {
 		Game game = new Game(2, NUM_OF_WALLS);
 		game.startGame();
 		Board.placePawn(players[0], players[0].x(), players[0].y());
 	}
-
 }
