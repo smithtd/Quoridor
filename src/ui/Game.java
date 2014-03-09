@@ -7,6 +7,7 @@
 package ui;
 
 import java.awt.Color;
+import java.util.Scanner;
 
 import players.Player;
 import board.Board;
@@ -31,22 +32,20 @@ public class Game {
 		Player[] initPlayer = new Player[MAX_NUMBER_PLAYERS];
 		this.numPlayers = numPlayers;
 		int wallRations = (NUM_OF_WALLS / this.numPlayers);
-		Game.players = new Player[numPlayers];
+		this.players = new Player[numPlayers];
 		/*
 		 * Initialize Players
 		 * Order of players (clockwise from the top of the board)
 		 * 1, 4, 2, 3.
 		 */
 		// player one
-		initPlayer[0] = new Player("1",wallRations, "a5");
-		//GameBoard.pbAry[0][4].setBackground(Color.RED);
+		initPlayer[0] = new Player("1",wallRations, "a5", 1);
 		// player two
-		initPlayer[2] = new Player("2", wallRations, "i5");
-		//GameBoard.pbAry[4][8].setBackground(Color.BLUE);
+		initPlayer[2] = new Player("2", wallRations, "i5", 2);
 		
 		if(this.numPlayers == MAX_NUMBER_PLAYERS){
-			initPlayer[1] = new Player("4", wallRations, "e1");
-			initPlayer[3] = new Player("3", wallRations, "e9");
+			initPlayer[1] = new Player("4", wallRations, "e1", 3);
+			initPlayer[3] = new Player("3", wallRations, "e9", 4);
 			Game.players = initPlayer;
 		} else {
 			Game.players[0] = initPlayer[0];
@@ -74,8 +73,21 @@ public class Game {
 	// client/server communication methods (Dylan)
 	// report errors
 	public static void main(String[] args) {
-		Game game = new Game(2, NUM_OF_WALLS);
+		/*boolean inLoop = true;
+		System.out.println("How many players? 2 or 4?");
+		Scanner sc = new Scanner(System.in);
+		while(inLoop){
+			if(sc.nextInt()!=2||sc.nextInt()!=4){
+				System.out.println("Incorrect input.");
+				System.out.println("How many players? 2 or 4?");
+				sc = new Scanner(System.in);
+			}
+			else inLoop = false;
+		}*/
+		Game game = new Game(4, NUM_OF_WALLS);
 		game.startGame();
-		Board.placePawn(players[0], players[0].x(), players[0].y());
+		for(int i = 1;i<=4;i++){
+			Board.placePawn(players[i-1], players[i-1].getStartx(), players[i-1].getStarty());
+		}
 	}
 }

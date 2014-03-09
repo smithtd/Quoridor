@@ -6,7 +6,10 @@
 
 package board;
 
+import java.awt.Color;
+
 import players.Player;
+import ui.GameBoard;
 
 public class Board {
 	
@@ -53,18 +56,15 @@ public class Board {
 	 * Postconditions: if move is valid, set new loc=1 and old loc=0
 	 * 		return T/F based on success
 	 */
-	public static boolean placePawn(Player p, int x, int y) {
-		// if is legal move, remove old marker and place new
-		if(isLegalMove(p, "pawn", x, y)){
-			// set bitmap[p.x][p.y] to 0
-		    //bitmap[p.x()][p.y()] = 0;
-			// set bitmap[x][y] to 1
-			bitmap[x][y] = 1;
-			// return true
-			return true;
-		}
-		// else return false
-		return false;
+	public static void placePawn(Player p, int x, int y) {
+		if(p.getPnum() == 1)
+			GameBoard.pbAry[x][y].setBackground(Color.BLUE);
+		else if(p.getPnum() == 2)
+			GameBoard.pbAry[x][y].setBackground(Color.RED);
+		else if(p.getPnum() == 3)
+			GameBoard.pbAry[x][y].setBackground(Color.GREEN);
+		else if(p.getPnum() == 4)
+			GameBoard.pbAry[x][y].setBackground(Color.YELLOW);
 	}
 	
 	/*

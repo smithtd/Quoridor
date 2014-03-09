@@ -20,7 +20,7 @@ public class PlayerTest extends Player {
 	public PlayerTest p;
 
 	public PlayerTest(){
-	   super("TestPlayer", 5, "e5");
+	   super("TestPlayer", 5, "e5", 1);
 	}
 
 	/**
