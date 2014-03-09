@@ -21,22 +21,42 @@ public class Player implements Players {
 		/* Fields */
 		@SuppressWarnings("unused")
 		private String name; 	// players name
+		private int pNumber; 	// which player it is (1-4)
 		private int wallTotal;	// how many walls player has
 		private Scanner sc;		// prompt player for moves
 		private Point position; // current position of the player
+		private int startX;
+		private int startY;
 		@SuppressWarnings("unused")
 		// TODO
 		private Point winArea;  // where to win
 		// TODO - Incorporate a QuoridorClient for each player to connect to a server through the client
 		
 		/* Constructor(s) */
-		public Player(String name, int walls, String pos) {
+		public Player(String name, int walls, String pos, int pNum) {
 			this.name = name;
 			this.wallTotal = walls;
 			// to get moves (DEBUG)
 			this.sc = new Scanner("System.in");
 			//TODO implement way to find initial position
 			this.position = setPosition(pos);
+			this.pNumber = pNum;
+			if(pNum==1){
+				startX=0;
+				startY=4;
+			}
+			if(pNum==2){
+				startX=8;
+				startY=4;
+			}
+			if(pNum==3){
+				startX=4;
+				startY=0;
+			}
+			if(pNum==4){
+				startX=4;
+				startY=8;
+			}
 		}
 		
 		/* Methods */
@@ -89,6 +109,18 @@ public class Player implements Players {
 	public int getWalls() {
 		// Auto-generated method stub
 		return this.wallTotal;
+	}
+	
+	public int getStartx(){
+		return startX;
+	}
+	
+	public int getStarty(){
+		return startY;
+	}
+	
+	public int getPnum(){
+		return this.pNumber;
 	}
 	
 	/* 

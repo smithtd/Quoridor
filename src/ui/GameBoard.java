@@ -16,7 +16,7 @@ public class GameBoard extends JPanel {
 	 * Basic details of this Panel like the panel dimensions and what layout to 
 	 * use to add JObjects 
 	 */
-	public GameBoard( Game g ){
+	public GameBoard( Game game ){
 		super();
 		cont = new Controller();
 		FlowLayout flow = new FlowLayout();
@@ -24,7 +24,7 @@ public class GameBoard extends JPanel {
 		flow.setVgap( 0 );
 		this.setLayout( flow );
 		setFrameStats();
-		GameBoard.g = g;
+		GameBoard.g = game;
 	}
 	
 	/*
