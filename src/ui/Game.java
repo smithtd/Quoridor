@@ -1,4 +1,4 @@
-/* Author: Eli Donahue
+/*
  * This class exists as the "main" program. A new game begins when
  * a Game object is initialized. The Game will handle serve as the
  * client.
