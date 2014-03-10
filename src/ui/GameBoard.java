@@ -87,13 +87,20 @@ public class GameBoard extends JPanel {
 			}
 		}
 		*/
-		JMenuItem newGameOpt = new JMenuItem( "New Game" );
-		newGameOpt.addActionListener( new ActionListener(){
+		JMenuItem new2PlyrGameOpt = new JMenuItem( "New 2 Player Game" );
+		new2PlyrGameOpt.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
-				g.newGame();
+				g.new2PlayerGame();
 			}
 		});
-		fileMenu.add(newGameOpt);
+		fileMenu.add(new2PlyrGameOpt);
+		JMenuItem new4PlyrGameOpt = new JMenuItem( "New 4 Player Game" );
+		new4PlyrGameOpt.addActionListener( new ActionListener(){
+			public void actionPerformed( ActionEvent e ){
+				g.new4PlayerGame();
+			}
+		});
+		fileMenu.add(new4PlyrGameOpt);
 		JMenuItem quitOpt = new JMenuItem( "Quit" );
 		quitOpt.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){

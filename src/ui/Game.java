@@ -33,9 +33,9 @@ public class Game {
 		 * Order of players (clockwise from the top of the board)
 		 * 1, 4, 2, 3.
 		 */
-		// player one
+
+		// players one & two
 		initPlayer[0] = new Player("1",wallRations, "a5", 1);
-		// player two
 		initPlayer[2] = new Player("2", wallRations, "i5", 2);
 		
 		if(this.numPlayers == MAX_NUMBER_PLAYERS){
@@ -53,14 +53,20 @@ public class Game {
 	// start game
 	public void startGame(){
 		gb = new GameBoard( this );
-		for(int i = 1;i<=4;i++){
+		for(int i = 1;i<=numPlayers;i++){
 			Board.placePawn(players[i-1], players[i-1].getStartx(), players[i-1].getStarty());
 		}
 	}
 	
-	public void newGame(){
+	public void new4PlayerGame(){
 		gb.getFrame().dispose();
 		Game g = new Game( 4, NUM_OF_WALLS );
+		g.startGame();
+	}
+	
+	public void new2PlayerGame(){
+		gb.getFrame().dispose();
+		Game g = new Game( 2, NUM_OF_WALLS );
 		g.startGame();
 	}
 	
@@ -72,17 +78,6 @@ public class Game {
 	// client/server communication methods (Dylan)
 	// report errors
 	public static void main(String[] args) {
-		/*boolean inLoop = true;
-		System.out.println("How many players? 2 or 4?");
-		Scanner sc = new Scanner(System.in);
-		while(inLoop){
-			if(sc.nextInt()!=2||sc.nextInt()!=4){
-				System.out.println("Incorrect input.");
-				System.out.println("How many players? 2 or 4?");
-				sc = new Scanner(System.in);
-			}
-			else inLoop = false;
-		}*/
 		Game game = new Game(4, NUM_OF_WALLS);
 		game.startGame();
 	}
