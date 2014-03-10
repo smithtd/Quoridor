@@ -53,7 +53,7 @@ public class WallButton extends JButton {
 		final Color rightC = cont.getHorzWalls()[x][y+1].getBackground();
 		final Color bC = b.getBackground();
 		
-		if( bC == Color.gray )
+		if( bC != Color.black )
 			return;
 		
 		JPanel jp1 = new JPanel();
@@ -109,6 +109,7 @@ public class WallButton extends JButton {
 				}
 			}
 		});
+		
 		b3.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
 				Wall right = cont.getHorzWalls()[x][y+1];
