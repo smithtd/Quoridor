@@ -27,7 +27,7 @@ public class Wall extends JButton {
 			this.setPreferredSize( new Dimension( 50, 10 ) );
 		else
 			this.setPreferredSize( new Dimension( 10, 50 ) );
-		this.setBackground( new Color(255,0,255));
+		this.setBackground( Color.gray);
 		
 	}
 }

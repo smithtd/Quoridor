@@ -53,7 +53,7 @@ public class WallButton extends JButton {
 		final Color rightC = cont.getHorzWalls()[x][y+1].getBackground();
 		final Color bC = b.getBackground();
 		
-		if( bC == Color.GREEN )
+		if( bC == Color.gray )
 			return;
 		
 		JPanel jp1 = new JPanel();
@@ -83,9 +83,9 @@ public class WallButton extends JButton {
 				
 				
 				if(right.getBackground() != Color.green && left.getBackground() != Color.green && b.getBackground()!= Color.green ){
-					right.setBackground( Color.GREEN);
-					left.setBackground( Color.green );
-					b.setBackground( Color.green );
+					right.setBackground( new Color(154,97,41) );
+					left.setBackground( new Color(154,97,41) );
+					b.setBackground( new Color(154,97,41) );
 				}
 			}
 		});
@@ -103,9 +103,9 @@ public class WallButton extends JButton {
 				b.setBackground( bC );
 
 				if(down.getBackground() != Color.green && up.getBackground() != Color.green && b.getBackground()!= Color.green ){
-					down.setBackground( Color.GREEN);
-					up.setBackground( Color.green );
-					b.setBackground( Color.green );
+					down.setBackground( new Color(154,97,41) );
+					up.setBackground( new Color(154,97,41) );
+					b.setBackground( new Color(154,97,41) );
 				}
 			}
 		});
