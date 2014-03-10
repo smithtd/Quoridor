@@ -24,8 +24,6 @@ public class Game {
 	int moves;					// Move count
 	public GameBoard gb;
 	
-	// Methods
-	
 	// constructor
 	public Game(int numPlayers, int numWalls) {
 		board = new Board(numPlayers);
