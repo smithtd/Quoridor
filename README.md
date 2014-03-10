@@ -20,4 +20,4 @@ Quoridor is played on a game board of 81 square spaces (9x9). Each player is rep
 
 Meeting on 3/10:
     Dylan Woythal
-    
+    Marc Dean    
