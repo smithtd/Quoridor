@@ -17,8 +17,9 @@ public class WallButton extends JButton {
 	public int x;
 	public int y;
 	private static Controller cont;
-	private int boardW = 600, boardH = 400;
 	private JFrame tempFrame;
+	private Color yesWallColor = new Color(154,97,41);
+	private Color noWallColor = Color.gray;
 	
 	
 	//Constructor
@@ -82,10 +83,11 @@ public class WallButton extends JButton {
 				b.setBackground( bC );
 				
 				
-				if(right.getBackground() != Color.green && left.getBackground() != Color.green && b.getBackground()!= Color.green ){
-					right.setBackground( new Color(154,97,41) );
-					left.setBackground( new Color(154,97,41) );
-					b.setBackground( new Color(154,97,41) );
+				if(right.getBackground()==noWallColor && left.getBackground()==noWallColor && b.getBackground()==Color.BLACK ){
+					System.out.println("NONE BROWN");
+					right.setBackground( yesWallColor );
+					left.setBackground( yesWallColor );
+					b.setBackground( yesWallColor );
 				}
 			}
 		});
@@ -102,10 +104,10 @@ public class WallButton extends JButton {
 				up.setBackground(upC);
 				b.setBackground( bC );
 
-				if(down.getBackground() != Color.green && up.getBackground() != Color.green && b.getBackground()!= Color.green ){
-					down.setBackground( new Color(154,97,41) );
-					up.setBackground( new Color(154,97,41) );
-					b.setBackground( new Color(154,97,41) );
+				if(down.getBackground()==noWallColor && up.getBackground()==noWallColor && b.getBackground()==Color.BLACK ){
+					down.setBackground( yesWallColor );
+					up.setBackground( yesWallColor );
+					b.setBackground( yesWallColor );
 				}
 			}
 		});

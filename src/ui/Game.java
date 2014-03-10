@@ -6,9 +6,6 @@
 
 package ui;
 
-import java.awt.Color;
-import java.util.Scanner;
-
 import players.Player;
 import board.Board;
 
@@ -56,11 +53,15 @@ public class Game {
 	// start game
 	public void startGame(){
 		gb = new GameBoard( this );
+		for(int i = 1;i<=4;i++){
+			Board.placePawn(players[i-1], players[i-1].getStartx(), players[i-1].getStarty());
+		}
 	}
 	
 	public void newGame(){
 		gb.getFrame().dispose();
-		gb = new GameBoard( this );
+		Game g = new Game( 4, NUM_OF_WALLS );
+		g.startGame();
 	}
 	
 	// exit game (report errors if any)
@@ -84,8 +85,5 @@ public class Game {
 		}*/
 		Game game = new Game(4, NUM_OF_WALLS);
 		game.startGame();
-		for(int i = 1;i<=4;i++){
-			Board.placePawn(players[i-1], players[i-1].getStartx(), players[i-1].getStarty());
-		}
 	}
 }
