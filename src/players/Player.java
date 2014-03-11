@@ -38,7 +38,7 @@ public class Player implements Players {
 		/* Constructor(s) */
 		public Player(String name, int walls, String pos, int pNum) {
 			this.name = name;
-			this.wallTotal = walls;
+			Player.wallTotal = walls;
 			// to get moves (DEBUG)
 			this.sc = new Scanner("System.in");
 			//TODO implement way to find initial position
@@ -63,7 +63,7 @@ public class Player implements Players {
 		}
 		public Player( String name, int walls, int startX, int startY, int pNum ){
 			this.name = name;
-			this.wallTotal = walls;
+			Player.wallTotal = walls;
 			this.startX = startX;
 			this.startY = startY;
 			this.pNumber = pNum;
@@ -129,7 +129,7 @@ public class Player implements Players {
 	 */
 	public int getWalls() {
 		// Auto-generated method stub
-		return this.wallTotal;
+		return Player.wallTotal;
 	}
 	
 	public int getStartx(){

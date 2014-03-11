@@ -23,7 +23,6 @@ public class PlayerButton extends JButton {
 	private int y;
 	private Player plyr;
 
-	@SuppressWarnings("unused") //For now
 	private static Controller cont;
 	
 	// Constructors
