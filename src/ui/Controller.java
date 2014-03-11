@@ -85,7 +85,7 @@ public class Controller {
 		b.setBackground(this.getPlyrAry()[ this.getPlryIndex() ].getColor());
 		Player p = plyrAry[currentIndex];
 		pbAry[p.x()][p.y()].setBackground(Color.black);
-		//p.setPos(x, y);
+		p.setPos(b.x(), b.y());
 		this.nextPlayerMove();
 	}
 	
