@@ -63,41 +63,18 @@ public class PlayerButton extends JButton {
 		addActionListener( new ActionListener(){
 			// we want the user to choose an action when they click a grid button
 			public void actionPerformed( ActionEvent e ) {
-				int answer = 0;
-				if(b.getBackground() == Color.MAGENTA){
-					answer = JOptionPane.showConfirmDialog(null, "Move here?", "Pawn Placement", JOptionPane.YES_NO_OPTION);
-					if( answer == 0 ){
-						//System.out.println("YES");
-						cont.movePiece(b);
-					}
-				}
-/*
-				 // swapped out message reporting pos for dialog with options
-				JPanel p = new JPanel();
-				p.setLayout( new FlowLayout() ) ;
-				p.setPreferredSize( new Dimension( 100, 50 ) );
-				JRadioButton rb = new JRadioButton("Move your pawn here.");
-			    // add the buttons to the panel
-				p.add(rb);
-			    // call a JOptionPane to display the radio buttons
-			    JOptionPane.showMessageDialog(null,p);
-			    
-			    // perform action based on user's selection
-			    if(rb.isSelected()){
-			    	JOptionPane.showMessageDialog( null, "Selected move pawn to (" + x() + "," + y() + ")." );
-			    } 
-*/
+				b.clicked();
 			}
 		});
 	}
-	/*
-	@Override
-	public void paint( Graphics g ){
-		if( plyr != null ){
-			
-		}else{
-			this.setBackground( Color.BLACK );
+	public void clicked(){
+		int answer = 0;
+		if(this.getBackground() == Color.MAGENTA){
+			answer = JOptionPane.showConfirmDialog(null, "Move here?", "Pawn Placement", JOptionPane.YES_NO_OPTION);
+			if( answer == 0 ){
+				//System.out.println("YES");
+				cont.movePiece(this);
+			}
 		}
 	}
-	*/
 }

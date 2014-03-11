@@ -53,7 +53,6 @@ public class WallButton extends JButton {
 	}
 	
 	public void clicked(){
-		//creates walls vertically
 		final WallButton b = this;
 		upC = cont.getVertWalls()[x][y].getBackground();
 		downC = cont.getVertWalls()[x+1][y].getBackground();
@@ -129,15 +128,16 @@ public class WallButton extends JButton {
 
 		if( ready.isSelected() && !b1.isSelected() && !b2.isSelected() && !b3.isSelected() ){
 		    	ready.setSelected( false );
-		    	System.out.println( "DEBUG WallButton 1" );
+//		    	System.out.println( "DEBUG WallButton 1" );
 			}else if( ready.isSelected() && (b1.isSelected() || b2.isSelected() || b3.isSelected()) ){
 				tempFrame.dispose();
-		    	System.out.println( "DEBUG WallButton 2" );
+//		    	System.out.println( "DEBUG WallButton 2" );
 				return;
 			}else{
 				try{
 					Thread.sleep(100);
 				}catch(Exception e2){}
+		    	/*
 				if( b1.isSelected() )
 			    	System.out.println( "DEBUG WallButton 3" );
 				if( b2.isSelected() )
@@ -147,12 +147,13 @@ public class WallButton extends JButton {
 				if( ready.isSelected() )
 			    	System.out.println( "DEBUG WallButton 6" );
 					
-		    	//System.out.println( "DEBUG WallButton " + b1.isSelected() + ( b2.isSelected() )  + ( b3.isSelected() ) + ( ready.isSelected() ));
+				System.out.println( "DEBUG WallButton " + b1.isSelected() + ( b2.isSelected() )  + ( b3.isSelected() ) + ( ready.isSelected() ));
 				System.out.println( "DEBUG WallButton " + jp1 );
 				System.out.println( "DEBUG WallButton " + jp2 );
 				System.out.println( "DEBUG WallButton " + tempFrame );
 				System.out.println();
 				System.out.println();
+				*/
 			}
 	}
 	
