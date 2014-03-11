@@ -7,8 +7,6 @@ import java.awt.Color;
 import java.awt.Point;
 import java.util.Scanner;
 
-import ui.GameBoard;
-
 /**
  * @author marc dean jr
  *

@@ -76,7 +76,7 @@ public class Controller {
 	
 	public void nextPlayerMove(){
 		currentIndex++;
-		if( currentIndex > plyrAry.length-1 )
+		if( currentIndex > numPlayers-1)
 			currentIndex = 0;
 		showPlyrMoves();
 	}

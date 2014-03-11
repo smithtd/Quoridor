@@ -80,10 +80,10 @@ public class Game {
 */
 		for(int i=0; i<numPlayers; i++){
 			Player p = players[i];
-			gb.cont.getPlayerButtons()[p.x()][p.y()].setBackground(p.getColor());
+			GameBoard.cont.getPlayerButtons()[p.x()][p.y()].setBackground(p.getColor());
 		}
-		gb.cont.addPlyrAry( players );
-		gb.cont.showPlyrMoves();
+		GameBoard.cont.addPlyrAry( players );
+		GameBoard.cont.showPlyrMoves();
 	}
 	
 	public void new4PlayerGame(){
