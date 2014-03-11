@@ -6,6 +6,8 @@
 
 package ui;
 
+import java.util.Arrays;
+
 import players.Player;
 import board.Board;
 
@@ -24,7 +26,6 @@ public class Game {
 	// constructor
 	public Game(int numPlayers, int numWalls) {
 		board = new Board(numPlayers);
-		Player[] initPlayer = new Player[MAX_NUMBER_PLAYERS];
 		this.numPlayers = numPlayers;
 		int wallRations = (NUM_OF_WALLS / this.numPlayers);
 		Game.players = new Player[numPlayers];
@@ -48,19 +49,23 @@ public class Game {
 		}
 */
 /**/
-		initPlayer[0] = new Player("1",wallRations, 0, 4, 1);
-		initPlayer[2] = new Player("2", wallRations, 8, 4, 2);
+		Player[] initPlayer = new Player[MAX_NUMBER_PLAYERS];
 		
 		if(this.numPlayers == MAX_NUMBER_PLAYERS){
-			initPlayer[1] = new Player("4", wallRations, 0,4, 3);
-			initPlayer[3] = new Player("3", wallRations, 0, 8, 4);
-			Game.players = initPlayer;
+			initPlayer = new Player[MAX_NUMBER_PLAYERS];
+			initPlayer[0] = new Player("1",wallRations, 0, 4, 1);
+			initPlayer[1] = new Player("2", wallRations, 4, 8, 2);
+			initPlayer[2] = new Player("3", wallRations, 8, 4, 3);
+			initPlayer[3] = new Player("4", wallRations, 4, 0, 4);
 		} else {
-			Game.players[0] = initPlayer[0];
-			Game.players[1] = initPlayer[2];
+			initPlayer = new Player[2];
+			initPlayer[0] = new Player("1",wallRations, 0, 4, 1);
+			initPlayer[1] = new Player("2", wallRations, 8, 4, 2);
 		}
+		Game.players = initPlayer;
+
 /**/
-		
+		System.out.println(Arrays.toString(initPlayer));
 		curr = players[0];
 		moves = 0;
 	}
@@ -68,8 +73,14 @@ public class Game {
 	// start game
 	public void startGame(){
 		gb = new GameBoard( this );
+/*
 		for(int i = 1;i<=numPlayers;i++){
 			Board.placePawn(players[i-1], players[i-1].getStartx(), players[i-1].getStarty());
+		}
+*/
+		for(int i=0; i<numPlayers; i++){
+			Player p = players[i];
+			gb.cont.getPlayerButtons()[p.x()][p.y()].setBackground(p.getColor());
 		}
 		gb.cont.addPlyrAry( players );
 		gb.cont.showPlyrMoves();

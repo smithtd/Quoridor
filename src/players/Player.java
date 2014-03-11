@@ -3,8 +3,11 @@
  */
 package players;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.util.Scanner;
+
+import ui.GameBoard;
 
 /**
  * @author marc dean jr
@@ -27,6 +30,8 @@ public class Player implements Players {
 		private Point position; // current position of the player
 		private int startX;
 		private int startY;
+		private Color c;
+		
 		@SuppressWarnings("unused")
 		// TODO
 		private Point winArea;  // where to win
@@ -64,6 +69,14 @@ public class Player implements Players {
 			this.startX = startX;
 			this.startY = startY;
 			this.pNumber = pNum;
+			if(pNumber== 1)
+				c = Color.BLUE;
+			else if(pNumber == 2)
+				c = Color.RED;
+			else if(pNumber == 3)
+				c = Color.GREEN;
+			else if(pNumber == 4)
+				c = Color.YELLOW;
 		}
 		/* Methods */
 		
@@ -188,4 +201,7 @@ public class Player implements Players {
 		this.position = tmp;
 	}
 
+	public Color getColor(){
+		return c;
+	}
 }
