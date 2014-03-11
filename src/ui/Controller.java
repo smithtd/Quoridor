@@ -45,22 +45,37 @@ public class Controller {
 		PlayerButton pBtn = pbAry[ p.x() ][ p.y() ];
 		testedSpaces = new ArrayList<String>();
 		btnsToChange = new ArrayList<PlayerButton>();
-		testSpace( pBtn );
+		testSpace( pBtn, 'n' );
 		for(PlayerButton btn : btnsToChange ){
 			btn.setBackground( Color.MAGENTA );
 		}
 	}
 	
-	public void testSpace( PlayerButton currBtn ){
+	public void testSpace( PlayerButton currBtn, char dir ){
+
+		boolean wallUp = false;
+		boolean wallDown = false;
+		boolean wallLeft = false;
+		boolean wallRight = false;
+		try{ wallUp = (horzWalls[currBtn.x()-1][currBtn.y()].getBackground() != Color.GRAY); } catch(Exception e){}
+		try{ wallDown = (horzWalls[currBtn.x()][currBtn.y()].getBackground() != Color.GRAY); } catch(Exception e){}
+		try{ wallLeft = (vertWalls[currBtn.x()][currBtn.y()-1].getBackground() != Color.GRAY); } catch(Exception e){}
+		try{ wallRight = (vertWalls[currBtn.x()][currBtn.y()].getBackground() != Color.GRAY); } catch(Exception e){}
+
 		if( !testedSpaces.contains("" + currBtn.x() + currBtn.y() ) ){
 			testedSpaces.add( "" + currBtn.x() + currBtn.y() );
 			if(currBtn.getBackground() == Color.black){
-				btnsToChange.add( currBtn );
-			} else{
-				try{ testSpace(pbAry[currBtn.x()-1][currBtn.y()]); } catch(Exception e){}
-				try{ testSpace(pbAry[currBtn.x()+1][currBtn.y()]); } catch(Exception e){}
-				try{ testSpace(pbAry[currBtn.x()][currBtn.y()-1]); } catch(Exception e){}
-				try{ testSpace(pbAry[currBtn.x()][currBtn.y()+1]); } catch(Exception e){}
+				if( (dir=='l' && !wallLeft) || (dir=='r' && !wallRight) || (dir=='u' && !wallUp) || (dir=='d' && !wallDown) || (dir=='n') )
+					btnsToChange.add( currBtn );
+			}else{
+				/* 
+				 * The character passed is the direction from which the player's 
+				 * old location would be in relation to the button tested 
+				 */
+				try{ testSpace(pbAry[currBtn.x()-1][currBtn.y()], 'd'); } catch(Exception e){}
+				try{ testSpace(pbAry[currBtn.x()+1][currBtn.y()], 'u'); } catch(Exception e){}
+				try{ testSpace(pbAry[currBtn.x()][currBtn.y()-1], 'r'); } catch(Exception e){}
+				try{ testSpace(pbAry[currBtn.x()][currBtn.y()+1], 'l'); } catch(Exception e){}
 			}
 		} else{
 			return;
