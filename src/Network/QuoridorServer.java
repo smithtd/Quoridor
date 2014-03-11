@@ -19,9 +19,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * 
- * The QuoridorClient is used for the networking portion
+ * The QuoridorServer is used for the networking portion
  * of the Quoridor game. Each player will have an instance of
- * this client where they will be able to input moves. 
+ * this server where they will be able to input moves/walls/get kicked. 
  * 
  * 
  * How to use this: Netcat provides an easy to use tool to generate a server 
@@ -47,7 +47,7 @@ public class QuoridorServer extends Thread  {
 	/** Store input from player/ai */
 	private BlockingQueue<String> moveQueue;
 	
-	/** Machine Name where server is running */
+	/** Machine Name where client is running */
 	private String serverMachineName;
 	
 	/** Port number of distant machine */
