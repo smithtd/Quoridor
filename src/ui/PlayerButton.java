@@ -46,6 +46,10 @@ public class PlayerButton extends JButton {
 		this.plyr = null;
 	}
 	
+	public boolean hasPlayer(){
+		return plyr!=null;
+	}
+	
 	public int x(){
 		return this.x;
 	}
@@ -61,11 +65,12 @@ public class PlayerButton extends JButton {
 			// we want the user to choose an action when they click a grid button
 			public void actionPerformed( ActionEvent e ) {
 				int answer = 0;
-				if(b.getBackground() == Color.MAGENTA)
+				if(b.getBackground() == Color.MAGENTA){
 					answer = JOptionPane.showConfirmDialog(null, "Move here?", "Pawn Placement", JOptionPane.YES_NO_OPTION);
-				if( answer == 0 ){
-					System.out.println("YES");
-					cont.nextPlayerMove();
+					if( answer == 0 ){
+						//System.out.println("YES");
+						cont.movePiece(b);
+					}
 				}
 /*
 				 // swapped out message reporting pos for dialog with options

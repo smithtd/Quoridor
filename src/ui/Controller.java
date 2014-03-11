@@ -39,9 +39,9 @@ public class Controller {
 	//Player turn controller
 	public void showPlyrMoves(){
 		resetMoveableSpaces();
-		System.out.println("HERE");
+		//System.out.println("HERE");
 		Player p = plyrAry[currentIndex];
-		System.out.println(p.x() + "" + p.y() );
+		//System.out.println(p.x() + "" + p.y() );
 		PlayerButton pBtn = pbAry[ p.x() ][ p.y() ];
 		testedSpaces = new ArrayList<String>();
 		btnsToChange = new ArrayList<PlayerButton>();
@@ -81,6 +81,14 @@ public class Controller {
 		showPlyrMoves();
 	}
 	
+	public void movePiece(PlayerButton b){
+		b.setBackground(this.getPlyrAry()[ this.getPlryIndex() ].getColor());
+		Player p = plyrAry[currentIndex];
+		pbAry[p.x()][p.y()].setBackground(Color.black);
+		//p.setPos(x, y);
+		this.nextPlayerMove();
+	}
+	
 	
 	
 	
@@ -93,7 +101,7 @@ public class Controller {
 	/*
 	 * Getters and setters
 	 */
-	
+	//Setters
 	public void addPlyrAry(Player[] plyrAry){
 		Controller.plyrAry = plyrAry;
 	}
@@ -122,7 +130,8 @@ public class Controller {
 		Controller.wbAry = wbAry;
 	}
 	
-	public Player[] addPlyrAry(){
+	//Getters
+	public Player[] getPlyrAry(){
 		return Controller.plyrAry;
 	}
 	
@@ -148,5 +157,9 @@ public class Controller {
 	
 	public WallButton[][] getWallButtons(){
 		return Controller.wbAry;
+	}
+	
+	public int getPlryIndex(){
+		return currentIndex;
 	}
 }

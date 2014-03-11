@@ -1,6 +1,8 @@
 package ui;
 
 import javax.swing.*;
+
+import players.Player;
 //using ImageIcon(?), JButton, JOptionPane, JPanel, etc.
 import java.awt.*;
 import java.awt.event.*;
@@ -139,8 +141,13 @@ public class WallButton extends JButton {
 	    	public void actionPerformed( ActionEvent e ){
 	    		if(!(b1.isSelected() || b2.isSelected() || b3.isSelected() ) )
 	    			;
-	    		else
+	    		else {
+	    			if(b1.isSelected() || b2.isSelected()){
+	    				cont.nextPlayerMove();
+	    				Player.usedWall();
+	    			}
 	    			tempFrame.dispose();
+	    		}
 	    	}
 	    });
 		jp2.add( ready ); 

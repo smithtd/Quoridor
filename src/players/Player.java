@@ -23,7 +23,7 @@ public class Player implements Players {
 		@SuppressWarnings("unused")
 		private String name; 	// players name
 		private int pNumber; 	// which player it is (1-4)
-		private int wallTotal;	// how many walls player has
+		public static int wallTotal;	// how many walls player has
 		private Scanner sc;		// prompt player for moves
 		private Point position; // current position of the player
 		private int startX;
@@ -114,6 +114,10 @@ public class Player implements Players {
 		System.out.println("Enter move: ");
 		// TODO figure a check mechanism for moves.
 		return sc.nextLine();
+	}
+	
+	public static void usedWall(){
+		wallTotal--;
 	}
 
 	/* 
