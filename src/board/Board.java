@@ -74,7 +74,10 @@ public class Board {
 	 * Postconditions: marked bitmap if move was legal, 
 	 * 			return T/F based on success
 	 */
+/*
+	
 	public boolean placeWall(Player p, String orientation, int x, int y) {
+	 
 		// set bitmap[x][y] and bitmap[x+1][y] for horizontal
 		if(orientation=="horizontal") {
 			// if isLegalMove(horizontal/vertical, x, y)
@@ -100,7 +103,7 @@ public class Board {
 		// else return false
 		return false;
 	}
-	
+*/	
 	/*
 	 * Purpose: check whether move is legal
 	 * Parameters: player, move type, x and y coordinates

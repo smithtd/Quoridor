@@ -1,5 +1,10 @@
 package ui;
 
+import java.awt.Color;
+import java.util.ArrayList;
+
+import players.Player;
+
 /*
  * The purpose of this class is to hold all variables of the game state as 
  * static this class is added as a static object to every other object so that 
@@ -16,9 +21,74 @@ public class Controller {
 	private static Wall[][] horzWalls;
 	public static PlayerButton[][] pbAry;
 	private static WallButton[][] wbAry;
+	private static Player[] plyrAry;
+	private static Game g;
+	private static GameBoard gBoard;
+	private static int numPlayers;
+	private static int currentIndex;
+	private static ArrayList<String> testedSpaces;
+	private static ArrayList<PlayerButton> btnsToChange;
 	
-	public Controller(){
-		;
+	
+	//Constructor
+	public Controller( int numPlayers){
+		Controller.numPlayers = numPlayers;
+		currentIndex = 0;
+	}
+	
+	//Player turn controller
+	public void showPlyrMoves(){
+		System.out.println("HERE");
+		Player p = plyrAry[currentIndex];
+		System.out.println(p.x() + "" + p.y() );
+		PlayerButton pBtn = pbAry[ p.x() ][ p.y() ];
+		testedSpaces = new ArrayList<String>();
+		btnsToChange = new ArrayList<PlayerButton>();
+		testSpace( pBtn );
+		for(PlayerButton btn : btnsToChange ){
+			btn.setBackground( Color.MAGENTA );
+		}
+	}
+	
+	public void testSpace( PlayerButton currBtn ){
+		if( !testedSpaces.contains("" + currBtn.x() + currBtn.y() ) ){
+			testedSpaces.add( "" + currBtn.x() + currBtn.y() );
+			if(currBtn.getBackground() == Color.black){
+				btnsToChange.add( currBtn );
+			} else{
+				try{ testSpace(pbAry[currBtn.x()-1][currBtn.y()]); } catch(Exception e){}
+				try{ testSpace(pbAry[currBtn.x()+1][currBtn.y()]); } catch(Exception e){}
+				try{ testSpace(pbAry[currBtn.x()][currBtn.y()-1]); } catch(Exception e){}
+				try{ testSpace(pbAry[currBtn.x()][currBtn.y()+1]); } catch(Exception e){}
+			}
+		} else{
+			return;
+		}
+	}		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
+	 * Getters and setters
+	 */
+	
+	public void addPlyrAry(Player[] plyrAry){
+		Controller.plyrAry = plyrAry;
+	}
+	
+	public void addGame( Game g ){
+		Controller.g = g;
+	}
+	
+	public void addGame( GameBoard gBoard ){
+		Controller.gBoard = gBoard;
 	}
 	
 	public void addVertWalls( Wall[][] vertWalls ){
@@ -35,6 +105,18 @@ public class Controller {
 	
 	public void addWallButtons( WallButton[][] wbAry ){
 		Controller.wbAry = wbAry;
+	}
+	
+	public Player[] addPlyrAry(){
+		return Controller.plyrAry;
+	}
+	
+	public Game getGame(){
+		return Controller.g;
+	}
+	
+	public GameBoard getGameBoard(){
+		return Controller.gBoard;
 	}
 	
 	public Wall[][] getVertWalls(){

@@ -27,7 +27,7 @@ public class Game {
 		Player[] initPlayer = new Player[MAX_NUMBER_PLAYERS];
 		this.numPlayers = numPlayers;
 		int wallRations = (NUM_OF_WALLS / this.numPlayers);
-		this.players = new Player[numPlayers];
+		Game.players = new Player[numPlayers];
 		/*
 		 * Initialize Players
 		 * Order of players (clockwise from the top of the board)
@@ -35,7 +35,7 @@ public class Game {
 		 */
 
 		// players one & two
-		initPlayer[0] = new Player("1",wallRations, "a5", 1);
+/*		initPlayer[0] = new Player("1",wallRations, "a5", 1);
 		initPlayer[2] = new Player("2", wallRations, "i5", 2);
 		
 		if(this.numPlayers == MAX_NUMBER_PLAYERS){
@@ -46,6 +46,21 @@ public class Game {
 			Game.players[0] = initPlayer[0];
 			Game.players[1] = initPlayer[2];
 		}
+*/
+/**/
+		initPlayer[0] = new Player("1",wallRations, 0, 4, 1);
+		initPlayer[2] = new Player("2", wallRations, 8, 4, 2);
+		
+		if(this.numPlayers == MAX_NUMBER_PLAYERS){
+			initPlayer[1] = new Player("4", wallRations, 0,4, 3);
+			initPlayer[3] = new Player("3", wallRations, 0, 8, 4);
+			Game.players = initPlayer;
+		} else {
+			Game.players[0] = initPlayer[0];
+			Game.players[1] = initPlayer[2];
+		}
+/**/
+		
 		curr = players[0];
 		moves = 0;
 	}
@@ -56,6 +71,8 @@ public class Game {
 		for(int i = 1;i<=numPlayers;i++){
 			Board.placePawn(players[i-1], players[i-1].getStartx(), players[i-1].getStarty());
 		}
+		gb.cont.addPlyrAry( players );
+		gb.cont.showPlyrMoves();
 	}
 	
 	public void new4PlayerGame(){
@@ -78,7 +95,7 @@ public class Game {
 	// client/server communication methods (Dylan)
 	// report errors
 	public static void main(String[] args) {
-		Game game = new Game(4, NUM_OF_WALLS);
+		Game game = new Game(2, NUM_OF_WALLS);
 		game.startGame();
 	}
 }

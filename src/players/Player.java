@@ -58,7 +58,13 @@ public class Player implements Players {
 				startY=8;
 			}
 		}
-		
+		public Player( String name, int walls, int startX, int startY, int pNum ){
+			this.name = name;
+			this.wallTotal = walls;
+			this.startX = startX;
+			this.startY = startY;
+			this.pNumber = pNum;
+		}
 		/* Methods */
 		
 	/*
@@ -130,7 +136,11 @@ public class Player implements Players {
 	 * Returns: player's x position 
 	 */
 	public int x() {
-		return (int)this.position.getX();
+		try{
+			return (int)this.position.getX();
+		}catch(Exception e){
+			return startX;
+		}
 	}
 	
 	/* 
@@ -140,7 +150,11 @@ public class Player implements Players {
 	 * Returns: player's y position 
 	 */
 	public int y() {
-		return (int)this.position.getY();
+		try{
+			return (int)this.position.getY();
+		}catch(Exception e){
+			return startY;
+		}	
 	}
 	
 	/* 

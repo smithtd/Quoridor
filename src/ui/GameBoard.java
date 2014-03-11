@@ -18,13 +18,15 @@ public class GameBoard extends JPanel {
 	 */
 	public GameBoard( Game game ){
 		super();
-		cont = new Controller();
+		cont = new Controller(game.numPlayers);
 		FlowLayout flow = new FlowLayout();
 		flow.setHgap( 0 );
 		flow.setVgap( 0 );
 		this.setLayout( flow );
 		setFrameStats();
 		GameBoard.g = game;
+		cont.addGame( GameBoard.g );
+		cont.addGame( this );
 	}
 	
 	/*
@@ -37,7 +39,7 @@ public class GameBoard extends JPanel {
 		GridBagLayout gridbag = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
 		frame.setLayout( gridbag );
-		addOtherJObjectsToThis();
+		addOtherJObjectsToGameBoard();
 		addPanelsToJFrame( frame, gridbag, c );
 		frame.add( this );						//Adds this JPanel to JFrame
 		frame.setVisible( true );				//Sets Frame to visible
@@ -164,8 +166,7 @@ public class GameBoard extends JPanel {
 		return menuBar;
 	}
 	
-	// what is this??
-	public void addOtherJObjectsToThis(){
+	public void addOtherJObjectsToGameBoard(){
 		addJButtons();
 		repaint();
 	}

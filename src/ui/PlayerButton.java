@@ -30,7 +30,7 @@ public class PlayerButton extends JButton {
 	public PlayerButton( int x, int y, Controller cont ){
 		super();
 		//this.setBorder(null);
-		this.x = y;
+		this.x = x;
 		this.y = y;
 		PlayerButton.cont = cont;
 		this.setPreferredSize( new Dimension( 50, 50 ) );
@@ -46,20 +46,28 @@ public class PlayerButton extends JButton {
 		this.plyr = null;
 	}
 	
-	public int getXLocal(){
+	public int x(){
 		return this.x;
 	}
 	
-	public int getYLocal(){
+	public int y(){
 		return this.y;
 	}
 	
 	// adds an action listener to a ClickButton
 	public void addButtonListener(){
+		final PlayerButton b = this;
 		addActionListener( new ActionListener(){
 			// we want the user to choose an action when they click a grid button
 			public void actionPerformed( ActionEvent e ) {
-				// swapped out message reporting pos for dialog with options
+				int answer = 0;
+				if(b.getBackground() == Color.MAGENTA){
+					answer = JOptionPane.showConfirmDialog(b, "Move here?");
+					System.out.println(answer);
+				}
+				System.out.println(x() + " " + y());
+/*
+				 // swapped out message reporting pos for dialog with options
 				JPanel p = new JPanel();
 				p.setLayout( new FlowLayout() ) ;
 				p.setPreferredSize( new Dimension( 100, 50 ) );
@@ -71,8 +79,9 @@ public class PlayerButton extends JButton {
 			    
 			    // perform action based on user's selection
 			    if(rb.isSelected()){
-			    	JOptionPane.showMessageDialog( null, "Selected move pawn to (" + getXLocal() + "," + getYLocal() + ")." );
+			    	JOptionPane.showMessageDialog( null, "Selected move pawn to (" + x() + "," + y() + ")." );
 			    } 
+*/
 			}
 		});
 	}
