@@ -61,11 +61,12 @@ public class PlayerButton extends JButton {
 			// we want the user to choose an action when they click a grid button
 			public void actionPerformed( ActionEvent e ) {
 				int answer = 0;
-				if(b.getBackground() == Color.MAGENTA){
-					answer = JOptionPane.showConfirmDialog(b, "Move here?");
-					System.out.println(answer);
+				if(b.getBackground() == Color.MAGENTA)
+					answer = JOptionPane.showConfirmDialog(null, "Move here?", "Pawn Placement", JOptionPane.YES_NO_OPTION);
+				if( answer == 0 ){
+					System.out.println("YES");
+					cont.nextPlayerMove();
 				}
-				System.out.println(x() + " " + y());
 /*
 				 // swapped out message reporting pos for dialog with options
 				JPanel p = new JPanel();

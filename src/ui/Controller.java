@@ -38,6 +38,7 @@ public class Controller {
 	
 	//Player turn controller
 	public void showPlyrMoves(){
+		resetMoveableSpaces();
 		System.out.println("HERE");
 		Player p = plyrAry[currentIndex];
 		System.out.println(p.x() + "" + p.y() );
@@ -65,6 +66,20 @@ public class Controller {
 			return;
 		}
 	}		
+
+	public void resetMoveableSpaces(){
+		for( int x=0; x<9; x++ )
+			for( int y=0; y<9; y++ )
+				if(pbAry[x][y].getBackground() == Color.MAGENTA)
+					pbAry[x][y].setBackground(Color.BLACK);
+	}
+	
+	public void nextPlayerMove(){
+		currentIndex++;
+		if( currentIndex > plyrAry.length-1 )
+			currentIndex = 0;
+		showPlyrMoves();
+	}
 	
 	
 	
