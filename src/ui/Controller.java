@@ -65,7 +65,7 @@ public class Controller {
 		} else{
 			return;
 		}
-	}		
+	}	
 
 	public void resetMoveableSpaces(){
 		for( int x=0; x<9; x++ )

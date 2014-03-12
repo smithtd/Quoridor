@@ -64,13 +64,9 @@ public class PlayerButton extends JButton {
 		addActionListener( new ActionListener(){
 			// we want the user to choose an action when they click a grid button
 			public void actionPerformed( ActionEvent e ) {
-				int answer = 0;
+				//int answer = 0;
 				if(b.getBackground() == Color.MAGENTA){
-					answer = JOptionPane.showConfirmDialog(null, "Move here?", "Pawn Placement", JOptionPane.YES_NO_OPTION);
-					if( answer == 0 ){
-						//System.out.println("YES");
-						cont.movePiece(b);
-					}
+					cont.movePiece(b);
 				}
 /*
 				 // swapped out message reporting pos for dialog with options
