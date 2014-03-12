@@ -61,9 +61,8 @@ public class Player implements Players {
 				startY=8;
 			}
 		}
-		public Player( String name, int walls, int startX, int startY, int pNum ){
+		public Player( String name, int startX, int startY, int pNum ){
 			this.name = name;
-			Player.wallTotal = walls;
 			this.startX = startX;
 			this.startY = startY;
 			this.pNumber = pNum;
