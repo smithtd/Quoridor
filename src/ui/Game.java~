@@ -18,8 +18,6 @@ public class Game {
 	// Instance variables
 	Board board;				// Board to track data about board's contents
 	public static Player[] players;			// Player[] to hold players
-	public static int [] wallsRem;
-
 	int numPlayers;				// number of players
 	Player curr; 				// Player or index to track whose turn it is
 	int moves;					// Move count
@@ -36,25 +34,34 @@ public class Game {
 		 * Order of players (clockwise from the top of the board)
 		 * 1, 4, 2, 3.
 		 */
+
+		// players one & two
+/*		initPlayer[0] = new Player("1",wallRations, "a5", 1);
+		initPlayer[2] = new Player("2", wallRations, "i5", 2);
+		
+		if(this.numPlayers == MAX_NUMBER_PLAYERS){
+			initPlayer[1] = new Player("4", wallRations, "e1", 3);
+			initPlayer[3] = new Player("3", wallRations, "e9", 4);
+			Game.players = initPlayer;
+		} else {
+			Game.players[0] = initPlayer[0];
+			Game.players[1] = initPlayer[2];
+		}
+*/
+/**/
 		Player[] initPlayer = new Player[MAX_NUMBER_PLAYERS];
+		
 		if(this.numPlayers == MAX_NUMBER_PLAYERS){
 			initPlayer = new Player[MAX_NUMBER_PLAYERS];
-			initPlayer[0] = new Player("1", 0, 4, 1);
-			initPlayer[1] = new Player("2", 4, 8, 2);
-			initPlayer[2] = new Player("3", 8, 4, 3);
-			initPlayer[3] = new Player("4", 4, 0, 4);
-			wallsRem = new int [4];
-			for( int i=0; i<4; i++ )
-				wallsRem[i] = 5;
+			initPlayer[0] = new Player("1",wallRations, 0, 4, 1);
+			initPlayer[1] = new Player("2", wallRations, 4, 8, 2);
+			initPlayer[2] = new Player("3", wallRations, 8, 4, 3);
+			initPlayer[3] = new Player("4", wallRations, 4, 0, 4);
 		} else {
 			initPlayer = new Player[2];
-			initPlayer[0] = new Player("1", 0, 4, 1);
-			initPlayer[1] = new Player("2", 8, 4, 2);
-			wallsRem = new int [2];
-			for( int i=0; i<2; i++ )
-				wallsRem[i] = 10;
+			initPlayer[0] = new Player("1",wallRations, 0, 4, 1);
+			initPlayer[1] = new Player("2", wallRations, 8, 4, 2);
 		}
-		
 		Game.players = initPlayer;
 
 /**/
@@ -76,7 +83,6 @@ public class Game {
 			GameBoard.cont.getPlayerButtons()[p.x()][p.y()].setBackground(p.getColor());
 		}
 		GameBoard.cont.addPlyrAry( players );
-		GameBoard.cont.addWallsRem(wallsRem);
 		GameBoard.cont.showPlyrMoves();
 	}
 	
