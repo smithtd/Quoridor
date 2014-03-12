@@ -23,13 +23,11 @@ public class PlayerButton extends JButton {
 	private int y;
 	private Player plyr;
 
-	@SuppressWarnings("unused") //For now
 	private static Controller cont;
 	
 	// Constructors
 	public PlayerButton( int x, int y, Controller cont ){
 		super();
-		//this.setBorder(null);
 		this.x = x;
 		this.y = y;
 		PlayerButton.cont = cont;
@@ -84,17 +82,20 @@ public class PlayerButton extends JButton {
 			    	JOptionPane.showMessageDialog( null, "Selected move pawn to (" + x() + "," + y() + ")." );
 			    } 
 */
+
+				//b.clicked();
+
 			}
 		});
 	}
-	/*
-	@Override
-	public void paint( Graphics g ){
-		if( plyr != null ){
-			
-		}else{
-			this.setBackground( Color.BLACK );
+	/*public void clicked(){
+		int answer = 0;
+		if(this.getBackground() == Color.MAGENTA){
+			answer = JOptionPane.showConfirmDialog(null, "Move here?", "Pawn Placement", JOptionPane.YES_NO_OPTION);
+			if( answer == 0 ){
+				//System.out.println("YES");
+				cont.movePiece(this);
+			}
 		}
-	}
-	*/
+	}*/
 }

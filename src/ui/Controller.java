@@ -22,6 +22,7 @@ public class Controller {
 	public static PlayerButton[][] pbAry;
 	private static WallButton[][] wbAry;
 	private static Player[] plyrAry;
+	private static int [] wallsRem;
 	private static Game g;
 	private static GameBoard gBoard;
 	private static int numPlayers;
@@ -39,29 +40,45 @@ public class Controller {
 	//Player turn controller
 	public void showPlyrMoves(){
 		resetMoveableSpaces();
+		printPlayerTurn();
 		//System.out.println("HERE");
 		Player p = plyrAry[currentIndex];
 		//System.out.println(p.x() + "" + p.y() );
 		PlayerButton pBtn = pbAry[ p.x() ][ p.y() ];
 		testedSpaces = new ArrayList<String>();
 		btnsToChange = new ArrayList<PlayerButton>();
-		testSpace( pBtn );
+		testSpace( pBtn, 'n' );
 		for(PlayerButton btn : btnsToChange ){
 			btn.setBackground( Color.MAGENTA );
 		}
 	}
 	
-	public void testSpace( PlayerButton currBtn ){
+	public void testSpace( PlayerButton currBtn, char dir ){
+
+		boolean wallUp = false;
+		boolean wallDown = false;
+		boolean wallLeft = false;
+		boolean wallRight = false;
+		try{ wallUp = (horzWalls[currBtn.x()-1][currBtn.y()].getBackground() != Color.GRAY); } catch(Exception e){}
+		try{ wallDown = (horzWalls[currBtn.x()][currBtn.y()].getBackground() != Color.GRAY); } catch(Exception e){}
+		try{ wallLeft = (vertWalls[currBtn.x()][currBtn.y()-1].getBackground() != Color.GRAY); } catch(Exception e){}
+		try{ wallRight = (vertWalls[currBtn.x()][currBtn.y()].getBackground() != Color.GRAY); } catch(Exception e){}
+
 		if( !testedSpaces.contains("" + currBtn.x() + currBtn.y() ) ){
 			testedSpaces.add( "" + currBtn.x() + currBtn.y() );
-			if(currBtn.getBackground() == Color.black){
-				btnsToChange.add( currBtn );
-			} else{
-				try{ testSpace(pbAry[currBtn.x()-1][currBtn.y()]); } catch(Exception e){}
-				try{ testSpace(pbAry[currBtn.x()+1][currBtn.y()]); } catch(Exception e){}
-				try{ testSpace(pbAry[currBtn.x()][currBtn.y()-1]); } catch(Exception e){}
-				try{ testSpace(pbAry[currBtn.x()][currBtn.y()+1]); } catch(Exception e){}
-			}
+			if( (dir=='l' && !wallLeft) || (dir=='r' && !wallRight) || (dir=='u' && !wallUp) || (dir=='d' && !wallDown) || (dir=='n') )
+				if(currBtn.getBackground() == Color.black){
+						btnsToChange.add( currBtn );
+				}else{
+					/* 
+					 * The character passed is the direction from which the player's 
+					 * old location would be in relation to the button tested 
+					 */
+					try{ testSpace(pbAry[currBtn.x()-1][currBtn.y()], 'd'); } catch(Exception e){}
+					try{ testSpace(pbAry[currBtn.x()+1][currBtn.y()], 'u'); } catch(Exception e){}
+					try{ testSpace(pbAry[currBtn.x()][currBtn.y()-1], 'r'); } catch(Exception e){}
+					try{ testSpace(pbAry[currBtn.x()][currBtn.y()+1], 'l'); } catch(Exception e){}
+				}
 		} else{
 			return;
 		}
@@ -82,11 +99,22 @@ public class Controller {
 	}
 	
 	public void movePiece(PlayerButton b){
-		b.setBackground(this.getPlyrAry()[ this.getPlryIndex() ].getColor());
+		b.setBackground(this.getPlyrAry()[ this.getPlyrIndex() ].getColor());
 		Player p = plyrAry[currentIndex];
 		pbAry[p.x()][p.y()].setBackground(Color.black);
 		p.setPos(b.x(), b.y());
 		this.nextPlayerMove();
+	}
+	
+	public void printPlayerTurn(){
+		if( currentIndex == 0 )
+			System.out.println( "Blue Turn" );
+		if( currentIndex == 1 )
+			System.out.println( "Red Turn" );
+		if( currentIndex == 2 )
+			System.out.println( "Green Turn" );
+		if( currentIndex == 3 )
+			System.out.println( "Yellow Turn" );
 	}
 	
 	
@@ -102,6 +130,10 @@ public class Controller {
 	 * Getters and setters
 	 */
 	//Setters
+	public void addWallsRem( int [] wallsRem ){
+		Controller.wallsRem = wallsRem;
+	}
+	
 	public void addPlyrAry(Player[] plyrAry){
 		Controller.plyrAry = plyrAry;
 	}
@@ -131,6 +163,10 @@ public class Controller {
 	}
 	
 	//Getters
+	public int[] getWallsRem(){
+		return Controller.wallsRem;
+	}
+	
 	public Player[] getPlyrAry(){
 		return Controller.plyrAry;
 	}
@@ -159,7 +195,11 @@ public class Controller {
 		return Controller.wbAry;
 	}
 	
-	public int getPlryIndex(){
+	public int getPlyrIndex(){
 		return currentIndex;
+	}
+	
+	public int getNumPlayers(){
+		return Controller.plyrAry.length;
 	}
 }
