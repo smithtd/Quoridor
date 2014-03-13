@@ -68,43 +68,6 @@ public class Board {
 	}
 	
 	/*
-	 * Purpose: place a wall of given orientation starting at (x,y)
-	 * Parameters: orientation of wall, x and y coordinates
-	 * Preconditions: player has decided to place wall
-	 * Postconditions: marked bitmap if move was legal, 
-	 * 			return T/F based on success
-	 */
-/*
-	
-	public boolean placeWall(Player p, String orientation, int x, int y) {
-	 
-		// set bitmap[x][y] and bitmap[x+1][y] for horizontal
-		if(orientation=="horizontal") {
-			// if isLegalMove(horizontal/vertical, x, y)
-			if(isLegalMove(p, "horizontal", x, y)){
-				bitmap[x][y] = 1;
-				bitmap[x+1][y] = 1;
-				
-				// return true
-				return true;
-			}
-		} else if(orientation=="vertical") {				
-			// if isLegalMove(horizontal/vertical, x, y)
-			if(isLegalMove(p, "vertical", x, y)){
-				// set bitmap[x][y] and bitmap[x][y+1] for vertical
-				bitmap[x][y] = 1;
-				bitmap[x][y+1] = 1;
-				
-				// return true
-				return true;
-			}
-		}
-		
-		// else return false
-		return false;
-	}
-*/	
-	/*
 	 * Purpose: check whether move is legal
 	 * Parameters: player, move type, x and y coordinates
 	 * Preconditions: player is trying to make move, need to check if legal

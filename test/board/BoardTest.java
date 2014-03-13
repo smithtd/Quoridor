@@ -47,18 +47,6 @@ public class BoardTest {
 	    assertThat(result, equalTo(expected));  
 	}
 	
-	// test placeWall, type horizontal, by comparing board
-	private void testResults(Player p, String orientation, int x, int y, Board expectedBoard) {
-		board.placeWall(p,orientation, x, y);
-	    assertThat(board.bitmap, equalTo(expectedBoard.bitmap));    
-	}
-	
-	// test placeWall by checking for "false" return
-	private void testResults(String orientation, Player p, int x, int y, boolean expected) {
-		boolean result = board.placeWall(p, orientation, x, y);
-	    assertThat(result, equalTo(expected));    
-	}
-	
 	/* Test isEmpty() */
 	
 	@Test
@@ -174,68 +162,5 @@ public class BoardTest {
 		testResults(player, type, x, y, expected);
 	} 
 
-	/* Test placeWall() */
-	
-	@Test
-	public void checkIfCanAddHorizontalWallInEmptySquares(){
-		int x=1;
-		int y=0;
-		String orientation = "horizontal";
-		Board expected = new Board();
-		expected.bitmap[0][1] = 1;
-		expected.bitmap[1][0] = 1;
-		expected.bitmap[2][0] = 1;
-	
-		testResults(player, orientation, x, y, expected);
-	} 
-
-	@Test
-	public void checkIfCanAddVerticalWallInEmptySquares(){
-		int x=1;
-		int y=0;
-		String orientation = "vertical";
-		Board expected = new Board();
-		expected.bitmap[0][1] = 1;
-		expected.bitmap[1][0] = 1;
-		expected.bitmap[1][1] = 1;
-	
-		testResults(player, orientation, x, y, expected);
-	} 
-
-	@Test
-	public void checkIfCanAddNewHorizontalWallOutsideBoardHigh(){
-		int x=8;
-		int y=1;
-		boolean expected = false;
-	
-		testResults("horizontal", player, x, y, expected);
-	}
-	
-	@Test
-	public void checkIfCanAddNewHorizontalWallOutsideBoardLow(){
-		int x=-1;
-		int y=0;
-		boolean expected = false;
-	
-		testResults("horizontal", player, x, y, expected);
-	}
-	
-	@Test
-	public void checkIfCanAddNewVerticalWallOutsideBoardHigh(){
-		int x=0;
-		int y=8;
-		boolean expected = false;
-	
-		testResults("vertical", player, x, y, expected);
-	}
-	
-	@Test
-	public void checkIfCanAddNewVerticalWallOutsideBoardLow(){
-		int x=0;
-		int y=-1;
-		boolean expected = false;
-	
-		testResults("vertical", player, x, y, expected);
-	}
 }
 
