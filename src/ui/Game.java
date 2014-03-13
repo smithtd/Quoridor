@@ -87,6 +87,10 @@ public class Game {
 		System.exit(0);
 	}
 	
+	public int getNumPlayers(){
+		return this.numPlayers;
+	}
+	
 	// client/server communication methods (Dylan)
 	// report errors
 	public static void main(String[] args) {

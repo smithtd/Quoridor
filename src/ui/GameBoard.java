@@ -18,7 +18,7 @@ public class GameBoard extends JPanel {
 	 */
 	public GameBoard( Game game ){
 		super();
-		cont = new Controller(game.numPlayers);
+		cont = new Controller(game.getNumPlayers());
 		FlowLayout flow = new FlowLayout();
 		flow.setHgap( 0 );
 		flow.setVgap( 0 );
