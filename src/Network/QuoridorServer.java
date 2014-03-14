@@ -9,11 +9,8 @@
 package Network;
 
 import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.ServerSocket;
 import java.util.Scanner;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 
 
@@ -42,88 +39,45 @@ import java.util.concurrent.LinkedBlockingQueue;
  * 
  */
 
-public class QuoridorServer extends Thread  {
-	
-	/** Store input from player/ai */
-	private BlockingQueue<String> moveQueue;
-	
-	/** Machine Name where client is running */
-	private String serverMachineName;
+public class QuoridorServer   {
 	
 	/** Port number of distant machine */
 	private int portNumber;
 	
 	/** Socket to connect to the client */
-	private Socket socket;
+	private ServerSocket socket;
+	
+	/** Scanner for input */
+	private Scanner movementInput;
+
 	
 	/**
 	 * 
-	 * @param name - name of distant machine where server is running
 	 * @param port - port number where communication can be made at server
 	 * 
-	 * Creates a new instance of the QuoridorClient with the input stream, 
-	 * name, and port number to connect to.
+	 * 
 	 */
-	public QuoridorServer(String name, int port) {
-		this.moveQueue = new LinkedBlockingQueue<String>();
-		this.serverMachineName = name;
+	public QuoridorServer(int port) {
+		
 		this.portNumber = port;
+		this.movementInput = new Scanner("System.in");
+		
 	    try {
-			this.socket = new Socket(this.serverMachineName, this.portNumber);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			this.socket = new ServerSocket(this.portNumber);
+			this.socket.accept();
+	    } catch (IOException ioe) {
+	    		ioe.printStackTrace();
+	    }
 	
 	}
 	
+		
 	/**
-	 * 
-	 * @param move - move to add to the queue of moves
-	 * @throws InterruptedException 
-	 */
-	public void addMove(String move) {
-		// TODO check if move is valid, but when?
-			try {
-				this.moveQueue.put(move);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-	}
-	
-	/**
-	 * 
 	 * @return the next move/placement in the queue
-	 *
-	 * If there is nothing waiting in the queue when called it will automatically
-	 * prompt for a move
-	 * @throws InterruptedException 
-	 * 
 	 */
-	public String getMove() throws InterruptedException  {
-		
-			/**
-			 *  take(), according to Java will wait until an element
-			 *  is available, so we shouldn't have to handle cases
-			 *  where the user is stalling on entering their move
-			 *  or making decisions for some strategy.
-			 *  
-			 *  We could implement some sort of timeout feature by using
-			 *  poll()
-			 */
-		if(this.moveQueue.peek() == null){
-			Scanner sc = new Scanner(System.in);
+	public String getMove() {			
 			System.out.print("\nMove:>");
-			this.addMove(sc.nextLine());
-		}
-		
-		return this.moveQueue.take();
+			String move = this.movementInput.next().trim();
+			return move;
 	}
-	
-	public void run() {
-		
-	}
-	
-	
 }

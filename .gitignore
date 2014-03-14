@@ -5,3 +5,6 @@
 
 bin/*/*.class
 /bin
+# Stop pesky copies with ~ after them into 
+# the commits 
+*.*~
