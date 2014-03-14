@@ -60,7 +60,7 @@ public class PlayerButton extends JButton {
 	public void addButtonListener(){
 		final PlayerButton b = this;
 		addActionListener( new ActionListener(){
-			// we want the user to choose an action when they click a grid button
+			// users pawn moves to position that they click assuming it's highlighted
 			public void actionPerformed( ActionEvent e ) {
 				//int answer = 0;
 				if(b.getBackground() == Color.MAGENTA){

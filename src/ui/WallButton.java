@@ -73,6 +73,10 @@ public class WallButton extends JButton {
 		tempFrame.setLayout( new BorderLayout() );
 
 		ButtonGroup btnGrp = new ButtonGroup();
+		//if player's piece can get to the other side we give them an option to
+		//add a wall, otherwise no option comes up at all in order to not block 
+		//anyones way
+		//if(canGetAcross()){
 		final JRadioButton b1 = new JRadioButton("Horizontal", false );
 		final JRadioButton b2 = new JRadioButton("Vertical", false );
 		final JRadioButton b3 = new JRadioButton("Neither", false );
@@ -93,6 +97,7 @@ public class WallButton extends JButton {
 				b.resetWall();
 			}
 		});
+		//}
 		
 		// add the buttons to the panel and buttongroup
 	    btnGrp.add(b1);
