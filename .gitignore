@@ -3,8 +3,10 @@
 # what you are trying to ignore, add to the list and then
 # run git rm --cached name_of_file
 
-bin/*/*.class
+
 /bin
 # Stop pesky copies with ~ after them into 
 # the commits 
 *.*~
+
+*.class

@@ -48,6 +48,9 @@ public class QuoridorServer implements Messages {
 	
 	/** Scanner for input */
 	private Scanner movementInput;
+	
+	/** Player-id */
+	private String name;
 
 	
 	/**
@@ -82,7 +85,8 @@ public class QuoridorServer implements Messages {
 	public String getName() {
 		
 		System.out.print("Name: ");
-		return HELLO_MESSAGE + " " + this.movementInput.next();
+		this.name = this.movementInput.next();
+		return HELLO_MESSAGE + " " + this.name;
 		
 	}
 	
