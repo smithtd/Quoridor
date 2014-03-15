@@ -5,8 +5,9 @@
  */
 package Network;
 
+import java.io.IOException;
 import java.net.Socket;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.net.UnknownHostException;
 
 
 
@@ -25,21 +26,21 @@ import java.util.concurrent.ArrayBlockingQueue;
  *
  */
 
-public class QuoridorClient {
+public class QuoridorClient implements Messages {
 	
 	
 	/** Store each socket that will be communicating with the client */
-	public static ArrayBlockingQueue<Socket> channels;
+	public Socket[] channels;
 	
 	/** Max # of players **/
-	public static final int MAX_PLAYERS = 4;
+	private static final int MAX_PLAYERS = 4;
 	/** Min # of players **/ 
-	public static final int MIN_PLAYERS = 2;
+	private static final int MIN_PLAYERS = 2;
 	
 	
 	public QuoridorClient(int players) {
 		
-		channels = new ArrayBlockingQueue<Socket>(players);
+		this.channels = new Socket[players];
 		
 	}
 	
@@ -61,17 +62,20 @@ public class QuoridorClient {
 			
 		}
 		
-		/** Make the connections with the servers */
-		makeConnections(args);
-	
+		QuoridorClient newGame = new QuoridorClient(arguments);
 		
+		System.out.println(HELLO_MESSAGE);
+		
+		/** Make the connections with the servers */
+		newGame.makeConnections(args);
+				
 	}
 	
 	/** 
 	 * 
 	 * @param args
 	 */
-	private static void makeConnections(String[] args) {
+	private void makeConnections(String[] args) {
 		
 		/** Connect to the socket and store them into the channels queue */
 		
@@ -81,6 +85,15 @@ public class QuoridorClient {
 			int portNumber = Integer.parseInt((args[i]).substring(args[i].indexOf(':') + 1));
 			
 			System.out.println(host + " " + portNumber);
+			
+			try {
+				this.channels[i] = new Socket(host, portNumber);
+				
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			
 		}
 		
