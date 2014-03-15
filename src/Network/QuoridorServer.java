@@ -9,7 +9,9 @@
 package Network;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Scanner;
 
 
@@ -44,13 +46,15 @@ public class QuoridorServer implements Messages {
 	private int portNumber;
 	
 	/** Socket to connect to the client */
-	private ServerSocket socket;
+	private Socket socket;
 	
 	/** Scanner for input */
 	private Scanner movementInput;
 	
 	/** Player-id */
 	private String name;
+	
+	private OutputStream output;
 
 	
 	/**
@@ -63,32 +67,46 @@ public class QuoridorServer implements Messages {
 		this.movementInput = new Scanner("System.in");
 		
 	    try {
-			this.socket = new ServerSocket(this.portNumber);
-			this.socket.accept();
+			ServerSocket socketServ = new ServerSocket(this.portNumber);
+			this.socket = socketServ.accept();
+			this.output = this.socket.getOutputStream();
 	    } catch (IOException ioe) {
 	    		ioe.printStackTrace();
 	    }
+	   
 	}
 	
 		
 	/**
 	 * @return the next move/placement in the queue
 	 */
-	public String getMove() {			
+	public void getMove() {			
 			System.out.print("\n" + ASK_FOR_MOVE);
-			return MOVE + " " + this.movementInput.next().trim();
+			String move = MOVE + " " + this.movementInput.next().trim();
+			try {
+				this.output.write(move.getBytes());
+				this.output.flush();
+			} catch (IOException e) { 
+				e.printStackTrace();
+			}
 	}
 	
 	/** 
 	 * @return - name of this server
 	 */
-	public String getName() {
+	public void getName() {
 		
 		System.out.print("Name: ");
 		this.name = this.movementInput.next();
-		return HELLO_MESSAGE + " " + this.name;
+		String message = HELLO_MESSAGE + " " + this.name;
+		try {
+			this.output.write(message.getBytes());
+			this.output.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		
 	}
-	
 	
 }

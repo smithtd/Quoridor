@@ -8,6 +8,7 @@ package Network;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 
 
@@ -28,11 +29,8 @@ import java.net.UnknownHostException;
 
 public class QuoridorClient implements Messages {
 	
-	
-	/** Store each socket that will be communicating with the client */
-	public Socket[] channels;
-	/** player-id **/
-	public String[] playerID;
+	/** Store the player information rather than have two arrays */
+	private PlayerInformation[] channels;
 	
 	/** Max # of players **/
 	private static final int MAX_PLAYERS = 4;
@@ -42,8 +40,7 @@ public class QuoridorClient implements Messages {
 	
 	public QuoridorClient(int players) {
 		
-		this.channels = new Socket[players];
-		this.playerID = new String[players];
+		this.channels = new PlayerInformation[players];
 		
 	}
 	
@@ -90,7 +87,9 @@ public class QuoridorClient implements Messages {
 			System.out.println(host + " " + portNumber);
 			
 			try {
-				this.channels[i] = new Socket(host, portNumber);
+				QuoridorServer qs = new QuoridorServer(portNumber);
+				Socket s = new Socket(host,portNumber);
+				channels[i] = new PlayerInformation("", s,qs);
 				
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
@@ -102,8 +101,24 @@ public class QuoridorClient implements Messages {
 		
 	}
 	
+	private class PlayerInformation {
+		public String name;
+		public Socket connection;
+		public QuoridorServer moveServer;
+		public Scanner input;
+		
+		public PlayerInformation(String name, Socket s, QuoridorServer mv) {
+			this.name = name; 
+			this.connection = s;
+			this.moveServer = mv;
+			try {
+				this.input = new Scanner (this.connection.getInputStream());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
 	
 	
-	
-
 }
