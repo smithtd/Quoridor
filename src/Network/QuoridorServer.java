@@ -20,7 +20,6 @@ import java.util.Scanner;
  * of the Quoridor game. Each player will have an instance of
  * this server where they will be able to input moves/walls/get kicked. 
  * 
- * 
  * How to use this: Netcat provides an easy to use tool to generate a server 
  * to connect to it.
  * 
@@ -39,9 +38,9 @@ import java.util.Scanner;
  * 
  */
 
-public class QuoridorServer   {
+public class QuoridorServer implements Messages {
 	
-	/** Port number of distant machine */
+	/** Port number for the socket on this machine */
 	private int portNumber;
 	
 	/** Socket to connect to the client */
@@ -52,9 +51,7 @@ public class QuoridorServer   {
 
 	
 	/**
-	 * 
 	 * @param port - port number where communication can be made at server
-	 * 
 	 * 
 	 */
 	public QuoridorServer(int port) {
@@ -68,7 +65,6 @@ public class QuoridorServer   {
 	    } catch (IOException ioe) {
 	    		ioe.printStackTrace();
 	    }
-	
 	}
 	
 		
@@ -76,8 +72,19 @@ public class QuoridorServer   {
 	 * @return the next move/placement in the queue
 	 */
 	public String getMove() {			
-			System.out.print("\nMove:>");
-			String move = this.movementInput.next().trim();
-			return move;
+			System.out.print("\n" + ASK_FOR_MOVE);
+			return MOVE + " " + this.movementInput.next().trim();
 	}
+	
+	/** 
+	 * @return - name of this server
+	 */
+	public String getName() {
+		
+		System.out.print("Name: ");
+		return HELLO_MESSAGE + " " + this.movementInput.next();
+		
+	}
+	
+	
 }

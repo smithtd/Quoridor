@@ -31,6 +31,8 @@ public class QuoridorClient implements Messages {
 	
 	/** Store each socket that will be communicating with the client */
 	public Socket[] channels;
+	/** player-id **/
+	public String[] playerID;
 	
 	/** Max # of players **/
 	private static final int MAX_PLAYERS = 4;
@@ -41,6 +43,7 @@ public class QuoridorClient implements Messages {
 	public QuoridorClient(int players) {
 		
 		this.channels = new Socket[players];
+		this.playerID = new String[players];
 		
 	}
 	
@@ -64,10 +67,10 @@ public class QuoridorClient implements Messages {
 		
 		QuoridorClient newGame = new QuoridorClient(arguments);
 		
-		System.out.println(HELLO_MESSAGE);
-		
 		/** Make the connections with the servers */
 		newGame.makeConnections(args);
+		
+		/** connections made, get information from move-server */
 				
 	}
 	
