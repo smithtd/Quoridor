@@ -1,35 +1,52 @@
+/* This will be an object to hold info about an individual wall */
+
 package walls;
 
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Point;
 
-import javax.swing.*;
-
-import ui.Controller;
-
-@SuppressWarnings("serial")
-public class Wall extends JButton {
-	public int x;
-	public int y;
+public class Wall {
 	
-	@SuppressWarnings("unused") //For now
-	private static Controller cont;
+	// instance variables
+	private int x;
+	private int y;
+	private String type;	// horizontal or vertical
 	
-	public Wall(int x, int y, String type, Controller cont){
-		super();
-		this.setBorder(null);
+	// constructor
+	public Wall(int x, int y, String type){
 		this.x = x;
 		this.y = y;
-		Wall.cont = cont;
-		/*
-		 * if string identifier is a horizontal wall set the dimensions based 
-		 * upon that. Same goes for vertical walls
-		 */
-		if( type.equals( "horz" ) )
-			this.setPreferredSize( new Dimension( 50, 10 ) );
-		else
-			this.setPreferredSize( new Dimension( 10, 50 ) );
-		this.setBackground( Color.gray);
-		
+		this.type = type;
 	}
+	
+	// returns the wall's x value
+	public int getX(){
+		return this.x;
+	}
+	
+	// returns the wall's y value
+	public int getY(){
+		return this.y;
+	}
+	
+	// returns the wall's type
+	public String type(){
+		return this.type;
+	}
+	
+	// returns whether the wall passed in intersects this wall
+	public boolean intersects(Wall w){
+		return this.getCenter().equals(w.getCenter());
+	}
+	
+	// returns a point representing center of this wall
+	public Point getCenter(){
+		Point p;
+		if(this.type == "v"){
+			p = new Point(this.x, this.y + 1);
+		}else{
+			p = new Point(this.x + 1, this.y);
+		}
+		return p;
+	}
+	
 }
