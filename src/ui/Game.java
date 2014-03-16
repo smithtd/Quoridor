@@ -9,27 +9,21 @@ package ui;
 import java.util.Arrays;
 
 import players.Player;
-import board.Board;
 
 public class Game {
 	
 	private static final int NUM_OF_WALLS = 20; // number of walls is fixed
 	private static final int MAX_NUMBER_PLAYERS = 4;
 	// Instance variables
-	Board board;				// Board to track data about board's contents
 	public static Player[] players;			// Player[] to hold players
 	public static int [] wallsRem;
 
-	int numPlayers;				// number of players
-	Player curr; 				// Player or index to track whose turn it is
-	int moves;					// Move count
+	private int numPlayers;				// number of players
 	public GameBoard gb;
 	
 	// constructor
 	public Game(int numPlayers, int numWalls) {
-		board = new Board(numPlayers);
 		this.numPlayers = numPlayers;
-		int wallRations = (NUM_OF_WALLS / this.numPlayers);
 		Game.players = new Player[numPlayers];
 		/*
 		 * Initialize Players
@@ -56,11 +50,7 @@ public class Game {
 		}
 		
 		Game.players = initPlayer;
-
-/**/
 		System.out.println(Arrays.toString(initPlayer));
-		curr = players[0];
-		moves = 0;
 	}
 	
 	// start game
@@ -95,6 +85,10 @@ public class Game {
 	// exit game (report errors if any)
 	public void quit(){
 		System.exit(0);
+	}
+	
+	public int getNumPlayers(){
+		return this.numPlayers;
 	}
 	
 	// client/server communication methods (Dylan)

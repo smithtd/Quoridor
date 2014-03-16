@@ -103,6 +103,28 @@ public class Controller {
 		Player p = plyrAry[currentIndex];
 		pbAry[p.x()][p.y()].setBackground(Color.black);
 		p.setPos(b.x(), b.y());
+		//here down is the win state
+		//not functional yet
+		System.out.println(p.x());
+		System.out.println(p.y());
+		if(p.getPnum()==1&&p.y()==8){
+			//Debug statements
+			System.out.println("player 1 wins");
+			winState(p);
+		}
+		if(p.getPnum()==2&&p.getStartx()==8&&p.y()==0){
+			System.out.println("player 2 wins");
+			winState(p);
+		}else if(p.getPnum()==2&&p.getStartx()==4&&p.x()==0){
+			System.out.println("player 2 wins");
+			winState(p);
+		}
+		if(p.getPnum()==3&&p.y()==0){
+			winState(p);
+		}
+		if(p.getPnum()==4&&p.y()==8){
+			winState(p);
+		}
 		this.nextPlayerMove();
 	}
 	
@@ -117,9 +139,10 @@ public class Controller {
 			System.out.println( "Yellow Turn" );
 	}
 	
-	
-	
-	
+	public void winState(Player p){
+		//just a BS way to declare a winner for now
+		System.out.println("Player: " + p.getPnum() + " wins!");
+	}
 	
 	
 	
@@ -202,4 +225,6 @@ public class Controller {
 	public int getNumPlayers(){
 		return Controller.plyrAry.length;
 	}
+
+	
 }

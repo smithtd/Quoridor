@@ -9,11 +9,10 @@
 package Network;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Scanner;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 
 
@@ -22,7 +21,6 @@ import java.util.concurrent.LinkedBlockingQueue;
  * The QuoridorServer is used for the networking portion
  * of the Quoridor game. Each player will have an instance of
  * this server where they will be able to input moves/walls/get kicked. 
- * 
  * 
  * How to use this: Netcat provides an easy to use tool to generate a server 
  * to connect to it.
@@ -42,88 +40,73 @@ import java.util.concurrent.LinkedBlockingQueue;
  * 
  */
 
-public class QuoridorServer extends Thread  {
+public class QuoridorServer implements Messages {
 	
-	/** Store input from player/ai */
-	private BlockingQueue<String> moveQueue;
-	
-	/** Machine Name where client is running */
-	private String serverMachineName;
-	
-	/** Port number of distant machine */
+	/** Port number for the socket on this machine */
 	private int portNumber;
 	
 	/** Socket to connect to the client */
 	private Socket socket;
 	
+	/** Scanner for input */
+	private Scanner movementInput;
+	
+	/** Player-id */
+	private String name;
+	
+	private OutputStream output;
+
+	
 	/**
-	 * 
-	 * @param name - name of distant machine where server is running
 	 * @param port - port number where communication can be made at server
 	 * 
-	 * Creates a new instance of the QuoridorClient with the input stream, 
-	 * name, and port number to connect to.
 	 */
-	public QuoridorServer(String name, int port) {
-		this.moveQueue = new LinkedBlockingQueue<String>();
-		this.serverMachineName = name;
+	public QuoridorServer(int port) {
+		
 		this.portNumber = port;
+		this.movementInput = new Scanner("System.in");
+		
 	    try {
-			this.socket = new Socket(this.serverMachineName, this.portNumber);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	
+			ServerSocket socketServ = new ServerSocket(this.portNumber);
+			this.socket = socketServ.accept();
+			this.output = this.socket.getOutputStream();
+	    } catch (IOException ioe) {
+	    		ioe.printStackTrace();
+	    }
+	   
 	}
 	
+		
 	/**
-	 * 
-	 * @param move - move to add to the queue of moves
-	 * @throws InterruptedException 
+	 * @return the next move/placement in the queue
 	 */
-	public void addMove(String move) {
-		// TODO check if move is valid, but when?
+	public void getMove() {			
+			System.out.print("\n" + ASK_FOR_MOVE);
+			String move = MOVE + " " + this.movementInput.next().trim();
 			try {
-				this.moveQueue.put(move);
-			} catch (InterruptedException e) {
+				this.output.write(move.getBytes());
+				this.output.flush();
+			} catch (IOException e) { 
 				e.printStackTrace();
 			}
 	}
 	
-	/**
-	 * 
-	 * @return the next move/placement in the queue
-	 *
-	 * If there is nothing waiting in the queue when called it will automatically
-	 * prompt for a move
-	 * @throws InterruptedException 
-	 * 
+	/** 
+	 * @return - name of this server
 	 */
-	public String getMove() throws InterruptedException  {
+	public void getName() {
 		
-			/**
-			 *  take(), according to Java will wait until an element
-			 *  is available, so we shouldn't have to handle cases
-			 *  where the user is stalling on entering their move
-			 *  or making decisions for some strategy.
-			 *  
-			 *  We could implement some sort of timeout feature by using
-			 *  poll()
-			 */
-		if(this.moveQueue.peek() == null){
-			Scanner sc = new Scanner(System.in);
-			System.out.print("\nMove:>");
-			this.addMove(sc.nextLine());
+		System.out.print("Name: ");
+		this.name = this.movementInput.next();
+		String message = HELLO_MESSAGE + " " + this.name;
+		try {
+			this.output.write(message.getBytes());
+			this.output.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		
-		return this.moveQueue.take();
-	}
-	
-	public void run() {
 		
 	}
-	
 	
 }
