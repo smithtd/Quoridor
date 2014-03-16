@@ -3,7 +3,9 @@ package ui;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import main.Game;
 import players.Player;
+import walls.Wall;
 
 /*
  * The purpose of this class is to hold all variables of the game state as 

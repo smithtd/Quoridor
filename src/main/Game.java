@@ -4,11 +4,12 @@
  * client.
  */
 
-package ui;
+package main;
 
 import java.util.Arrays;
 
 import players.Player;
+import ui.GameBoard;
 
 public class Game {
 	

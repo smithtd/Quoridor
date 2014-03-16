@@ -3,6 +3,8 @@ package ui;
 import javax.swing.*;
 
 import players.Player;
+import walls.Wall;
+
 //using ImageIcon(?), JButton, JOptionPane, JPanel, etc.
 import java.awt.*;
 import java.awt.event.*;

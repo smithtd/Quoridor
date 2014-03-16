@@ -1,9 +1,11 @@
-package ui;
+package walls;
 
 import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.*;
+
+import ui.Controller;
 
 @SuppressWarnings("serial")
 public class Wall extends JButton {

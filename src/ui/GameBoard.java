@@ -2,7 +2,11 @@ package ui;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
+
+import walls.Wall;
+import main.Game;
 
 @SuppressWarnings("serial")
 public class GameBoard extends JPanel {
