@@ -144,13 +144,11 @@ public class Controller {
 	}
 	
 	public void winState(Player p){
-		//just a BS way to declare a winner for now
-		System.out.println("Player " + p.getPnum() + " wins!");
 		currentIndex = 0;
 		JPanel jp1 = new JPanel();
 		jp1.setLayout( new FlowLayout() ) ;
 		jp1.setPreferredSize( new Dimension( 300, 75 ) );
-		tempFrame = new JFrame( "Wall Options" );
+		tempFrame = new JFrame( "Player " + p.getPnum() + " wins!" );
 		tempFrame.setLayout( new BorderLayout() );
 		ButtonGroup btngrp = new ButtonGroup();
 		final JRadioButton b1 = new JRadioButton("New 2 player game",false);
