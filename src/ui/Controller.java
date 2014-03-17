@@ -1,7 +1,17 @@
 package ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 import main.Game;
 import players.Player;
@@ -31,6 +41,7 @@ public class Controller {
 	private static int currentIndex;
 	private static ArrayList<String> testedSpaces;
 	private static ArrayList<PlayerButton> btnsToChange;
+	private JFrame tempFrame;
 	
 	
 	//Constructor
@@ -106,22 +117,15 @@ public class Controller {
 		pbAry[p.x()][p.y()].setBackground(Color.black);
 		p.setPos(b.x(), b.y());
 		//here down is the win state
-		//not functional yet
-		System.out.println(p.x());
-		System.out.println(p.y());
-		if(p.getPnum()==1&&p.y()==8){
-			//Debug statements
-			System.out.println("player 1 wins");
+		if(p.getPnum()==1&&p.x()==8){
 			winState(p);
 		}
-		if(p.getPnum()==2&&p.getStartx()==8&&p.y()==0){
-			System.out.println("player 2 wins");
+		if(p.getPnum()==2&&p.getStartx()==8&&p.x()==0){
 			winState(p);
-		}else if(p.getPnum()==2&&p.getStartx()==4&&p.x()==0){
-			System.out.println("player 2 wins");
+		}else if(p.getPnum()==2&&p.getStartx()==4&&p.y()==0){
 			winState(p);
 		}
-		if(p.getPnum()==3&&p.y()==0){
+		if(p.getPnum()==3&&p.x()==0){
 			winState(p);
 		}
 		if(p.getPnum()==4&&p.y()==8){
@@ -142,8 +146,45 @@ public class Controller {
 	}
 	
 	public void winState(Player p){
-		//just a BS way to declare a winner for now
-		System.out.println("Player: " + p.getPnum() + " wins!");
+		currentIndex = 0;
+		JPanel jp1 = new JPanel();
+		jp1.setLayout( new FlowLayout() ) ;
+		jp1.setPreferredSize( new Dimension( 300, 75 ) );
+		tempFrame = new JFrame( "Player " + p.getPnum() + " wins!" );
+		tempFrame.setLayout( new BorderLayout() );
+		ButtonGroup btngrp = new ButtonGroup();
+		final JRadioButton b1 = new JRadioButton("New 2 player game",false);
+		final JRadioButton b2 = new JRadioButton("New 4 player game",false);
+		final JRadioButton b3 = new JRadioButton("Quit",false);
+		b1.addActionListener( new ActionListener(){
+			public void actionPerformed( ActionEvent e ){
+				GameBoard.g.new2PlayerGame();
+				tempFrame.dispose();
+			}
+		});
+		b2.addActionListener( new ActionListener(){
+			public void actionPerformed( ActionEvent e ){
+				GameBoard.g.new4PlayerGame();
+				tempFrame.dispose();
+			}
+		});
+		b3.addActionListener( new ActionListener(){
+			public void actionPerformed( ActionEvent e ){
+				System.exit(0);
+			}
+		});
+		btngrp.add(b1);
+	    btngrp.add(b2);
+	    btngrp.add(b3);
+	    jp1.add(b3, FlowLayout.LEFT);
+	    jp1.add(b2, FlowLayout.LEFT);
+		jp1.add(b1, FlowLayout.LEFT);
+		tempFrame.add( jp1, BorderLayout.NORTH );
+		tempFrame.setLocation( 350, 300 );
+		tempFrame.setSize( 300, 300 );
+		tempFrame.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
+		tempFrame.setVisible( true );
+		tempFrame.pack();
 	}
 	
 	

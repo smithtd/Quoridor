@@ -59,43 +59,16 @@ public class PlayerButton extends JButton {
 	// adds an action listener to a ClickButton
 	public void addButtonListener(){
 		final PlayerButton b = this;
-		addActionListener( new ActionListener(){
+		this.addActionListener( new ActionListener(){
 			// users pawn moves to position that they click assuming it's highlighted
 			public void actionPerformed( ActionEvent e ) {
-				//int answer = 0;
 				if(b.getBackground() == Color.MAGENTA){
-					cont.movePiece(b);
+					b.clicked();
 				}
-/*
-				 // swapped out message reporting pos for dialog with options
-				JPanel p = new JPanel();
-				p.setLayout( new FlowLayout() ) ;
-				p.setPreferredSize( new Dimension( 100, 50 ) );
-				JRadioButton rb = new JRadioButton("Move your pawn here.");
-			    // add the buttons to the panel
-				p.add(rb);
-			    // call a JOptionPane to display the radio buttons
-			    JOptionPane.showMessageDialog(null,p);
-			    
-			    // perform action based on user's selection
-			    if(rb.isSelected()){
-			    	JOptionPane.showMessageDialog( null, "Selected move pawn to (" + x() + "," + y() + ")." );
-			    } 
-*/
-
-				//b.clicked();
-
 			}
 		});
 	}
-	/*public void clicked(){
-		int answer = 0;
-		if(this.getBackground() == Color.MAGENTA){
-			answer = JOptionPane.showConfirmDialog(null, "Move here?", "Pawn Placement", JOptionPane.YES_NO_OPTION);
-			if( answer == 0 ){
-				//System.out.println("YES");
-				cont.movePiece(this);
-			}
-		}
-	}*/
+	public void clicked(){
+		cont.movePiece(this);
+	}
 }

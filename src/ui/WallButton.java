@@ -84,19 +84,19 @@ public class WallButton extends JButton {
 		final JRadioButton b3 = new JRadioButton("Neither", false );
 		b1.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
-				b.placeHorzWall();
+				System.out.println( b.placeHorzWall() );
 			}
 		});
 		
 		b2.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
-				b.placeVertWall();
+				System.out.println( b.placeVertWall() );
 			}
 		});
 		
 		b3.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
-				b.resetWall();
+				System.out.println(  b.resetWall() );
 			}
 		});
 		//}
@@ -134,26 +134,9 @@ public class WallButton extends JButton {
 		tempFrame.setVisible( true );
 		tempFrame.pack();
 
-    	/*
-		if( b1.isSelected() )
-	    	System.out.println( "DEBUG WallButton 3" );
-		if( b2.isSelected() )
-	    	System.out.println( "DEBUG WallButton 4" );
-		if( b3.isSelected() )
-	    	System.out.println( "DEBUG WallButton 5" );
-		if( ready.isSelected() )
-	    	System.out.println( "DEBUG WallButton 6" );
-			
-		System.out.println( "DEBUG WallButton " + b1.isSelected() + ( b2.isSelected() )  + ( b3.isSelected() ) + ( ready.isSelected() ));
-		System.out.println( "DEBUG WallButton " + jp1 );
-		System.out.println( "DEBUG WallButton " + jp2 );
-		System.out.println( "DEBUG WallButton " + tempFrame );
-		System.out.println();
-		System.out.println();
-    	 */
 	}
 	
-	public void placeHorzWall(){
+	public int placeHorzWall(){
 		Wall right = cont.getHorzWalls()[x][y+1];
 		Wall left = cont.getHorzWalls()[x][y];
 		Wall up = cont.getVertWalls()[x][y];
@@ -165,17 +148,17 @@ public class WallButton extends JButton {
 		this.setBackground( thisC );
 		
 		if(right.getBackground()==noWallColor && left.getBackground()==noWallColor && this.getBackground()==Color.BLACK && cont.getWallsRem()[cont.getPlyrIndex()]>0 ){
-			System.out.println("NONE BROWN");
 			right.setBackground( yesWallColor );
 			left.setBackground( yesWallColor );
 			this.setBackground( yesWallColor );
+			return 1;
 		}
-		
+		return 0;
 		
 		
 	}
 	
-	public void placeVertWall(){
+	public int placeVertWall(){
 		Wall right = cont.getHorzWalls()[x][y+1];
 		Wall left = cont.getHorzWalls()[x][y];
 		Wall up = cont.getVertWalls()[x][y];
@@ -190,10 +173,12 @@ public class WallButton extends JButton {
 			down.setBackground( yesWallColor );
 			up.setBackground( yesWallColor );
 			this.setBackground( yesWallColor );
+			return 1;
 		}
+		return 0;
 	}
 	
-	public void resetWall(){
+	public int resetWall(){
 		Wall right = cont.getHorzWalls()[x][y+1];
 		Wall left = cont.getHorzWalls()[x][y];
 		Wall up = cont.getVertWalls()[x][y];
@@ -203,5 +188,6 @@ public class WallButton extends JButton {
 		down.setBackground(downC);
 		up.setBackground(upC);				
 		this.setBackground( thisC );
+		return 0;
 	}
 }
