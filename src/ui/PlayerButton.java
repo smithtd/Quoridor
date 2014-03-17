@@ -64,7 +64,7 @@ public class PlayerButton extends JButton {
 			public void actionPerformed( ActionEvent e ) {
 				//int answer = 0;
 				if(b.getBackground() == Color.MAGENTA){
-					cont.movePiece(b);
+					b.clicked();
 				}
 /*
 				 // swapped out message reporting pos for dialog with options
@@ -88,14 +88,7 @@ public class PlayerButton extends JButton {
 			}
 		});
 	}
-	/*public void clicked(){
-		int answer = 0;
-		if(this.getBackground() == Color.MAGENTA){
-			answer = JOptionPane.showConfirmDialog(null, "Move here?", "Pawn Placement", JOptionPane.YES_NO_OPTION);
-			if( answer == 0 ){
-				//System.out.println("YES");
-				cont.movePiece(this);
-			}
-		}
-	}*/
+	public void clicked(){
+		cont.movePiece(this);
+	}
 }
