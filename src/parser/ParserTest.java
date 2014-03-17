@@ -59,9 +59,16 @@ public class ParserTest {
 		fail("");
 	}
 	
+	/** Should not accept empty strings **/
 	@Ignore
 	public void testEmptyString() {
-		fail("");
+		String s = "";
+		for(int i = 0; i <= 100; i++) {
+			assertFalse(p.isMove(s));
+			assertFalse(p.isWall(s));
+			s += " ";
+		}
+		
 	}
 
 }
