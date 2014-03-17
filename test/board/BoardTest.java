@@ -11,156 +11,296 @@ import org.junit.Test;
 
 import board.Board;
 import players.Player;
+import walls.Wall;
 
 public class BoardTest {
 	private Board board;
-	private Player player;
+	private Player[] players;
 	
 	@Before
 	public void initialize() {
-		board = new Board();
-		board.bitmap[0][1] = 1; 
-		player = new Player("player1", 5);
+		players = new Player[4];
+		players[0] = new Player("p1", 1, 0, 1);
+		players[1] = new Player("p2", 2, 8, 2);
+		players[2] = new Player("p3", 8, 1, 3);
+		players[3] = new Player("p4", 8, 2, 4);
+		board = new Board(players, 20);
+		board.placeWall(players[0], 3, 3, "v");
 	}
 	
-	// test isEmpty
-	private void testResults(int x, int y, boolean expectedResult) {
-		boolean result = board.isEmpty(x, y);
-	    assertThat(result, equalTo(expectedResult));    
-	}
-	
-	// test placePawn by comparing board
-	private void testResults(Player p, int x, int y, Board expectedBoard) {
-		board.placePawn(p, x, y);
-	    assertThat(board.bitmap, equalTo(expectedBoard.bitmap));    
-	}
-	
-	// test placePawn by checking for "false" return
-	private void testResults(Player p, int x, int y, boolean expected) {
+	// test placePawn 
+	private void testPawnResults(Player p, int x, int y, boolean expected) {
 		boolean result = board.placePawn(p, x, y);
 	    assertThat(result, equalTo(expected));    
 	}
 	
-	// test isLegalMove
-	private void testResults(Player p, String type, int x, int y, boolean expected) {
-		boolean result = board.isLegalMove(p, type, x, y);
+	// test placeWall 
+	private void testResults(Player p, int x, int y, String type, boolean expected) {
+		boolean result = board.placeWall(p, x, y, type);
+	    assertThat(result, equalTo(expected));    
+	}
+	
+	// test isLegalMove (pawn version)
+	private void testResults(Player p, int x, int y, boolean expected) {
+		boolean result = board.isLegalMove(p, x, y);
 	    assertThat(result, equalTo(expected));  
 	}
 	
-	/* Test isEmpty() */
-	
-	@Test
-	public void checkIfSingleSquareIsEmpty(){
-		int x = 0;
-		int y = 0; 
-		boolean expected = true;
-		
-		testResults(x, y, expected);
-	}
-	
-	@Test 
-	public void checkIfSingleOccupiedSquareIsEmpty() {
-		int x = 0;
-		int y = 1; 
-		boolean expected = false;
-		
-		testResults(x, y, expected);
-	}
-	
-	@Test 
-	public void checkIfOutOfBoundsHighSquareIsEmpty() {
-		int x = 0;
-		int y = 10; 
-		boolean expected = false;
-		
-		testResults(x, y, expected);
-	}
-	
-	@Test 
-	public void checkIfOutOfBoundsLowSquareIsEmpty() {
-		int x = -1;
-		int y = 0; 
-		boolean expected = false;
-		
-		testResults(x, y, expected);
+	// test isLegalMove (wall version)
+	private void testResults(Player p, Wall w, boolean expected) {
+		boolean result = board.isLegalMove(p, w);
+	    assertThat(result, equalTo(expected));  
 	}
 
 	/* Test placePawn() */
 	
 	@Test
-	public void checkIfCanAddNewPawnToEmptySquare(){
-		int x=0;
+	public void checkIfCanMovePawnToEmptySquare(){
+		int x=2;
 		int y=0;
-		Board expected = new Board();
-		expected.bitmap[0][1] = 1;
-		expected.bitmap[0][0] = 1;
+		boolean expected = true;
 		
-		testResults(player, x, y, expected);
-	}
-	
-	@Test
-	public void checkIfCanMoveOldPawnToEmptySquare(){
-		// player's old pos is (0,0)
-		player.setPos(0, 0);
-		// new pos will be (0,2)
-		int x=0;
-		int y=2;
-		Board expected = new Board();
-		expected.bitmap[0][1] = 1;
-		expected.bitmap[0][2] = 1;
-		
-		testResults(player, x, y, expected);
+		testPawnResults(players[0], x, y, expected);
 	}
 
 	@Test
-	public void checkIfCanAddNewPawnToOccupiedSquare(){
-		int x=0;
+	public void checkIfCanMovePawnToOccupiedSquare(){
+		int x=8;
 		int y=1;
 		boolean expected = false;
 	
-		testResults(player, x, y, expected);
+		testResults(players[3], x, y, expected);
 	}
 	
 	@Test
-	public void checkIfCanAddNewPawnOutsideBoardHigh(){
-		int x=10;
+	public void checkIfMovePawnOutsideBoardHigh(){
+		int x=9;
 		int y=1;
 		boolean expected = false;
 	
-		testResults(player, x, y, expected);
+		testResults(players[2], x, y, expected);
 	}
 	
 	@Test
-	public void checkIfCanAddNewPawnOutsideBoardLow(){
-		int x=-1;
-		int y=1;
+	public void checkIfCanMoveOutsideBoardLow(){
+		int x=1;
+		int y=-1;
 		boolean expected = false;
 	
-		testResults(player, x, y, expected);
+		testResults(players[0], x, y, expected);
 	}
 
-	/* Test isLegalMove() */
+	/* Test placeWall() */
+	
+	@Test
+	public void checkIfCanPlaceVerticalWallInValidSpace(){
+		int x = 1;
+		int y = 1;
+		String type = "v";
+		boolean expected = true;
+		
+		testResults(players[0], x, y, type, expected);
+	}
+	
+	@Test
+	public void checkIfCanPlaceVerticalWallOnLeftEdge(){
+		int x = 0;
+		int y = 1;
+		String type = "v";
+		boolean expected = false;
+		
+		testResults(players[0], x, y, type, expected);
+	}
+	
+	@Test
+	public void checkIfCanPlaceVerticalWallOnRightEdge(){
+		int x = 8;
+		int y = 1;
+		String type = "v";
+		boolean expected = false;
+		
+		testResults(players[0], x, y, type, expected);
+	}
+	
+	@Test
+	public void checkIfCanPlaceHorizontalWallInValidSpace(){
+		int x = 0;
+		int y = 6;
+		String type = "h";
+		boolean expected = true;
+		
+		testResults(players[0], x, y, type, expected);
+	}
+	
+	@Test
+	public void checkIfCanPlaceHorizontalWallOnTopEdge(){
+		int x = 1;
+		int y = 0;
+		String type = "h";
+		boolean expected = false;
+		
+		testResults(players[0], x, y, type, expected);
+	}
+	
+	@Test
+	public void checkIfCanPlaceHorizontalWallOnBottomEdge(){
+		int x = 0;
+		int y = 8;
+		String type = "h";
+		boolean expected = false;
+		
+		testResults(players[0], x, y, type, expected);
+	}
+	
+	/* Test isLegalMove() - pawn version */
 	/* NEEDS MORE TESTING WHEN LOGIC COMPLETE */
 	
 	@Test
-	public void checkIfCanMakeMoveOfInvalidType(){
+	public void checkValidPawnMoveLeft(){
 		int x=0;
 		int y=0;
-		String type = "pizza";
-		boolean expected = false;
+		boolean expected = true;
 	
-		testResults(player, type, x, y, expected);
+		testResults(players[0], x, y, expected);
 	} 
 	
 	@Test
-	public void checkIfCanMakeMoveOfValidType(){
-		int x=1;
+	public void checkValidPawnMoveRight(){
+		int x=2;
 		int y=0;
-		String type = "horizontal";
 		boolean expected = true;
 	
-		testResults(player, type, x, y, expected);
+		testResults(players[0], x, y, expected);
 	} 
+	
+	@Test
+	public void checkValidPawnMoveDown(){
+		int x=1;
+		int y=1;
+		boolean expected = true;
+	
+		testResults(players[0], x, y, expected);
+	}
+	
+	@Test
+	public void checkValidPawnMoveUp(){
+		int x=2;
+		int y=7;
+		boolean expected = true;
+	
+		testResults(players[1], x, y, expected);
+	}
+	
+	@Test
+	public void checkInvalidPawnMoveUp(){
+		int x=1;
+		int y=-1;
+		boolean expected = false;
+	
+		testResults(players[0], x, y, expected);
+	} 
+	
+	@Test
+	public void checkInvalidPawnMoveLeft(){
+		int x=0;
+		int y=7;
+		boolean expected = false;
+	
+		testResults(players[1], x, y, expected);
+	}
+	
+	@Test
+	public void checkInvalidPawnMoveRight(){
+		int x=0;
+		int y=7;
+		boolean expected = false;
+	
+		testResults(players[1], x, y, expected);
+	}
+	
+	@Test
+	public void checkInvalidPawnMoveDown(){
+		int x=0;
+		int y=9;
+		boolean expected = false;
+	
+		testResults(players[1], x, y, expected);
+	}
+	
+	/* Test isLegalMove() - wall version */
+	/* NEEDS MORE TESTING WHEN LOGIC COMPLETE */
+	
+	@Test
+	public void checkInvalidType(){
+		Wall w = new Wall(1, 1, "Pizza");
+		boolean expected = false;
+	
+		testResults(players[0], w, expected);
+	} 
+	
+	@Test
+	public void checkValidHorizontalType(){
+		Wall w = new Wall(5, 1, "h");
+		boolean expected = true;
+	
+		testResults(players[0], w, expected);
+	} 
+	
+	@Test
+	public void checkValidVerticalType(){
+		Wall w = new Wall(1, 1, "v");
+		boolean expected = true;
 
+		testResults(players[0], w, expected);
+	}
+	
+	@Test
+	public void checkHorizontalOutOfBoundsLeft(){
+		Wall w = new Wall(-1, 1, "h");
+		boolean expected = false;
+	
+		testResults(players[0], w, expected);
+	}
+	
+	@Test
+	public void checkHorizontalOutOfBoundsRight(){
+		Wall w = new Wall(8, 1, "h");
+		boolean expected = false;
+	
+		testResults(players[0], w, expected);
+	}
+	
+	@Test
+	public void checkVerticalOutOfBoundsTop(){
+		Wall w = new Wall(1, -1, "v");
+		boolean expected = false;
+	
+		testResults(players[0], w, expected);
+	}
+	
+	@Test
+	public void checkVerticalOutOfBoundsBottom(){
+		Wall w = new Wall(1, 8, "v");
+		boolean expected = false;
+	
+		testResults(players[0], w, expected);
+	}
+	
+	@Test
+	public void checkIntersectingWalls(){
+		Wall w = new Wall(2, 4, "h");
+		boolean expected = false;
+	
+		testResults(players[0], w, expected);
+	}
+	
+	@Test
+	public void checkWallOnExistingWall(){
+		Wall w = new Wall(3, 3, "v");
+		boolean expected = false;
+	
+		testResults(players[0], w, expected);
+	}
+	
 }
 

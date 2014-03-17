@@ -6,119 +6,103 @@
 
 package board;
 
-import java.awt.Color;
-
 import players.Player;
-import ui.GameBoard;
+import walls.Wall;
 
 public class Board {
 	
 	// Instance variables
-	static int[][] bitmap;	// tracks whether square is available
+	private Player[] players;	
+	private Wall[] walls;
+	private int numWalls;
 	
 	// Methods
 	// constructor(s)
-	public Board() {
-		bitmap = new int[9][9];
+	public Board(Player[] players, int walls) {
+		this.players = players;			// passed in from Game
+		this.walls = new Wall[walls];	// Wall array length = max num of walls
+		numWalls = 0;
 	}
 	
-	// if we know number of players, we know where to start pawns
-	public Board(int players){
-		bitmap = new int[9][9];
-		// place pawns depending on number of players
-	}
-	
-	// produce a board based on an existing matrix
-	public Board(int[][] map) {
-		bitmap = map;
-	}
-	
-	/*
-	 * Purpose: check whether a square is occupied
-	 * Parameters: x and y coordinates
-	 * Preconditions: a method needs to know if a square is empty
-	 * Postconditions: report T/F, whether square is empty 
-	 * 			returns false if out of bounds since can't place piece
-	 */
-	public static boolean isEmpty(int x, int y) {
-		// check xy to make sure in range
-		if (x > 8 || y > 8 || x < 0 || y < 0)
+	// If move is valid, update player coordinates, return true
+	public boolean placePawn(Player p, int x, int y) {
+		if(isLegalMove(p, x, y)){
+			p.setPos(x,y);
+			return true;
+		}else{
 			return false;
-		
-		// return whether square value = 0
-		return bitmap[x][y] == 0;
-	}
-	
-	/*
-	 * Purpose: place a pawn at given coordinates
-	 * Parameters: player making move, x and y coordinates
-	 * Preconditions: a player wants to move its pawn
-	 * Postconditions: if move is valid, set new loc=1 and old loc=0
-	 * 		return T/F based on success
-	 */
-	public static void placePawn(Player p, int x, int y) {
-		if(p.getPnum() == 1)
-			GameBoard.pbAry[x][y].setBackground(Color.BLUE);
-		else if(p.getPnum() == 2)
-			GameBoard.pbAry[x][y].setBackground(Color.RED);
-		else if(p.getPnum() == 3)
-			GameBoard.pbAry[x][y].setBackground(Color.GREEN);
-		else if(p.getPnum() == 4)
-			GameBoard.pbAry[x][y].setBackground(Color.YELLOW);
-	}
-	
-	/*
-	 * Purpose: check whether move is legal
-	 * Parameters: player, move type, x and y coordinates
-	 * Preconditions: player is trying to make move, need to check if legal
-	 * Postconditions: return true if ok, else report error and return false
-	 */
-	public static boolean isLegalMove(Player p, String type, int x, int y) {
-		// check that type is valid
-		if(!(type.equals("horizontal") || type.equals("vertical") || type.equals("pawn")))
-			return false;
-		
-		// check that it's the player's turn
-		
-		// check that (x,y) is on grid
-		if (x > 8 || y > 8 || x < 0 || y < 0)
-			return false;
-		
-		// check that (x,y) not occupied
-		if(!isEmpty(x, y))
-			return false;
-		
-		// if type = horizontal
-		if(type.equals("horizontal")){
-			// check that player has wall to place
-			if(p.getWalls()<=0)
-				return false;
-			// check (x+1, y)
-			if(!isEmpty(x+1, y))
-				return false;
-			// check that x+1 < 9
-			if(x+1>8)
-				return false;
 		}
-			
-		// if type = vertical
-		if(type.equals("vertical")){
-			// check that player has wall to place
-			if(p.getWalls()<=0)
+	}
+	
+	// if move is valid, add wall to walls[], return true
+	public boolean placeWall(Player p, int x, int y, String type){
+		Wall w = new Wall(x, y, type);
+		if(isLegalMove(p, w)){
+			walls[numWalls] = w;
+			numWalls++;;
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	// isLegalMove is an overloaded method
+	// this version checks whether a player's pawn can be placed at (x,y)
+	public boolean isLegalMove(Player p, int x, int y){
+		// check that coordinates are valid
+		if(x > 8 || x < 0 || y > 8 || y < 0){
+			return false;
+		}
+		
+		// check that the space is not occupied by another player
+		for(int i = 0; i < players.length; i++){
+			if(x == players[i].x() && y == players[i].y()){
 				return false;
-			// check (x, y+1)
-			if(!isEmpty(x, y+1))
-				return false;
-			// check that y+1 < 9
-			if(y+1>8)
-				return false;
+			}
 		}
 				
-		// if type = pawn
-			// make sure not more than one space unless jumping another pawn
+		// check that the space is only one away (add logic for jumping later)
+		if(x > p.x()+1 || x < p.x()-1)
+			return false;
+		if(y > p.y()+1 || y < p.y()-1)
+			return false;
 		
-		// if wall: 
-			// make sure it doesn't prevent a player from reaching end
+		// make sure no wall is in the way
+		for(int i=0; i<numWalls; i++){
+			if(walls[i].isBetween(p.x(), p.y(), x, y))
+				return false;
+		}
+		
+		return true;
+	}
+	
+	// isLegalMove is an overloaded method
+	// this version checks whether a player can place a wall at (x,y)
+	public boolean isLegalMove(Player p, Wall w) {
+		// check that player can play a wall
+		if(p.getWalls()<=0)
+			return false;
+		
+		// check that type is valid
+		if(!(w.type().equals("h") || w.type().equals("v")))
+			return false;
+		
+		// check that (x,y) is on grid and ok to place a wall at
+		if(w.getX() > 7 || w.getY() > 7 || w.getX() < 0 || w.getY() < 0)
+			return false;
+		
+		if(w.type().equals("v") && w.getX()==0)
+			return false;		// can't place vertical wall on left edge
+		
+		if(w.type().equals("h") && w.getY()==0)
+			return false;		// can't place horizontal wall on edge
+		
+		// check that (x,y) not occupied or intersected by another wall
+		for(int i=0; i<numWalls; i++)
+			if(walls[i].intersects(w))
+				return false;
+						
+		// make sure it doesn't prevent a player from reaching end
 		return true;
 	}
 }

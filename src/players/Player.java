@@ -74,6 +74,7 @@ public class Player implements Players {
 				c = Color.GREEN;
 			else if(pNumber == 4)
 				c = Color.YELLOW;
+			this.wallTotal = 5; // hardcoded for now. will fix
 		}
 		/* Methods */
 		

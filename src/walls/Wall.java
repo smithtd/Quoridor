@@ -9,7 +9,7 @@ public class Wall {
 	// instance variables
 	private int x;
 	private int y;
-	private String type;	// horizontal or vertical
+	private String type;	// h or v
 	
 	// constructor
 	public Wall(int x, int y, String type){
@@ -41,7 +41,7 @@ public class Wall {
 	// returns a point representing center of this wall
 	public Point getCenter(){
 		Point p;
-		if(this.type == "v"){
+		if(this.type.equals("v")){
 			p = new Point(this.x, this.y + 1);
 		}else{
 			p = new Point(this.x + 1, this.y);
@@ -49,4 +49,24 @@ public class Wall {
 		return p;
 	}
 	
+	// check if this wall is between two adjacent points
+	public boolean isBetween(int x1, int y1, int x2, int y2){
+		// if wall is vertical, check that wall is between the points on the y axis 
+		// and close enough on the x axis 
+		if(type.equals("v")){
+			if((this.x==x1 || this.x==x2) && 
+					(this.y==y1 || this.y==y2 || this.y==y1-1 || this.y==y2-1)){
+				return true;
+			}
+		}else{	
+			// if wall is vertical, check that wall is between the points on the y axis 
+			// and close enough on the x axis 
+			if((this.y==y1 || this.y==y2) && 
+					(this.x==x1 || this.x==x2 || this.x==x1-1 || this.x==y2-1)){
+				return true;
+			}
+		}
+		return false;
+	}
 }
+

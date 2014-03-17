@@ -26,9 +26,15 @@ public class WallTest {
 	    assertThat(result, equalTo(expectedResult));    
 	}
 	
-	// test intersects(Wall)
+	// test getCenter()
 	private void testResults(Wall w, Point expectedResult) {
 		Point result = w.getCenter();
+	    assertThat(result, equalTo(expectedResult));    
+	}
+	
+	// test isBetween(x1, y1, x2, y2)
+	private void testResults(Wall w, int x1, int y1, int x2, int y2, boolean expectedResult) {
+		boolean result = w.isBetween(x1, y1, x2, y2);
 	    assertThat(result, equalTo(expectedResult));    
 	}
 	
@@ -73,5 +79,55 @@ public class WallTest {
 		Point expected = new Point(4,5);
 		
 		testResults(w, expected);
+	}
+	
+	/* Test isBetween() */
+	
+	@Test
+	public void checkTopOfVerticalWallBetweenPoints(){
+		Wall w = new Wall(5, 0, "v");
+		boolean expected = true;
+		
+		testResults(w,4,0,5,0,expected);
+	}
+	
+	@Test
+	public void checkTopOfVerticalWallNotBetweenPoints(){
+		Wall w = new Wall(5, 0, "v");
+		boolean expected = false;
+		
+		testResults(w,3,0,4,0,expected);
+	}
+	
+	@Test
+	public void checkTopOfVerticalWallAdjacentToPoints(){
+		Wall w = new Wall(5, 0, "v");
+		boolean expected = false;
+		
+		testResults(w,4,0,4,1,expected);
+	}
+	
+	@Test
+	public void checkBottomOfVerticalWallBetweenPoints(){
+		Wall w = new Wall(5, 0, "v");
+		boolean expected = true;
+		
+		testResults(w,4,1,5,1,expected);
+	}
+	
+	@Test
+	public void checkBottomOfVerticalWallNotBetweenPoints(){
+		Wall w = new Wall(5, 0, "v");
+		boolean expected = false;
+		
+		testResults(w,4,2,5,2,expected);
+	}
+	
+	@Test
+	public void checkBottomOfVerticalWallAdjacentToPoints(){
+		Wall w = new Wall(5, 0, "v");
+		boolean expected = false;
+		
+		testResults(w,4,1,4,2,expected);
 	}
 }

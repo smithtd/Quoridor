@@ -1,5 +1,4 @@
-package players;
-
+package debug;
 import java.io.ByteArrayInputStream;
 
 /*
