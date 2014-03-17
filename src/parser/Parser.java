@@ -14,5 +14,14 @@ package parser;
  *
  */
 public class Parser {
-
+	
+	
+	
+	public Parser() {
+		
+	}
+	
+	public boolean isMove(String s) {
+		return false;
+	}
 }
