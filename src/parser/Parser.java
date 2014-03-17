@@ -6,6 +6,9 @@
 
 package parser;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 /**
  *  The parser will verify moves are input correctly and send them off
@@ -15,13 +18,18 @@ package parser;
  */
 public class Parser {
 	
+	/** Regex for pawn movements */
+	private Pattern moves;
 	
+	/** Regex for wall placements */
+	private Pattern walls;
 	
 	public Parser() {
-		
+		this.moves = Pattern.compile("[a-i][1-9]");
 	}
 	
 	public boolean isMove(String s) {
-		return false;
+		Matcher isM = moves.matcher(s);
+		return isM.matches();
 	}
 }

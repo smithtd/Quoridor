@@ -1,3 +1,5 @@
+package parser;
+
 
 /**
  * ParserTest.java
@@ -7,6 +9,7 @@
 import static org.junit.Assert.*;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import parser.Parser;
@@ -14,7 +17,7 @@ import parser.Parser;
 
 public class ParserTest {
 	
-	Parser p;
+	static Parser p;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -32,20 +35,22 @@ public class ParserTest {
 	@Test
 	public void testMovementString() {
 		// Test all movement possibilities that are valid
-		String s;
+		String s = "";
 		for(int i = 'a'; i <='i'; i++){
-			s = (char)i;
+			s += (char)i;
 			for(int j = 1; j < 10; j++) {
 				assertTrue(p.isMove(s + j));
 			}
+			s = "";
 		}
 		
 		// Test example moves that aren't valid
-		for(int i = 'j' i <= 'z'; i++) {
-			s = (char)i;
+		for(int i = 'j'; i <= 'z'; i++) {
+			s += (char)i;
 			for(int j = 1; j < 20; j++) {
 				assertFalse(p.isMove(s + j));
 			}
+			s = "";
 		}
 	}
 	
@@ -56,7 +61,7 @@ public class ParserTest {
 	
 	@Ignore
 	public void testEmptyString() {
-		fail("")
+		fail("");
 	}
 
 }
