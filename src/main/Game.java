@@ -14,6 +14,7 @@ import java.util.Observer;
 import players.Player;
 import board.Board;
 import ui.GameBoard;
+import parser.Parser;
 
 public class Game extends Observable{
 	
@@ -26,23 +27,25 @@ public class Game extends Observable{
 	private static Board board;					// holds board info
 	private static Player[] players;			// Player[] to hold players
 	private int numPlayers;						// number of players
-	//public GameBoard gb;
+	private int curr;
 	
 	// constructor
+
 	public Game(int numPlayers, int numWalls) {
+		curr = 0;
 		this.numPlayers = numPlayers;
 		players = new Player[numPlayers];
 		int wallsEach = numWalls/numPlayers;
 		
 		// Initialize Players: 1, 4, 2, 3 (clockwise from the top of the board)
 		if(this.numPlayers == MAX_NUMBER_PLAYERS){
-			players[0] = new Player("1", 0, 4, 1, wallsEach);
-			players[1] = new Player("2", 4, 8, 2, wallsEach);
-			players[2] = new Player("3", 8, 4, 3, wallsEach);
-			players[3] = new Player("4", 4, 0, 4, wallsEach);
-		} else {
-			players[0] = new Player("1", 0, 4, 1, wallsEach);
+			players[0] = new Player("1", 4, 0, 1, wallsEach);
 			players[1] = new Player("2", 8, 4, 2, wallsEach);
+			players[2] = new Player("3", 4, 8, 3, wallsEach);
+			players[3] = new Player("4", 0, 4, 4, wallsEach);
+		} else {
+			players[0] = new Player("1", 4, 0, 1, wallsEach);
+			players[1] = new Player("2", 4, 8, 2, wallsEach);
 		}
 		
 		board = new Board(players, numWalls);
@@ -56,7 +59,7 @@ public class Game extends Observable{
         this.ui = observers;  
     }
     
-    public void notifyObservers(Observable observable,String availability) {    
+    public void notifyObservers(Observable observable,Board board) {    
     	this.ui.get(0).update(observable,board);  
     }   
   
@@ -74,21 +77,31 @@ public class Game extends Observable{
 	public void startGame(){
 		GameBoard gb = new GameBoard();
 		this.registerObserver(gb);
+		gb.update(this, board);
+	}
+	
+	public Board getBoard(){
+		return board;
+	}
+	
+	public void nextTurn(){
+		curr++;
+		if(curr >= numPlayers)
+			curr=0;
+	}
+	
+	public boolean playTurn(String s){
+		int x = Integer.parseInt(""+s.charAt(0));
+		int y = Integer.parseInt(""+s.charAt(1));
 		
-/*		gb = new GameBoard( this );
-
-		for(int i = 1;i<=numPlayers;i++){
-			Board.placePawn(players[i-1], players[i-1].getStartx(), players[i-1].getStarty());
+		if(s.length()==2){
+			return board.placePawn(this.currPlayer(), x, y);
 		}
-
-		for(int i=0; i<numPlayers; i++){
-			Player p = players[i];
-			GameBoard.cont.getPlayerButtons()[p.x()][p.y()].setBackground(p.getColor());
-		}
-		GameBoard.cont.addPlyrAry( players );
-		GameBoard.cont.addWallsRem(wallsRem);
-		GameBoard.cont.showPlyrMoves();
-*/
+		return false;
+	}
+	
+	public Player currPlayer(){
+		return players[curr];
 	}
 	
 	public static void new4PlayerGame(){
@@ -116,6 +129,30 @@ public class Game extends Observable{
 	// client/server communication methods (Dylan)
 	// report errors
 	public static void main(String[] args) {
-		new2PlayerGame();
+		// parser to parse moves
+		Parser p = new Parser();
+		
+		// start game and call up UI
+		Game g = new Game( 2, NUM_OF_WALLS );
+		g.startGame();
+		
+		// until someone wins, loop through turns
+		boolean playerWon = false;
+		while(!playerWon){
+			System.out.println("Player "+g.currPlayer().getColor()+" turn");
+			
+			// get move from player
+			String move = g.currPlayer().getMove();
+			move = p.moveTranslate(move);
+			System.out.println(move);
+			
+			// try to play turn
+			if(g.playTurn(move)){
+				System.out.println("Valid move");
+				g.notifyObservers(g, g.getBoard());
+			}
+			
+			g.nextTurn();
+		}
 	}
 }

@@ -17,8 +17,6 @@ import players.Player;
 public class GameBoard extends JPanel implements Observer {
 
 	private static JFrame frame;
-	//public static Game g;
-	//public static Controller cont;
 	private static PlayerButton[][] pbAry;
 	private static WallButton[][] wbAry;
 	private static Temp[][] vertWalls;
@@ -30,21 +28,19 @@ public class GameBoard extends JPanel implements Observer {
 	 */
 	public GameBoard(){
 		super();
-		//cont = new Controller(game.getNumPlayers());
 		FlowLayout flow = new FlowLayout();
 		flow.setHgap( 0 );
 		flow.setVgap( 0 );
 		this.setLayout( flow );
 		setFrameStats();
-		//GameBoard.g = game;
-		//cont.addGame( GameBoard.g );
-		//cont.addGame( this );
 	}
 	
 	// all updating will occur in this method
 	public void update(Observable game, Object board) {  
+		this.clearPlayers();
 		Board b = (Board) board;
-		this.addJButtons(b);
+		this.addPlayerButtons(b);
+		this.addWallButtons(b);
         repaint();
     }  
 
@@ -193,9 +189,9 @@ public class GameBoard extends JPanel implements Observer {
 	
 	public void addOtherJObjectsToGameBoard(){
 		addJButtons();
-		repaint();
+		this.repaint();
 	}
-
+	
 	public void addJButtons(){
 		pbAry = new PlayerButton[9][9];
 		wbAry = new WallButton[8][8];
@@ -236,27 +232,28 @@ public class GameBoard extends JPanel implements Observer {
 		}
 	}
 	
-	public void addJButtons(Board b){
+	public void addPlayerButtons(Board b){
 		
 		Player[] players = b.players();
-		Wall[] walls = b.walls();
-		
-		// build board
-		this.addJButtons();
 		
 		// change button colors for players
 		for(Player p : players){
-			pbAry[p.x()][p.y()].addPlayer(p);
+			pbAry[p.y()][p.x()].addPlayer(p);
 		}
+			
+	}
+	
+	public void addWallButtons(Board b){
+		
+		Wall[] walls = b.walls();
 		
 		// display walls
-		for(Wall w : walls){
-			if(w.type()=="v"){
+		for(int i=0; i<b.numWalls(); i++){
+			Wall w = walls[i];
+			if(w.type().equals("v"))
 				this.placeVertWall(w.getX(), w.getY());
-			}else{
+			if(w.type().equals("v"))
 				this.placeHorzWall(w.getX(), w.getY());
-			}
-				
 		}
 			
 	}
@@ -283,6 +280,16 @@ public class GameBoard extends JPanel implements Observer {
 		down.setBackground( yesWallColor );
 		wbAry[x][y].setBackground( yesWallColor );
 		
+	}
+	
+	public void clearPlayers(){
+		for(int y=0; y<9; y++){
+			for(int x=0; x<9; x++){
+				if(pbAry[x][y].getBackground()!=Color.BLACK)
+					pbAry[x][y].setBackground(Color.BLACK);
+					pbAry[x][y].removePlayer();
+			}
+		}
 	}
 	
 }

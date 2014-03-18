@@ -127,9 +127,12 @@ public class Player implements Players {
 		//Verify move is entered
 		// valid, is legal move, when the person's turn
 		// comes up
+		sc = new Scanner(System.in);
 		System.out.println("Enter move: ");
 		// TODO figure a check mechanism for moves.
-		return sc.nextLine();
+		if(sc.hasNextLine())
+			return sc.nextLine().trim();
+		return "";
 	}
 	
 	public static void usedWall(){

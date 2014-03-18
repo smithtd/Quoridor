@@ -22,15 +22,12 @@ public class PlayerButton extends JButton {
 	private int x;
 	private int y;
 	private Player plyr;
-
-//	private static Controller cont;
 	
 	// Constructors
 	public PlayerButton( int x, int y, Controller cont ){
 		super();
 		this.x = x;
 		this.y = y;
-//		PlayerButton.cont = cont;
 		this.setPreferredSize( new Dimension( 50, 50 ) );
 		this.setBackground( Color.BLACK );
 		this.setOpaque(true);
@@ -52,10 +49,13 @@ public class PlayerButton extends JButton {
 	public void addPlayer( Player plyr ){
 		this.plyr = plyr; 
 		this.setBackground(plyr.getColor());
+		this.setOpaque(true);
 	}
 	
 	public void removePlayer(){
 		this.plyr = null;
+		this.setBackground(Color.BLACK);
+		this.setOpaque(true);
 	}
 	
 	public boolean hasPlayer(){

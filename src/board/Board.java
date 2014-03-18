@@ -32,6 +32,10 @@ public class Board {
 		return walls;
 	}
 	
+	public int numWalls(){
+		return numWalls;
+	}
+	
 	// If move is valid, update player coordinates, return true
 	public boolean placePawn(Player p, int x, int y) {
 		if(isLegalMove(p, x, y)){
@@ -59,26 +63,35 @@ public class Board {
 	public boolean isLegalMove(Player p, int x, int y){
 		// check that coordinates are valid
 		if(x > 8 || x < 0 || y > 8 || y < 0){
+			System.err.println("Position ("+x+","+y+") out of range");
 			return false;
 		}
 		
 		// check that the space is not occupied by another player
 		for(int i = 0; i < players.length; i++){
 			if(x == players[i].x() && y == players[i].y()){
+				System.err.println("There's already a player there.");
 				return false;
 			}
 		}
 				
 		// check that the space is only one away (add logic for jumping later)
-		if(x > p.x()+1 || x < p.x()-1)
+		if(x > p.x()+1 || x < p.x()-1){
+			System.err.println("("+x+","+y+") is too far away from ("+p.x()+","+p.y()+").");
 			return false;
-		if(y > p.y()+1 || y < p.y()-1)
+		}
+			
+		if(y > p.y()+1 || y < p.y()-1){
+			System.out.println("Space is too far away.");
 			return false;
+		}
 		
 		// make sure no wall is in the way
 		for(int i=0; i<numWalls; i++){
-			if(walls[i].isBetween(p.x(), p.y(), x, y))
+			if(walls[i].isBetween(p.x(), p.y(), x, y)){
+				System.err.println("There is a wall in the way.");
 				return false;
+			}
 		}
 		
 		return true;
@@ -112,5 +125,12 @@ public class Board {
 						
 		// make sure it doesn't prevent a player from reaching end
 		return true;
+	}
+	
+	public String toString(){
+		String s = "Board: ";
+		s += players.length + " players |";
+		s += numWalls + " walls";
+		return s;
 	}
 }

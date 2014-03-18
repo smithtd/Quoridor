@@ -20,7 +20,6 @@ public class WallButton extends JButton {
 	//keep track of height for the walls
 	public int x;
 	public int y;
-//	private static Controller cont;
 	private JFrame tempFrame;
 	private Color yesWallColor = new Color(154,97,41);
 	private Color noWallColor = Color.gray;
@@ -37,7 +36,6 @@ public class WallButton extends JButton {
 		this.setBorder(null);
 		this.x = x;
 		this.y = y;
-//		WallButton.cont = cont;
 		this.setPreferredSize( new Dimension( 10, 10 ) );
 		this.setBackground( Color.BLACK );
 		addButtonListener();
@@ -49,7 +47,6 @@ public class WallButton extends JButton {
 			this.setBorder(null);
 			this.x = x;
 			this.y = y;
-//			WallButton.cont = cont;
 			this.setPreferredSize( new Dimension( 10, 10 ) );
 			this.setBackground( Color.BLACK );
 			this.setOpaque(true);
