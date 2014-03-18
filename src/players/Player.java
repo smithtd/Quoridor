@@ -76,6 +76,22 @@ public class Player implements Players {
 				c = Color.YELLOW;
 			this.wallTotal = 5; // hardcoded for now. will fix
 		}
+		
+		public Player( String name, int startX, int startY, int pNum, int walls ){
+			this.name = name;
+			this.startX = startX;
+			this.startY = startY;
+			this.pNumber = pNum;
+			if(pNumber== 1)
+				c = Color.BLUE;
+			else if(pNumber == 2)
+				c = Color.RED;
+			else if(pNumber == 3)
+				c = Color.GREEN;
+			else if(pNumber == 4)
+				c = Color.YELLOW;
+			this.wallTotal = walls; 
+		}
 		/* Methods */
 		
 	/*
