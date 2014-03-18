@@ -43,7 +43,7 @@ public class Parser {
 	public String moveTranslate(String s) {
 		
 		if(this.isMove(s)) {
-			int x = (int) s.charAt(0) - '\'';
+			int x = (int) s.charAt(0) - 'a' + 1;
 			return x + "" + s.charAt(1);
 		} else
 			return "";
