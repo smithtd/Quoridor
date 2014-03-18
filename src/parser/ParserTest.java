@@ -9,7 +9,6 @@ package parser;
 import static org.junit.Assert.*;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import parser.Parser;
@@ -54,14 +53,72 @@ public class ParserTest {
 		}
 	}
 	
-	@Ignore
+	/** 
+	 * Test the wall placement regex with what the protocol should be
+	 * 
+	 * Ex. a4v, b6h,
+	 * 
+	 * 
+	 */
+	
+	@Test
 	public void testIsWallPlacementString() {
-		fail("");
+		// Test all wall placement possibilities
+		String s = "";
+		for(int i = 'a'; i<='i'; i++) {
+			s += (char)i;
+			for(int j = 1; j < 10; j++) {
+				assertTrue(p.isWall(s + j + 'h'));
+				assertTrue(p.isWall(s + j + 'v'));
+			}
+			s = "";
+		}
+		
+		// Wall placements that are 3 characters but don't fit protocol
+		for(int i = 'a'; i <= 'z'; i++) {
+			s += (char)i;
+			for(int j = 11; j < 1000; j++) {
+				assertFalse(p.isWall(s + j + 'h'));
+				assertFalse(p.isWall(s + j + 'v'));
+				assertFalse(p.isWall(s + j + "hv"));
+				assertFalse(p.isWall("a4v" + s + j + 'v'));
+			}
+			s = "";
+		}
+		
 	}
 	
-	@Ignore
+	/** Should not accept empty strings **/
+	@Test
 	public void testEmptyString() {
-		fail("");
+		String s = "";
+		for(int i = 0; i <= 100; i++) {
+			assertFalse(p.isMove(s));
+			assertFalse(p.isWall(s));
+			s += " ";
+		}
+		
+	}
+	
+	/** Tests the translation of moves to what we must get
+	 * for our gui implementation.
+	 */
+	@Test
+	public void testMoveTranslation() {
+		
+		String cOne = "a4"; // should return "14"
+		assertEquals("14", p.moveTranslate(cOne));
+		
+		cOne = "b9" ; // should return "29"
+		assertEquals("29", p.moveTranslate(cOne));
+		
+		cOne = "i9"; // should return "99"
+		assertEquals("99", p.moveTranslate(cOne));
+		
+		cOne = "z8"; // should return ""
+		assertEquals("", p.moveTranslate(cOne));
+		
+		
 	}
 
 }

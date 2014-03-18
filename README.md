@@ -22,3 +22,9 @@ Meeting on 3/10:
     Dylan Woythal
     Marc Dean    
     Tyler Smith
+    
+Meeting on 3/17:
+    Dylan Woythal
+    Marc Dean    
+    Tyler Smith
+    Eli Donahue
