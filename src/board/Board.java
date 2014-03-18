@@ -24,6 +24,14 @@ public class Board {
 		numWalls = 0;
 	}
 	
+	public Player[] players(){
+		return players;
+	}
+	
+	public Wall[] walls(){
+		return walls;
+	}
+	
 	// If move is valid, update player coordinates, return true
 	public boolean placePawn(Player p, int x, int y) {
 		if(isLegalMove(p, x, y)){

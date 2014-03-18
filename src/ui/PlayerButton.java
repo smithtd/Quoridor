@@ -1,4 +1,4 @@
-/* Author: Tyler Smith and Eli Donahue
+/* Author: Tyler Smith
  * Class provides buttons with action listeners
  */
 
@@ -23,21 +23,35 @@ public class PlayerButton extends JButton {
 	private int y;
 	private Player plyr;
 
-	private static Controller cont;
+//	private static Controller cont;
 	
 	// Constructors
 	public PlayerButton( int x, int y, Controller cont ){
 		super();
 		this.x = x;
 		this.y = y;
-		PlayerButton.cont = cont;
+//		PlayerButton.cont = cont;
 		this.setPreferredSize( new Dimension( 50, 50 ) );
 		this.setBackground( Color.BLACK );
+		this.setOpaque(true);
+		this.setBorderPainted(false);
+		addButtonListener();
+	}
+	
+	public PlayerButton( int x, int y ){
+		super();
+		this.x = x;
+		this.y = y;
+		this.setPreferredSize( new Dimension( 50, 50 ) );
+		this.setBackground( Color.BLACK );
+		this.setOpaque(true);
+		this.setBorderPainted(false);
 		addButtonListener();
 	}
 	
 	public void addPlayer( Player plyr ){
 		this.plyr = plyr; 
+		this.setBackground(plyr.getColor());
 	}
 	
 	public void removePlayer(){
@@ -62,13 +76,14 @@ public class PlayerButton extends JButton {
 		this.addActionListener( new ActionListener(){
 			// users pawn moves to position that they click assuming it's highlighted
 			public void actionPerformed( ActionEvent e ) {
-				if(b.getBackground() == Color.MAGENTA){
+				//if(b.getBackground() == Color.MAGENTA){
 					b.clicked();
-				}
+				//}
 			}
 		});
 	}
 	public void clicked(){
-		cont.movePiece(this);
+		System.err.println("Clicked "+x+" "+y);
+//		cont.movePiece(this);
 	}
 }

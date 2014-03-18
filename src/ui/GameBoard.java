@@ -5,33 +5,49 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import walls.Wall;
+import java.util.Observable;  
+import java.util.Observer;  
+
 import main.Game;
+import board.Board;
+import walls.Wall;
+import players.Player;
 
 @SuppressWarnings("serial")
-public class GameBoard extends JPanel {
+public class GameBoard extends JPanel implements Observer {
 
-	public static JFrame frame;
-	public static Game g;
-	public static Controller cont;
-	public static PlayerButton[][] pbAry;
+	private static JFrame frame;
+	//public static Game g;
+	//public static Controller cont;
+	private static PlayerButton[][] pbAry;
+	private static WallButton[][] wbAry;
+	private static Temp[][] vertWalls;
+	private static Temp[][] horzWalls;
 	
 	/*
 	 * Basic details of this Panel like the panel dimensions and what layout to 
 	 * use to add JObjects 
 	 */
-	public GameBoard( Game game ){
+	public GameBoard(){
 		super();
-		cont = new Controller(game.getNumPlayers());
+		//cont = new Controller(game.getNumPlayers());
 		FlowLayout flow = new FlowLayout();
 		flow.setHgap( 0 );
 		flow.setVgap( 0 );
 		this.setLayout( flow );
 		setFrameStats();
-		GameBoard.g = game;
-		cont.addGame( GameBoard.g );
-		cont.addGame( this );
+		//GameBoard.g = game;
+		//cont.addGame( GameBoard.g );
+		//cont.addGame( this );
 	}
+	
+	// all updating will occur in this method
+	public void update(Observable game, Object board) {  
+		Board b = (Board) board;
+		this.addJButtons(b);
+        repaint();
+    }  
+
 	
 	/*
 	 * The JFrame is what holds JPanel, which is what class type this file is,
@@ -87,14 +103,14 @@ public class GameBoard extends JPanel {
 			JMenuItem new2PlyrGameOpt = new JMenuItem( "New 2 Player Game" );
 			new2PlyrGameOpt.addActionListener( new ActionListener(){
 				public void actionPerformed( ActionEvent e ){
-					g.new2PlayerGame();
+					//g.new2PlayerGame();
 				}
 			});
 			fileMenu.add(new2PlyrGameOpt);
 			JMenuItem new4PlyrGameOpt = new JMenuItem( "New 4 Player Game" );
 			new4PlyrGameOpt.addActionListener( new ActionListener(){
 				public void actionPerformed( ActionEvent e ){
-					g.new4PlayerGame();
+					//g.new4PlayerGame();
 				}
 			});
 			fileMenu.add(new4PlyrGameOpt);
@@ -159,12 +175,12 @@ public class GameBoard extends JPanel {
 			wallsOpt.addActionListener( new ActionListener(){
 				public void actionPerformed(ActionEvent e){
 					String temp = "";
-					temp += "Blue : " + cont.getWallsRem()[0] + "\n";
-					temp += "Red : " + cont.getWallsRem()[1] + "\n";
-					if(cont.getNumPlayers() == 4 ){
-						temp += "Green : " + cont.getWallsRem()[2] + "\n";
-						temp += "Yellow : " + cont.getWallsRem()[3] + "\n";
-					}
+//					temp += "Blue : " + cont.getWallsRem()[0] + "\n";
+//					temp += "Red : " + cont.getWallsRem()[1] + "\n";
+//					if(cont.getNumPlayers() == 4 ){
+//						temp += "Green : " + cont.getWallsRem()[2] + "\n";
+//						temp += "Yellow : " + cont.getWallsRem()[3] + "\n";
+//					}
 					JOptionPane.showMessageDialog( frame , temp, "About",JOptionPane.PLAIN_MESSAGE);
 				}
 			});
@@ -182,30 +198,35 @@ public class GameBoard extends JPanel {
 
 	public void addJButtons(){
 		pbAry = new PlayerButton[9][9];
-		Wall[][] vertWalls = new Wall[9][8];
-		Wall[][] horzWalls = new Wall[8][9];
-		WallButton[][] wbAry = new WallButton[8][8];
+		wbAry = new WallButton[8][8];
+		
+		vertWalls = new Temp[9][8];
+		horzWalls = new Temp[8][9];
+		
 		//9x9 board
+		// 9 rows
 		for( int x = 0; x<9; x++ ){
+			// two layers?
 			for( int layer=0; layer<2; layer++ ){
+				// 9 cols
 				for( int y=0; y<9; y++ ){
 				//layer 0 is PlayerButton && Vert Walls
 				//Layer 1 is HorzWalls && WallButton
 					if( layer == 0 ){
-						PlayerButton plyrBtn = new PlayerButton( x, y, cont );
+						PlayerButton plyrBtn = new PlayerButton( x, y );
 						this.add( plyrBtn );
 						pbAry[x][y] = plyrBtn;
 						if( y!= 8 ){
-							Wall w = new Wall( x, y, "vert", cont );
+							Temp w = new Temp( x, y, "v");
 							this.add( w );
 							vertWalls[x][y] = w;
 						}
-					} else if( x!= 8 ) {
-						Wall w = new Wall( x, y, "horz", cont );
+					} else if(layer == 1 && x != 8) {
+						Temp w = new Temp( x, y, "h" );
 						this.add( w );
 						horzWalls[x][y] = w;
 						if( y!= 8 && x!=8 ){
-							WallButton wb = new WallButton( x, y, cont );
+							WallButton wb = new WallButton( x, y );
 							this.add( wb );
 							wbAry[x][y] = wb;
 						}
@@ -213,10 +234,55 @@ public class GameBoard extends JPanel {
 				}
 			}
 		}
-		cont.addHorzWalls( horzWalls );
-		cont.addVertWalls( vertWalls );
-		cont.addPlayerButtons( pbAry );
-		cont.addWallButtons( wbAry );
+	}
+	
+	public void addJButtons(Board b){
+		
+		Player[] players = b.players();
+		Wall[] walls = b.walls();
+		
+		// build board
+		this.addJButtons();
+		
+		// change button colors for players
+		for(Player p : players){
+			pbAry[p.x()][p.y()].addPlayer(p);
+		}
+		
+		// display walls
+		for(Wall w : walls){
+			if(w.type()=="v"){
+				this.placeVertWall(w.getX(), w.getY());
+			}else{
+				this.placeHorzWall(w.getX(), w.getY());
+			}
+				
+		}
+			
+	}
+	
+	public void placeHorzWall(int x, int y){
+		Temp right = horzWalls[x][y+1];
+		Temp left = horzWalls[x][y];
+		
+		Color yesWallColor = new Color(154,97,41);
+		
+		right.setBackground( yesWallColor );
+		left.setBackground( yesWallColor );
+		wbAry[x][y].setBackground( yesWallColor );
+		
+	}
+	
+	public void placeVertWall(int x, int y){
+		Temp up = vertWalls[x][y+1];
+		Temp down = vertWalls[x][y];
+		
+		Color yesWallColor = new Color(154,97,41);
+		
+		up.setBackground( yesWallColor );
+		down.setBackground( yesWallColor );
+		wbAry[x][y].setBackground( yesWallColor );
+		
 	}
 	
 }

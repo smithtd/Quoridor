@@ -13,7 +13,7 @@ import java.util.Observer;
 
 import players.Player;
 import board.Board;
-//import ui.GameBoard;
+import ui.GameBoard;
 
 public class Game extends Observable{
 	
@@ -72,6 +72,9 @@ public class Game extends Observable{
 	
 	// start game
 	public void startGame(){
+		GameBoard gb = new GameBoard();
+		this.registerObserver(gb);
+		
 /*		gb = new GameBoard( this );
 
 		for(int i = 1;i<=numPlayers;i++){
