@@ -54,13 +54,35 @@ public class ParserTest {
 		}
 	}
 	
-	@Ignore
+	@Test
 	public void testIsWallPlacementString() {
-		fail("");
+		// Test all wall placement possibilities
+		String s = "";
+		for(int i = 'a'; i<='i'; i++) {
+			s += (char)i;
+			for(int j = 1; j < 10; j++) {
+				assertTrue(p.isWall(s + j + 'h'));
+				assertTrue(p.isWall(s + j + 'v'));
+			}
+			s = "";
+		}
+		
+		// Wall placements that are 3 characters but don't fit protocol
+		for(int i = 'a'; i <= 'z'; i++) {
+			s += (char)i;
+			for(int j = 11; j < 1000; j++) {
+				assertFalse(p.isWall(s + j + 'h'));
+				assertFalse(p.isWall(s + j + 'v'));
+				assertFalse(p.isWall(s + j + "hv"));
+				assertFalse(p.isWall("a4v" + s + j + 'v'));
+			}
+			s = "";
+		}
+		
 	}
 	
 	/** Should not accept empty strings **/
-	@Ignore
+	@Test
 	public void testEmptyString() {
 		String s = "";
 		for(int i = 0; i <= 100; i++) {
