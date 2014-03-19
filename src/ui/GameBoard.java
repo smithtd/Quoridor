@@ -252,33 +252,33 @@ public class GameBoard extends JPanel implements Observer {
 			Wall w = walls[i];
 			if(w.type().equals("v"))
 				this.placeVertWall(w.getX(), w.getY());
-			if(w.type().equals("v"))
+			if(w.type().equals("h"))
 				this.placeHorzWall(w.getX(), w.getY());
 		}
 			
 	}
 	
 	public void placeHorzWall(int x, int y){
-		Temp right = horzWalls[x][y+1];
-		Temp left = horzWalls[x][y];
+		Temp right = horzWalls[y][x];
+		Temp left = horzWalls[y][x+1];
 		
 		Color yesWallColor = new Color(154,97,41);
 		
 		right.setBackground( yesWallColor );
 		left.setBackground( yesWallColor );
-		wbAry[x][y].setBackground( yesWallColor );
+		wbAry[y][x].setBackground( yesWallColor );
 		
 	}
 	
 	public void placeVertWall(int x, int y){
-		Temp up = vertWalls[x][y+1];
-		Temp down = vertWalls[x][y];
+		Temp up = vertWalls[y][x];
+		Temp down = vertWalls[y+1][x];
 		
 		Color yesWallColor = new Color(154,97,41);
 		
 		up.setBackground( yesWallColor );
-		down.setBackground( yesWallColor );
-		wbAry[x][y].setBackground( yesWallColor );
+		down.setBackground( yesWallColor );		
+		wbAry[y][x].setBackground( yesWallColor );
 		
 	}
 	

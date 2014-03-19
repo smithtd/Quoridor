@@ -89,7 +89,7 @@ public class Board {
 		// make sure no wall is in the way
 		for(int i=0; i<numWalls; i++){
 			if(walls[i].isBetween(p.x(), p.y(), x, y)){
-				System.err.println("There is a wall in the way.");
+				System.err.println("There is a wall between "+p.x()+p.y()+" and "+x+y);
 				return false;
 			}
 		}

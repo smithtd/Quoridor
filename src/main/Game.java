@@ -96,8 +96,9 @@ public class Game extends Observable{
 		
 		if(s.length()==2){
 			return board.placePawn(this.currPlayer(), x, y);
+		}else{
+			return board.placeWall(this.currPlayer(), x, y, ""+s.charAt(2));
 		}
-		return false;
 	}
 	
 	public Player currPlayer(){
@@ -143,12 +144,17 @@ public class Game extends Observable{
 			
 			// get move from player
 			String move = g.currPlayer().getMove();
-			move = p.moveTranslate(move);
-			System.out.println(move);
-			
+			if(move.length()==2){
+				move = p.moveTranslate(move);
+			}else{
+				move = p.wallTranslate(move);
+			}
+			System.out.println("Translated: "+move);
+			if(move.equals("")){
+				break;
+			}
 			// try to play turn
 			if(g.playTurn(move)){
-				System.out.println("Valid move");
 				g.notifyObservers(g, g.getBoard());
 			}
 			

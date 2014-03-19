@@ -75,13 +75,9 @@ public class Parser {
 	 * @return xy string for the gui/logic to use
 	 */
 	public String moveTranslate(String s) {
-		
-		
 		if(this.isMove(s)) {
 			int x = (int) s.charAt(0) - 'a';
-			String tmp = ""+s.charAt(1);
-			int y = Integer.parseInt(tmp);
-			y--;
+			int y = Integer.parseInt(s.charAt(1)+"")-1;
 			return x + "" + y; 
 		} else
 			return "";

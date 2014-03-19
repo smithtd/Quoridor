@@ -53,7 +53,7 @@ public class Wall {
 	public boolean isBetween(int x1, int y1, int x2, int y2){
 		// if wall is vertical, check that wall is between the points on the y axis 
 		// and close enough on the x axis 
-		if(type.equals("v")){
+		if(type.equals("h")){
 			if((this.x==x1 || this.x==x2) && 
 					(this.y==y1 || this.y==y2 || this.y==y1-1 || this.y==y2-1)){
 				return true;
