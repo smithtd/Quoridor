@@ -9,7 +9,7 @@ import javax.swing.*;
 import players.Player;
 // using ImageIcon(?), JButton, JOptionPane, JPanel, etc.
 import java.awt.*;
-import java.awt.event.*;
+//import java.awt.event.*;
 // using ActionEvent, ActionListener, GridLayout
 
 @SuppressWarnings("serial")
@@ -32,7 +32,7 @@ public class PlayerButton extends JButton {
 		this.setBackground( Color.BLACK );
 		this.setOpaque(true);
 		this.setBorderPainted(false);
-		addButtonListener();
+		//addButtonListener();
 	}
 	
 	public void addPlayer( Player plyr ){
@@ -59,20 +59,21 @@ public class PlayerButton extends JButton {
 		return this.y;
 	}
 	
+	/*
 	// adds an action listener to a ClickButton
 	public void addButtonListener(){
 		final PlayerButton b = this;
 		this.addActionListener( new ActionListener(){
 			// users pawn moves to position that they click assuming it's highlighted
 			public void actionPerformed( ActionEvent e ) {
-				//if(b.getBackground() == Color.MAGENTA){
-					b.clicked();
-				//}
+				//b.clicked();
 			}
 		});
 	}
+	
 	public void clicked(){
 		System.err.println("Clicked "+x+" "+y);
 //		cont.movePiece(this);
 	}
+	*/
 }

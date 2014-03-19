@@ -30,9 +30,8 @@ public class Player implements Players {
 		private int startY;
 		private Color c;
 		
-		@SuppressWarnings("unused")
 		// TODO
-		private Point winArea;  // where to win
+		private Point[] winArea;  // where to win
 		// TODO - Incorporate a QuoridorClient for each player to connect to a server through the client
 		
 		/* Constructor(s) */
@@ -60,7 +59,9 @@ public class Player implements Players {
 				startX=4;
 				startY=8;
 			}
+			this.setWinArea();
 		}
+		
 		public Player( String name, int startX, int startY, int pNum ){
 			this.name = name;
 			this.startX = startX;
@@ -74,7 +75,8 @@ public class Player implements Players {
 				c = Color.GREEN;
 			else if(pNumber == 4)
 				c = Color.YELLOW;
-			this.wallTotal = 5; // hardcoded for now. will fix
+			wallTotal = 5; // hardcoded for now. will fix
+			this.setWinArea();
 		}
 		
 		public Player( String name, int startX, int startY, int pNum, int walls ){
@@ -90,7 +92,8 @@ public class Player implements Players {
 				c = Color.GREEN;
 			else if(pNumber == 4)
 				c = Color.YELLOW;
-			this.wallTotal = walls; 
+			wallTotal = walls; 
+			this.setWinArea();
 		}
 		/* Methods */
 		
@@ -224,5 +227,51 @@ public class Player implements Players {
 
 	public Color getColor(){
 		return c;
+	}
+	
+	public void setWinArea(){
+		winArea = new Point[9];
+		
+		if(this.getPnum()==1){
+			for(int y=0; y<9; y++)
+				this.winArea[y] = new Point(8,y);
+		}
+		
+		if(this.getPnum()==2 && this.getStartx()==8){
+			for(int y=0; y<9; y++)
+				this.winArea[y] = new Point(0,y);
+		
+		}else if(this.getPnum()==2 && this.getStartx()==4){
+			for(int x=0; x<9; x++)
+				this.winArea[x] = new Point(x,0);
+		}
+		
+		if(this.getPnum()==3){
+			for(int y=0; y<9; y++)
+				this.winArea[y] = new Point(0,y);
+		}
+		
+		if(this.getPnum()==4){
+			for(int x=0; x<9; x++)
+				this.winArea[x] = new Point(x,8);
+		}
+	}
+	
+	public boolean won(){
+		for(Point p : winArea)
+			if(p.getX()==this.x() && p.getY()==this.y())
+				return true;
+		return false;
+	}
+	
+	public String getColorName(){
+		if(pNumber== 1)
+			return "Blue";
+		else if(pNumber == 2)
+			return "Red";
+		else if(pNumber == 3)
+			return "Green";
+		else
+			return "Yellow";
 	}
 }

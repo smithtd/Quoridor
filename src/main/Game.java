@@ -131,21 +131,7 @@ public class Game extends Observable{
 	
 	public boolean checkForWin(){
 		Player p = this.currPlayer();
-		if(p.getPnum()==1&&p.x()==8){
-			this.gameWon = true;
-		}
-		if(p.getPnum()==2&&p.getStartx()==8&&p.x()==0){
-			this.gameWon = true;
-		}else if(p.getPnum()==2&&p.getStartx()==4&&p.y()==0){
-			this.gameWon = true;
-		}
-		if(p.getPnum()==3&&p.x()==0){
-			this.gameWon = true;
-		}
-		if(p.getPnum()==4&&p.y()==8){
-			this.gameWon = true;
-		}
-		return gameWon;
+		return p.won();
 	}
 	
 	public boolean gameWon(){
@@ -155,6 +141,8 @@ public class Game extends Observable{
 	// client/server communication methods (Dylan)
 	// report errors
 	public static void main(String[] args) {
+		
+		
 		// parser to parse moves
 		Parser p = new Parser();
 		
@@ -164,7 +152,7 @@ public class Game extends Observable{
 		
 		// until someone wins, loop through turns
 		while(!g.gameWon){
-			System.out.println("Player "+g.currPlayer().getColor()+" turn");
+			System.out.println(g.currPlayer().getColorName()+" player's turn");
 			
 			// get move from player
 			String move = g.currPlayer().getMove();
@@ -173,7 +161,6 @@ public class Game extends Observable{
 			}else{
 				move = p.wallTranslate(move);
 			}
-			System.out.println("Translated: "+move);
 		
 			// try to play turn
 			if(g.playTurn(move)){

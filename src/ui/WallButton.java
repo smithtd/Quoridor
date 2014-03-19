@@ -7,7 +7,7 @@ import javax.swing.*;
 
 //using ImageIcon(?), JButton, JOptionPane, JPanel, etc.
 import java.awt.*;
-import java.awt.event.*;
+//import java.awt.event.*;
 //using ActionEvent, ActionListener, GridLayout
 
 @SuppressWarnings("serial")
@@ -20,14 +20,14 @@ public class WallButton extends JButton {
 	//keep track of height for the walls
 	public int x;
 	public int y;
-	private JFrame tempFrame;
-/*	private Color yesWallColor = new Color(154,97,41);
+/*	private JFrame tempFrame;
+	private Color yesWallColor = new Color(154,97,41);
 	private Color noWallColor = Color.gray;
 	private Color upC;
 	private Color downC;
 	private Color leftC;
 	private Color rightC;*/
-	private Color thisC;
+	//private Color thisC;
 	
 	
 	//Constructor
@@ -39,8 +39,9 @@ public class WallButton extends JButton {
 		this.setPreferredSize( new Dimension( 10, 10 ) );
 		this.setBackground( Color.BLACK );
 		this.setOpaque(true);
-		addButtonListener();
+		//addButtonListener();
 	}
+	/*
 	
 	//makes walls around wall buttons based on amount of times clicked
 	//Having trouble getting walls to work :/
@@ -48,7 +49,7 @@ public class WallButton extends JButton {
 		final WallButton b = this;
 		addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ) {
-				b.clicked();
+				//b.clicked();
 			}
 		});
 	}
@@ -193,4 +194,5 @@ public class WallButton extends JButton {
 //		this.setBackground( thisC );
 		return 0;
 	}
+	*/
 }

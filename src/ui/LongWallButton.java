@@ -6,11 +6,11 @@ import java.awt.Dimension;
 import javax.swing.*;
 
 @SuppressWarnings("serial")
-public class Temp extends JButton {
+public class LongWallButton extends JButton {
        public int x;
        public int y;
        
-       public Temp(int x, int y, String type){
+       public LongWallButton(int x, int y, String type){
                super();
                this.setBorder(null);
                this.x = x;
