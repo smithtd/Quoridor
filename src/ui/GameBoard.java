@@ -5,6 +5,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import java.util.ArrayList;
 import java.util.Observable;  
 import java.util.Observer;  
 
@@ -37,10 +38,22 @@ public class GameBoard extends JPanel implements Observer {
 	
 	// all updating will occur in this method
 	public void update(Observable game, Object board) {  
-		this.clearPlayers();
+		// convert from observable and object
 		Board b = (Board) board;
+		Game g = (Game) game;
+		
+		// clear players
+		this.clearPlayers();
+		// set all pink squares to black
+		this.resetMoveableSpaces();
+		
+		// add players and walls
 		this.addPlayerButtons(b);
 		this.addWallButtons(b);
+		
+		// show potential moves
+		System.out.println("Showing moves for current player: "+g.currPlayer().getColor());
+		this.showPlyrMoves(g.currPlayer(),b);
         repaint();
     }  
 
@@ -290,6 +303,37 @@ public class GameBoard extends JPanel implements Observer {
 					pbAry[x][y].removePlayer();
 			}
 		}
+	}
+	
+	//Player turn controller
+	public void showPlyrMoves(Player p, Board b){
+		// get available spaces
+		ArrayList<PlayerButton> btnsToChange = this.possibleMoves(p, b);
+		// set available spaces to pink
+		for(PlayerButton btn : btnsToChange ){
+			btn.setBackground( Color.MAGENTA );
+		}
+	}	
+	
+	public ArrayList<PlayerButton> possibleMoves(Player p, Board b){
+		ArrayList<String> positions = b.possibleMoves(p);
+		ArrayList<PlayerButton> buttons = new ArrayList<PlayerButton>();
+		
+		for(String pos : positions){
+			int x = Integer.parseInt(pos.substring(0, 1));
+			int y = Integer.parseInt(pos.substring(1, 2));
+			buttons.add(pbAry[y][x]);
+		}
+		
+		return buttons;
+	}
+	
+	// set all pink buttons black
+	public void resetMoveableSpaces(){
+		for( int x=0; x<9; x++ )
+			for( int y=0; y<9; y++ )
+				if(pbAry[x][y].getBackground() == Color.MAGENTA)
+					pbAry[x][y].setBackground(Color.BLACK);
 	}
 	
 }

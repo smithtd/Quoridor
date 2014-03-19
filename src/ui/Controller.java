@@ -196,7 +196,7 @@ public class Controller {
 	 * Getters and setters
 	 */
 	//Setters
-	public void addWallsRem( int [] wallsRem ){
+	/*public void addWallsRem( int [] wallsRem ){
 		Controller.wallsRem = wallsRem;
 	}
 	
@@ -269,5 +269,5 @@ public class Controller {
 		return Controller.plyrAry.length;
 	}
 
-	
+	*/
 }

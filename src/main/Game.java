@@ -153,12 +153,17 @@ public class Game extends Observable{
 			if(move.equals("")){
 				break;
 			}
+		
 			// try to play turn
 			if(g.playTurn(move)){
+				g.nextTurn();
 				g.notifyObservers(g, g.getBoard());
+			}else{
+				System.err.println("Player turn failed!");
+				g.nextTurn();
 			}
 			
-			g.nextTurn();
+			
 		}
 	}
 }

@@ -9,6 +9,8 @@ package board;
 import players.Player;
 import walls.Wall;
 
+import java.util.ArrayList;
+
 public class Board {
 	
 	// Instance variables
@@ -132,5 +134,27 @@ public class Board {
 		s += players.length + " players |";
 		s += numWalls + " walls";
 		return s;
+	}
+	
+	public ArrayList<String> possibleMoves(Player p){
+		ArrayList<String> moves = new ArrayList<String>();
+		// check four directions
+		// down
+		if(isLegalMove(p, p.x(), p.y()+1))
+			moves.add(p.x()+""+(p.y()+1));
+		
+		// up
+		if(isLegalMove(p, p.x(), p.y()-1))
+			moves.add(p.x()+""+(p.y()-1));
+		
+		// right
+		if(isLegalMove(p, (p.x()+1), p.y()))
+			moves.add((p.x()+1)+""+p.y());
+		
+		// left
+		if(isLegalMove(p, (p.x()-1), p.y()))
+			moves.add((p.x()-1)+""+p.y());
+		
+		return moves;
 	}
 }
