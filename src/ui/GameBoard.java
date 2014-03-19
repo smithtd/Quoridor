@@ -42,20 +42,68 @@ public class GameBoard extends JPanel implements Observer {
 		Board b = (Board) board;
 		Game g = (Game) game;
 		
-		// clear players
-		this.clearPlayers();
-		// set all pink squares to black
-		this.resetMoveableSpaces();
-		
-		// add players and walls
-		this.addPlayerButtons(b);
-		this.addWallButtons(b);
-		
-		// show potential moves
-		System.out.println("Showing moves for current player: "+g.currPlayer().getColor());
-		this.showPlyrMoves(g.currPlayer(),b);
-        repaint();
+		if(g.gameWon()){
+			this.winState(g);
+		}else{
+			// clear players
+			this.clearPlayers();
+			// set all pink squares to black
+			this.resetMoveableSpaces();
+			
+			// add players and walls
+			this.addPlayerButtons(b);
+			this.addWallButtons(b);
+			
+			// show potential moves
+			System.out.println("Showing moves for current player: "+g.currPlayer().getColor());
+			this.showPlyrMoves(g.currPlayer(),b);
+	        repaint();
+		}
     }  
+	
+	public void winState(final Game g){
+		// display a win dialog
+		JPanel jp1 = new JPanel();
+		jp1.setLayout( new FlowLayout() ) ;
+		jp1.setPreferredSize( new Dimension( 300, 75 ) );
+		final JFrame tempFrame = new JFrame( "Player " + g.currPlayer().getPnum() + " wins!" );
+		tempFrame.setLayout( new BorderLayout() );
+		
+		// display buttons in dialog
+		ButtonGroup btngrp = new ButtonGroup();
+		final JRadioButton b1 = new JRadioButton("New 2 player game",false);
+		final JRadioButton b2 = new JRadioButton("New 4 player game",false);
+		final JRadioButton b3 = new JRadioButton("Quit",false);
+		b1.addActionListener( new ActionListener(){
+			public void actionPerformed( ActionEvent e ){
+				g.new2PlayerGame();
+				tempFrame.dispose();
+			}
+		});
+		b2.addActionListener( new ActionListener(){
+			public void actionPerformed( ActionEvent e ){
+				g.new4PlayerGame();
+				tempFrame.dispose();
+			}
+		});
+		b3.addActionListener( new ActionListener(){
+			public void actionPerformed( ActionEvent e ){
+				System.exit(0);
+			}
+		});
+		btngrp.add(b1);
+	    btngrp.add(b2);
+	    btngrp.add(b3);
+	    jp1.add(b3, FlowLayout.LEFT);
+	    jp1.add(b2, FlowLayout.LEFT);
+		jp1.add(b1, FlowLayout.LEFT);
+		tempFrame.add( jp1, BorderLayout.NORTH );
+		tempFrame.setLocation( 350, 300 );
+		tempFrame.setSize( 300, 300 );
+		tempFrame.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
+		tempFrame.setVisible( true );
+		tempFrame.pack();
+	}
 
 	
 	/*

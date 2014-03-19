@@ -2,8 +2,8 @@ package ui;
 
 import javax.swing.*;
 
-import players.Player;
-import walls.Wall;
+//import players.Player;
+//import walls.Wall;
 
 //using ImageIcon(?), JButton, JOptionPane, JPanel, etc.
 import java.awt.*;
@@ -21,37 +21,26 @@ public class WallButton extends JButton {
 	public int x;
 	public int y;
 	private JFrame tempFrame;
-	private Color yesWallColor = new Color(154,97,41);
+/*	private Color yesWallColor = new Color(154,97,41);
 	private Color noWallColor = Color.gray;
 	private Color upC;
 	private Color downC;
 	private Color leftC;
-	private Color rightC;
+	private Color rightC;*/
 	private Color thisC;
 	
 	
 	//Constructor
-	public WallButton( int x, int y, Controller cont ){
+	public WallButton( int x, int y ){
 		super();
 		this.setBorder(null);
 		this.x = x;
 		this.y = y;
 		this.setPreferredSize( new Dimension( 10, 10 ) );
 		this.setBackground( Color.BLACK );
+		this.setOpaque(true);
 		addButtonListener();
 	}
-	
-	//Constructor
-		public WallButton( int x, int y ){
-			super();
-			this.setBorder(null);
-			this.x = x;
-			this.y = y;
-			this.setPreferredSize( new Dimension( 10, 10 ) );
-			this.setBackground( Color.BLACK );
-			this.setOpaque(true);
-			addButtonListener();
-		}
 	
 	//makes walls around wall buttons based on amount of times clicked
 	//Having trouble getting walls to work :/

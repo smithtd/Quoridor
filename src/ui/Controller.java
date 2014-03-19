@@ -1,3 +1,4 @@
+/*
 package ui;
 
 import java.awt.BorderLayout;
@@ -26,7 +27,7 @@ import walls.Wall;
  * Not sure if any other comments are needed at this point since the methods are
  * all one liners and self explanatory
  */
-
+/*
 public class Controller {
 
 	private static Wall[][] vertWalls;
@@ -43,7 +44,7 @@ public class Controller {
 	private static ArrayList<PlayerButton> btnsToChange;
 	private JFrame tempFrame;
 	
-	
+/*	
 	//Constructor
 	public Controller( int numPlayers){
 		Controller.numPlayers = numPlayers;
@@ -86,7 +87,7 @@ public class Controller {
 					/* 
 					 * The character passed is the direction from which the player's 
 					 * old location would be in relation to the button tested 
-					 */
+					 
 					try{ testSpace(pbAry[currBtn.x()-1][currBtn.y()], 'd'); } catch(Exception e){}
 					try{ testSpace(pbAry[currBtn.x()+1][currBtn.y()], 'u'); } catch(Exception e){}
 					try{ testSpace(pbAry[currBtn.x()][currBtn.y()-1], 'r'); } catch(Exception e){}
@@ -110,7 +111,8 @@ public class Controller {
 			currentIndex = 0;
 		showPlyrMoves();
 	}
-	
+	*/
+	/*
 	public void movePiece(PlayerButton b){
 		b.setBackground(this.getPlyrAry()[ this.getPlyrIndex() ].getColor());
 		Player p = plyrAry[currentIndex];
@@ -187,7 +189,7 @@ public class Controller {
 		tempFrame.pack();
 	}
 	
-	
+	*/
 	
 	
 	
@@ -269,5 +271,6 @@ public class Controller {
 		return Controller.plyrAry.length;
 	}
 
-	*/
+	
 }
+*/

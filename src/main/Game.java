@@ -7,6 +7,7 @@
 package main;
 
 // use to implement subject/observer
+//import java.awt.Color;
 import java.util.ArrayList;  
 import java.util.Observable;  
 import java.util.Observer;  
@@ -28,6 +29,7 @@ public class Game extends Observable{
 	private static Player[] players;			// Player[] to hold players
 	private int numPlayers;						// number of players
 	private int curr;
+	private boolean gameWon;
 	
 	// constructor
 
@@ -105,13 +107,13 @@ public class Game extends Observable{
 		return players[curr];
 	}
 	
-	public static void new4PlayerGame(){
+	public void new4PlayerGame(){
 		//gb.getFrame().dispose();
 		Game g = new Game( 4, NUM_OF_WALLS );
 		g.startGame();
 	}
 	
-	public static void new2PlayerGame(){
+	public void new2PlayerGame(){
 		//gb.getFrame().dispose();
 		Game g = new Game( 2, NUM_OF_WALLS );
 		g.startGame();
@@ -127,6 +129,29 @@ public class Game extends Observable{
 		return this.numPlayers;
 	}
 	
+	public boolean checkForWin(){
+		Player p = this.currPlayer();
+		if(p.getPnum()==1&&p.x()==8){
+			this.gameWon = true;
+		}
+		if(p.getPnum()==2&&p.getStartx()==8&&p.x()==0){
+			this.gameWon = true;
+		}else if(p.getPnum()==2&&p.getStartx()==4&&p.y()==0){
+			this.gameWon = true;
+		}
+		if(p.getPnum()==3&&p.x()==0){
+			this.gameWon = true;
+		}
+		if(p.getPnum()==4&&p.y()==8){
+			this.gameWon = true;
+		}
+		return gameWon;
+	}
+	
+	public boolean gameWon(){
+		return this.gameWon;
+	}
+	
 	// client/server communication methods (Dylan)
 	// report errors
 	public static void main(String[] args) {
@@ -138,8 +163,7 @@ public class Game extends Observable{
 		g.startGame();
 		
 		// until someone wins, loop through turns
-		boolean playerWon = false;
-		while(!playerWon){
+		while(!g.gameWon){
 			System.out.println("Player "+g.currPlayer().getColor()+" turn");
 			
 			// get move from player
@@ -150,20 +174,21 @@ public class Game extends Observable{
 				move = p.wallTranslate(move);
 			}
 			System.out.println("Translated: "+move);
-			if(move.equals("")){
-				break;
-			}
 		
 			// try to play turn
 			if(g.playTurn(move)){
+				// check for win
+				if(g.checkForWin())
+					break;
 				g.nextTurn();
 				g.notifyObservers(g, g.getBoard());
 			}else{
 				System.err.println("Player turn failed!");
-				g.nextTurn();
+				break;
 			}
-			
-			
 		}
+		
+		// notify observer, since we have a winner, ui will execute end of game
+		g.notifyObservers(g, g.getBoard());
 	}
 }

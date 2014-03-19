@@ -23,18 +23,7 @@ public class PlayerButton extends JButton {
 	private int y;
 	private Player plyr;
 	
-	// Constructors
-	public PlayerButton( int x, int y, Controller cont ){
-		super();
-		this.x = x;
-		this.y = y;
-		this.setPreferredSize( new Dimension( 50, 50 ) );
-		this.setBackground( Color.BLACK );
-		this.setOpaque(true);
-		this.setBorderPainted(false);
-		addButtonListener();
-	}
-	
+	// Constructors	
 	public PlayerButton( int x, int y ){
 		super();
 		this.x = x;

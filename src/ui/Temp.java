@@ -10,9 +10,6 @@ public class Temp extends JButton {
        public int x;
        public int y;
        
-       @SuppressWarnings("unused") //For now
-       private static Controller cont;
-       
        public Temp(int x, int y, String type){
                super();
                this.setBorder(null);
