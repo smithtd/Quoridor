@@ -78,7 +78,7 @@ public class Parser {
 		if(this.isMove(s)) {
 			int x = (int) s.charAt(0) - 'a';
 			int y = Integer.parseInt(s.charAt(1)+"")-1;
-			return x + "" + y; 
+			return y + "" + x; 
 		} else
 			return "";
 		

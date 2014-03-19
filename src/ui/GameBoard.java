@@ -299,7 +299,7 @@ public class GameBoard extends JPanel implements Observer {
 		
 		// change button colors for players
 		for(Player p : players){
-			pbAry[p.y()][p.x()].addPlayer(p);
+			pbAry[p.x()][p.y()].addPlayer(p);
 		}
 			
 	}
@@ -320,26 +320,26 @@ public class GameBoard extends JPanel implements Observer {
 	}
 	
 	public void placeHorzWall(int x, int y){
-		Temp right = horzWalls[y][x];
-		Temp left = horzWalls[y][x+1];
+		Temp right = horzWalls[x][y];
+		Temp left = horzWalls[x][y+1];
 		
 		Color yesWallColor = new Color(154,97,41);
 		
 		right.setBackground( yesWallColor );
 		left.setBackground( yesWallColor );
-		wbAry[y][x].setBackground( yesWallColor );
+		wbAry[x][y].setBackground( yesWallColor );
 		
 	}
 	
 	public void placeVertWall(int x, int y){
-		Temp up = vertWalls[y][x];
-		Temp down = vertWalls[y+1][x];
+		Temp up = vertWalls[x][y];
+		Temp down = vertWalls[x+1][y];
 		
 		Color yesWallColor = new Color(154,97,41);
 		
 		up.setBackground( yesWallColor );
 		down.setBackground( yesWallColor );		
-		wbAry[y][x].setBackground( yesWallColor );
+		wbAry[x][y].setBackground( yesWallColor );
 		
 	}
 	
@@ -370,7 +370,7 @@ public class GameBoard extends JPanel implements Observer {
 		for(String pos : positions){
 			int x = Integer.parseInt(pos.substring(0, 1));
 			int y = Integer.parseInt(pos.substring(1, 2));
-			buttons.add(pbAry[y][x]);
+			buttons.add(pbAry[x][y]);
 		}
 		
 		return buttons;

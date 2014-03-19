@@ -41,13 +41,13 @@ public class Game extends Observable{
 		
 		// Initialize Players: 1, 4, 2, 3 (clockwise from the top of the board)
 		if(this.numPlayers == MAX_NUMBER_PLAYERS){
-			players[0] = new Player("1", 4, 0, 1, wallsEach);
-			players[1] = new Player("2", 8, 4, 2, wallsEach);
-			players[2] = new Player("3", 4, 8, 3, wallsEach);
-			players[3] = new Player("4", 0, 4, 4, wallsEach);
-		} else {
-			players[0] = new Player("1", 4, 0, 1, wallsEach);
+			players[0] = new Player("1", 0, 4, 1, wallsEach);
 			players[1] = new Player("2", 4, 8, 2, wallsEach);
+			players[2] = new Player("3", 8, 4, 3, wallsEach);
+			players[3] = new Player("4", 4, 0, 4, wallsEach);
+		} else {
+			players[0] = new Player("1", 0, 4, 1, wallsEach);
+			players[1] = new Player("2", 8, 4, 2, wallsEach);
 		}
 		
 		board = new Board(players, numWalls);
