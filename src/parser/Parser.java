@@ -24,33 +24,87 @@ public class Parser {
 	/** Regex for wall placements */
 	private Pattern walls;
 	
+	
+	/** 
+	 *  Creates an instance of our move/wall parser.
+	 *  
+	 *  Moves should be in the form of (a-i)(1-9), so therefore
+	 *  this will provide some low level validity checking. After
+	 *  which our logic must make sure the person could actually move
+	 *  to this location.
+	 *  
+	 *  Walls can be set (a-i)(1-9)(v || h). This provides similar low
+	 *  level validity checking.
+	 */
 	public Parser() {
 		this.moves = Pattern.compile("[a-i][1-9]");
 		this.walls = Pattern.compile("[a-i][1-9][vh]");
 	}
 	
+	/** 
+	 * Test if an input is a valid move representation
+	 * 
+	 * @param s - string representation of a possible move
+	 * @return - if the string represents a move as per protocol 
+	 *  		 returns true, else false
+	 */
 	public boolean isMove(String s) {
 		Matcher isM = moves.matcher(s);
 		return isM.matches();
-	}
+	} // end isMove(String s)
 	
+	/**
+	 * Tests if an input is a valid wall placement representation
+	 * 
+	 * @param s - string representation of a possible wall placement
+	 * @return - if the string represents a wall placement as per
+	 * 		     our protocol returns true, else false
+	 * 
+	 */
 	public boolean isWall(String s) {
 		Matcher isW = walls.matcher(s);
 		return isW.matches();
 		
-	}
+	} // end isWall(String s)
 	
+	/**
+	 * Translates our input from the protocol to a usable form
+	 * for our GUI and game logic for pawn movements
+	 * 
+	 * @param s - representation of the move
+	 * @return xy string for the gui/logic to use
+	 */
 	public String moveTranslate(String s) {
 		
+		
 		if(this.isMove(s)) {
-			int x = (int) s.charAt(0) - 'a';
+		/*	int x = (int) s.charAt(0) - 'a';
 			String tmp = ""+s.charAt(1);
 			int y = Integer.parseInt(tmp);
 			y--;
-			return x + "" + y;
+			return x + "" + y; */
+			int x = (int) s.charAt(0) - '`';
+			return x + "" + s.charAt(1);
 		} else
 			return "";
 		
-	}
+	} // end moveTranslate(String s)
 	
-}
+	/**
+	 * Translates our input from the protocol to a usable form
+	 * for our GUI and game logic for wall placements
+	 * 
+	 * @param s - representation of the wall placement
+	 * 
+	 * @return - xy(v || h) string for the gui/logic to use
+	 */
+	public String wallTranslate(String s) {
+		
+		if(this.isWall(s)) {
+			return moveTranslate(s.substring(0, 2)) + s.charAt(2);
+		} else
+			return "";
+		
+	} // end wallTranslate(String s)
+	
+} // end Parser { }
