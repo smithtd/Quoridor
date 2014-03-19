@@ -120,5 +120,26 @@ public class ParserTest {
 		
 		
 	}
+	
+	/** 
+	 * Tests the translation of wall placements to what we must get for 
+	 *  our gui implementation
+	 */
+	 @Test
+	 public void testWallTranslation() {
+		 
+		 String cOne = "b2v"; // should return "22v"
+		 assertEquals("22v", p.wallTranslate(cOne));
+		 
+		 cOne = "h9h";		// should return 89h
+		 assertEquals("89h", p.wallTranslate(cOne));
+		 
+		 cOne = "z4";		// should return "";
+		 assertEquals("", p.wallTranslate(cOne));
+		 
+		 cOne = "i10h";		// should return ""
+		 assertEquals("", p.wallTranslate(cOne));
+		 
+	 }
 
 }
