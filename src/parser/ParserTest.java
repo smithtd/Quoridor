@@ -106,14 +106,14 @@ public class ParserTest {
 	@Test
 	public void testMoveTranslation() {
 		
-		String cOne = "a4"; // should return "14"
-		assertEquals("14", p.moveTranslate(cOne));
+		String cOne = "a4"; // should return "30"
+		assertEquals("30", p.moveTranslate(cOne));
 		
-		cOne = "b9" ; // should return "29"
-		assertEquals("29", p.moveTranslate(cOne));
+		cOne = "b9" ; // should return "81"
+		assertEquals("81", p.moveTranslate(cOne));
 		
-		cOne = "i9"; // should return "99"
-		assertEquals("99", p.moveTranslate(cOne));
+		cOne = "i9"; // should return "88"
+		assertEquals("88", p.moveTranslate(cOne));
 		
 		cOne = "z8"; // should return ""
 		assertEquals("", p.moveTranslate(cOne));
@@ -128,11 +128,11 @@ public class ParserTest {
 	 @Test
 	 public void testWallTranslation() {
 		 
-		 String cOne = "b2v"; // should return "22v"
-		 assertEquals("22v", p.wallTranslate(cOne));
+		 String cOne = "b2v"; // should return "11v"
+		 assertEquals("11v", p.wallTranslate(cOne));
 		 
-		 cOne = "h9h";		// should return 89h
-		 assertEquals("89h", p.wallTranslate(cOne));
+		 cOne = "h9h";		// should return 87h
+		 assertEquals("87h", p.wallTranslate(cOne));
 		 
 		 cOne = "z4";		// should return "";
 		 assertEquals("", p.wallTranslate(cOne));
