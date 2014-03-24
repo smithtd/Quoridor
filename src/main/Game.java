@@ -1,16 +1,11 @@
-/*
- * This class exists as the "main" program. A new game begins when
- * a Game object is initialized. The Game will handle serve as the
- * client.
- */
-
 package main;
 
 // use to implement subject/observer
-//import java.awt.Color;
 import java.util.ArrayList;  
 import java.util.Observable;  
 import java.util.Observer; 
+
+// use to get input from command line/file
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;

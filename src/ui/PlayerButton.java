@@ -1,29 +1,33 @@
-/* Author: Tyler Smith
- * Class provides buttons with action listeners
- */
-
 package ui;
 
 import javax.swing.*;
 
 import players.Player;
-// using ImageIcon(?), JButton, JOptionPane, JPanel, etc.
+// using JButton
 import java.awt.*;
-//import java.awt.event.*;
-// using ActionEvent, ActionListener, GridLayout
 
+/**
+ * Class provides buttons with action listeners.
+ * 
+ * @author Tyler Smith
+ */
 @SuppressWarnings("serial")
 public class PlayerButton extends JButton {
 
-	// Instance variables
-	public static Icon Square_Red = new ImageIcon("../Images/Square_Red.png");	// what is this???
+	/* Instance variables */
 	public int buttonSize;
-
 	private int x;
 	private int y;
 	private Player plyr;
 	
-	// Constructors	
+	/* Constructor	*/
+	
+	/**
+	 * Constructs a PlayerButton with x and y as coordinates.
+	 * 
+	 * @param x integer x coordinate
+	 * @param y integer y coordinate
+	 */
 	public PlayerButton( int x, int y ){
 		super();
 		this.x = x;
@@ -32,48 +36,57 @@ public class PlayerButton extends JButton {
 		this.setBackground( Color.BLACK );
 		this.setOpaque(true);
 		this.setBorderPainted(false);
-		//addButtonListener();
 	}
 	
+	/* Get Methods */
+	
+	/**
+	 * Gets this PlayerButton's x value.
+	 * 
+	 * @return integer x coordinate
+	 */
+	public int x(){
+		return this.x;
+	}
+	
+	/**
+	 * Gets this PlayerButton's y value.
+	 * 
+	 * @return integer y coordinate
+	 */
+	public int y(){
+		return this.y;
+	}
+	
+	/**
+	 * Checks if a PlayerButton has a Player.
+	 * 
+	 * @return boolean, whether or not this has a Player
+	 */
+	public boolean hasPlayer(){
+		return plyr!=null;
+	}
+	
+	/* Set Methods */
+	
+	/**
+	 * Adds a Player to this PlayerButton. 
+	 * This also changes the color of the button to the Player's color.
+	 * 
+	 * @param plyr Player to add
+	 */
 	public void addPlayer( Player plyr ){
 		this.plyr = plyr; 
 		this.setBackground(plyr.getColor());
 		this.setOpaque(true);
 	}
 	
+	/**
+	 * Removes a Player from this PlayerButton and changes color back to black.
+	 */
 	public void removePlayer(){
 		this.plyr = null;
 		this.setBackground(Color.BLACK);
 		this.setOpaque(true);
 	}
-	
-	public boolean hasPlayer(){
-		return plyr!=null;
-	}
-	
-	public int x(){
-		return this.x;
-	}
-	
-	public int y(){
-		return this.y;
-	}
-	
-	/*
-	// adds an action listener to a ClickButton
-	public void addButtonListener(){
-		final PlayerButton b = this;
-		this.addActionListener( new ActionListener(){
-			// users pawn moves to position that they click assuming it's highlighted
-			public void actionPerformed( ActionEvent e ) {
-				//b.clicked();
-			}
-		});
-	}
-	
-	public void clicked(){
-		System.err.println("Clicked "+x+" "+y);
-//		cont.movePiece(this);
-	}
-	*/
 }

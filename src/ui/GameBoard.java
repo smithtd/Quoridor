@@ -5,6 +5,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+// use to implement Subject/Observer design pattern
 import java.util.ArrayList;
 import java.util.Observable;  
 import java.util.Observer;  
@@ -14,18 +15,31 @@ import board.Board;
 import walls.Wall;
 import players.Player;
 
+/**
+ * The GameBoard serves as the UI for the Quoridor game. It updates from the 
+ * back end via a Subject/Observer design pattern. The Game object is the 
+ * subject and the GameBoard object is the observer.
+ * 
+ * @author Dylan Woythol, Tyler Smith, Eli Donahue
+ *
+ */
 @SuppressWarnings("serial")
 public class GameBoard extends JPanel implements Observer {
 
+	/* Instance Variables */
+	
 	private static JFrame frame;
 	private static PlayerButton[][] pbAry;
 	private static WallButton[][] wbAry;
 	private static LongWallButton[][] vertWalls;
 	private static LongWallButton[][] horzWalls;
 	
-	/*
-	 * Basic details of this Panel like the panel dimensions and what layout to 
-	 * use to add JObjects 
+	/* Constructor */
+
+	/**
+	 * Constructs this Panel with panel dimensions and what layout to 
+	 * use to add JObjects. 
+	 * 
 	 */
 	public GameBoard(){
 		super();
@@ -36,122 +50,23 @@ public class GameBoard extends JPanel implements Observer {
 		setFrameStats();
 	}
 	
-	// all updating will occur in this method
-	public void update(Observable game, Object board) {  
-		// convert from observable and object
-		Board b = (Board) board;
-		Game g = (Game) game;
-		
-		if(g.gameWon()){
-			this.winState(g);
-		}else{
-			// clear players
-			this.clearPlayers();
-			// set all pink squares to black
-			this.resetMoveableSpaces();
-			
-			// add players and walls
-			this.addPlayerButtons(b);
-			this.addWallButtons(b);
-			
-			// show potential moves
-			this.showPlyrMoves(g.currPlayer(),b);
-	        repaint();
-		}
-    }  
+	/* Get Methods */
 	
-	public void winState(final Game g){
-		// display a win dialog
-		JPanel jp1 = new JPanel();
-		jp1.setLayout( new FlowLayout() ) ;
-		jp1.setPreferredSize( new Dimension( 300, 75 ) );
-		final JFrame LongWallButtonFrame = new JFrame( "Player " + g.currPlayer().getPnum() + " wins!" );
-		LongWallButtonFrame.setLayout( new BorderLayout() );
-		
-		// display buttons in dialog
-		ButtonGroup btngrp = new ButtonGroup();
-		final JRadioButton b1 = new JRadioButton("New 2 player game",false);
-		final JRadioButton b2 = new JRadioButton("New 4 player game",false);
-		final JRadioButton b3 = new JRadioButton("Quit",false);
-		b1.addActionListener( new ActionListener(){
-			public void actionPerformed( ActionEvent e ){
-				g.new2PlayerGame();
-				LongWallButtonFrame.dispose();
-			}
-		});
-		b2.addActionListener( new ActionListener(){
-			public void actionPerformed( ActionEvent e ){
-				g.new4PlayerGame();
-				LongWallButtonFrame.dispose();
-			}
-		});
-		b3.addActionListener( new ActionListener(){
-			public void actionPerformed( ActionEvent e ){
-				System.exit(0);
-			}
-		});
-		btngrp.add(b1);
-	    btngrp.add(b2);
-	    btngrp.add(b3);
-	    jp1.add(b3, FlowLayout.LEFT);
-	    jp1.add(b2, FlowLayout.LEFT);
-		jp1.add(b1, FlowLayout.LEFT);
-		LongWallButtonFrame.add( jp1, BorderLayout.NORTH );
-		LongWallButtonFrame.setLocation( 350, 300 );
-		LongWallButtonFrame.setSize( 300, 300 );
-		LongWallButtonFrame.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
-		LongWallButtonFrame.setVisible( true );
-		LongWallButtonFrame.pack();
-	}
-
-	
-	/*
-	 * The JFrame is what holds JPanel, which is what class type this file is,
-	 * so we need to set it up internally so that it can hold a GameBoard object
-	 * and support it
+	/**
+	 * Gets GameBoard's frame.
+	 * 
+	 * @return JFrame
 	 */
-	public void setFrameStats(){
-		frame = new JFrame( "Quoridor" ); 		//Title of JFrame window is "Quoridor"
-		GridBagLayout gridbag = new GridBagLayout();
-		GridBagConstraints c = new GridBagConstraints();
-		frame.setLayout( gridbag );
-		addOtherJObjectsToGameBoard();
-		addPanelsToJFrame( frame, gridbag, c );
-		frame.add( this );						//Adds this JPanel to JFrame
-		frame.setVisible( true );				//Sets Frame to visible
-		frame.setResizable( false );			//Doesn't allow resizing of frame
-		frame.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );	//when frame is closed, the program terminates
-		frame.setLocation( 150, 150 );
-		frame.pack();	//collapses frame to minimum size around all JObjects inside it
-	}
-	
 	public JFrame getFrame(){
 		return GameBoard.frame;
 	}
 	
-	/*
-	 * Sets up the GridBag Layout with JFrame and JPanel
-	 */
-	public void addPanelsToJFrame( JFrame frame, 
-			   GridBagLayout gridbag,
-			   GridBagConstraints c ){
-		c.fill = GridBagConstraints.BOTH;
-		c.weightx = 1.0;			//1.0
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		JMenuBar menus = getMenus();
-		gridbag.setConstraints( menus, c );
-		frame.add( menus );
-		c.weighty = 1.0;
-		c.gridheight = GridBagConstraints.REMAINDER;
-		this.setPreferredSize( new Dimension( 50*9 + 10*8, 50*9 + 10*8 ) );
-		gridbag.setConstraints( this, c );
-		frame.add( this );
-	}
-	
-	/*
+	/**
 	 * A MenuBar holds a Menu which in turn hold a MenuItem. That MenuItem 
 	 * is what has the changeable consequence if clicked. The Menu just drops 
-	 * down the Items in the menu 
+	 * down the Items in the menu.
+	 * 
+	 * @return JMenuBar
 	 */
 	public JMenuBar getMenus(){
 		JMenuBar menuBar = new JMenuBar();		
@@ -231,12 +146,6 @@ public class GameBoard extends JPanel implements Observer {
 			wallsOpt.addActionListener( new ActionListener(){
 				public void actionPerformed(ActionEvent e){
 					String LongWallButton = "";
-//					LongWallButton += "Blue : " + cont.getWallsRem()[0] + "\n";
-//					LongWallButton += "Red : " + cont.getWallsRem()[1] + "\n";
-//					if(cont.getNumPlayers() == 4 ){
-//						LongWallButton += "Green : " + cont.getWallsRem()[2] + "\n";
-//						LongWallButton += "Yellow : " + cont.getWallsRem()[3] + "\n";
-//					}
 					JOptionPane.showMessageDialog( frame , LongWallButton, "About",JOptionPane.PLAIN_MESSAGE);
 				}
 			});
@@ -247,11 +156,162 @@ public class GameBoard extends JPanel implements Observer {
 		return menuBar;
 	}
 	
+	/**
+	 * Gets possible moves from back end.
+	 * 
+	 * @param p Player
+	 * @param b Board
+	 * @return ArrayList of PlayerButtons to highlight
+	 */
+	public ArrayList<PlayerButton> possibleMoves(Player p, Board b){
+		ArrayList<String> positions = b.possibleMoves(p);
+		ArrayList<PlayerButton> buttons = new ArrayList<PlayerButton>();
+		
+		for(String pos : positions){
+			int x = Integer.parseInt(pos.substring(0, 1));
+			int y = Integer.parseInt(pos.substring(1, 2));
+			buttons.add(pbAry[x][y]);
+		}
+		
+		return buttons;
+	}
+
+	/* Set Methods */
+	
+	/**
+	 * Updates the UI by clearing previous Players and movable spaces
+	 * and then adding current Players, Walls, and movable spaces.
+	 * 
+	 * @param game Observable Game object
+	 * @param board Object Board object
+	 */
+	public void update(Observable game, Object board) {  
+		// convert from observable and object
+		Board b = (Board) board;
+		Game g = (Game) game;
+		
+		if(g.gameWon()){
+			this.winState(g);
+		}else{
+			// clear board
+			this.clearPlayers();
+			this.resetMoveableSpaces();
+			
+			// show current pieces
+			this.addPlayerButtons(b);
+			this.addWallButtons(b);
+			this.showPlyrMoves(g.currPlayer(),b);
+	        
+			repaint();
+		}
+    }  
+	
+	/**
+	 * Handles display in the event a Player wins. 
+	 * Dialog box appears with options for new games or quit.
+	 * 
+	 * @param g Game object
+	 */
+	public void winState(final Game g){
+		// display a win dialog
+		JPanel jp1 = new JPanel();
+		jp1.setLayout( new FlowLayout() ) ;
+		jp1.setPreferredSize( new Dimension( 300, 75 ) );
+		final JFrame LongWallButtonFrame = new JFrame( "Player " + g.currPlayer().getPnum() + " wins!" );
+		LongWallButtonFrame.setLayout( new BorderLayout() );
+		
+		// display buttons in dialog
+		ButtonGroup btngrp = new ButtonGroup();
+		final JRadioButton b1 = new JRadioButton("New 2 player game",false);
+		final JRadioButton b2 = new JRadioButton("New 4 player game",false);
+		final JRadioButton b3 = new JRadioButton("Quit",false);
+		
+		// add action listeners to dialog buttons
+		b1.addActionListener( new ActionListener(){
+			public void actionPerformed( ActionEvent e ){
+				g.new2PlayerGame();
+				LongWallButtonFrame.dispose();
+			}
+		});
+		b2.addActionListener( new ActionListener(){
+			public void actionPerformed( ActionEvent e ){
+				g.new4PlayerGame();
+				LongWallButtonFrame.dispose();
+			}
+		});
+		b3.addActionListener( new ActionListener(){
+			public void actionPerformed( ActionEvent e ){
+				System.exit(0);
+			}
+		});
+		btngrp.add(b1);
+	    btngrp.add(b2);
+	    btngrp.add(b3);
+	    jp1.add(b3, FlowLayout.LEFT);
+	    jp1.add(b2, FlowLayout.LEFT);
+		jp1.add(b1, FlowLayout.LEFT);
+		LongWallButtonFrame.add( jp1, BorderLayout.NORTH );
+		LongWallButtonFrame.setLocation( 350, 300 );
+		LongWallButtonFrame.setSize( 300, 300 );
+		LongWallButtonFrame.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
+		LongWallButtonFrame.setVisible( true );
+		LongWallButtonFrame.pack();
+	}
+
+	/**
+	 * The JFrame is what holds JPanel, which is what class type this file is,
+	 * so we need to set it up internally so that it can hold a GameBoard object
+	 * and support it
+	 */
+	public void setFrameStats(){
+		frame = new JFrame( "Quoridor" ); 		//Title of JFrame window is "Quoridor"
+		GridBagLayout gridbag = new GridBagLayout();
+		GridBagConstraints c = new GridBagConstraints();
+		frame.setLayout( gridbag );
+		addOtherJObjectsToGameBoard();
+		addPanelsToJFrame( frame, gridbag, c );
+		frame.add( this );						//Adds this JPanel to JFrame
+		frame.setVisible( true );				//Sets Frame to visible
+		frame.setResizable( false );			//Doesn't allow resizing of frame
+		frame.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );	//when frame is closed, the program terminates
+		frame.setLocation( 150, 150 );
+		frame.pack();	//collapses frame to minimum size around all JObjects inside it
+	}
+	
+	/**
+	 * Sets up the GridBag Layout with JFrame and JPanel
+	 * 
+	 * @param frame JFrame
+	 * @param gridbag GridBagLayout
+	 * @param c GridBagConstraints
+	 */
+	public void addPanelsToJFrame( JFrame frame, 
+			   GridBagLayout gridbag,
+			   GridBagConstraints c ){
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1.0;			//1.0
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		JMenuBar menus = getMenus();
+		gridbag.setConstraints( menus, c );
+		frame.add( menus );
+		c.weighty = 1.0;
+		c.gridheight = GridBagConstraints.REMAINDER;
+		this.setPreferredSize( new Dimension( 50*9 + 10*8, 50*9 + 10*8 ) );
+		gridbag.setConstraints( this, c );
+		frame.add( this );
+	}
+	
+	/**
+	 * Adds JButtons to the GameBoard.
+	 */
 	public void addOtherJObjectsToGameBoard(){
 		addJButtons();
 		this.repaint();
 	}
 	
+	/**
+	 * Adds PlayerButtons, WallButtons, and LongWallButtons to the GameBoard.
+	 */
 	public void addJButtons(){
 		pbAry = new PlayerButton[9][9];
 		wbAry = new WallButton[8][8];
@@ -259,7 +319,6 @@ public class GameBoard extends JPanel implements Observer {
 		vertWalls = new LongWallButton[9][8];
 		horzWalls = new LongWallButton[8][9];
 		
-		//9x9 board
 		// 9 rows
 		for( int x = 0; x<9; x++ ){
 			// two layers?
@@ -292,32 +351,37 @@ public class GameBoard extends JPanel implements Observer {
 		}
 	}
 	
+	/**
+	 * Adds Players to the GameBoard according to back end Board.
+	 * @param b
+	 */
 	public void addPlayerButtons(Board b){
-		
 		Player[] players = b.players();
-		
-		// change button colors for players
-		for(Player p : players){
-			pbAry[p.x()][p.y()].addPlayer(p);
-		}
-			
+		for(Player p : players)
+			pbAry[p.x()][p.y()].addPlayer(p);	
 	}
 	
+	/**
+	 * Adds Walls to the GameBoard according to back end Board.
+	 * @param b
+	 */
 	public void addWallButtons(Board b){
-		
 		Wall[] walls = b.walls();
-		
-		// display walls
 		for(int i=0; i<b.numWalls(); i++){
 			Wall w = walls[i];
 			if(w.type().equals("v"))
 				this.placeVertWall(w.getX(), w.getY());
 			if(w.type().equals("h"))
 				this.placeHorzWall(w.getX(), w.getY());
-		}
-			
+		}	
 	}
 	
+	/**
+	 * Adds horizontal walls to the GameBoard according to back end Board.
+	 * 
+	 * @param x integer x coordinate
+	 * @param y integer y coordinate
+	 */
 	public void placeHorzWall(int x, int y){
 		LongWallButton right = horzWalls[x][y];
 		LongWallButton left = horzWalls[x][y+1];
@@ -330,6 +394,12 @@ public class GameBoard extends JPanel implements Observer {
 		
 	}
 	
+	/**
+	 * Adds vertical walls to the GameBoard according to back end Board.
+	 * 
+	 * @param x integer x coordinate
+	 * @param y integer y coordinate
+	 */
 	public void placeVertWall(int x, int y){
 		LongWallButton up = vertWalls[x][y];
 		LongWallButton down = vertWalls[x+1][y];
@@ -342,45 +412,37 @@ public class GameBoard extends JPanel implements Observer {
 		
 	}
 	
+	/**
+	 * Removes all Players from the GameBoard. 
+	 */
 	public void clearPlayers(){
-		for(int y=0; y<9; y++){
-			for(int x=0; x<9; x++){
-				if(pbAry[x][y].getBackground()!=Color.BLACK)
-					pbAry[x][y].setBackground(Color.BLACK);
+		for(int y=0; y<9; y++)
+			for(int x=0; x<9; x++)
+				if(pbAry[x][y].hasPlayer())
 					pbAry[x][y].removePlayer();
-			}
-		}
 	}
 	
-	//Player turn controller
+	/**
+	 * Highlights all possible squares a Player can move.
+	 * 
+	 * @param p Player
+	 * @param b Board
+	 */
 	public void showPlyrMoves(Player p, Board b){
 		// get available spaces
 		ArrayList<PlayerButton> btnsToChange = this.possibleMoves(p, b);
 		// set available spaces to pink
-		for(PlayerButton btn : btnsToChange ){
+		for(PlayerButton btn : btnsToChange )
 			btn.setBackground( Color.MAGENTA );
-		}
 	}	
-	
-	public ArrayList<PlayerButton> possibleMoves(Player p, Board b){
-		ArrayList<String> positions = b.possibleMoves(p);
-		ArrayList<PlayerButton> buttons = new ArrayList<PlayerButton>();
-		
-		for(String pos : positions){
-			int x = Integer.parseInt(pos.substring(0, 1));
-			int y = Integer.parseInt(pos.substring(1, 2));
-			buttons.add(pbAry[x][y]);
-		}
-		
-		return buttons;
-	}
-	
-	// set all pink buttons black
+
+	/**
+	 * Set all highlighted buttons back to black.
+	 */
 	public void resetMoveableSpaces(){
 		for( int x=0; x<9; x++ )
 			for( int y=0; y<9; y++ )
 				if(pbAry[x][y].getBackground() == Color.MAGENTA)
 					pbAry[x][y].setBackground(Color.BLACK);
 	}
-	
 }

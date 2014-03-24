@@ -1,44 +1,74 @@
-/* This will be an object to hold info about an individual wall */
-
 package walls;
 
 import java.awt.Point;
 
+/**
+ * Wall object holds info about an individual wall. 
+ * 
+ * @author Eli Donahue
+ *
+ */
 public class Wall {
 	
-	// instance variables
+	/* Instance Variables */
+	
 	private int x;
 	private int y;
 	private String type;	// h or v
 	
-	// constructor
+	/* Constructor */
+	
 	public Wall(int x, int y, String type){
 		this.x = x;
 		this.y = y;
 		this.type = type;
 	}
 	
-	// returns the wall's x value
+	/* Get Methods */
+	
+	/**
+	 * Gets this Wall's x value.
+	 * 
+	 * @return integer, x coordinate
+	 */
 	public int getX(){
 		return this.x;
 	}
 	
-	// returns the wall's y value
+	/**
+	 * Gets this Wall's y value.
+	 * 
+	 * @return integer, y coordinate
+	 */
 	public int getY(){
 		return this.y;
 	}
 	
-	// returns the wall's type
+	/**
+	 * Gets this Wall's type.
+	 * 
+	 * @return String, orientation type (h or v)
+	 */
 	public String type(){
 		return this.type;
 	}
 	
-	// returns whether the wall passed in intersects this wall
+	/**
+	 * Checks whether given Wall intersects this Wall. Method works by checking 
+	 * the Walls' centers, so it also returns true if the Walls are the same.
+	 * 
+	 * @param w Wall to check against this Wall
+	 * @return boolean, whether or not given Wall intersects this one
+	 */
 	public boolean intersects(Wall w){
 		return this.getCenter().equals(w.getCenter());
 	}
 	
-	// returns a point representing center of this wall
+	/**
+	 * Gets the center Point of this wall.
+	 * 
+	 * @return Point, center of this Wall
+	 */
 	public Point getCenter(){
 		Point p;
 		if(this.type.equals("v")){
@@ -49,9 +79,19 @@ public class Wall {
 		return p;
 	}
 	
-	// check if this wall is between two adjacent points
+	/**
+	 * Checks if this Wall is directly between two points. 
+	 * Used for checking if there is a Wall between a Player and a position it 
+	 * wants to move to.
+	 * 
+	 * @param x1 integer, x coordinate of the first point
+	 * @param y1 integer, y coordinate of the first point
+	 * @param x2 integer, x coordinate of the second point
+	 * @param y2 integer, y coordinate of the second point
+	 * @return boolean, whether or not this Wall is directly between the points
+	 */
 	public boolean isBetween(int x1, int y1, int x2, int y2){
-		// if wall is vertical, check that wall is between the points on the y axis 
+		// if horizontal, check that wall is between the points on the y axis 
 		// and close enough on the x axis 
 		if(type.equals("h")){
 			if((this.x==x1 || this.x==x2) && 
@@ -59,7 +99,7 @@ public class Wall {
 				return true;
 			}
 		}else{	
-			// if wall is vertical, check that wall is between the points on the y axis 
+			// if vertical, check that wall is between the points on the y axis 
 			// and close enough on the x axis 
 			if((this.y==y1 || this.y==y2) && 
 					(this.x==x1 || this.x==x2 || this.x==x1-1 || this.x==y2-1)){
