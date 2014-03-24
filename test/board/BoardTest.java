@@ -93,7 +93,7 @@ public class BoardTest {
 	/* Test placeWall() */
 	
 	@Test
-	public void checkIfCanPlaceVerticalWallInValidSpace(){
+	public void checkIfCanPlaceVerticalWallInAValidSpace(){
 		int x = 1;
 		int y = 1;
 		String type = "v";
@@ -103,51 +103,11 @@ public class BoardTest {
 	}
 	
 	@Test
-	public void checkIfCanPlaceVerticalWallOnLeftEdge(){
-		int x = 0;
-		int y = 1;
-		String type = "v";
-		boolean expected = false;
-		
-		testResults(players[0], x, y, type, expected);
-	}
-	
-	@Test
-	public void checkIfCanPlaceVerticalWallOnRightEdge(){
-		int x = 8;
-		int y = 1;
-		String type = "v";
-		boolean expected = false;
-		
-		testResults(players[0], x, y, type, expected);
-	}
-	
-	@Test
-	public void checkIfCanPlaceHorizontalWallInValidSpace(){
+	public void checkIfCanPlaceHorizontalWallInAValidSpace(){
 		int x = 0;
 		int y = 6;
 		String type = "h";
 		boolean expected = true;
-		
-		testResults(players[0], x, y, type, expected);
-	}
-	
-	@Test
-	public void checkIfCanPlaceHorizontalWallOnTopEdge(){
-		int x = 1;
-		int y = 0;
-		String type = "h";
-		boolean expected = false;
-		
-		testResults(players[0], x, y, type, expected);
-	}
-	
-	@Test
-	public void checkIfCanPlaceHorizontalWallOnBottomEdge(){
-		int x = 0;
-		int y = 8;
-		String type = "h";
-		boolean expected = false;
 		
 		testResults(players[0], x, y, type, expected);
 	}

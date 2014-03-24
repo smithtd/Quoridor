@@ -149,15 +149,7 @@ public class Board {
 		
 		// check that (x,y) is on grid and it's ok to place a wall there
 		if(w.getX() > 7 || w.getY() > 7 || w.getX() < 0 || w.getY() < 0)
-			return false;
-		
-		// check that we aren't trying to place a vertical wall on left edge
-		if(w.type().equals("v") && w.getX()==0)
-			return false;		
-		
-		// check that we aren't trying to place a horizontal wall on edge
-		if(w.type().equals("h") && w.getY()==0)
-			return false;		
+			return false;	
 		
 		// check that wall is not occupied or intersected by another wall
 		for(int i=0; i<numWalls; i++)
