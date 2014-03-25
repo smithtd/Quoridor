@@ -81,15 +81,15 @@ public class Board {
 			moves.add(p.x()+""+(p.y()+1));
 		
 		// up
-		if(isLegalMove(p, p.x(), p.y()-1))
+		if(isLegalMove(p,  p.x(), p.y()-1))
 			moves.add(p.x()+""+(p.y()-1));
 		
 		// right
-		if(isLegalMove(p, (p.x()+1), p.y()))
+		if(isLegalMove(p, p.x()+1, p.y()))
 			moves.add((p.x()+1)+""+p.y());
 		
 		// left
-		if(isLegalMove(p, (p.x()-1), p.y()))
+		if(isLegalMove(p, p.x()-1, p.y()))
 			moves.add((p.x()-1)+""+p.y());
 		
 		return moves;
@@ -122,9 +122,10 @@ public class Board {
 			return false;
 		
 		// make sure no wall is in the way
-		for(int i=0; i<numWalls; i++)
+		for(int i=0; i<numWalls; i++){
 			if(walls[i].isBetween(p.x(), p.y(), x, y))
 				return false;
+		}
 		
 		// we've checked illegal conditions 
 		return true;

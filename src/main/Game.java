@@ -133,7 +133,14 @@ public class Game extends Observable{
 			}else{
 				move = p.wallTranslate(move);
 			}
-		
+			
+			if(move.isEmpty()){
+				// invalid move, kick player when network is integrated
+				// for now, freeze game
+				System.err.println("Invalid turn. Parser returned empty string.");
+				break;
+			}
+			
 			// try to play turn
 			if(this.playTurn(move)){
 				if(this.checkForWin())

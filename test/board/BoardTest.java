@@ -247,14 +247,6 @@ public class BoardTest {
 	}
 	
 	@Test
-	public void checkIntersectingWalls(){
-		Wall w = new Wall(2, 4, "h");
-		boolean expected = false;
-	
-		testResults(players[0], w, expected);
-	}
-	
-	@Test
 	public void checkWallOnExistingWall(){
 		Wall w = new Wall(3, 3, "v");
 		boolean expected = false;

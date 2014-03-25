@@ -1,7 +1,5 @@
 package walls;
 
-import java.awt.Point;
-
 /**
  * Wall object holds info about an individual wall. 
  * 
@@ -61,22 +59,7 @@ public class Wall {
 	 * @return boolean, whether or not given Wall intersects this one
 	 */
 	public boolean intersects(Wall w){
-		return this.getCenter().equals(w.getCenter());
-	}
-	
-	/**
-	 * Gets the center Point of this wall.
-	 * 
-	 * @return Point, center of this Wall
-	 */
-	public Point getCenter(){
-		Point p;
-		if(this.type.equals("v")){
-			p = new Point(this.x, this.y + 1);
-		}else{
-			p = new Point(this.x + 1, this.y);
-		}
-		return p;
+		return this.x == w.getX() && this.y == w.getY();
 	}
 	
 	/**
@@ -91,20 +74,20 @@ public class Wall {
 	 * @return boolean, whether or not this Wall is directly between the points
 	 */
 	public boolean isBetween(int x1, int y1, int x2, int y2){
-		// if horizontal, check that wall is between the points on the y axis 
-		// and close enough on the x axis 
+		// check: top right, top left
+		// bottom right, bottom left
 		if(type.equals("h")){
-			if((this.x==x1 || this.x==x2) && 
-					(this.y==y1 || this.y==y2 || this.y==y1-1 || this.y==y2-1)){
-				return true;
-			}
-		}else{	
-			// if vertical, check that wall is between the points on the y axis 
-			// and close enough on the x axis 
-			if((this.y==y1 || this.y==y2) && 
-					(this.x==x1 || this.x==x2 || this.x==x1-1 || this.x==y2-1)){
-				return true;
-			}
+			return ((this.x==x1 && this.y==y1 && this.x==x2-1 && this.y==y2) || 
+				(this.x==x1-1 && this.y==y1 && this.x==x2 && this.y==y2) ||
+				(this.x==x1 && this.y==y1-1 && this.x==x2-1 && this.y==y2-1) ||
+				(this.x==x1-1 && this.y==y1-1 && this.x==x2 && this.y==y2-1));	
+		}else if(type.equals("v")){	
+			// check: left down, left up, 
+			// right down, right up
+			return ((this.x==x1 && this.y==y1 && this.x==x2 && this.y==y2-1) || 
+				(this.x==x1 && this.y==y1-1 && this.x==x2 && this.y==y2) ||
+				(this.x==x1-1 && this.y==y1 && this.x==x2-1 && this.y==y2-1) ||
+				(this.x==x1-1 && this.y==y1-1 && this.x==x2-1 && this.y==y2));
 		}
 		return false;
 	}
