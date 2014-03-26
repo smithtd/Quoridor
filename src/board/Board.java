@@ -1,6 +1,7 @@
 package board;
 
 import java.util.ArrayList;
+import java.awt.Point;
 
 import players.Player;
 import walls.Wall;
@@ -75,23 +76,44 @@ public class Board {
 	 */
 	public ArrayList<String> possibleMoves(Player p){
 		// check four directions
-		// down
-		if(isLegalMove(p, p.x(), p.y()+1))
-			p.addToMoves(p.x()+""+(p.y()+1));
+		Point[] directions = {new Point(p.x(), p.y()+1), 
+				new Point(p.x(), p.y()-1), new Point(p.x()+1, p.y()), 
+				new Point(p.x()-1, p.y())};
 		
-		// up
-		if(isLegalMove(p,  p.x(), p.y()-1))
-			p.addToMoves(p.x()+""+(p.y()-1));
-		
-		// right
-		if(isLegalMove(p, p.x()+1, p.y()))
-			p.addToMoves((p.x()+1)+""+p.y());
-		
-		// left
-		if(isLegalMove(p, p.x()-1, p.y()))
-			p.addToMoves((p.x()-1)+""+p.y());
+		for(Point d : directions){
+			int x = (int) d.getX();
+			int y = (int) d.getY();
+			
+			if(this.isOccupiedByPlayer(x,y)){
+				isLegalMove(p, this.getPlayerAt(x,y));
+			}else{
+				if(isLegalMove(p, x, y))
+					p.addToMoves(x+""+y);
+			}
+		}
 		
 		return p.getAvailableMoves();
+	}
+	
+	private void isLegalMove(Player calling, Player checking){
+		// check four directions
+		Point[] directions = {new Point(checking.x(), checking.y()+1), 
+				new Point(checking.x(), checking.y()-1), new Point(checking.x()+1, checking.y()), 
+				new Point(checking.x()-1, checking.y())};
+		
+		for(Point d : directions){
+			int x = (int) d.getX();
+			int y = (int) d.getY();
+			
+			if(this.isOccupiedByPlayer(x,y) && this.getPlayerAt(x,y).equals(calling)){
+				// ignore, already checked
+			}else if(this.isOccupiedByPlayer(x,y)){
+				isLegalMove(checking, this.getPlayerAt(x,y));
+			}else{
+				if(isLegalMove(checking, x, y))
+					calling.addToMoves(x+""+y);
+			}
+		}
 	}
 	
 	/**
@@ -107,11 +129,6 @@ public class Board {
 		// check that coordinates are in the valid range
 		if(x > 8 || x < 0 || y > 8 || y < 0)
 			return false;
-		
-		// check that the space is not occupied by another player
-		for(int i = 0; i < players.length; i++)
-			if(x == players[i].x() && y == players[i].y())
-				return false;
 				
 		// check that the space is only one away (add logic for jumping later)
 		if(x > p.x()+1 || x < p.x()-1)
@@ -161,6 +178,20 @@ public class Board {
 		return true;
 	}
 	
+	public boolean isOccupiedByPlayer(int x, int y){
+		for(Player p: players)
+			if(p.x()==x && p.y()==y)
+				return true;
+		return false;
+	}
+	
+	public Player getPlayerAt(int x, int y){
+		for(Player p: players)
+			if(p.x()==x && p.y()==y)
+				return p;
+		return null;
+	}
+	
 	/**
 	 * Gives a simple string representation of the Board. 
 	 * Includes the number of players and number of walls played.
@@ -186,7 +217,7 @@ public class Board {
 	 * @return boolean, whether or not move was successfully made
 	 */
 	public boolean placePawn(Player p, int x, int y) {
-		if(isLegalMove(p, x, y)){
+		if(p.getAvailableMoves().contains(x+""+y)){
 			p.setPos(x,y);
 			return true;
 		}else{
