@@ -6,6 +6,7 @@ package players;
 import java.awt.Color;
 import java.awt.Point;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 /**
  * @author marc dean jr
@@ -19,83 +20,88 @@ import java.util.Scanner;
  */
 public class Player implements Players {
 
-		/* Fields */
-		@SuppressWarnings("unused")
-		private String name; 	// players name
-		private int pNumber; 	// which player it is (1-4)
-		public static int wallTotal;	// how many walls player has
-		private Scanner sc;		// prompt player for moves
-		private Point position; // current position of the player
-		private int startX;
-		private int startY;
-		private Color c;
-		
-		// TODO
-		private Point[] winArea;  // where to win
-		// TODO - Incorporate a QuoridorClient for each player to connect to a server through the client
-		
-		/* Constructor(s) */
-		public Player(String name, int walls, String pos, int pNum) {
-			this.name = name;
-			Player.wallTotal = walls;
-			// to get moves (DEBUG)
-			this.sc = new Scanner("System.in");
-			//TODO implement way to find initial position
-			this.position = setPosition(pos);
-			this.pNumber = pNum;
-			if(pNum==1){
-				startX=0;
-				startY=4;
-			}
-			if(pNum==2){
-				startX=8;
-				startY=4;
-			}
-			if(pNum==3){
-				startX=4;
-				startY=0;
-			}
-			if(pNum==4){
-				startX=4;
-				startY=8;
-			}
-			this.setWinArea();
+	/* Fields */
+	
+	@SuppressWarnings("unused")
+	private String name; 	// players name
+	private int pNumber; 	// which player it is (1-4)
+	public static int wallTotal;	// how many walls player has
+	private Scanner sc;		// prompt player for moves
+	private Point position; // current position of the player
+	private int startX;
+	private int startY;
+	private Color c;
+	private ArrayList<String> availableMoves;
+	
+	// TODO
+	private Point[] winArea;  // where to win
+	// TODO - Incorporate a QuoridorClient for each player to connect to a server through the client
+	
+	/* Constructor(s) */
+	
+	public Player(String name, int walls, String pos, int pNum) {
+		this.name = name;
+		Player.wallTotal = walls;
+		// to get moves (DEBUG)
+		this.sc = new Scanner("System.in");
+		//TODO implement way to find initial position
+		this.position = setPosition(pos);
+		this.pNumber = pNum;
+		if(pNum==1){
+			startX=0;
+			startY=4;
 		}
-		
-		public Player( String name, int startX, int startY, int pNum ){
-			this.name = name;
-			this.startX = startX;
-			this.startY = startY;
-			this.pNumber = pNum;
-			if(pNumber== 1)
-				c = Color.BLUE;
-			else if(pNumber == 2)
-				c = Color.RED;
-			else if(pNumber == 3)
-				c = Color.GREEN;
-			else if(pNumber == 4)
-				c = Color.YELLOW;
-			wallTotal = 5; // hardcoded for now. will fix
-			this.setWinArea();
+		if(pNum==2){
+			startX=8;
+			startY=4;
 		}
-		
-		public Player( String name, int startX, int startY, int pNum, int walls ){
-			this.name = name;
-			this.startX = startX;
-			this.startY = startY;
-			this.pNumber = pNum;
-			if(pNumber== 1)
-				c = Color.BLUE;
-			else if(pNumber == 2)
-				c = Color.RED;
-			else if(pNumber == 3)
-				c = Color.GREEN;
-			else if(pNumber == 4)
-				c = Color.YELLOW;
-			wallTotal = walls; 
-			this.setWinArea();
+		if(pNum==3){
+			startX=4;
+			startY=0;
 		}
-		/* Methods */
+		if(pNum==4){
+			startX=4;
+			startY=8;
+		}
+		this.setWinArea();
+	}
+	
+	public Player( String name, int startX, int startY, int pNum ){
+		this.name = name;
+		this.startX = startX;
+		this.startY = startY;
+		this.pNumber = pNum;
+		if(pNumber== 1)
+			c = Color.BLUE;
+		else if(pNumber == 2)
+			c = Color.RED;
+		else if(pNumber == 3)
+			c = Color.GREEN;
+		else if(pNumber == 4)
+			c = Color.YELLOW;
+		wallTotal = 5; // hardcoded for now. will fix
+		this.setWinArea();
+	}
+	
+	public Player( String name, int startX, int startY, int pNum, int walls ){
+		this.name = name;
+		this.startX = startX;
+		this.startY = startY;
+		this.pNumber = pNum;
+		if(pNumber== 1)
+			c = Color.BLUE;
+		else if(pNumber == 2)
+			c = Color.RED;
+		else if(pNumber == 3)
+			c = Color.GREEN;
+		else if(pNumber == 4)
+			c = Color.YELLOW;
+		wallTotal = walls; 
+		this.setWinArea();
+		this.availableMoves = new ArrayList<String>();
+	}
+		
+	/* Methods */
 		
 	/*
 	 * Purpose: setPosition based on a string of form "<char><int>"
@@ -273,5 +279,17 @@ public class Player implements Players {
 			return "Green";
 		else
 			return "Yellow";
+	}
+	
+	public void addToMoves(String s){
+		this.availableMoves.add(s);
+	}
+	
+	public ArrayList<String> getAvailableMoves(){
+		return availableMoves;
+	}
+	
+	public void clearMoves(){
+		this.availableMoves.clear();
 	}
 }

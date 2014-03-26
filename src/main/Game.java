@@ -109,6 +109,7 @@ public class Game extends Observable{
 	 * 
 	 */
 	public void startGame(){
+		this.updatePlayer(players[curr]);
 		GameBoard gb = new GameBoard();
 		this.registerObserver(gb);
 		gb.update(this, board);
@@ -146,6 +147,7 @@ public class Game extends Observable{
 				if(this.checkForWin())
 					break;
 				this.nextTurn();
+				this.updatePlayer(players[curr]);
 				this.notifyObservers(this, this.getBoard());
 			}else{
 				System.err.println("Player turn failed!");
@@ -183,6 +185,7 @@ public class Game extends Observable{
 					if(this.checkForWin())
 						break;
 					this.nextTurn();
+					this.updatePlayer(players[curr]);
 					this.notifyObservers(this, this.getBoard());
 					// sleep 1 second so game is watchable
 					Thread.sleep(1000); 
@@ -193,6 +196,11 @@ public class Game extends Observable{
 			}
 		}catch(FileNotFoundException e){	
 		}catch (InterruptedException e) {}
+	}
+	
+	public void updatePlayer(Player p){
+		p.clearMoves();
+		board.possibleMoves(p);
 	}
 	
 	/**

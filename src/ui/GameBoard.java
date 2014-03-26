@@ -164,7 +164,7 @@ public class GameBoard extends JPanel implements Observer {
 	 * @return ArrayList of PlayerButtons to highlight
 	 */
 	public ArrayList<PlayerButton> possibleMoves(Player p, Board b){
-		ArrayList<String> positions = b.possibleMoves(p);
+		ArrayList<String> positions = p.getAvailableMoves();
 		ArrayList<PlayerButton> buttons = new ArrayList<PlayerButton>();
 		
 		for(String pos : positions){

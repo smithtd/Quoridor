@@ -74,25 +74,24 @@ public class Board {
 	 * @return ArrayList of Strings indicating possible moves
 	 */
 	public ArrayList<String> possibleMoves(Player p){
-		ArrayList<String> moves = new ArrayList<String>();
 		// check four directions
 		// down
 		if(isLegalMove(p, p.x(), p.y()+1))
-			moves.add(p.x()+""+(p.y()+1));
+			p.addToMoves(p.x()+""+(p.y()+1));
 		
 		// up
 		if(isLegalMove(p,  p.x(), p.y()-1))
-			moves.add(p.x()+""+(p.y()-1));
+			p.addToMoves(p.x()+""+(p.y()-1));
 		
 		// right
 		if(isLegalMove(p, p.x()+1, p.y()))
-			moves.add((p.x()+1)+""+p.y());
+			p.addToMoves((p.x()+1)+""+p.y());
 		
 		// left
 		if(isLegalMove(p, p.x()-1, p.y()))
-			moves.add((p.x()-1)+""+p.y());
+			p.addToMoves((p.x()-1)+""+p.y());
 		
-		return moves;
+		return p.getAvailableMoves();
 	}
 	
 	/**
