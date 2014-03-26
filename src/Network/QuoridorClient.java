@@ -3,7 +3,7 @@
  * @author Marc Dean Jr.
  * Team - 511Tactical
  */
-package Network;
+package network;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

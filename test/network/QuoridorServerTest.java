@@ -1,10 +1,9 @@
 package network;
 
 import static org.junit.Assert.*;
+import network.QuoridorServer;
 
 import org.junit.Test;
-
-import Network.QuoridorServer;
 
 public class QuoridorServerTest {
 	

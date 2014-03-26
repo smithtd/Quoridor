@@ -7,7 +7,7 @@
 
 
 
-package Network;
+package network;
 
 /** 
  * The Messages interface will allow shared messaging guidelines for the 

@@ -1,4 +1,4 @@
-package Network;
+package network;
 
 /*
  * Author: DLYAN WOYTHAL
