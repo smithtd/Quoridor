@@ -95,27 +95,6 @@ public class Board {
 		return p.getAvailableMoves();
 	}
 	
-	private void isLegalMove(Player calling, Player checking){
-		// check four directions
-		Point[] directions = {new Point(checking.x(), checking.y()+1), 
-				new Point(checking.x(), checking.y()-1), new Point(checking.x()+1, checking.y()), 
-				new Point(checking.x()-1, checking.y())};
-		
-		for(Point d : directions){
-			int x = (int) d.getX();
-			int y = (int) d.getY();
-			
-			if(this.isOccupiedByPlayer(x,y) && this.getPlayerAt(x,y).equals(calling)){
-				// ignore, already checked
-			}else if(this.isOccupiedByPlayer(x,y)){
-				isLegalMove(checking, this.getPlayerAt(x,y));
-			}else{
-				if(isLegalMove(checking, x, y))
-					calling.addToMoves(x+""+y);
-			}
-		}
-	}
-	
 	/**
 	 * Checks whether a player's pawn can be placed at (x,y). 
 	 * This method is overloaded.
@@ -148,6 +127,35 @@ public class Board {
 	}
 	
 	/**
+	 * Checks available spaces of an adjacent Player. Method is called when
+	 * a Player can jump off another Player. The adjacent Player's available
+	 * moves are added to the calling Player's availableMove list.
+	 * 
+	 * @param calling Player, original Player seeking moves
+	 * @param checking Player, adjacent to original Player
+	 */
+	private void isLegalMove(Player calling, Player checking){
+		// check four directions
+		Point[] directions = {new Point(checking.x(), checking.y()+1), 
+				new Point(checking.x(), checking.y()-1), new Point(checking.x()+1, checking.y()), 
+				new Point(checking.x()-1, checking.y())};
+		
+		for(Point d : directions){
+			int x = (int) d.getX();
+			int y = (int) d.getY();
+			
+			if(this.isOccupiedByPlayer(x,y) && this.getPlayerAt(x,y).equals(calling)){
+				// ignore, already checked
+			}else if(this.isOccupiedByPlayer(x,y)){
+				isLegalMove(checking, this.getPlayerAt(x,y));
+			}else{
+				if(isLegalMove(checking, x, y))
+					calling.addToMoves(x+""+y);
+			}
+		}
+	}
+	
+	/**
 	 * Checks whether a player can place the wall passed in. 
 	 * This method is overloaded.
 	 * 
@@ -155,7 +163,7 @@ public class Board {
 	 * @param w Wall that the Player is trying to place
 	 * @return boolean, whether or not the move is legal
 	 */
-	public boolean isLegalMove(Player p, Wall w) {
+	public boolean isLegalWallPlacement(Player p, Wall w) {
 		// check that player can play a wall
 		if(p.getWalls()<=0)
 			return false;
@@ -178,6 +186,13 @@ public class Board {
 		return true;
 	}
 	
+	/**
+	 * Tells whether a given space is occupied by a player.
+	 * 
+	 * @param x integer x coordinate
+	 * @param y integer y coordinate
+	 * @return boolean whether a player occupies space (x,y)
+	 */
 	public boolean isOccupiedByPlayer(int x, int y){
 		for(Player p: players)
 			if(p.x()==x && p.y()==y)
@@ -185,6 +200,13 @@ public class Board {
 		return false;
 	}
 	
+	/**
+	 * Gets the player occupying a given space.
+	 * 
+	 * @param x integer x coordinate
+	 * @param y integer y coordinate
+	 * @return Player at space (x,y)
+	 */
 	public Player getPlayerAt(int x, int y){
 		for(Player p: players)
 			if(p.x()==x && p.y()==y)
@@ -237,7 +259,7 @@ public class Board {
 	 */
 	public boolean placeWall(Player p, int x, int y, String type){
 		Wall w = new Wall(x, y, type);
-		if(isLegalMove(p, w)){
+		if(isLegalWallPlacement(p, w)){
 			walls[numWalls] = w;
 			numWalls++;;
 			return true;

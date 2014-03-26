@@ -20,10 +20,10 @@ public class BoardTest {
 	@Before
 	public void initialize() {
 		players = new Player[4];
-		players[0] = new Player("p1", 1, 0, 1);
-		players[1] = new Player("p2", 2, 8, 2);
-		players[2] = new Player("p3", 8, 1, 3);
-		players[3] = new Player("p4", 8, 2, 4);
+		players[0] = new Player("p1", 1, 0, 1, 5);
+		players[1] = new Player("p2", 2, 8, 2, 5);
+		players[2] = new Player("p3", 8, 1, 3, 5);
+		players[3] = new Player("p4", 8, 2, 4, 5);
 		board = new Board(players, 20);
 		board.placeWall(players[0], 3, 3, "v");
 	}
@@ -48,7 +48,7 @@ public class BoardTest {
 	
 	// test isLegalMove (wall version)
 	private void testResults(Player p, Wall w, boolean expected) {
-		boolean result = board.isLegalMove(p, w);
+		boolean result = board.isLegalWallPlacement(p, w);
 	    assertThat(result, equalTo(expected));  
 	}
 

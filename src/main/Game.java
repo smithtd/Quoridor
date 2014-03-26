@@ -198,6 +198,11 @@ public class Game extends Observable{
 		}catch (InterruptedException e) {}
 	}
 	
+	/**
+	 * Resets Player's moves and retrieves current available moves.
+	 * 
+	 * @param p Player
+	 */
 	public void updatePlayer(Player p){
 		p.clearMoves();
 		board.possibleMoves(p);
