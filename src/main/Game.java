@@ -49,11 +49,11 @@ public class Game extends Observable{
 	 */
 	public Game(int numPlayers, int numWalls) {
 		curr= 0;
-		this.numPlayers = numPlayers;
+		Game.numPlayers = numPlayers;
 		players = new Player[numPlayers];
 		int wallsEach = numWalls/numPlayers;
 		
-		if(this.numPlayers == MAX_NUMBER_PLAYERS){
+		if(Game.numPlayers == MAX_NUMBER_PLAYERS){
 			players[0] = new Player("1", 0, 4, 1, wallsEach);
 			players[1] = new Player("2", 4, 8, 2, wallsEach);
 			players[2] = new Player("3", 8, 4, 3, wallsEach);
@@ -258,7 +258,7 @@ public class Game extends Observable{
      * @param board			this Game's Board
      */
     public void notifyObservers(Observable observable,Board board) {    
-    	this.ui.get(0).update(observable,board);  
+    	Game.ui.get(0).update(observable,board);  
     }
 	
 	/**
@@ -347,7 +347,7 @@ public class Game extends Observable{
      * @param observers		an ArrayList of Observers (one GameBoard)
      */
     public void setObservers(ArrayList<Observer> observers) {  
-        this.ui = observers;  
+        Game.ui = observers;  
     }
     
     /**
