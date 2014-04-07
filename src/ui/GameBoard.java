@@ -34,7 +34,6 @@ public class GameBoard extends JPanel implements Observer {
 	private static LongWallButton[][] vertWalls;
 	private static LongWallButton[][] horzWalls;
 	private static JPanel buttonHolder;
-	private static int numPlayers;
 	/* Constructor */
 
 	/**
@@ -193,7 +192,6 @@ public class GameBoard extends JPanel implements Observer {
 		// convert from observable and object
 		Board b = (Board) board;
 		Game g = (Game) game;
-		numPlayers = g.getNumPlayers();
 		
 		if(g.gameWon()){
 			this.winState(g);
@@ -355,10 +353,10 @@ public class GameBoard extends JPanel implements Observer {
 			}//end layer
 		}//end x
 		
-		EndZoneButton up = new EndZoneButton( numPlayers, "U" );
-		EndZoneButton down = new EndZoneButton( numPlayers, "D" );
-		EndZoneButton left = new EndZoneButton( numPlayers, "L" );
-		EndZoneButton right = new EndZoneButton( numPlayers, "R" );
+		EndZoneButton up = new EndZoneButton( Game.getNumPlayers(), "U" );
+		EndZoneButton down = new EndZoneButton( Game.getNumPlayers(), "D" );
+		EndZoneButton left = new EndZoneButton( Game.getNumPlayers(), "L" );
+		EndZoneButton right = new EndZoneButton( Game.getNumPlayers(), "R" );
 
 		this.add( new EndZoneSpacer() );
 		this.add( up );

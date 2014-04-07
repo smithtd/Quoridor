@@ -34,7 +34,7 @@ public class Game extends Observable{
 	private ArrayList<Observer> ui = new ArrayList<Observer>();  
 	private static Board board;					// holds board info
 	private static Player[] players;			// Player[] to hold players
-	private int numPlayers;						// number of players
+	private static int numPlayers;						// number of players
 	private int curr;							// index of current Player
 	private boolean gameWon;					// whether the game has been won
 	
@@ -326,8 +326,8 @@ public class Game extends Observable{
 	 * 
 	 * @return	an integer number of Players
 	 */
-	public int getNumPlayers(){
-		return this.numPlayers;
+	public static int getNumPlayers(){
+		return numPlayers;
 	}
 	
 	/**
