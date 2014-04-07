@@ -194,6 +194,7 @@ public class Game extends Observable{
 					break;
 				}
 			}
+			sc.close();
 		}catch(FileNotFoundException e){	
 		}catch (InterruptedException e) {}
 	}

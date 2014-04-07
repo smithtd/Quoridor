@@ -33,7 +33,8 @@ public class GameBoard extends JPanel implements Observer {
 	private static WallButton[][] wbAry;
 	private static LongWallButton[][] vertWalls;
 	private static LongWallButton[][] horzWalls;
-	
+	private static JPanel buttonHolder;
+	private static int numPlayers;
 	/* Constructor */
 
 	/**
@@ -43,10 +44,13 @@ public class GameBoard extends JPanel implements Observer {
 	 */
 	public GameBoard(){
 		super();
+		buttonHolder = new JPanel();
 		FlowLayout flow = new FlowLayout();
 		flow.setHgap( 0 );
 		flow.setVgap( 0 );
+		buttonHolder.setLayout( flow );
 		this.setLayout( flow );
+		buttonHolder.setPreferredSize( new Dimension( (50*9 + 10*8), (50*9 + 10*8) ) );
 		setFrameStats();
 	}
 	
@@ -189,6 +193,7 @@ public class GameBoard extends JPanel implements Observer {
 		// convert from observable and object
 		Board b = (Board) board;
 		Game g = (Game) game;
+		numPlayers = g.getNumPlayers();
 		
 		if(g.gameWon()){
 			this.winState(g);
@@ -296,7 +301,7 @@ public class GameBoard extends JPanel implements Observer {
 		frame.add( menus );
 		c.weighty = 1.0;
 		c.gridheight = GridBagConstraints.REMAINDER;
-		this.setPreferredSize( new Dimension( 50*9 + 10*8, 50*9 + 10*8 ) );
+		this.setPreferredSize( new Dimension( 50*9 + 10*8+20, 50*9 + 10*8+20 ) );
 		gridbag.setConstraints( this, c );
 		frame.add( this );
 	}
@@ -329,26 +334,43 @@ public class GameBoard extends JPanel implements Observer {
 				//Layer 1 is HorzWalls && WallButton
 					if( layer == 0 ){
 						PlayerButton plyrBtn = new PlayerButton( x, y );
-						this.add( plyrBtn );
+						buttonHolder.add( plyrBtn );
 						pbAry[x][y] = plyrBtn;
 						if( y!= 8 ){
 							LongWallButton w = new LongWallButton( x, y, "v");
-							this.add( w );
+							buttonHolder.add( w );
 							vertWalls[x][y] = w;
 						}
 					} else if(layer == 1 && x != 8) {
 						LongWallButton w = new LongWallButton( x, y, "h" );
-						this.add( w );
+						buttonHolder.add( w );
 						horzWalls[x][y] = w;
 						if( y!= 8 && x!=8 ){
 							WallButton wb = new WallButton( x, y );
-							this.add( wb );
+							buttonHolder.add( wb );
 							wbAry[x][y] = wb;
 						}
 					}
-				}
-			}
-		}
+				}//end y
+			}//end layer
+		}//end x
+		
+		EndZoneButton up = new EndZoneButton( numPlayers, "U" );
+		EndZoneButton down = new EndZoneButton( numPlayers, "D" );
+		EndZoneButton left = new EndZoneButton( numPlayers, "L" );
+		EndZoneButton right = new EndZoneButton( numPlayers, "R" );
+
+		this.add( new EndZoneSpacer() );
+		this.add( up );
+		this.add( new EndZoneSpacer() );
+		this.add( left );
+		this.add( buttonHolder );
+		this.add( right );
+		this.add( new EndZoneSpacer() );
+		this.add( down );
+		this.add( new EndZoneSpacer() );
+		
+		
 	}
 	
 	/**
