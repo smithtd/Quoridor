@@ -31,7 +31,7 @@ public class Game extends Observable{
 	
 	/* Instance variables */
 	
-	private ArrayList<Observer> ui = new ArrayList<Observer>();  
+	private static ArrayList<Observer> ui = new ArrayList<Observer>();  
 	private static Board board;					// holds board info
 	private static Player[] players;			// Player[] to hold players
 	private static int numPlayers;						// number of players
@@ -265,8 +265,8 @@ public class Game extends Observable{
 	 * Disposes of the previous GameBoard (UI) and creates a new Game.
 	 * 
 	 */
-	public void new4PlayerGame(){
-		GameBoard ui = (GameBoard) this.ui.get(0);
+	public static void new4PlayerGame(){
+		GameBoard ui = (GameBoard) Game.ui.get(0);
 		ui.getFrame().dispose();
 		Game g = new Game( 4, NUM_OF_WALLS );
 		g.startGame();
@@ -276,8 +276,8 @@ public class Game extends Observable{
 	 * Disposes of the previous GameBoard (UI) and creates a new Game.
 	 * 
 	 */
-	public void new2PlayerGame(){
-		GameBoard ui = (GameBoard) this.ui.get(0);
+	public static void new2PlayerGame(){
+		GameBoard ui = (GameBoard) Game.ui.get(0);
 		ui.getFrame().dispose();
 		Game g = new Game( 2, NUM_OF_WALLS );
 		g.startGame();

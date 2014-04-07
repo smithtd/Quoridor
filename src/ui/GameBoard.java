@@ -77,14 +77,14 @@ public class GameBoard extends JPanel implements Observer {
 			JMenuItem new2PlyrGameOpt = new JMenuItem( "New 2 Player Game" );
 			new2PlyrGameOpt.addActionListener( new ActionListener(){
 				public void actionPerformed( ActionEvent e ){
-					//g.new2PlayerGame();
+					Game.new2PlayerGame();
 				}
 			});
 			fileMenu.add(new2PlyrGameOpt);
 			JMenuItem new4PlyrGameOpt = new JMenuItem( "New 4 Player Game" );
 			new4PlyrGameOpt.addActionListener( new ActionListener(){
 				public void actionPerformed( ActionEvent e ){
-					//g.new4PlayerGame();
+					Game.new4PlayerGame();
 				}
 			});
 			fileMenu.add(new4PlyrGameOpt);

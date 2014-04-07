@@ -28,13 +28,13 @@ public class EndZoneButton extends JButton{
 				this.setBackground( Color.BLACK );
 		}else if( numPlayers == 4 ){
 			if( position.equals( "U" ) )
-				this.setBackground( Color.YELLOW );
-			else if( position.equals( "D" ) )
-				this.setBackground( Color.RED );
-			else if( position.equals( "L" ) )
-				this.setBackground( Color.BLUE );
-			else if( position.equals( "R" ) )
 				this.setBackground( Color.GREEN );
+			else if( position.equals( "D" ) )
+				this.setBackground( Color.BLUE );
+			else if( position.equals( "L" ) )
+				this.setBackground( Color.RED );
+			else if( position.equals( "R" ) )
+				this.setBackground( Color.YELLOW );
 
 		}
 		
