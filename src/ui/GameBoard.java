@@ -34,6 +34,10 @@ public class GameBoard extends JPanel implements Observer {
 	private static LongWallButton[][] vertWalls;
 	private static LongWallButton[][] horzWalls;
 	private static JPanel buttonHolder;
+	private static JPanel BHBoarder;
+	private static JPanel statsPanel;
+	private static JPanel underBarPanel;
+	private static JPanel holder;
 	/* Constructor */
 
 	/**
@@ -43,13 +47,33 @@ public class GameBoard extends JPanel implements Observer {
 	 */
 	public GameBoard(){
 		super();
-		buttonHolder = new JPanel();
+		
 		FlowLayout flow = new FlowLayout();
 		flow.setHgap( 0 );
 		flow.setVgap( 0 );
+
+		buttonHolder = new JPanel();
+		BHBoarder = new JPanel();
+		statsPanel = new JPanel();
+		underBarPanel = new JPanel();
+		holder = new JPanel();
+
+
 		buttonHolder.setLayout( flow );
+		BHBoarder.setLayout( flow );
+		statsPanel.setLayout( flow );
+		underBarPanel.setLayout( flow );
+		holder.setLayout( flow );
 		this.setLayout( flow );
-		buttonHolder.setPreferredSize( new Dimension( (50*9 + 10*8), (50*9 + 10*8) ) );
+				
+		buttonHolder.setPreferredSize( getButtonHolderDim() );
+		BHBoarder.setPreferredSize( getButtonHolderDim() );
+		statsPanel.setPreferredSize( getStatsBarDim() );
+		underBarPanel.setPreferredSize( getUnderBarDim() );
+		holder.setPreferredSize( getHolderDim() );
+		this.setPreferredSize( getThisDim() );
+		
+
 		setFrameStats();
 	}
 	
@@ -275,7 +299,7 @@ public class GameBoard extends JPanel implements Observer {
 		addPanelsToJFrame( frame, gridbag, c );
 		frame.add( this );						//Adds this JPanel to JFrame
 		frame.setVisible( true );				//Sets Frame to visible
-		frame.setResizable( false );			//Doesn't allow resizing of frame
+//		frame.setResizable( false );			//Doesn't allow resizing of frame
 		frame.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );	//when frame is closed, the program terminates
 		frame.setLocation( 150, 150 );
 		frame.pack();	//collapses frame to minimum size around all JObjects inside it
@@ -299,9 +323,32 @@ public class GameBoard extends JPanel implements Observer {
 		frame.add( menus );
 		c.weighty = 1.0;
 		c.gridheight = GridBagConstraints.REMAINDER;
-		this.setPreferredSize( new Dimension( 50*9 + 10*8+20, 50*9 + 10*8+20 ) );
+		setUpThisPanel();
 		gridbag.setConstraints( this, c );
 		frame.add( this );
+	}
+	
+	private Dimension getThisDim(){
+		return (new Dimension( getBoardDim().width + getStatsBarDim().width, getBoardDim().height+ getUnderBarDim().height ) );
+	}
+	
+	private Dimension getBoardDim(){
+		return (new Dimension(getButtonHolderDim().width + 30, getButtonHolderDim().height + 30) );
+	}
+	
+	private Dimension getButtonHolderDim(){
+		return (new Dimension( (50*9 + 10*8), (50*9 + 10*8) ));
+	}
+	
+	private Dimension getHolderDim(){
+		return (new Dimension( getButtonHolderDim().width + getStatsBarDim().width, getButtonHolderDim().height ) );
+	}
+	
+	private Dimension getUnderBarDim(){
+		return (new Dimension( getBoardDim().width + getStatsBarDim().width, 50));
+	}
+	private Dimension getStatsBarDim(){
+		return (new Dimension( getBoardDim().width/3 , getBoardDim().height ));
 	}
 	
 	/**
@@ -353,21 +400,37 @@ public class GameBoard extends JPanel implements Observer {
 			}//end layer
 		}//end x
 		
+	}
+	
+	private void setUpThisPanel(){
+	
+		
 		EndZoneButton up = new EndZoneButton( Game.getNumPlayers(), "U" );
 		EndZoneButton down = new EndZoneButton( Game.getNumPlayers(), "D" );
 		EndZoneButton left = new EndZoneButton( Game.getNumPlayers(), "L" );
 		EndZoneButton right = new EndZoneButton( Game.getNumPlayers(), "R" );
 
-		this.add( new EndZoneSpacer() );
-		this.add( up );
-		this.add( new EndZoneSpacer() );
-		this.add( left );
-		this.add( buttonHolder );
-		this.add( right );
-		this.add( new EndZoneSpacer() );
-		this.add( down );
-		this.add( new EndZoneSpacer() );
+		JFrame T1 = new JFrame();
+		BHBoarder.add( new EndZoneSpacer() );
+		BHBoarder.add( up );
+		BHBoarder.add( new EndZoneSpacer() );
+		BHBoarder.add( left );
+		BHBoarder.add( buttonHolder );
+		BHBoarder.add( right );
+		BHBoarder.add( new EndZoneSpacer() );
+		BHBoarder.add( down );
+		BHBoarder.add( new EndZoneSpacer() );
+		/*
+		T1.add(BHBoarder);
+		T1.setVisible(true);
+		T1.setLocation(200, 200);
+		T1.pack();
+		*/
+		holder.add( BHBoarder );
+		holder.add( statsPanel );
 		
+		this.add( holder );
+		this.add( underBarPanel );
 		
 	}
 	
