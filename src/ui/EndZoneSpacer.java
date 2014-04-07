@@ -13,5 +13,6 @@ public class EndZoneSpacer extends JButton{
 		this.setBackground( Color.black);
 		this.setBorder(null);
 		this.setPreferredSize( new Dimension ( 10, 10 ) );
+		this.setOpaque(true);
 	}
 }
