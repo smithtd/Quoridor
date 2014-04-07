@@ -35,7 +35,7 @@ public class Game extends Observable{
 	private static Board board;					// holds board info
 	private static Player[] players;			// Player[] to hold players
 	private static int numPlayers;						// number of players
-	private int curr;							// index of current Player
+	private static int curr;							// index of current Player
 	private boolean gameWon;					// whether the game has been won
 	
 	/* Constructor */
@@ -101,7 +101,7 @@ public class Game extends Observable{
 			g.playGame(p, fileName);
 		
 		// notify observer, since we have a winner, ui will execute end of game
-		g.notifyObservers(g, g.getBoard());
+		g.notifyObservers(g, Game.getBoard());
 	}
 	
 	/**
@@ -109,7 +109,7 @@ public class Game extends Observable{
 	 * 
 	 */
 	public void startGame(){
-		this.updatePlayer(players[curr]);
+		Game.updatePlayer(players[curr]);
 		GameBoard gb = new GameBoard();
 		this.registerObserver(gb);
 		gb.update(this, board);
@@ -146,9 +146,9 @@ public class Game extends Observable{
 			if(this.playTurn(move)){
 				if(this.checkForWin())
 					break;
-				this.nextTurn();
-				this.updatePlayer(players[curr]);
-				this.notifyObservers(this, this.getBoard());
+				Game.nextTurn();
+				Game.updatePlayer(players[curr]);
+				this.notifyObservers(this, Game.getBoard());
 			}else{
 				System.err.println("Player turn failed!");
 				break;
@@ -184,9 +184,9 @@ public class Game extends Observable{
 				if(this.playTurn(move)){
 					if(this.checkForWin())
 						break;
-					this.nextTurn();
-					this.updatePlayer(players[curr]);
-					this.notifyObservers(this, this.getBoard());
+					Game.nextTurn();
+					Game.updatePlayer(players[curr]);
+					this.notifyObservers(this, Game.getBoard());
 					// sleep 1 second so game is watchable
 					Thread.sleep(1000); 
 				}else{
@@ -204,7 +204,7 @@ public class Game extends Observable{
 	 * 
 	 * @param p Player
 	 */
-	public void updatePlayer(Player p){
+	public static void updatePlayer(Player p){
 		p.clearMoves();
 		board.possibleMoves(p);
 	}
@@ -245,7 +245,7 @@ public class Game extends Observable{
 	 * Increments the current player to begin the next Player's turn.
 	 * 
 	 */
-	public void nextTurn(){
+	public static void nextTurn(){
 		curr++;
 		if(curr >= numPlayers)
 			curr=0;
@@ -308,7 +308,7 @@ public class Game extends Observable{
 	 * 
 	 * @return		a Board object
 	 */
-	public Board getBoard(){
+	public static Board getBoard(){
 		return board;
 	}
 	
