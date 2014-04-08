@@ -227,7 +227,7 @@ public class GameBoard extends JPanel implements Observer {
 			// show current pieces
 			this.addPlayerButtons(b);
 			this.addWallButtons(b);
-			this.showPlyrMoves(g.currPlayer(),b);
+			this.showPlyrMoves(Game.getCurrPlayer(),b);
 	        
 			repaint();
 		}
@@ -244,7 +244,7 @@ public class GameBoard extends JPanel implements Observer {
 		JPanel jp1 = new JPanel();
 		jp1.setLayout( new FlowLayout() ) ;
 		jp1.setPreferredSize( new Dimension( 300, 75 ) );
-		final JFrame LongWallButtonFrame = new JFrame( "Player " + g.currPlayer().getPnum() + " wins!" );
+		final JFrame LongWallButtonFrame = new JFrame( "Player " + Game.getCurrPlayer().getPnum() + " wins!" );
 		LongWallButtonFrame.setLayout( new BorderLayout() );
 		
 		// display buttons in dialog
