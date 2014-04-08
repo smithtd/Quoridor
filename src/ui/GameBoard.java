@@ -299,7 +299,7 @@ public class GameBoard extends JPanel implements Observer {
 		addPanelsToJFrame( frame, gridbag, c );
 		frame.add( this );						//Adds this JPanel to JFrame
 		frame.setVisible( true );				//Sets Frame to visible
-//		frame.setResizable( false );			//Doesn't allow resizing of frame
+		frame.setResizable( false );			//Doesn't allow resizing of frame
 		frame.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );	//when frame is closed, the program terminates
 		frame.setLocation( 150, 50 );
 		frame.pack();	//collapses frame to minimum size around all JObjects inside it
