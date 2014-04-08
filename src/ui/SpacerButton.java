@@ -7,6 +7,7 @@ import javax.swing.JButton;
 
 public class SpacerButton extends JButton{
 
+	// width, height, and color
 	public SpacerButton( int w, int h, Color c ){
 		super();
 		this.setPreferredSize( new Dimension( w, h ) );
@@ -14,6 +15,7 @@ public class SpacerButton extends JButton{
 		this.setBackground( c );
 	}
 
+	//width, height, color, and text
 	public SpacerButton(int w, int h, Color c, char label) {
 		super();
 		this.setPreferredSize( new Dimension( w, h ) );
