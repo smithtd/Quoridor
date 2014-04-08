@@ -34,7 +34,7 @@ public class GameBoard extends JPanel implements Observer {
 	private static LongWallButton[][] vertWalls;
 	private static LongWallButton[][] horzWalls;
 	private static JPanel buttonHolder;
-	private static JPanel BHBoarder;
+	private static JPanel BHBorder;
 	private static JPanel statsPanel;
 	private static JPanel underBarPanel;
 	private static JPanel holder;
@@ -53,21 +53,21 @@ public class GameBoard extends JPanel implements Observer {
 		flow.setVgap( 0 );
 
 		buttonHolder = new JPanel();
-		BHBoarder = new JPanel();
+		BHBorder = new JPanel();
 		statsPanel = new JPanel();
 		underBarPanel = new JPanel();
 		holder = new JPanel();
 
 
 		buttonHolder.setLayout( flow );
-		BHBoarder.setLayout( flow );
+		BHBorder.setLayout( flow );
 		statsPanel.setLayout( flow );
 		underBarPanel.setLayout( flow );
 		holder.setLayout( flow );
 		this.setLayout( flow );
 				
 		buttonHolder.setPreferredSize( getButtonHolderDim() );
-		BHBoarder.setPreferredSize( getButtonHolderDim() );
+		BHBorder.setPreferredSize( getButtonHolderBorderDim() );
 		statsPanel.setPreferredSize( getStatsBarDim() );
 		underBarPanel.setPreferredSize( getUnderBarDim() );
 		holder.setPreferredSize( getHolderDim() );
@@ -301,7 +301,7 @@ public class GameBoard extends JPanel implements Observer {
 		frame.setVisible( true );				//Sets Frame to visible
 //		frame.setResizable( false );			//Doesn't allow resizing of frame
 		frame.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );	//when frame is closed, the program terminates
-		frame.setLocation( 150, 150 );
+		frame.setLocation( 150, 50 );
 		frame.pack();	//collapses frame to minimum size around all JObjects inside it
 	}
 	
@@ -329,26 +329,26 @@ public class GameBoard extends JPanel implements Observer {
 	}
 	
 	private Dimension getThisDim(){
-		return (new Dimension( getBoardDim().width + getStatsBarDim().width, getBoardDim().height+ getUnderBarDim().height ) );
+		return (new Dimension( getUnderBarDim().width, getButtonHolderBorderDim().height+ getUnderBarDim().height ) );
 	}
 	
-	private Dimension getBoardDim(){
-		return (new Dimension(getButtonHolderDim().width + 30, getButtonHolderDim().height + 30) );
+	public static Dimension getButtonHolderBorderDim(){
+		return (new Dimension(getButtonHolderDim().width + 20, getButtonHolderDim().height + 20) );
 	}
 	
-	private Dimension getButtonHolderDim(){
+	public static Dimension getButtonHolderDim(){
 		return (new Dimension( (50*9 + 10*8), (50*9 + 10*8) ));
 	}
 	
 	private Dimension getHolderDim(){
-		return (new Dimension( getButtonHolderDim().width + getStatsBarDim().width, getButtonHolderDim().height ) );
+		return (new Dimension( getButtonHolderBorderDim().width + getStatsBarDim().width, getButtonHolderBorderDim().height ) );
 	}
 	
-	private Dimension getUnderBarDim(){
-		return (new Dimension( getBoardDim().width + getStatsBarDim().width, 50));
+	public static Dimension getUnderBarDim(){
+		return (new Dimension( getButtonHolderBorderDim().width + getStatsBarDim().width, 50));
 	}
-	private Dimension getStatsBarDim(){
-		return (new Dimension( getBoardDim().width/3 , getBoardDim().height ));
+	public static Dimension getStatsBarDim(){
+		return (new Dimension( getButtonHolderBorderDim().width/3+10 , getButtonHolderBorderDim().height ));
 	}
 	
 	/**
@@ -410,26 +410,22 @@ public class GameBoard extends JPanel implements Observer {
 		EndZoneButton left = new EndZoneButton( Game.getNumPlayers(), "L" );
 		EndZoneButton right = new EndZoneButton( Game.getNumPlayers(), "R" );
 
-		JFrame T1 = new JFrame();
-		BHBoarder.add( new EndZoneSpacer() );
-		BHBoarder.add( up );
-		BHBoarder.add( new EndZoneSpacer() );
-		BHBoarder.add( left );
-		BHBoarder.add( buttonHolder );
-		BHBoarder.add( right );
-		BHBoarder.add( new EndZoneSpacer() );
-		BHBoarder.add( down );
-		BHBoarder.add( new EndZoneSpacer() );
-		/*
-		T1.add(BHBoarder);
-		T1.setVisible(true);
-		T1.setLocation(200, 200);
-		T1.pack();
-		*/
-		holder.add( BHBoarder );
-		holder.add( statsPanel );
+		BHBorder.add( new EndZoneSpacer() );
+		BHBorder.add( up );
+		BHBorder.add( new EndZoneSpacer() );
+		BHBorder.add( left );
+		BHBorder.add( buttonHolder );
+		BHBorder.add( right );
+		BHBorder.add( new EndZoneSpacer() );
+		BHBorder.add( down );
+		BHBorder.add( new EndZoneSpacer() );
 		
-		this.add( holder );
+		holder.add( BHBorder );
+		holder.add( statsPanel );
+		for(int i=0; i<4; i++)
+		statsPanel.add( new PlayerStatButton() );
+		
+		this.add( holder, FlowLayout.LEFT );
 		this.add( underBarPanel );
 		
 	}
