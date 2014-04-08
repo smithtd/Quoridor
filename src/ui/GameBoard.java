@@ -424,15 +424,15 @@ public class GameBoard extends JPanel implements Observer {
 		EndZoneButton left = new EndZoneButton( Game.getNumPlayers(), "L" );
 		EndZoneButton right = new EndZoneButton( Game.getNumPlayers(), "R" );
 
-		BHBorder.add( new EndZoneSpacer() );
+		BHBorder.add( new SpacerButton( 10, 10, Color.DARK_GRAY ) );
 		BHBorder.add( up );
-		BHBorder.add( new EndZoneSpacer() );
+		BHBorder.add( new SpacerButton( 10, 10, Color.DARK_GRAY ) );
 		BHBorder.add( left );
 		BHBorder.add( buttonHolder );
 		BHBorder.add( right );
-		BHBorder.add( new EndZoneSpacer() );
+		BHBorder.add( new SpacerButton( 10, 10, Color.DARK_GRAY ) );
 		BHBorder.add( down );
-		BHBorder.add( new EndZoneSpacer() );
+		BHBorder.add( new SpacerButton( 10, 10, Color.DARK_GRAY ) );
 		
 		holder1.add( BHBorder );
 		holder1.add( statsPanel );

@@ -25,7 +25,7 @@ public class EndZoneButton extends JButton{
 			else if( position.equals( "D" ) )
 				this.setBackground( Color.BLUE );
 			else
-				this.setBackground( Color.BLACK );
+				this.setBackground( Color.DARK_GRAY );
 		}else if( numPlayers == 4 ){
 			if( position.equals( "U" ) )
 				this.setBackground( Color.GREEN );
