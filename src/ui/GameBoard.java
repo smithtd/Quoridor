@@ -36,7 +36,7 @@ public class GameBoard extends JPanel implements Observer {
 	private static JPanel buttonHolder;
 	private static JPanel BHBorder;
 	private static JPanel statsPanel;
-	private static JPanel underBarPanel;
+	private static JPanel aboveBarPanel;
 	private static JPanel holder;
 	/* Constructor */
 
@@ -55,21 +55,21 @@ public class GameBoard extends JPanel implements Observer {
 		buttonHolder = new JPanel();
 		BHBorder = new JPanel();
 		statsPanel = new JPanel();
-		underBarPanel = new JPanel();
+		aboveBarPanel = new JPanel();
 		holder = new JPanel();
 
 
 		buttonHolder.setLayout( flow );
 		BHBorder.setLayout( flow );
 		statsPanel.setLayout( flow );
-		underBarPanel.setLayout( flow );
+		aboveBarPanel.setLayout( flow );
 		holder.setLayout( flow );
 		this.setLayout( flow );
 				
 		buttonHolder.setPreferredSize( getButtonHolderDim() );
 		BHBorder.setPreferredSize( getButtonHolderBorderDim() );
 		statsPanel.setPreferredSize( getStatsBarDim() );
-		underBarPanel.setPreferredSize( getUnderBarDim() );
+		aboveBarPanel.setPreferredSize( getAboveBarDim() );
 		holder.setPreferredSize( getHolderDim() );
 		this.setPreferredSize( getThisDim() );
 		
@@ -329,7 +329,7 @@ public class GameBoard extends JPanel implements Observer {
 	}
 	
 	private Dimension getThisDim(){
-		return (new Dimension( getUnderBarDim().width, getButtonHolderBorderDim().height+ getUnderBarDim().height ) );
+		return (new Dimension( getAboveBarDim().width, getButtonHolderBorderDim().height+ getAboveBarDim().height ) );
 	}
 	
 	public static Dimension getButtonHolderBorderDim(){
@@ -344,7 +344,7 @@ public class GameBoard extends JPanel implements Observer {
 		return (new Dimension( getButtonHolderBorderDim().width + getStatsBarDim().width, getButtonHolderBorderDim().height ) );
 	}
 	
-	public static Dimension getUnderBarDim(){
+	public static Dimension getAboveBarDim(){
 		return (new Dimension( getButtonHolderBorderDim().width + getStatsBarDim().width, 50));
 	}
 	public static Dimension getStatsBarDim(){
@@ -404,7 +404,6 @@ public class GameBoard extends JPanel implements Observer {
 	
 	private void setUpThisPanel(){
 	
-		
 		EndZoneButton up = new EndZoneButton( Game.getNumPlayers(), "U" );
 		EndZoneButton down = new EndZoneButton( Game.getNumPlayers(), "D" );
 		EndZoneButton left = new EndZoneButton( Game.getNumPlayers(), "L" );
@@ -425,8 +424,15 @@ public class GameBoard extends JPanel implements Observer {
 		for(int i=0; i<4; i++)
 		statsPanel.add( new PlayerStatButton() );
 		
-		this.add( holder, FlowLayout.LEFT );
-		this.add( underBarPanel );
+		for(int i=0; i<9; i++){
+			aboveBarPanel.add( new SpacerButton( 10, getAboveBarDim().height, Color.DARK_GRAY ) );
+			aboveBarPanel.add( new SpacerButton( 50, getAboveBarDim().height, Color.LIGHT_GRAY, (char)('A'+i) ) );
+		}
+		aboveBarPanel.add( new SpacerButton( 10, getAboveBarDim().height, Color.BLACK ) );
+		aboveBarPanel.add( new SpacerButton( getStatsBarDim().width, getAboveBarDim().height, Color.RED) );
+		
+		this.add( aboveBarPanel );
+		this.add( holder );
 		
 	}
 	
