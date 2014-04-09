@@ -311,6 +311,11 @@ public class GameBoard extends JPanel implements Observer {
 		frame.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );	//when frame is closed, the program terminates
 		frame.setLocation( 150, 50 );
 		frame.pack();	//collapses frame to minimum size around all JObjects inside it
+		frame.addWindowListener(new WindowAdapter() {
+		    public void windowClosing(WindowEvent windowEvent) {
+		    	System.exit( 0 );
+		    }
+		});
 	}
 	
 	/**
@@ -344,11 +349,11 @@ public class GameBoard extends JPanel implements Observer {
 		return (new Dimension( 50, getButtonHolderBorderDim().height+ getAboveBarDim().height ) );
 	}
 	
-	public static Dimension getButtonHolderBorderDim(){
+	private static Dimension getButtonHolderBorderDim(){
 		return (new Dimension(getButtonHolderDim().width + 20, getButtonHolderDim().height + 20) );
 	}
 	
-	public static Dimension getButtonHolderDim(){
+	private static Dimension getButtonHolderDim(){
 		return (new Dimension( (50*9 + 10*8), (50*9 + 10*8) ));
 	}
 	
@@ -359,10 +364,10 @@ public class GameBoard extends JPanel implements Observer {
 		return (new Dimension( getAboveBarDim().width, getAboveBarDim().height + getStatsBarDim().height ) );
 	}
 	
-	public static Dimension getAboveBarDim(){
+	private static Dimension getAboveBarDim(){
 		return (new Dimension( getButtonHolderBorderDim().width + getStatsBarDim().width, 50));
 	}
-	public static Dimension getStatsBarDim(){
+	static Dimension getStatsBarDim(){
 			return (new Dimension( getButtonHolderBorderDim().width/3+10 , getButtonHolderBorderDim().height ));
 	}
 	
@@ -454,7 +459,7 @@ public class GameBoard extends JPanel implements Observer {
 			aboveBarPanel.add( new SpacerButton( 50, getAboveBarDim().height, Color.LIGHT_GRAY, "" + (char)('B'+i) ) );
 		}
 		aboveBarPanel.add( new SpacerButton( 10, getAboveBarDim().height, Color.DARK_GRAY ) );
-		aboveBarPanel.add( new SpacerButton( getStatsBarDim().width, getAboveBarDim().height, Color.LIGHT_GRAY) );
+		aboveBarPanel.add( new SpacerButton( getStatsBarDim().width, getAboveBarDim().height, Color.LIGHT_GRAY, "STATS" ) );
 		
 		holder2.add( aboveBarPanel );
 		holder2.add( holder1 );

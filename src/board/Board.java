@@ -1,10 +1,7 @@
 package board;
 
-import java.security.Policy;
 import java.util.ArrayList;
 import java.awt.Point;
-
-import main.Game;
 
 import players.Player;
 import ui.GameBoard;

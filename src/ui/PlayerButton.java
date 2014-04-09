@@ -94,7 +94,7 @@ public class PlayerButton extends JButton {
 	
 	public void paint( Graphics g ){
 		if( this.getBackground() == Color.MAGENTA ){
-			int increment = 175;
+			int increment = 100;
 			Color c = Game.getCurrPlayer().getColor();
 			int red = (c.getRed() + increment>256 ? c.getRed() : c.getRed() + increment );
 			int green = (c.getGreen() + increment>256 ? c.getGreen() : c.getGreen() + increment );

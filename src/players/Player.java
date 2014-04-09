@@ -132,6 +132,8 @@ public class Player implements Players {
 	
 	public void decWalls(){
 		wallTotal--;
+		for( int i=0; i< GameBoard.statAry.length; i++ )
+			GameBoard.statAry[i].repaint();
 	}
 	
 	/**
