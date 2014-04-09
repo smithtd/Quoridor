@@ -5,6 +5,8 @@ import java.awt.Dimension;
 
 import javax.swing.JButton;
 
+import main.Game;
+
 @SuppressWarnings("serial")
 public class EndZoneButton extends JButton{
 	
@@ -15,9 +17,9 @@ public class EndZoneButton extends JButton{
 		this.position = position;
 		
 		if( position.equals("U") || position.equals("D") )
-			this.setPreferredSize( new Dimension( 530, 10 ) );
+			this.setPreferredSize( new Dimension( GameBoard.getButtonHolderDim().width, Game.Intersection.height ) );
 		else
-			this.setPreferredSize( new Dimension( 10, 530 ) );
+			this.setPreferredSize( new Dimension( Game.Intersection.width, GameBoard.getButtonHolderDim().height ) );
 		
 		if( numPlayers == 2 ){
 			if( position.equals( "U" ) )

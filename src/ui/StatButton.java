@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 
 import javax.swing.JButton;
@@ -50,10 +51,10 @@ public class StatButton extends JButton {
 		int green = (c.getGreen() + increment>256 ? c.getGreen() : c.getGreen() + increment );
 		int blue = (c.getBlue() + increment>256 ? c.getBlue() : c.getBlue() + increment );
 		g.setColor( new Color( red, green, blue ) );
-		g.fillRect( 20, this.getHeight()/2-10, this.getWidth()-30, 20 );
+		g.fillRect( 20, this.getHeight()/2-10, this.getWidth()-30, Game.WallGap*2 );
 		
 		//Text
-		g.setFont( getFont() );
+		g.setFont( new Font( "" , Font.BOLD, (int)(Game.WallGap*(6.0/5.0) ) ) );
 		g.setColor( Color.BLACK );
 		g.drawString( ("Walls remaining: " + Game.getPlayerAry()[playerNum].getWalls()), 30, this.getHeight()/2+5 );
 	}

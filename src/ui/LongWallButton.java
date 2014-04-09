@@ -5,6 +5,8 @@ import java.awt.Dimension;
 
 import javax.swing.*;
 
+import main.Game;
+
 /**
  * Class defines settings for LongWallButtons, or the buttons that display 
  * actual walls.
@@ -34,10 +36,7 @@ public class LongWallButton extends JButton {
         this.x = x;
         this.y = y;
         /* set the dimensions upon string identifier */
-        if( type.equals( "h" ) )
-        	this.setPreferredSize( new Dimension( 50, 10 ) );
-        else
-        	this.setPreferredSize( new Dimension( 10, 50 ) );
+       	this.setPreferredSize( type.equals( "h" ) ? Game.HWall : Game.VWall );
         this.setBackground( Color.DARK_GRAY );
         this.setOpaque(true);	// needed to display on macs   
    }

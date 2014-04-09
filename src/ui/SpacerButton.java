@@ -17,6 +17,16 @@ public class SpacerButton extends JButton{
 		this.setBorder( null );
 		this.setBackground( c );
 	}
+	
+	// width, height, and color
+	public SpacerButton( Dimension d, Color c ){
+		super();
+		this.setPreferredSize( d );
+		this.setOpaque(true);
+		this.setBorderPainted(false);
+		this.setBorder( null );
+		this.setBackground( c );
+	}
 
 	//width, height, color, and text
 	public SpacerButton(int w, int h, Color c, String label) {
@@ -28,6 +38,19 @@ public class SpacerButton extends JButton{
 		this.setBackground( c );
 		this.setText( label );
 		if( c == Color.DARK_GRAY || c == Color.BLACK )
-			this.setForeground( Color.LIGHT_GRAY );
+			this.setForeground( Color.WHITE );
+	}
+	
+	//width, height, color, and text
+	public SpacerButton( Dimension d, Color c, String label) {
+		super();
+		this.setPreferredSize( d );
+		this.setOpaque(true);
+		this.setBorderPainted(false);
+		this.setBorder( null );
+		this.setBackground( c );
+		this.setText( label );
+		if( c == Color.DARK_GRAY || c == Color.BLACK )
+			this.setForeground( Color.WHITE );
 	}
 }

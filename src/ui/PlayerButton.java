@@ -34,7 +34,7 @@ public class PlayerButton extends JButton {
 		super();
 		this.x = x;
 		this.y = y;
-		this.setPreferredSize( new Dimension( 50, 50 ) );
+		this.setPreferredSize( new Dimension( Game.HWall.width, Game.VWall.height ) );
 		this.setBackground( Color.BLACK );
 		this.setOpaque(true);
 		this.setBorderPainted(false);
@@ -101,10 +101,10 @@ public class PlayerButton extends JButton {
 			int blue = (c.getBlue() + increment > 256 ? c.getBlue() : c.getBlue() + increment );
 			
 			g.setColor( new Color( red, green, blue ) );
-			g.fillRect( 0, 0, 50, 50 );
+			g.fillRect( 0, 0, Game.PlayerSize.width, Game.PlayerSize.height );
 		}else{
 			g.setColor( this.getBackground() );
-			g.fillRect( 0, 0, 50, 50 );
+			g.fillRect( 0, 0, Game.PlayerSize.width, Game.PlayerSize.height );
 		}
 		
 	}
