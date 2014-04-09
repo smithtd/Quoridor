@@ -38,7 +38,7 @@ public class LongWallButton extends JButton {
         	this.setPreferredSize( new Dimension( 50, 10 ) );
         else
         	this.setPreferredSize( new Dimension( 10, 50 ) );
-        this.setBackground( Color.gray);
+        this.setBackground( Color.DARK_GRAY );
         this.setOpaque(true);	// needed to display on macs   
    }
 }
