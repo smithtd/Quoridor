@@ -22,5 +22,7 @@ public class SpacerButton extends JButton{
 		this.setBorder( null );
 		this.setBackground( c );
 		this.setText( label );
+		if( c == Color.DARK_GRAY || c == Color.BLACK )
+			this.setForeground( Color.LIGHT_GRAY );
 	}
 }

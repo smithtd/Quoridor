@@ -446,6 +446,7 @@ public class GameBoard extends JPanel implements Observer {
 				statAry[i] = b;
 			}
 		}	
+		
 		aboveBarPanel.add( new SpacerButton( 10, getAboveBarDim().height, Color.DARK_GRAY ) );
 		aboveBarPanel.add( new SpacerButton( 50, getAboveBarDim().height, Color.LIGHT_GRAY, "" + (char)('A') ) );
 		for(int i=0; i<8; i++){
@@ -454,8 +455,10 @@ public class GameBoard extends JPanel implements Observer {
 		}
 		aboveBarPanel.add( new SpacerButton( 10, getAboveBarDim().height, Color.DARK_GRAY ) );
 		aboveBarPanel.add( new SpacerButton( getStatsBarDim().width, getAboveBarDim().height, Color.LIGHT_GRAY) );
+		
 		holder2.add( aboveBarPanel );
 		holder2.add( holder1 );
+		
 		leftBarPanel.add( new SpacerButton( getLeftBarDim().width, getAboveBarDim().height, Color.LIGHT_GRAY) );
 		leftBarPanel.add( new SpacerButton( getLeftBarDim().width, 10, Color.DARK_GRAY ) );
 		leftBarPanel.add( new SpacerButton( getLeftBarDim().width, 50, Color.LIGHT_GRAY, "" + (char)('1')) );
@@ -464,6 +467,7 @@ public class GameBoard extends JPanel implements Observer {
 			leftBarPanel.add( new SpacerButton( getLeftBarDim().width, 50, Color.LIGHT_GRAY, "" + (char)('2'+i)) );
 		}
 		leftBarPanel.add( new SpacerButton( getLeftBarDim().width, 10, Color.DARK_GRAY ) );
+		
 		this.add(leftBarPanel);
 		this.add(holder2);
 	}
