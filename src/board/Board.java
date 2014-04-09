@@ -265,7 +265,7 @@ public class Board {
 		Wall w = new Wall(x, y, type);
 		if(isLegalWallPlacement(p, w)){
 			p.decWalls();
-			GameBoard.statAry[p.getPnum()].updateWalls();
+			GameBoard.statAry[p.getPnum()-1].updateWalls();
 			walls[numWalls] = w;
 			numWalls++;
 			return true;

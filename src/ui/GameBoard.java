@@ -449,7 +449,6 @@ public class GameBoard extends JPanel implements Observer {
 		aboveBarPanel.add( new SpacerButton( 10, getAboveBarDim().height, Color.DARK_GRAY ) );
 		aboveBarPanel.add( new SpacerButton( 50, getAboveBarDim().height, Color.LIGHT_GRAY, "" + (char)('A') ) );
 		for(int i=0; i<8; i++){
-			
 			aboveBarPanel.add( new SpacerButton( 10, getAboveBarDim().height, Color.DARK_GRAY , "" + (char)('A'+i) ) );
 			aboveBarPanel.add( new SpacerButton( 50, getAboveBarDim().height, Color.LIGHT_GRAY, "" + (char)('B'+i) ) );
 		}

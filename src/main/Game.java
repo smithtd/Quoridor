@@ -321,6 +321,11 @@ public class Game extends Observable{
 		return players[curr];
 	}
 	
+	/**
+	 * Gets the previous Player.
+	 * 
+	 * @return	the Player whose turn it just was
+	 */
 	public static Player getPrevPlayer(){
 		if(players[curr].getPnum()==1)
 			return players[players.length-1];
