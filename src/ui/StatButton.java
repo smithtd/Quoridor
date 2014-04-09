@@ -59,7 +59,7 @@ public class StatButton extends JButton {
 		FontMetrics fm = g.getFontMetrics( g.getFont() );
 		String s = "Walls remaining: " + Game.getPlayerAry()[playerNum].getWalls();
 		g.setColor( Color.BLACK );
-		g.drawString( s, this.getWidth()/2 - fm.stringWidth( s )/2, this.getHeight()/2+5 );
+		g.drawString( s, (this.getWidth()/2 - fm.stringWidth( s )/2), (this.getHeight()/2+fm.getHeight()/2) );
 
 		
 //		g.drawString( s, 0, 0 );
