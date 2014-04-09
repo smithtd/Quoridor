@@ -33,7 +33,7 @@ public class GameBoard extends JPanel implements Observer {
 	private static WallButton[][] wbAry;
 	private static LongWallButton[][] vertWalls;
 	private static LongWallButton[][] horzWalls;
-	public static PlayerStatButton[] statAry;
+	public static StatButton[] statAry;
 	private static JPanel buttonHolder;
 	private static JPanel BHBorder;
 	private static JPanel statsPanel;
@@ -95,92 +95,6 @@ public class GameBoard extends JPanel implements Observer {
 	 */
 	public JFrame getFrame(){
 		return GameBoard.frame;
-	}
-	
-	/**
-	 * A MenuBar holds a Menu which in turn hold a MenuItem. That MenuItem 
-	 * is what has the changeable consequence if clicked. The Menu just drops 
-	 * down the Items in the menu.
-	 * 
-	 * @return JMenuBar
-	 */
-	public JMenuBar getMenus(){
-		JMenuBar menuBar = new JMenuBar();		
-		JMenu fileMenu = new JMenu( "File" );
-			JMenuItem new2PlyrGameOpt = new JMenuItem( "New 2 Player Game" );
-			new2PlyrGameOpt.addActionListener( new ActionListener(){
-				public void actionPerformed( ActionEvent e ){
-					Game.new2PlayerGame();
-				}
-			});
-			fileMenu.add(new2PlyrGameOpt);
-			JMenuItem new4PlyrGameOpt = new JMenuItem( "New 4 Player Game" );
-			new4PlyrGameOpt.addActionListener( new ActionListener(){
-				public void actionPerformed( ActionEvent e ){
-					Game.new4PlayerGame();
-				}
-			});
-			fileMenu.add(new4PlyrGameOpt);
-			JMenuItem quitOpt = new JMenuItem( "Quit" );
-			quitOpt.addActionListener( new ActionListener(){
-				public void actionPerformed( ActionEvent e ){
-					//When quit option is selected the program terminates
-					// closes the window
-					System.exit( 0 );	
-				}
-			});
-			fileMenu.add( quitOpt );
-		
-		//creates "help" in menubar
-		JMenu helpMenu = new JMenu("Help");
-			JMenuItem rulesOpt = new JMenuItem("Rules");
-			rulesOpt.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e){
-					String LongWallButton = "";
-					LongWallButton += "Quoridor is played on a game board of 81 square spaces (9x9). \n" +
-							"Each player is represented by a pawn which begins at the center \n" +
-							"space of one edge of the board (in a two-player game, the pawns \n" +
-							"begin opposite each other). The object is to be the first player \n" +
-							"to move their pawn to any space on the opposite side of the \n" +
-							"gameboard from which it begins.\n\n";
-					LongWallButton += "The distinguishing characteristic of Quoridor is its twenty walls. \n" +
-							"Walls are flat two-space-wide pieces which can be placed in the \n" +
-							"groove that runs between the spaces. Walls block the path of all \n" +
-							"pawns, which must go around them. The walls are divided equally \n" +
-							"among the players at the start of the game, and once placed, cannot \n" +
-							"be moved or removed. On a turn, a player may either move their \n" +
-							"pawn, or, if possible, place a wall. \n\n";
-					LongWallButton += "Pawns can be moved to an adjacent space (not diagonally), or, if \n" +
-							"adjacent to another pawn, jump over that pawn. If an adjacent pawn \n" +
-							"has a third pawn or a wall on the other side of it, the player may \n" +
-							"move to any space that is immediately adjacent to other adjacent pawns.\n" +
-							"The official rules are ambiguous concerning the edge of the board. \n\n";
-					LongWallButton += "Walls can be placed directly between two spaces, in any groove not \n" +
-							"already occupied by a wall. However, a wall may not be placed which \n" +
-							"cuts off the only remaining path of any pawn to the side of the board \n" +
-							"it must reach.\n";
-					JOptionPane.showMessageDialog( frame , LongWallButton, "Rules of Quoridor",JOptionPane.PLAIN_MESSAGE);
-				}
-			});
-			helpMenu.add( rulesOpt );
-			//the About tab in the Help menu
-			JMenuItem aboutOpt = new JMenuItem( "About" );
-			aboutOpt.addActionListener( new ActionListener(){
-				public void actionPerformed(ActionEvent e){
-					String LongWallButton = "";
-					LongWallButton += "Authors: \n";
-					LongWallButton += "Dylan Woythal \n";
-					LongWallButton += "Eli Donahue \n";
-					LongWallButton += "Marc Dean \n";
-					LongWallButton += "Tyler Smith ";
-					JOptionPane.showMessageDialog( frame , LongWallButton, "About",JOptionPane.PLAIN_MESSAGE);
-				}
-			});
-			helpMenu.add( aboutOpt );
-		
-		menuBar.add( fileMenu );
-		menuBar.add( helpMenu );
-		return menuBar;
 	}
 	
 	/**
@@ -428,16 +342,16 @@ public class GameBoard extends JPanel implements Observer {
 		holder1.add( BHBorder );
 		holder1.add( statsPanel );
 		if(Game.getNumPlayers()==2){
-			statAry = new PlayerStatButton[2];
+			statAry = new StatButton[2];
 			for(int i=0; i<2; i++){
-				PlayerStatButton b = new PlayerStatButton(i);
+				StatButton b = new StatButton(i);
 				statsPanel.add( b );
 				statAry[i] = b;
 			}
 		}else{
-			statAry = new PlayerStatButton[4];
+			statAry = new StatButton[4];
 			for(int i=0; i<4; i++){
-				PlayerStatButton b = new PlayerStatButton(i);
+				StatButton b = new StatButton(i);
 				statsPanel.add( b );
 				statAry[i] = b;
 			}
@@ -560,5 +474,90 @@ public class GameBoard extends JPanel implements Observer {
 			for( int y=0; y<9; y++ )
 				if(pbAry[x][y].getBackground() == Color.MAGENTA)
 					pbAry[x][y].setBackground(Color.BLACK);
+	}
+	/**
+	 * A MenuBar holds a Menu which in turn hold a MenuItem. That MenuItem 
+	 * is what has the changeable consequence if clicked. The Menu just drops 
+	 * down the Items in the menu.
+	 * 
+	 * @return JMenuBar
+	 */	
+	public JMenuBar getMenus(){
+		JMenuBar menuBar = new JMenuBar();		
+		JMenu fileMenu = new JMenu( "File" );
+			JMenuItem new2PlyrGameOpt = new JMenuItem( "New 2 Player Game" );
+			new2PlyrGameOpt.addActionListener( new ActionListener(){
+				public void actionPerformed( ActionEvent e ){
+					Game.new2PlayerGame();
+				}
+			});
+			fileMenu.add(new2PlyrGameOpt);
+			JMenuItem new4PlyrGameOpt = new JMenuItem( "New 4 Player Game" );
+			new4PlyrGameOpt.addActionListener( new ActionListener(){
+				public void actionPerformed( ActionEvent e ){
+					Game.new4PlayerGame();
+				}
+			});
+			fileMenu.add(new4PlyrGameOpt);
+			JMenuItem quitOpt = new JMenuItem( "Quit" );
+			quitOpt.addActionListener( new ActionListener(){
+				public void actionPerformed( ActionEvent e ){
+					//When quit option is selected the program terminates
+					// closes the window
+					System.exit( 0 );	
+				}
+			});
+			fileMenu.add( quitOpt );
+		
+		//creates "help" in menubar
+		JMenu helpMenu = new JMenu("Help");
+			JMenuItem rulesOpt = new JMenuItem("Rules");
+			rulesOpt.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					String LongWallButton = "";
+					LongWallButton += "Quoridor is played on a game board of 81 square spaces (9x9). \n" +
+							"Each player is represented by a pawn which begins at the center \n" +
+							"space of one edge of the board (in a two-player game, the pawns \n" +
+							"begin opposite each other). The object is to be the first player \n" +
+							"to move their pawn to any space on the opposite side of the \n" +
+							"gameboard from which it begins.\n\n";
+					LongWallButton += "The distinguishing characteristic of Quoridor is its twenty walls. \n" +
+							"Walls are flat two-space-wide pieces which can be placed in the \n" +
+							"groove that runs between the spaces. Walls block the path of all \n" +
+							"pawns, which must go around them. The walls are divided equally \n" +
+							"among the players at the start of the game, and once placed, cannot \n" +
+							"be moved or removed. On a turn, a player may either move their \n" +
+							"pawn, or, if possible, place a wall. \n\n";
+					LongWallButton += "Pawns can be moved to an adjacent space (not diagonally), or, if \n" +
+							"adjacent to another pawn, jump over that pawn. If an adjacent pawn \n" +
+							"has a third pawn or a wall on the other side of it, the player may \n" +
+							"move to any space that is immediately adjacent to other adjacent pawns.\n" +
+							"The official rules are ambiguous concerning the edge of the board. \n\n";
+					LongWallButton += "Walls can be placed directly between two spaces, in any groove not \n" +
+							"already occupied by a wall. However, a wall may not be placed which \n" +
+							"cuts off the only remaining path of any pawn to the side of the board \n" +
+							"it must reach.\n";
+					JOptionPane.showMessageDialog( frame , LongWallButton, "Rules of Quoridor",JOptionPane.PLAIN_MESSAGE);
+				}
+			});
+			helpMenu.add( rulesOpt );
+			//the About tab in the Help menu
+			JMenuItem aboutOpt = new JMenuItem( "About" );
+			aboutOpt.addActionListener( new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					String LongWallButton = "";
+					LongWallButton += "Authors: \n";
+					LongWallButton += "Dylan Woythal \n";
+					LongWallButton += "Eli Donahue \n";
+					LongWallButton += "Marc Dean \n";
+					LongWallButton += "Tyler Smith ";
+					JOptionPane.showMessageDialog( frame , LongWallButton, "About",JOptionPane.PLAIN_MESSAGE);
+				}
+			});
+			helpMenu.add( aboutOpt );
+		
+		menuBar.add( fileMenu );
+		menuBar.add( helpMenu );
+		return menuBar;
 	}
 }
