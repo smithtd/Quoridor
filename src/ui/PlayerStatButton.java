@@ -1,10 +1,6 @@
 package ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.util.Random;
-
 import javax.swing.JButton;
 
 import main.Game;

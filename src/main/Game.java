@@ -125,10 +125,10 @@ public class Game extends Observable{
 	public void playGame(Parser p){
 		// until someone wins, loop through turns
 		while(!this.gameWon){
-			System.out.println(this.getCurrPlayer().getColorName()+" player's turn");
+			System.out.println(Game.getCurrPlayer().getColorName()+" player's turn");
 			
 			// get move from player
-			String move = this.getCurrPlayer().getMove();
+			String move = Game.getCurrPlayer().getMove();
 			if(move.length()==2){
 				move = p.moveTranslate(move);
 			}else{
@@ -170,7 +170,7 @@ public class Game extends Observable{
 			
 			// until someone wins, loop through turns
 			while(!this.gameWon && sc.hasNextLine()){
-				System.out.println(this.getCurrPlayer().getColorName()+" player's turn");
+				System.out.println(Game.getCurrPlayer().getColorName()+" player's turn");
 				
 				// get move from player
 				String move = sc.nextLine();
@@ -220,9 +220,9 @@ public class Game extends Observable{
 		int y = Integer.parseInt(""+s.charAt(1));
 		
 		if(s.length()==2){
-			return board.placePawn(this.getCurrPlayer(), x, y);
+			return board.placePawn(Game.getCurrPlayer(), x, y);
 		}else{
-			return board.placeWall(this.getCurrPlayer(), x, y, ""+s.charAt(2));
+			return board.placeWall(Game.getCurrPlayer(), x, y, ""+s.charAt(2));
 		}
 	}
 	
@@ -233,7 +233,7 @@ public class Game extends Observable{
 	 * @return	a boolean telling whether or not this Player has won
 	 */
 	public boolean checkForWin(){
-		Player p = this.getCurrPlayer();
+		Player p = Game.getCurrPlayer();
 		if(p.won()){
 			this.gameWon = true;
 			return true;

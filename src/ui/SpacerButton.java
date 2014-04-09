@@ -5,6 +5,7 @@ import java.awt.Dimension;
 
 import javax.swing.JButton;
 
+@SuppressWarnings("serial")
 public class SpacerButton extends JButton{
 
 	// width, height, and color
