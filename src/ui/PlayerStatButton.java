@@ -2,17 +2,30 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.util.Random;
 
 import javax.swing.JButton;
 
+import main.Game;
+
 @SuppressWarnings("serial")
 public class PlayerStatButton extends JButton {
-
-	public PlayerStatButton(){
+	
+	public int playerNum;
+	
+	public PlayerStatButton(int pNum){
 		super();
-		this.setPreferredSize( new Dimension( GameBoard.getStatsBarDim().width, 137 ) );
-		Random rand = new Random();
-		this.setBackground( new Color( rand.nextInt(256), rand.nextInt(256), rand.nextInt(256) ) );
+		this.playerNum = pNum;
+		if(Game.getNumPlayers()==2)
+			this.setPreferredSize( new Dimension( GameBoard.getStatsBarDim().width, GameBoard.getStatsBarDim().height/2 ) );
+		else
+			this.setPreferredSize( new Dimension( GameBoard.getStatsBarDim().width, GameBoard.getStatsBarDim().height/4 ) );
+		this.setBackground( Game.getPlayerAry()[playerNum].getColor() );
+		this.setText("Walls remaining: " + Game.getCurrPlayer().getWalls());
+	}
+	
+	public void updateWalls(){
+		this.setText("Walls remaining: " + Game.getCurrPlayer().getWalls());
 	}
 }

@@ -16,11 +16,11 @@ public class SpacerButton extends JButton{
 	}
 
 	//width, height, color, and text
-	public SpacerButton(int w, int h, Color c, char label) {
+	public SpacerButton(int w, int h, Color c, String label) {
 		super();
 		this.setPreferredSize( new Dimension( w, h ) );
 		this.setBorder( null );
 		this.setBackground( c );
-		this.setText( ""+label );
+		this.setText( label );
 	}
 }

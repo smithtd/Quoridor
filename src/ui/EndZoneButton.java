@@ -37,8 +37,6 @@ public class EndZoneButton extends JButton{
 				this.setBackground( Color.YELLOW );
 
 		}
-		
 		this.setOpaque(true);
-		
 	}
 }

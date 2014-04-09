@@ -1,9 +1,13 @@
 package board;
 
+import java.security.Policy;
 import java.util.ArrayList;
 import java.awt.Point;
 
+import main.Game;
+
 import players.Player;
+import ui.GameBoard;
 import walls.Wall;
 
 /**
@@ -260,8 +264,10 @@ public class Board {
 	public boolean placeWall(Player p, int x, int y, String type){
 		Wall w = new Wall(x, y, type);
 		if(isLegalWallPlacement(p, w)){
+			p.decWalls();
+			GameBoard.statAry[p.getPnum()].updateWalls();
 			walls[numWalls] = w;
-			numWalls++;;
+			numWalls++;
 			return true;
 		}else{
 			return false;
