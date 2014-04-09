@@ -36,7 +36,7 @@ public class Game extends Observable{
 	private static Player[] players;			// Player[] to hold players
 	private static int numPlayers;				// number of players
 	private static int curr;					// index of current Player
-	private boolean gameWon;					// whether the game has been won
+	private static boolean gameWon;					// whether the game has been won
 	
 	/* Constructor */
 	
@@ -68,41 +68,7 @@ public class Game extends Observable{
 	
 	/* Game Play Methods */
 	
-	/**
-	 * Main method constructs and starts a Game based on optional command line
-	 * arguments. Arguments may be (int numberOfPlayers) or 
-	 * (int numberOfPlayers, String fileName).
-	 * 
-	 * @param args	(optional) (int numberOfPlayers) or (int numberOfPlayers, String fileName)
-	 */
-	public static void main(String[] args) {
-		// optionally can pass in file to run as demo or pass in num of players
-		int players = 2;
-		String fileName = "";
-		
-		if(args.length == 1)
-			players = Integer.parseInt(args[0]);
 
-		if(args.length == 2){
-			players = Integer.parseInt(args[0]);
-			fileName = args[1];
-		}
-		
-		// parser to parse moves
-		Parser p = new Parser();
-		
-		// start game and call up UI
-		Game g = new Game( players, NUM_OF_WALLS );
-		g.startGame();
-		
-		if(fileName.length() == 0)
-			g.playGame(p);
-		else
-			g.playGame(p, fileName);
-		
-		// notify observer, since we have a winner, ui will execute end of game
-		g.notifyObservers(g, Game.getBoard());
-	}
 	
 	/**
 	 * Starts the game by adding a GameBoard (UI) to this Game.
@@ -124,7 +90,7 @@ public class Game extends Observable{
 	 */
 	public void playGame(Parser p){
 		// until someone wins, loop through turns
-		while(!this.gameWon){
+		while(!Game.gameWon){
 			System.out.println(Game.getCurrPlayer().getColorName()+" player's turn");
 			
 			// get move from player
@@ -169,7 +135,9 @@ public class Game extends Observable{
 			Scanner sc = new Scanner(new File(fileName));
 			
 			// until someone wins, loop through turns
-			while(!this.gameWon && sc.hasNextLine()){
+			while(!Game.gameWon && sc.hasNextLine()){
+				// sleep 1 second so game is watchable
+				Thread.sleep(333); 
 				System.out.println(Game.getCurrPlayer().getColorName()+" player's turn");
 				
 				// get move from player
@@ -187,8 +155,6 @@ public class Game extends Observable{
 					Game.nextTurn();
 					Game.updatePlayer(players[curr]);
 					this.notifyObservers(this, Game.getBoard());
-					// sleep 1 second so game is watchable
-					Thread.sleep(1000); 
 				}else{
 					System.err.println("Player turn failed!");
 					break;
@@ -235,7 +201,7 @@ public class Game extends Observable{
 	public boolean checkForWin(){
 		Player p = Game.getCurrPlayer();
 		if(p.won()){
-			this.gameWon = true;
+			Game.gameWon = true;
 			return true;
 		}
 		return false;
@@ -350,7 +316,7 @@ public class Game extends Observable{
 	 * @return	a boolean telling whether or not this Game has been won
 	 */
 	public boolean gameWon(){
-		return this.gameWon;
+		return Game.gameWon;
 	}
 	
 	/* Set Methods */
@@ -383,5 +349,41 @@ public class Game extends Observable{
          ui.remove(observer);  
           
     }
+
+	/**
+	 * Main method constructs and starts a Game based on optional command line
+	 * arguments. Arguments may be (int numberOfPlayers) or 
+	 * (int numberOfPlayers, String fileName).
+	 * 
+	 * @param args	(optional) (int numberOfPlayers) or (int numberOfPlayers, String fileName)
+	 */
+	public static void main(String[] args) {
+		// optionally can pass in file to run as demo or pass in num of players
+		int players = 2;
+		String fileName = "";
 		
+		if( args.length == 1 )
+			players = Integer.parseInt(args[0]);
+
+		if( args.length == 2 ){
+			players = Integer.parseInt(args[0]);
+			fileName = args[1];
+		}
+		
+		// parser to parse moves
+		Parser p = new Parser();
+		
+		// start game and call up UI
+		Game g = new Game( players, NUM_OF_WALLS );
+		g.startGame();
+		
+		if(fileName.length() == 0)
+			g.playGame(p);
+		else
+			g.playGame(p, fileName);
+		
+		// notify observer, since we have a winner, ui will execute end of game
+		g.notifyObservers(g, Game.getBoard());
+	}
+    
 }

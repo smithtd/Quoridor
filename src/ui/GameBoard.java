@@ -177,18 +177,9 @@ public class GameBoard extends JPanel implements Observer {
 				}
 			});
 			helpMenu.add( aboutOpt );
-		JMenu statsMenu = new JMenu("Stats");
-			JMenuItem wallsOpt = new JMenuItem("Walls");
-			wallsOpt.addActionListener( new ActionListener(){
-				public void actionPerformed(ActionEvent e){
-					String LongWallButton = "";
-					JOptionPane.showMessageDialog( frame , LongWallButton, "About",JOptionPane.PLAIN_MESSAGE);
-				}
-			});
-			statsMenu.add( wallsOpt );
+		
 		menuBar.add( fileMenu );
 		menuBar.add( helpMenu );
-		menuBar.add( statsMenu );
 		return menuBar;
 	}
 	
