@@ -26,9 +26,10 @@ import parser.Parser;
 public class Game extends Observable{
 	
 	/* Static variables */
-	public static int WallGap = 15;
-	public static int PlayerWidth = 15;
-	public static int PlayerHeight = 15;
+	public static int WallGap = 10;
+	public static int PlayerWidth = 10;
+	public static int PlayerHeight = 10;
+	public static int sleepTime = 333;
 	
 	public static Dimension HWall = new Dimension( Game.PlayerWidth, Game.WallGap );
 	public static Dimension VWall = new Dimension( Game.WallGap, Game.PlayerHeight );
@@ -146,7 +147,7 @@ public class Game extends Observable{
 			// until someone wins, loop through turns
 			while(!Game.gameWon && sc.hasNextLine()){
 				// sleep 1 second so game is watchable
-				Thread.sleep(333); 
+				Thread.sleep( sleepTime ); 
 				System.out.println(Game.getCurrPlayer().getColorName()+" player's turn");
 				
 				// get move from player

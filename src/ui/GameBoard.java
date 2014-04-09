@@ -272,8 +272,11 @@ public class GameBoard extends JPanel implements Observer {
 	private static Dimension getAboveBarDim(){
 		return (new Dimension( getButtonHolderBorderDim().width + getStatsBarDim().width, Game.VWall.height));
 	}
-	static Dimension getStatsBarDim(){
-			return (new Dimension( getButtonHolderBorderDim().width/3+10 , getButtonHolderBorderDim().height ));
+	
+	public static Dimension getStatsBarDim(){
+		int width = getButtonHolderBorderDim().width/3+10;
+		int height = getButtonHolderBorderDim().height;
+		return (width<180 ? new Dimension( 180, height ) : new Dimension( width , height ));
 	}
 	
 	/**
@@ -483,9 +486,18 @@ public class GameBoard extends JPanel implements Observer {
 	 * @return JMenuBar
 	 */	
 	public JMenuBar getMenus(){
-		JMenuBar menuBar = new JMenuBar();		
+		JMenuBar menuBar = new JMenuBar();	
+		menuBar.setBorder( null );
+		menuBar.setForeground( Color.WHITE );
+		menuBar.setBackground( Color.BLACK );
+	
 		JMenu fileMenu = new JMenu( "File" );
+		fileMenu.setBorder( null );
+		fileMenu.setForeground( Color.WHITE );
+		fileMenu.setBackground( Color.BLACK );
 			JMenuItem new2PlyrGameOpt = new JMenuItem( "New 2 Player Game" );
+			new2PlyrGameOpt.setForeground( Color.WHITE );
+			new2PlyrGameOpt.setBackground( Color.BLACK );
 			new2PlyrGameOpt.addActionListener( new ActionListener(){
 				public void actionPerformed( ActionEvent e ){
 					Game.new2PlayerGame();
@@ -493,6 +505,9 @@ public class GameBoard extends JPanel implements Observer {
 			});
 			fileMenu.add(new2PlyrGameOpt);
 			JMenuItem new4PlyrGameOpt = new JMenuItem( "New 4 Player Game" );
+			new4PlyrGameOpt.setBorder( null );
+			new4PlyrGameOpt.setForeground( Color.WHITE );
+			new4PlyrGameOpt.setBackground( Color.BLACK );
 			new4PlyrGameOpt.addActionListener( new ActionListener(){
 				public void actionPerformed( ActionEvent e ){
 					Game.new4PlayerGame();
@@ -500,6 +515,9 @@ public class GameBoard extends JPanel implements Observer {
 			});
 			fileMenu.add(new4PlyrGameOpt);
 			JMenuItem quitOpt = new JMenuItem( "Quit" );
+			quitOpt.setBorder( null );
+			quitOpt.setForeground( Color.WHITE );
+			quitOpt.setBackground( Color.BLACK );
 			quitOpt.addActionListener( new ActionListener(){
 				public void actionPerformed( ActionEvent e ){
 					//When quit option is selected the program terminates
@@ -511,7 +529,12 @@ public class GameBoard extends JPanel implements Observer {
 		
 		//creates "help" in menubar
 		JMenu helpMenu = new JMenu("Help");
+		helpMenu.setForeground( Color.WHITE );
+		helpMenu.setBackground( Color.BLACK );
 			JMenuItem rulesOpt = new JMenuItem("Rules");
+			rulesOpt.setBorder( null );
+			rulesOpt.setForeground( Color.WHITE );
+			rulesOpt.setBackground( Color.BLACK );
 			rulesOpt.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){
 					String LongWallButton = "";
@@ -543,6 +566,9 @@ public class GameBoard extends JPanel implements Observer {
 			helpMenu.add( rulesOpt );
 			//the About tab in the Help menu
 			JMenuItem aboutOpt = new JMenuItem( "About" );
+			aboutOpt.setBorder( null );
+			aboutOpt.setForeground( Color.WHITE );
+			aboutOpt.setBackground( Color.BLACK );
 			aboutOpt.addActionListener( new ActionListener(){
 				public void actionPerformed(ActionEvent e){
 					String LongWallButton = "";

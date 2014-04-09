@@ -1,9 +1,8 @@
 package ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 
-import javax.swing.*;
+import javax.swing.JButton;
 
 import main.Game;
 
