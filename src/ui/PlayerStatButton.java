@@ -9,7 +9,7 @@ import javax.swing.JButton;
 
 import main.Game;
 
-@SuppressWarnings("serial")
+@SuppressWarnings("serial") 
 public class PlayerStatButton extends JButton {
 	
 	public int playerNum;
