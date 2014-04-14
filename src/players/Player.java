@@ -5,6 +5,8 @@ import java.awt.Point;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+import ui.GameBoard;
+
 
 /**
  * Player handles what happens when you make new players and
@@ -19,7 +21,7 @@ public class Player implements Players {
 	@SuppressWarnings("unused")
 	private String name; 	// players name
 	private int pNumber; 	// which player it is (1-4)
-	public static int wallTotal;	// how many walls player has
+	private int wallTotal;	// how many walls player has
 	private Scanner sc;		// prompt player for moves
 	private Point position; // current position of the player
 	private int startX;	
@@ -41,7 +43,7 @@ public class Player implements Players {
 	 */
 	public Player(String name, int walls, String pos, int pNum) {
 		this.name = name;
-		Player.wallTotal = walls;
+		this.wallTotal = walls;
 		// to get moves (DEBUG)
 		this.sc = new Scanner("System.in");
 		//TODO implement way to find initial position
@@ -125,7 +127,13 @@ public class Player implements Players {
 	 */
 	public int getWalls() {
 		// Auto-generated method stub
-		return Player.wallTotal;
+		return this.wallTotal;
+	}
+	
+	public void decWalls(){
+		wallTotal--;
+		for( int i=0; i< GameBoard.statAry.length; i++ )
+			GameBoard.statAry[i].repaint();
 	}
 	
 	/**
@@ -259,8 +267,9 @@ public class Player implements Players {
 	 * Precondition: Player has placed a wall.
 	 * Postcondition: Player's wall total is decremented.
 	 */
-	public static void usedWall(){
+	public void usedWall(){
 		wallTotal--;
+		GameBoard.statAry[this.getPnum()].updateWalls();
 	}
 
 	/**

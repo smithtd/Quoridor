@@ -7,6 +7,7 @@ import java.util.Observer;
 
 // use to get input from command line/file
 import java.util.Scanner;
+import java.awt.Dimension;
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -25,6 +26,15 @@ import parser.Parser;
 public class Game extends Observable{
 	
 	/* Static variables */
+	public static int WallGap = 15;
+	public static int PlayerWidth = 15;
+	public static int PlayerHeight = 15;
+	public static int sleepTime = 333;
+	
+	public static Dimension HWall = new Dimension( Game.PlayerWidth, Game.WallGap );
+	public static Dimension VWall = new Dimension( Game.WallGap, Game.PlayerHeight );
+	public static Dimension Intersection = new Dimension( VWall.width, HWall.height );
+	public static Dimension PlayerSize = new Dimension( HWall.width, VWall.height );
 	
 	private static final int NUM_OF_WALLS = 20; 
 	private static final int MAX_NUMBER_PLAYERS = 4;
@@ -34,9 +44,9 @@ public class Game extends Observable{
 	private static ArrayList<Observer> ui = new ArrayList<Observer>();  
 	private static Board board;					// holds board info
 	private static Player[] players;			// Player[] to hold players
-	private static int numPlayers;						// number of players
-	private static int curr;							// index of current Player
-	private boolean gameWon;					// whether the game has been won
+	private static int numPlayers;				// number of players
+	private static int curr;					// index of current Player
+	private static boolean gameWon;					// whether the game has been won
 	
 	/* Constructor */
 	
@@ -68,41 +78,7 @@ public class Game extends Observable{
 	
 	/* Game Play Methods */
 	
-	/**
-	 * Main method constructs and starts a Game based on optional command line
-	 * arguments. Arguments may be (int numberOfPlayers) or 
-	 * (int numberOfPlayers, String fileName).
-	 * 
-	 * @param args	(optional) (int numberOfPlayers) or (int numberOfPlayers, String fileName)
-	 */
-	public static void main(String[] args) {
-		// optionally can pass in file to run as demo or pass in num of players
-		int players = 2;
-		String fileName = "";
-		
-		if(args.length == 1)
-			players = Integer.parseInt(args[0]);
 
-		if(args.length == 2){
-			players = Integer.parseInt(args[0]);
-			fileName = args[1];
-		}
-		
-		// parser to parse moves
-		Parser p = new Parser();
-		
-		// start game and call up UI
-		Game g = new Game( players, NUM_OF_WALLS );
-		g.startGame();
-		
-		if(fileName.length() == 0)
-			g.playGame(p);
-		else
-			g.playGame(p, fileName);
-		
-		// notify observer, since we have a winner, ui will execute end of game
-		g.notifyObservers(g, Game.getBoard());
-	}
 	
 	/**
 	 * Starts the game by adding a GameBoard (UI) to this Game.
@@ -124,11 +100,11 @@ public class Game extends Observable{
 	 */
 	public void playGame(Parser p){
 		// until someone wins, loop through turns
-		while(!this.gameWon){
-			System.out.println(this.currPlayer().getColorName()+" player's turn");
+		while(!Game.gameWon){
+			System.out.println(Game.getCurrPlayer().getColorName()+" player's turn");
 			
 			// get move from player
-			String move = this.currPlayer().getMove();
+			String move = Game.getCurrPlayer().getMove();
 			if(move.length()==2){
 				move = p.moveTranslate(move);
 			}else{
@@ -169,8 +145,10 @@ public class Game extends Observable{
 			Scanner sc = new Scanner(new File(fileName));
 			
 			// until someone wins, loop through turns
-			while(!this.gameWon && sc.hasNextLine()){
-				System.out.println(this.currPlayer().getColorName()+" player's turn");
+			while(!Game.gameWon && sc.hasNextLine()){
+				// sleep 1 second so game is watchable
+				Thread.sleep( sleepTime ); 
+				System.out.println(Game.getCurrPlayer().getColorName()+" player's turn");
 				
 				// get move from player
 				String move = sc.nextLine();
@@ -187,8 +165,6 @@ public class Game extends Observable{
 					Game.nextTurn();
 					Game.updatePlayer(players[curr]);
 					this.notifyObservers(this, Game.getBoard());
-					// sleep 1 second so game is watchable
-					Thread.sleep(1000); 
 				}else{
 					System.err.println("Player turn failed!");
 					break;
@@ -220,9 +196,9 @@ public class Game extends Observable{
 		int y = Integer.parseInt(""+s.charAt(1));
 		
 		if(s.length()==2){
-			return board.placePawn(this.currPlayer(), x, y);
+			return board.placePawn(Game.getCurrPlayer(), x, y);
 		}else{
-			return board.placeWall(this.currPlayer(), x, y, ""+s.charAt(2));
+			return board.placeWall(Game.getCurrPlayer(), x, y, ""+s.charAt(2));
 		}
 	}
 	
@@ -233,9 +209,9 @@ public class Game extends Observable{
 	 * @return	a boolean telling whether or not this Player has won
 	 */
 	public boolean checkForWin(){
-		Player p = this.currPlayer();
+		Player p = Game.getCurrPlayer();
 		if(p.won()){
-			this.gameWon = true;
+			Game.gameWon = true;
 			return true;
 		}
 		return false;
@@ -317,10 +293,24 @@ public class Game extends Observable{
 	 * 
 	 * @return	the Player currently taking its turn
 	 */
-	public Player currPlayer(){
+	public static Player getCurrPlayer(){
 		return players[curr];
 	}
 	
+	/**
+	 * Gets the previous Player.
+	 * 
+	 * @return	the Player whose turn it just was
+	 */
+	public static Player getPrevPlayer(){
+		if(players[curr].getPnum()==1)
+			return players[players.length-1];
+		else return players[curr-1];
+	}
+	
+	public static Player[] getPlayerAry(){
+		return players;
+	}
 	/**
 	 * Gets the number of Players in this Game.
 	 * 
@@ -336,7 +326,7 @@ public class Game extends Observable{
 	 * @return	a boolean telling whether or not this Game has been won
 	 */
 	public boolean gameWon(){
-		return this.gameWon;
+		return Game.gameWon;
 	}
 	
 	/* Set Methods */
@@ -369,5 +359,41 @@ public class Game extends Observable{
          ui.remove(observer);  
           
     }
+
+	/**
+	 * Main method constructs and starts a Game based on optional command line
+	 * arguments. Arguments may be (int numberOfPlayers) or 
+	 * (int numberOfPlayers, String fileName).
+	 * 
+	 * @param args	(optional) (int numberOfPlayers) or (int numberOfPlayers, String fileName)
+	 */
+	public static void main(String[] args) {
+		// optionally can pass in file to run as demo or pass in num of players
+		int players = 2;
+		String fileName = "";
 		
+		if( args.length == 1 )
+			players = Integer.parseInt(args[0]);
+
+		if( args.length == 2 ){
+			players = Integer.parseInt(args[0]);
+			fileName = args[1];
+		}
+		
+		// parser to parse moves
+		Parser p = new Parser();
+		
+		// start game and call up UI
+		Game g = new Game( players, NUM_OF_WALLS );
+		g.startGame();
+		
+		if(fileName.length() == 0)
+			g.playGame(p);
+		else
+			g.playGame(p, fileName);
+		
+		// notify observer, since we have a winner, ui will execute end of game
+		g.notifyObservers(g, Game.getBoard());
+	}
+    
 }

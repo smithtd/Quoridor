@@ -33,7 +33,14 @@ public class GameBoard extends JPanel implements Observer {
 	private static WallButton[][] wbAry;
 	private static LongWallButton[][] vertWalls;
 	private static LongWallButton[][] horzWalls;
+	public static StatButton[] statAry;
 	private static JPanel buttonHolder;
+	private static JPanel BHBorder;
+	private static JPanel statsPanel;
+	private static JPanel aboveBarPanel;
+	private static JPanel leftBarPanel;
+	private static JPanel holder1;
+	private static JPanel holder2;
 	/* Constructor */
 
 	/**
@@ -43,13 +50,39 @@ public class GameBoard extends JPanel implements Observer {
 	 */
 	public GameBoard(){
 		super();
-		buttonHolder = new JPanel();
+		
 		FlowLayout flow = new FlowLayout();
 		flow.setHgap( 0 );
 		flow.setVgap( 0 );
+
+		buttonHolder = new JPanel();
+		BHBorder = new JPanel();
+		statsPanel = new JPanel();
+		aboveBarPanel = new JPanel();
+		leftBarPanel = new JPanel();
+		holder1 = new JPanel();
+		holder2 = new JPanel();
+
+
 		buttonHolder.setLayout( flow );
+		BHBorder.setLayout( flow );
+		statsPanel.setLayout( flow );
+		aboveBarPanel.setLayout( flow );
+		leftBarPanel.setLayout( flow );
+		holder1.setLayout( flow );
+		holder2.setLayout( flow );
 		this.setLayout( flow );
-		buttonHolder.setPreferredSize( new Dimension( (50*9 + 10*8), (50*9 + 10*8) ) );
+				
+		buttonHolder.setPreferredSize( getButtonHolderDim() );
+		BHBorder.setPreferredSize( getButtonHolderBorderDim() );
+		statsPanel.setPreferredSize( getStatsBarDim() );
+		aboveBarPanel.setPreferredSize( getAboveBarDim() );
+		leftBarPanel.setPreferredSize( getLeftBarDim() );
+		holder1.setPreferredSize( getHolder1Dim() );
+		holder2.setPreferredSize( getHolder2Dim() );
+		this.setPreferredSize( getThisDim() );
+		
+
 		setFrameStats();
 	}
 	
@@ -62,101 +95,6 @@ public class GameBoard extends JPanel implements Observer {
 	 */
 	public JFrame getFrame(){
 		return GameBoard.frame;
-	}
-	
-	/**
-	 * A MenuBar holds a Menu which in turn hold a MenuItem. That MenuItem 
-	 * is what has the changeable consequence if clicked. The Menu just drops 
-	 * down the Items in the menu.
-	 * 
-	 * @return JMenuBar
-	 */
-	public JMenuBar getMenus(){
-		JMenuBar menuBar = new JMenuBar();		
-		JMenu fileMenu = new JMenu( "File" );
-			JMenuItem new2PlyrGameOpt = new JMenuItem( "New 2 Player Game" );
-			new2PlyrGameOpt.addActionListener( new ActionListener(){
-				public void actionPerformed( ActionEvent e ){
-					Game.new2PlayerGame();
-				}
-			});
-			fileMenu.add(new2PlyrGameOpt);
-			JMenuItem new4PlyrGameOpt = new JMenuItem( "New 4 Player Game" );
-			new4PlyrGameOpt.addActionListener( new ActionListener(){
-				public void actionPerformed( ActionEvent e ){
-					Game.new4PlayerGame();
-				}
-			});
-			fileMenu.add(new4PlyrGameOpt);
-			JMenuItem quitOpt = new JMenuItem( "Quit" );
-			quitOpt.addActionListener( new ActionListener(){
-				public void actionPerformed( ActionEvent e ){
-					//When quit option is selected the program terminates
-					// closes the window
-					System.exit( 0 );	
-				}
-			});
-			fileMenu.add( quitOpt );
-		
-		//creates "help" in menubar
-		JMenu helpMenu = new JMenu("Help");
-			JMenuItem rulesOpt = new JMenuItem("Rules");
-			rulesOpt.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e){
-					String LongWallButton = "";
-					LongWallButton += "Quoridor is played on a game board of 81 square spaces (9x9). \n" +
-							"Each player is represented by a pawn which begins at the center \n" +
-							"space of one edge of the board (in a two-player game, the pawns \n" +
-							"begin opposite each other). The object is to be the first player \n" +
-							"to move their pawn to any space on the opposite side of the \n" +
-							"gameboard from which it begins.\n\n";
-					LongWallButton += "The distinguishing characteristic of Quoridor is its twenty walls. \n" +
-							"Walls are flat two-space-wide pieces which can be placed in the \n" +
-							"groove that runs between the spaces. Walls block the path of all \n" +
-							"pawns, which must go around them. The walls are divided equally \n" +
-							"among the players at the start of the game, and once placed, cannot \n" +
-							"be moved or removed. On a turn, a player may either move their \n" +
-							"pawn, or, if possible, place a wall. \n\n";
-					LongWallButton += "Pawns can be moved to an adjacent space (not diagonally), or, if \n" +
-							"adjacent to another pawn, jump over that pawn. If an adjacent pawn \n" +
-							"has a third pawn or a wall on the other side of it, the player may \n" +
-							"move to any space that is immediately adjacent to other adjacent pawns.\n" +
-							"The official rules are ambiguous concerning the edge of the board. \n\n";
-					LongWallButton += "Walls can be placed directly between two spaces, in any groove not \n" +
-							"already occupied by a wall. However, a wall may not be placed which \n" +
-							"cuts off the only remaining path of any pawn to the side of the board \n" +
-							"it must reach.\n";
-					JOptionPane.showMessageDialog( frame , LongWallButton, "Rules of Quoridor",JOptionPane.PLAIN_MESSAGE);
-				}
-			});
-			helpMenu.add( rulesOpt );
-			//the About tab in the Help menu
-			JMenuItem aboutOpt = new JMenuItem( "About" );
-			aboutOpt.addActionListener( new ActionListener(){
-				public void actionPerformed(ActionEvent e){
-					String LongWallButton = "";
-					LongWallButton += "Authors: \n";
-					LongWallButton += "Dylan Woythal \n";
-					LongWallButton += "Eli Donahue \n";
-					LongWallButton += "Marc Dean \n";
-					LongWallButton += "Tyler Smith ";
-					JOptionPane.showMessageDialog( frame , LongWallButton, "About",JOptionPane.PLAIN_MESSAGE);
-				}
-			});
-			helpMenu.add( aboutOpt );
-		JMenu statsMenu = new JMenu("Stats");
-			JMenuItem wallsOpt = new JMenuItem("Walls");
-			wallsOpt.addActionListener( new ActionListener(){
-				public void actionPerformed(ActionEvent e){
-					String LongWallButton = "";
-					JOptionPane.showMessageDialog( frame , LongWallButton, "About",JOptionPane.PLAIN_MESSAGE);
-				}
-			});
-			statsMenu.add( wallsOpt );
-		menuBar.add( fileMenu );
-		menuBar.add( helpMenu );
-		menuBar.add( statsMenu );
-		return menuBar;
 	}
 	
 	/**
@@ -203,8 +141,7 @@ public class GameBoard extends JPanel implements Observer {
 			// show current pieces
 			this.addPlayerButtons(b);
 			this.addWallButtons(b);
-			this.showPlyrMoves(g.currPlayer(),b);
-	        
+			this.showPlyrMoves(Game.getCurrPlayer(),b);
 			repaint();
 		}
     }  
@@ -220,7 +157,7 @@ public class GameBoard extends JPanel implements Observer {
 		JPanel jp1 = new JPanel();
 		jp1.setLayout( new FlowLayout() ) ;
 		jp1.setPreferredSize( new Dimension( 300, 75 ) );
-		final JFrame LongWallButtonFrame = new JFrame( "Player " + g.currPlayer().getPnum() + " wins!" );
+		final JFrame LongWallButtonFrame = new JFrame( "Player " + Game.getCurrPlayer().getPnum() + " wins!" );
 		LongWallButtonFrame.setLayout( new BorderLayout() );
 		
 		// display buttons in dialog
@@ -277,8 +214,13 @@ public class GameBoard extends JPanel implements Observer {
 		frame.setVisible( true );				//Sets Frame to visible
 		frame.setResizable( false );			//Doesn't allow resizing of frame
 		frame.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );	//when frame is closed, the program terminates
-		frame.setLocation( 150, 150 );
+		frame.setLocation( 150, 50 );
 		frame.pack();	//collapses frame to minimum size around all JObjects inside it
+		frame.addWindowListener(new WindowAdapter() {
+		    public void windowClosing(WindowEvent windowEvent) {
+		    	System.exit( 0 );
+		    }
+		});
 	}
 	
 	/**
@@ -299,9 +241,42 @@ public class GameBoard extends JPanel implements Observer {
 		frame.add( menus );
 		c.weighty = 1.0;
 		c.gridheight = GridBagConstraints.REMAINDER;
-		this.setPreferredSize( new Dimension( 50*9 + 10*8+20, 50*9 + 10*8+20 ) );
+		setUpThisPanel();
 		gridbag.setConstraints( this, c );
 		frame.add( this );
+	}
+	
+	private Dimension getThisDim(){
+		return (new Dimension( getAboveBarDim().width + getLeftBarDim().width, getLeftBarDim().height ) );
+	}
+	
+	private Dimension getLeftBarDim(){
+		return (new Dimension( Game.HWall.width, getButtonHolderBorderDim().height+ getAboveBarDim().height ) );
+	}
+	
+	private static Dimension getButtonHolderBorderDim(){
+		return (new Dimension(getButtonHolderDim().width + Game.Intersection.width*2, getButtonHolderDim().height + Game.Intersection.height*2) );
+	}
+	
+	public static Dimension getButtonHolderDim(){
+		return (new Dimension( (Game.HWall.width*9 + Game.VWall.width*8), (Game.VWall.height*9 + Game.HWall.height*8) ));
+	}
+	
+	private Dimension getHolder1Dim(){
+		return (new Dimension( getButtonHolderBorderDim().width + getStatsBarDim().width, getButtonHolderBorderDim().height ) );
+	}
+	private Dimension getHolder2Dim(){
+		return (new Dimension( getAboveBarDim().width, getAboveBarDim().height + getStatsBarDim().height ) );
+	}
+	
+	private static Dimension getAboveBarDim(){
+		return (new Dimension( getButtonHolderBorderDim().width + getStatsBarDim().width, Game.VWall.height));
+	}
+	
+	public static Dimension getStatsBarDim(){
+		int width = getButtonHolderBorderDim().width/3+10;
+		int height = getButtonHolderBorderDim().height;
+		return (width<180 ? new Dimension( 180, height ) : new Dimension( width , height ));
 	}
 	
 	/**
@@ -318,7 +293,6 @@ public class GameBoard extends JPanel implements Observer {
 	public void addJButtons(){
 		pbAry = new PlayerButton[9][9];
 		wbAry = new WallButton[8][8];
-		
 		vertWalls = new LongWallButton[9][8];
 		horzWalls = new LongWallButton[8][9];
 		
@@ -351,24 +325,64 @@ public class GameBoard extends JPanel implements Observer {
 					}
 				}//end y
 			}//end layer
-		}//end x
-		
+		}//end x	
+	}
+	
+	private void setUpThisPanel(){
 		EndZoneButton up = new EndZoneButton( Game.getNumPlayers(), "U" );
 		EndZoneButton down = new EndZoneButton( Game.getNumPlayers(), "D" );
 		EndZoneButton left = new EndZoneButton( Game.getNumPlayers(), "L" );
 		EndZoneButton right = new EndZoneButton( Game.getNumPlayers(), "R" );
-
-		this.add( new EndZoneSpacer() );
-		this.add( up );
-		this.add( new EndZoneSpacer() );
-		this.add( left );
-		this.add( buttonHolder );
-		this.add( right );
-		this.add( new EndZoneSpacer() );
-		this.add( down );
-		this.add( new EndZoneSpacer() );
+		BHBorder.add( new SpacerButton( Game.Intersection, Color.DARK_GRAY ) );
+		BHBorder.add( up );
+		BHBorder.add( new SpacerButton( Game.Intersection, Color.DARK_GRAY ) );
+		BHBorder.add( left );
+		BHBorder.add( buttonHolder );
+		BHBorder.add( right );
+		BHBorder.add( new SpacerButton( Game.Intersection, Color.DARK_GRAY ) );
+		BHBorder.add( down );
+		BHBorder.add( new SpacerButton( Game.Intersection, Color.DARK_GRAY ) );
+		holder1.add( BHBorder );
+		holder1.add( statsPanel );
+		if(Game.getNumPlayers()==2){
+			statAry = new StatButton[2];
+			for(int i=0; i<2; i++){
+				StatButton b = new StatButton(i);
+				statsPanel.add( b );
+				statAry[i] = b;
+			}
+		}else{
+			statAry = new StatButton[4];
+			for(int i=0; i<4; i++){
+				StatButton b = new StatButton(i);
+				statsPanel.add( b );
+				statAry[i] = b;
+			}
+		}	
 		
+		aboveBarPanel.add( new SpacerButton( Game.VWall.width, getAboveBarDim().height, Color.DARK_GRAY ) );
+		aboveBarPanel.add( new SpacerButton( Game.HWall.width, getAboveBarDim().height, Color.LIGHT_GRAY, "" + (char)('A') ) );
+		for(int i=0; i<8; i++){
+			aboveBarPanel.add( new SpacerButton( Game.VWall.width, getAboveBarDim().height, Color.DARK_GRAY , "" + (char)('A'+i) ) );
+			aboveBarPanel.add( new SpacerButton( Game.HWall.width, getAboveBarDim().height, Color.LIGHT_GRAY, "" + (char)('B'+i) ) );
+		}
+		aboveBarPanel.add( new SpacerButton( Game.VWall.width, getAboveBarDim().height, Color.DARK_GRAY ) );
+		aboveBarPanel.add( new SpacerButton( getStatsBarDim().width, getAboveBarDim().height, Color.LIGHT_GRAY, "STATS" ) );
 		
+		holder2.add( aboveBarPanel );
+		holder2.add( holder1 );
+		
+		leftBarPanel.add( new SpacerButton( getLeftBarDim().width, getAboveBarDim().height, Color.LIGHT_GRAY) );
+		leftBarPanel.add( new SpacerButton( getLeftBarDim().width, Game.HWall.height, Color.DARK_GRAY ) );
+		leftBarPanel.add( new SpacerButton( getLeftBarDim().width, Game.VWall.height, Color.LIGHT_GRAY, "" + (char)('1')) );
+		for(int i=0; i<8; i++){
+			leftBarPanel.add( new SpacerButton( getLeftBarDim().width,Game.HWall.height, Color.DARK_GRAY , "" + (char)('1'+i)) );
+			leftBarPanel.add( new SpacerButton( getLeftBarDim().width, Game.VWall.height, Color.LIGHT_GRAY, "" + (char)('2'+i)) );
+		}
+		leftBarPanel.add( new SpacerButton( getLeftBarDim().width,Game.HWall.height, Color.DARK_GRAY ) );
+		
+		this.add(leftBarPanel);
+		this.add(holder2);
 	}
 	
 	/**
@@ -429,7 +443,6 @@ public class GameBoard extends JPanel implements Observer {
 		up.setBackground( yesWallColor );
 		down.setBackground( yesWallColor );		
 		wbAry[x][y].setBackground( yesWallColor );
-		
 	}
 	
 	/**
@@ -464,5 +477,113 @@ public class GameBoard extends JPanel implements Observer {
 			for( int y=0; y<9; y++ )
 				if(pbAry[x][y].getBackground() == Color.MAGENTA)
 					pbAry[x][y].setBackground(Color.BLACK);
+	}
+	/**
+	 * A MenuBar holds a Menu which in turn hold a MenuItem. That MenuItem 
+	 * is what has the changeable consequence if clicked. The Menu just drops 
+	 * down the Items in the menu.
+	 * 
+	 * @return JMenuBar
+	 */	
+	public JMenuBar getMenus(){
+		JMenuBar menuBar = new JMenuBar();	
+		menuBar.setBorder( null );
+		menuBar.setForeground( Color.WHITE );
+		menuBar.setBackground( Color.BLACK );
+	
+		JMenu fileMenu = new JMenu( "File" );
+		fileMenu.setBorder( null );
+		fileMenu.setForeground( Color.WHITE );
+		fileMenu.setBackground( Color.BLACK );
+			JMenuItem new2PlyrGameOpt = new JMenuItem( "New 2 Player Game" );
+			new2PlyrGameOpt.setForeground( Color.WHITE );
+			new2PlyrGameOpt.setBackground( Color.BLACK );
+			new2PlyrGameOpt.addActionListener( new ActionListener(){
+				public void actionPerformed( ActionEvent e ){
+					Game.new2PlayerGame();
+				}
+			});
+			fileMenu.add(new2PlyrGameOpt);
+			JMenuItem new4PlyrGameOpt = new JMenuItem( "New 4 Player Game" );
+			new4PlyrGameOpt.setBorder( null );
+			new4PlyrGameOpt.setForeground( Color.WHITE );
+			new4PlyrGameOpt.setBackground( Color.BLACK );
+			new4PlyrGameOpt.addActionListener( new ActionListener(){
+				public void actionPerformed( ActionEvent e ){
+					Game.new4PlayerGame();
+				}
+			});
+			fileMenu.add(new4PlyrGameOpt);
+			JMenuItem quitOpt = new JMenuItem( "Quit" );
+			quitOpt.setBorder( null );
+			quitOpt.setForeground( Color.WHITE );
+			quitOpt.setBackground( Color.BLACK );
+			quitOpt.addActionListener( new ActionListener(){
+				public void actionPerformed( ActionEvent e ){
+					//When quit option is selected the program terminates
+					// closes the window
+					System.exit( 0 );	
+				}
+			});
+			fileMenu.add( quitOpt );
+		
+		//creates "help" in menubar
+		JMenu helpMenu = new JMenu("Help");
+		helpMenu.setForeground( Color.WHITE );
+		helpMenu.setBackground( Color.BLACK );
+			JMenuItem rulesOpt = new JMenuItem("Rules");
+			rulesOpt.setBorder( null );
+			rulesOpt.setForeground( Color.WHITE );
+			rulesOpt.setBackground( Color.BLACK );
+			rulesOpt.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					String LongWallButton = "";
+					LongWallButton += "Quoridor is played on a game board of 81 square spaces (9x9). \n" +
+							"Each player is represented by a pawn which begins at the center \n" +
+							"space of one edge of the board (in a two-player game, the pawns \n" +
+							"begin opposite each other). The object is to be the first player \n" +
+							"to move their pawn to any space on the opposite side of the \n" +
+							"gameboard from which it begins.\n\n";
+					LongWallButton += "The distinguishing characteristic of Quoridor is its twenty walls. \n" +
+							"Walls are flat two-space-wide pieces which can be placed in the \n" +
+							"groove that runs between the spaces. Walls block the path of all \n" +
+							"pawns, which must go around them. The walls are divided equally \n" +
+							"among the players at the start of the game, and once placed, cannot \n" +
+							"be moved or removed. On a turn, a player may either move their \n" +
+							"pawn, or, if possible, place a wall. \n\n";
+					LongWallButton += "Pawns can be moved to an adjacent space (not diagonally), or, if \n" +
+							"adjacent to another pawn, jump over that pawn. If an adjacent pawn \n" +
+							"has a third pawn or a wall on the other side of it, the player may \n" +
+							"move to any space that is immediately adjacent to other adjacent pawns.\n" +
+							"The official rules are ambiguous concerning the edge of the board. \n\n";
+					LongWallButton += "Walls can be placed directly between two spaces, in any groove not \n" +
+							"already occupied by a wall. However, a wall may not be placed which \n" +
+							"cuts off the only remaining path of any pawn to the side of the board \n" +
+							"it must reach.\n";
+					JOptionPane.showMessageDialog( frame , LongWallButton, "Rules of Quoridor",JOptionPane.PLAIN_MESSAGE);
+				}
+			});
+			helpMenu.add( rulesOpt );
+			//the About tab in the Help menu
+			JMenuItem aboutOpt = new JMenuItem( "About" );
+			aboutOpt.setBorder( null );
+			aboutOpt.setForeground( Color.WHITE );
+			aboutOpt.setBackground( Color.BLACK );
+			aboutOpt.addActionListener( new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					String LongWallButton = "";
+					LongWallButton += "Authors: \n";
+					LongWallButton += "Dylan Woythal \n";
+					LongWallButton += "Eli Donahue \n";
+					LongWallButton += "Marc Dean \n";
+					LongWallButton += "Tyler Smith ";
+					JOptionPane.showMessageDialog( frame , LongWallButton, "About",JOptionPane.PLAIN_MESSAGE);
+				}
+			});
+			helpMenu.add( aboutOpt );
+		
+		menuBar.add( fileMenu );
+		menuBar.add( helpMenu );
+		return menuBar;
 	}
 }

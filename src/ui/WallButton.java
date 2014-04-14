@@ -1,12 +1,15 @@
 package ui;
 
 import javax.swing.*;
+
+import main.Game;
+
 import java.awt.*;
 
 /**
  * Small square button at center of each wall.
  * 
- * @author Dylan Woythol, Tyler Smith
+ * @author Dylan Woythal, Tyler Smith
  */
 @SuppressWarnings("serial")
 public class WallButton extends JButton {
@@ -27,8 +30,8 @@ public class WallButton extends JButton {
 		this.setBorder(null);
 		this.x = x;
 		this.y = y;
-		this.setPreferredSize( new Dimension( 10, 10 ) );
-		this.setBackground( Color.BLACK );
+		this.setPreferredSize( Game.Intersection );
+		this.setBackground( Color.DARK_GRAY );
 		this.setOpaque(true);
 	}
 }

@@ -2,6 +2,8 @@ package ui;
 
 import javax.swing.*;
 
+import main.Game;
+
 import players.Player;
 // using JButton
 import java.awt.*;
@@ -32,7 +34,7 @@ public class PlayerButton extends JButton {
 		super();
 		this.x = x;
 		this.y = y;
-		this.setPreferredSize( new Dimension( 50, 50 ) );
+		this.setPreferredSize( new Dimension( Game.HWall.width, Game.VWall.height ) );
 		this.setBackground( Color.BLACK );
 		this.setOpaque(true);
 		this.setBorderPainted(false);
@@ -88,5 +90,22 @@ public class PlayerButton extends JButton {
 		this.plyr = null;
 		this.setBackground(Color.BLACK);
 		this.setOpaque(true);
+	}
+	
+	public void paint( Graphics g ){
+		if( this.getBackground() == Color.MAGENTA ){
+			int increment = 150;
+			Color c = Game.getCurrPlayer().getColor();
+			int red = (c.getRed() + increment > 256 ? c.getRed() : c.getRed() + increment );
+			int green = (c.getGreen() + increment > 256 ? c.getGreen() : c.getGreen() + increment );
+			int blue = (c.getBlue() + increment > 256 ? c.getBlue() : c.getBlue() + increment );
+			
+			g.setColor( new Color( red, green, blue ) );
+			g.fillRect( 0, 0, Game.PlayerSize.width, Game.PlayerSize.height );
+		}else{
+			g.setColor( this.getBackground() );
+			g.fillRect( 0, 0, Game.PlayerSize.width, Game.PlayerSize.height );
+		}
+		
 	}
 }
