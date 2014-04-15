@@ -40,3 +40,14 @@ Meeting on 4/7:
     Marc Dean    
     Tyler Smith
     Eli Donahue
+
+Meeting on 4/9:
+	Dylan Woythal
+    Marc Dean    
+    Tyler Smith
+    
+Meeting on 4/14:
+	Dylan Woythal
+    Marc Dean    
+    Tyler Smith
+    Eli Donahue
