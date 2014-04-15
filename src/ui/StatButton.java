@@ -28,9 +28,9 @@ public class StatButton extends JButton {
 		this.setText("Walls remaining: " + Game.getCurrPlayer().getWalls());
 
 		if(Game.getNumPlayers()==2)
-			this.setPreferredSize( new Dimension( GameBoard.getStatsBarDim().width, GameBoard.getStatsBarDim().height/2 ) );
+			this.setPreferredSize( new Dimension( GameBoard.getRightBarDim().width, GameBoard.getRightBarDim().height/2 ) );
 		else
-			this.setPreferredSize( new Dimension( GameBoard.getStatsBarDim().width, GameBoard.getStatsBarDim().height/4 ) );
+			this.setPreferredSize( new Dimension( GameBoard.getRightBarDim().width, GameBoard.getRightBarDim().height/4 ) );
 	}
 	
 	public void updateWalls(){
@@ -55,7 +55,7 @@ public class StatButton extends JButton {
 		g.fillRect( Game.WallGap, Game.WallGap, this.getWidth()-Game.WallGap*2, this.getHeight()-Game.WallGap*2 );
 		
 		//Text
-		g.setFont( new Font( "" , Font.BOLD, (GameBoard.getStatsBarDim().width==180 ? 10 : (int)(Game.PlayerWidth*(12.0/50.0)) ) ) );
+		g.setFont( new Font( "" , Font.BOLD, (GameBoard.getRightBarDim().width==180 ? 10 : (int)(Game.PlayerWidth*(12.0/50.0)) ) ) );
 		FontMetrics fm = g.getFontMetrics( g.getFont() );
 		String s = "Walls remaining: " + Game.getPlayerAry()[playerNum].getWalls();
 		g.setColor( Color.BLACK );
