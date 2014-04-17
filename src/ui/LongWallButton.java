@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.Color;
+import java.awt.Graphics;
 
 import javax.swing.JButton;
 
@@ -39,4 +40,9 @@ public class LongWallButton extends JButton {
         this.setBackground( Color.DARK_GRAY );
         this.setOpaque(true);	// needed to display on macs   
    }
+	
+	public void paint( Graphics g ){
+		g.setColor( Color.DARK_GRAY );
+		g.fillRect(0, 0, this.getWidth(), this.getHeight() );
+	}
 }
