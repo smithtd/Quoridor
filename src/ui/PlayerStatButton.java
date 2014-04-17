@@ -27,9 +27,9 @@ public class PlayerStatButton extends JButton {
 		this.setText("Walls remaining: " + Game.getCurrPlayer().getWalls());
 
 		if(Game.getNumPlayers()==2)
-			this.setPreferredSize( new Dimension( GameBoard.getStatsBarDim().width, GameBoard.getStatsBarDim().height/2 ) );
+			this.setPreferredSize( new Dimension( GameBoard.getRightBarDim().width, GameBoard.getRightBarDim().height/2 ) );
 		else
-			this.setPreferredSize( new Dimension( GameBoard.getStatsBarDim().width, GameBoard.getStatsBarDim().height/4 ) );
+			this.setPreferredSize( new Dimension( GameBoard.getRightBarDim().width, GameBoard.getRightBarDim().height/4 ) );
 	}
 	
 	public void updateWalls(){

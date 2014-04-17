@@ -26,9 +26,9 @@ import parser.Parser;
 public class Game extends Observable{
 	
 	/* Static variables */
-	public static int WallGap = 15;
-	public static int PlayerWidth = 50;
-	public static int PlayerHeight = 50;
+	public static int WallGap = 10;
+	public static int PlayerWidth = 40;
+	public static int PlayerHeight = 40;
 	public static int sleepTime = 333;
 	
 	public static Dimension HWall = new Dimension( Game.PlayerWidth, Game.WallGap );
