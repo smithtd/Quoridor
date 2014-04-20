@@ -18,7 +18,7 @@ public class MoveServer {
 	private int port;
 	/** get input from the game client */
 	private Scanner clientInput;
-	/** Send moves/placements to the gameclient */
+	/** Send moves/placements to the game client */
 	private PrintStream clientOutput;
 	/** AI-Identifier or name */
 	private String identifier;
@@ -60,12 +60,8 @@ public class MoveServer {
 				System.out.println("Sending HELLO <ai-identifier> message to client");
 				this.clientOutput.println(Messages.HELLO_MESSAGE + " " + this.identifier);
 				
-				
 				// Read input that comes in from the game client
 				this.clientInput = new Scanner(gameClient.getInputStream());
-				
-				
-				
 				
 				while(this.clientInput.hasNext()){
 					String input = this.clientInput.nextLine();
@@ -76,7 +72,7 @@ public class MoveServer {
 			}
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Connection Terminated");
 		}
 		
 	}
@@ -87,6 +83,9 @@ public class MoveServer {
 	 */
 	private void getResponse(String input) {
 		
+		if(input.startsWith(Messages.START_GAME)){
+			this.clientOutput.println(Messages.READY + " " + this.identifier);
+		} 
 		
 		
 	}
@@ -97,8 +96,11 @@ public class MoveServer {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
+		// Should have a port number as a command line argument
 		if(args.length != 1)
 			usage();
+		
 		int port = Integer.parseInt(args[0]);
 		MoveServer m = new MoveServer(port);
 		
@@ -111,7 +113,7 @@ public class MoveServer {
 	 * then quit.
 	 */
 	private static void usage() {
-		System.out.println("$ java MoveServer <portNumber>");
+		System.out.println("\tTo start MoveServer : \n \n\t$ java MoveServer <portNumber>");
 		System.exit(0);
 	}
 }
