@@ -17,9 +17,11 @@ public class MoveServer {
 	/** Port that this server will listen on */
 	private int port;
 	/** get input from the game client */
-	Scanner clientInput;
+	private Scanner clientInput;
 	/** Send moves/placements to the gameclient */
-	PrintStream clientOutput;
+	private PrintStream clientOutput;
+	/** AI-Identifier or name */
+	private String identifier;
 	
 	/**
 	 * Construct an instance of a MoveServer
@@ -30,6 +32,14 @@ public class MoveServer {
 	}
 	
 	public void run() {
+		
+		// Protocol says first message after connecting should
+		// be HELLO <ai-identifier>
+		System.out.print("Name or AI-Identifier >> ");
+		Scanner nameGetter = new Scanner(System.in);
+		this.identifier = nameGetter.next();
+		nameGetter.close();
+		
 		System.out.println("Starting a move server");
 		
 		try {
@@ -44,10 +54,18 @@ public class MoveServer {
 				server.close();
 				System.out.println("Now connected to client at: " + gameClient);
 				
+				// Send output back to game client
+				this.clientOutput = new PrintStream(gameClient.getOutputStream());
+				
+				System.out.println("Sending HELLO <ai-identifier> message to client");
+				this.clientOutput.println(Messages.HELLO_MESSAGE + " " + this.identifier);
+				
+				
 				// Read input that comes in from the game client
 				this.clientInput = new Scanner(gameClient.getInputStream());
-				// Send output back
-				this.clientOutput = new PrintStream(gameClient.getOutputStream());
+				
+				
+				
 				
 				while(this.clientInput.hasNext()){
 					String input = this.clientInput.nextLine();
@@ -63,7 +81,12 @@ public class MoveServer {
 		
 	}
 	
+	/**
+	 * 
+	 * @param input - Message from the GameClient. 
+	 */
 	private void getResponse(String input) {
+		
 		
 		
 	}
@@ -78,6 +101,7 @@ public class MoveServer {
 			usage();
 		int port = Integer.parseInt(args[0]);
 		MoveServer m = new MoveServer(port);
+		
 		m.run();
 
 	}
