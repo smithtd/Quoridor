@@ -30,6 +30,8 @@ public class MoveServer {
 	private String identifier;
 	/** Player ID number */
 	private int playerId;
+	/** Scanner on System.in for getting name, moves */
+	private Scanner playerInput;
 
 	/**
 	 * Construct an instance of a MoveServer
@@ -48,9 +50,8 @@ public class MoveServer {
 		// Protocol says first message after connecting should
 		// be HELLO <ai-identifier>
 		System.out.print("Name or AI-Identifier >> ");
-		Scanner nameGetter = new Scanner(System.in);
-		this.identifier = nameGetter.next();
-		nameGetter.close();
+		this.playerInput = new Scanner(System.in);
+		this.identifier = this.playerInput.next();
 
 		System.out.println("Starting a move server");
 
@@ -86,7 +87,7 @@ public class MoveServer {
 		} catch (IOException e) {
 			System.out.println("Connection Terminated");
 		}
-
+		this.playerInput.close();
 	}
 
 	/**
@@ -149,12 +150,7 @@ public class MoveServer {
 	private String getMove() {
 
 		System.out.print("Enter a move/wall placement >> ");
-		Scanner moveGet = new Scanner(System.in);
-		while(true) {
-			String move = moveGet.next();
-			moveGet.close();
-			return move;
-		}
+		return "MOVE " + this.playerInput.next();
 
 	}
 
