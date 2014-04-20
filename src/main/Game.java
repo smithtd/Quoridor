@@ -1,3 +1,4 @@
+
 package main;
 
 // use to implement subject/observer
@@ -11,6 +12,7 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import network.GameClient;
 import players.Player;
 import board.Board;
 import ui.GameBoard;
@@ -21,7 +23,8 @@ import parser.Parser;
  * java.util.Observable and acts as a subject for the 
  * GameBoard class, which observes/subscribes to a Game object.
  * 
- * @author Eli Donahue
+ * @author Eli Donahue, M. Dean
+ * Team 511-tactical
  */
 public class Game extends Observable{
 	
@@ -46,7 +49,8 @@ public class Game extends Observable{
 	private static Player[] players;			// Player[] to hold players
 	private static int numPlayers;				// number of players
 	private static int curr;					// index of current Player
-	private static boolean gameWon;					// whether the game has been won
+	private static boolean gameWon;				// whether the game has been won
+	private static GameClient networker; 		// networking client
 	
 	/* Constructor */
 	
