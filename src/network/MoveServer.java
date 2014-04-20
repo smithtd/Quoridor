@@ -22,6 +22,8 @@ public class MoveServer {
 	private PrintStream clientOutput;
 	/** AI-Identifier or name */
 	private String identifier;
+	/** Player ID number */
+	private int playerId;
 	
 	/**
 	 * Construct an instance of a MoveServer
@@ -83,12 +85,27 @@ public class MoveServer {
 	 */
 	private void getResponse(String input) {
 		
-		if(input.startsWith(Messages.START_GAME)){
-			this.clientOutput.println(Messages.READY + " " + this.identifier);
+		if(input.equalsIgnoreCase(Messages.ASK_FOR_MOVE)){
+			// get a move from the server
+			
+		} else if(input.startsWith(Messages.TELL_MOVE)){
+			Scanner info = new Scanner(input);
+			info.next();
+			System.out.println("Player " + info.next() + " made move: " + info.next());
+			info.close();
+		} else if(input.startsWith(Messages.START_GAME)){
+			Scanner getID = new Scanner(input);
+			getID.next();
+			this.playerId = Integer.parseInt(getID.next());
+			this.clientOutput.println(Messages.READY + " " + this.playerId);
+			System.out.println("Playing as player # " + this.playerId);
+			getID.close();
 		} 
 		
 		
 	}
+	
+	
 	
 	/**
 	 * Handle Command Line arguments, start a server and 
