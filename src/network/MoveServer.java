@@ -33,6 +33,10 @@ public class MoveServer {
 		this.port = pNum;
 	}
 
+	/**
+	 * Starts the Server and waits for the connection. Once connected gets input
+	 * and handles it so it can send back the proper responses.
+	 */
 	public void run() {
 
 		// Protocol says first message after connecting should
@@ -80,7 +84,8 @@ public class MoveServer {
 	}
 
 	/**
-	 * 
+	 * Handles the messages that should be seen from the game client
+	 * and makes them easy to understand for the player. 
 	 * @param input - Message from the GameClient. 
 	 */
 	private void getResponse(String input) {
@@ -129,6 +134,12 @@ public class MoveServer {
 
 	}
 
+	
+	/**
+	 * Gets the move or wall placement from the player.
+	 * 
+	 * @return - Players next move.
+	 */
 	private String getMove() {
 
 		System.out.print("Enter a move/wall placement >> ");
