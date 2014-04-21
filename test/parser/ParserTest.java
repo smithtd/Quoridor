@@ -141,5 +141,21 @@ public class ParserTest {
 		 assertEquals("", p.wallTranslate(cOne));
 		 
 	 }
+	 
+	 @Test
+	 public void testIPPPairWorking() {
+		 String example = "localHost:7777";
+		 assertTrue(p.isPair(example));
+		 
+		 example = "helloEveryOneThisisatestttt:880546";
+		 assertTrue(p.isPair(example));
+		 
+		 example = "this should prolly fail : 888777";
+		 assertFalse(p.isPair(example));
+		 
+		 example = "thisshouldFailToo :";
+		 assertFalse(p.isPair(example));
+	     
+	 }
 
 }

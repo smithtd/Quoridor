@@ -24,6 +24,9 @@ public class Parser {
 	/** Regex for wall placements */
 	private Pattern walls;
 	
+	/** Regex for IPP pairs */
+	private Pattern pairs;
+	
 	
 	/** 
 	 *  Creates an instance of our move/wall parser.
@@ -39,6 +42,18 @@ public class Parser {
 	public Parser() {
 		this.moves = Pattern.compile("[a-i][1-9]");
 		this.walls = Pattern.compile("[a-i][1-9][vh]");
+		this.pairs = Pattern.compile("[a-zA-Z]+:[0-9]+");
+	}
+	
+	/**
+	 * Test if an input is a valid IPP pair representation.
+	 * 
+	 * @param s - String representation of a possible IPP pair
+	 * @return - True if IPP pair, else false.
+	 */
+	public boolean isPair(String s) {
+		Matcher isP = this.pairs.matcher(s);
+		return isP.matches();
 	}
 	
 	/** 
