@@ -32,7 +32,9 @@ public class Game extends Observable{
 	public static int WallGap = 10;
 	public static int PlayerWidth = 40;
 	public static int PlayerHeight = 40;
-	public static int sleepTime = 200;
+	public static int sleepTime = 750;
+	public static int colorIncrement = 200;
+	
 	public static Dimension HWall = new Dimension( Game.PlayerWidth, Game.WallGap );
 	public static Dimension VWall = new Dimension( Game.WallGap, Game.PlayerHeight );
 	public static Dimension Intersection = new Dimension( VWall.width, HWall.height );

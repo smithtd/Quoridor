@@ -110,7 +110,7 @@ public class Player implements Players {
 		//Verify move is entered
 		// valid, is legal move, when the person's turn
 		// comes up
-		sc = new Scanner(System.in);
+		sc = new Scanner((Readable) System.out);
 		System.out.println("Enter move: ");
 		// TODO figure a check mechanism for moves.
 		

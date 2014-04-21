@@ -39,7 +39,7 @@ public class GameBoard extends JPanel implements Observer {
 	private static JPanel BHBorder;
 	private static JPanel rightBarPanel;
 	private static JPanel topBarPanel;
-	private static JPanel bottomBarPanel;
+	public static Terminal bottomBarPanel;
 	private static JPanel leftBarPanel;
 	private static JPanel holder1;
 	private static JPanel holder2;
@@ -63,7 +63,7 @@ public class GameBoard extends JPanel implements Observer {
 		BHBorder = new JPanel();
 		rightBarPanel = new JPanel();
 		topBarPanel = new JPanel();
-		bottomBarPanel = new JPanel();
+		bottomBarPanel = new Terminal( 6, 60 );
 		leftBarPanel = new JPanel();
 		holder1 = new JPanel();
 		holder2 = new JPanel();
@@ -171,7 +171,7 @@ public class GameBoard extends JPanel implements Observer {
 		jp1.setPreferredSize( new Dimension( 300, 75 ) );
 
 		// set win dialog background color to player color, light
-		int increment = 150;
+		int increment = Game.colorIncrement;
 		Color c = Game.getCurrPlayer().getColor();
 		int red = (c.getRed() + increment > 256 ? c.getRed() : c.getRed() + increment );
 		int green = (c.getGreen() + increment > 256 ? c.getGreen() : c.getGreen() + increment );
@@ -273,7 +273,7 @@ public class GameBoard extends JPanel implements Observer {
 		return (new Dimension( getLeftBarDim().width + getButtonHolderBorderDim().width + getRightBarDim().width, getTopBarDim().height + getButtonHolderBorderDim().height + getBottomBarDim().height ) );
 	}
 
-	private Dimension getLeftBarDim(){
+	private static Dimension getLeftBarDim(){
 		return (new Dimension( Game.HWall.width, getButtonHolderBorderDim().height+ getTopBarDim().height ) );
 	}
 
@@ -293,15 +293,15 @@ public class GameBoard extends JPanel implements Observer {
 		return (new Dimension( getTopBarDim().width, getTopBarDim().height + getRightBarDim().height ) );
 	}
 
-	private Dimension getHolder3Dim(){
+	private static Dimension getHolder3Dim(){
 		return (new Dimension( getRightBarDim().width + getButtonHolderBorderDim().width + getLeftBarDim().width, getTopBarDim().height + getButtonHolderBorderDim().height ) );
 	}
 
-	private Dimension getTopBarDim(){
+	private static Dimension getTopBarDim(){
 		return (new Dimension( getButtonHolderBorderDim().width + getRightBarDim().width, Game.VWall.height));
 	}
 
-	private Dimension getBottomBarDim(){
+	public static Dimension getBottomBarDim(){
 		int width = getHolder3Dim().width;
 		int height = Game.PlayerHeight*3;
 
