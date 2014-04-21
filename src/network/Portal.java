@@ -32,6 +32,9 @@ public class Portal {
 	/** Send data out */
 	private PrintStream outgoing;
 	
+	/** Tell if still in game or not */
+	private boolean inGame;
+	
 	/**
 	 * Create an instance of a portal for communication with a server.
 	 * @param name - Machine name of the machine that is running the moveServer
@@ -51,10 +54,48 @@ public class Portal {
 			System.out.println("Could not find " + this.machineName + ":" + this.port);
 		}
 		
+		this.inGame = true;
 		
 	}
 	
+	/**
+	 * Get a message from the moveServer.
+	 * @return - Message from the moveServer.
+	 */
+	public String getMessage() {
+		
+		String message = "";
+		
+		try {
+			message = this.incoming.readLine();
+		} catch (IOException e) {
+			
+		}
+		return message;
+	}
 	
+	/**
+	 * Send a message to the moveServer
+	 * @param message - Message to send to the server
+	 */
+	public void sendMessage(String message) {
+		this.outgoing.println(message);
+	}
+	
+	/**
+	 * Set this flag to boot the player.
+	 */
+	public void bootPlayer() {
+		this.inGame = false;
+	}
+	
+	/**
+	 * Tell if the player is still in the game.
+	 * @return - True if in game, else false
+	 */
+	public boolean inGame() {
+		return this.inGame;
+	}
 	
 	
 }
