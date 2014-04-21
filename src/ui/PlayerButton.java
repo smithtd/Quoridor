@@ -102,6 +102,13 @@ public class PlayerButton extends JButton {
 			
 			g.setColor( new Color( red, green, blue ) );
 			g.fillRect( 0, 0, Game.PlayerSize.width, Game.PlayerSize.height );
+			
+			g.setFont( getFont() );
+			FontMetrics fm = g.getFontMetrics( g.getFont() );
+			String s = "" + (char)(this.y+65) + (this.x+1) ;
+			g.setColor( Color.BLACK );
+			g.drawString( s, (this.getWidth()/2 - fm.stringWidth( s )/2), (this.getHeight()/2 + fm.getHeight()/4 ) );
+			
 		}else{
 			g.setColor( this.getBackground() );
 			g.fillRect( 0, 0, Game.PlayerSize.width, Game.PlayerSize.height );

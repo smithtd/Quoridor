@@ -32,26 +32,13 @@ public class Game extends Observable{
 	public static int WallGap = 10;
 	public static int PlayerWidth = 40;
 	public static int PlayerHeight = 40;
-<<<<<<< HEAD
 	public static int sleepTime = 200;
-	
-=======
-	public static int sleepTime = 50;
-
->>>>>>> 80fc6831db8d73cd63afb544661715673ee73cb4
 	public static Dimension HWall = new Dimension( Game.PlayerWidth, Game.WallGap );
 	public static Dimension VWall = new Dimension( Game.WallGap, Game.PlayerHeight );
 	public static Dimension Intersection = new Dimension( VWall.width, HWall.height );
 	public static Dimension PlayerSize = new Dimension( HWall.width, VWall.height );
-<<<<<<< HEAD
-	
-	//public static Game g;
-	
-=======
-
 	public static Game g;
 
->>>>>>> 80fc6831db8d73cd63afb544661715673ee73cb4
 	/* Private Instance variables */
 
 	private static final int NUM_OF_WALLS = 20; 
@@ -65,13 +52,8 @@ public class Game extends Observable{
 	private static boolean gameWon;				// whether the game has been won
 	@SuppressWarnings("unused")
 	private static GameClient networker; 		// networking client
-<<<<<<< HEAD
 	private static Parser parser;
-	
-=======
 
-
->>>>>>> 80fc6831db8d73cd63afb544661715673ee73cb4
 	/* Constructor */
 
 	/**
@@ -302,28 +284,10 @@ public class Game extends Observable{
 	 * Disposes of the previous GameBoard (UI) and creates a new Game.
 	 * 
 	 */
-<<<<<<< HEAD
 
 	public static void newGame( int players ){
 		GameBoard.closeFrame();
 		Game g = new Game( players, NUM_OF_WALLS );
-=======
-	public static void new4PlayerGame(){
-		GameBoard ui = (GameBoard) Game.ui.get(0);
-		ui.getFrame().dispose();
-		g = new Game( 4, NUM_OF_WALLS );
-		g.startGame();
-	}
-
-	/**
-	 * Disposes of the previous GameBoard (UI) and creates a new Game.
-	 * 
-	 */
-	public static void new2PlayerGame(){
-		GameBoard ui = (GameBoard) Game.ui.get(0);
-		ui.getFrame().dispose();
-		g = new Game( 2, NUM_OF_WALLS );
->>>>>>> 80fc6831db8d73cd63afb544661715673ee73cb4
 		g.startGame();
 		parser = new Parser();
 		g.playGame(parser);
@@ -474,13 +438,7 @@ public class Game extends Observable{
 		}
 
 		// parser to parse moves
-<<<<<<< HEAD
 		parser = new Parser();
-		
-=======
-		Parser p = new Parser();
-
->>>>>>> 80fc6831db8d73cd63afb544661715673ee73cb4
 		// start game and call up UI
 		Game g = new Game( players, NUM_OF_WALLS );
 		g.startGame();
@@ -488,13 +446,7 @@ public class Game extends Observable{
 		if(fileName.length() == 0)
 			g.playGame(parser);
 		else
-<<<<<<< HEAD
 			g.playGame(parser, fileName);
-		
-=======
-			g.playGame(p, fileName);
-
->>>>>>> 80fc6831db8d73cd63afb544661715673ee73cb4
 		// notify observer, since we have a winner, ui will execute end of game
 		g.notifyObservers(g, Game.getBoard());
 	}

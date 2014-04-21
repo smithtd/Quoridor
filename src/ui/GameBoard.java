@@ -54,11 +54,7 @@ public class GameBoard extends JPanel implements Observer {
 	 */
 	public GameBoard(){
 		super();
-<<<<<<< HEAD
 		closeFromX = true;
-=======
-
->>>>>>> 80fc6831db8d73cd63afb544661715673ee73cb4
 		FlowLayout flow = new FlowLayout();
 		flow.setHgap( 0 );
 		flow.setVgap( 0 );
@@ -99,16 +95,10 @@ public class GameBoard extends JPanel implements Observer {
 
 		setFrameStats();
 	}
-<<<<<<< HEAD
-	
 	public static void closeFrame(){
 		closeFromX = false;
 		frame.dispose();
 	}
-	
-=======
-
->>>>>>> 80fc6831db8d73cd63afb544661715673ee73cb4
 	/* Get Methods */
 
 	/**
@@ -207,15 +197,7 @@ public class GameBoard extends JPanel implements Observer {
 		});
 		b2.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
-<<<<<<< HEAD
 				Game.newGame( 4 );
-=======
-				Game.new4PlayerGame();
-				repaint();
-				g.playGame(new Parser());
-				
-				
->>>>>>> 80fc6831db8d73cd63afb544661715673ee73cb4
 				LongWallButtonFrame.dispose();
 			}
 		});
@@ -257,16 +239,10 @@ public class GameBoard extends JPanel implements Observer {
 		frame.setLocation( 150, 50 );
 		frame.pack();	//collapses frame to minimum size around all JObjects inside it
 		frame.addWindowListener(new WindowAdapter() {
-<<<<<<< HEAD
 		    public void windowClosing(WindowEvent windowEvent) {
 		    	if(closeFromX)
 		    		System.exit( 0 );
 		    }
-=======
-			public void windowClosing(WindowEvent windowEvent) {
-				System.exit( 0 );
-			}
->>>>>>> 80fc6831db8d73cd63afb544661715673ee73cb4
 		});
 	}
 
@@ -557,7 +533,6 @@ public class GameBoard extends JPanel implements Observer {
 		fileMenu.setBorder( null );
 		fileMenu.setForeground( Color.WHITE );
 		fileMenu.setBackground( Color.BLACK );
-<<<<<<< HEAD
 			JMenuItem new2PlyrGameOpt = new JMenuItem( "New 2 Player Game" );
 			new2PlyrGameOpt.setForeground( Color.WHITE );
 			new2PlyrGameOpt.setBackground( Color.BLACK );
@@ -590,40 +565,6 @@ public class GameBoard extends JPanel implements Observer {
 			});
 			fileMenu.add( quitOpt );
 		
-=======
-		JMenuItem new2PlyrGameOpt = new JMenuItem( "New 2 Player Game" );
-		new2PlyrGameOpt.setForeground( Color.WHITE );
-		new2PlyrGameOpt.setBackground( Color.BLACK );
-		new2PlyrGameOpt.addActionListener( new ActionListener(){
-			public void actionPerformed( ActionEvent e ){
-				Game.new2PlayerGame();
-			}
-		});
-		fileMenu.add(new2PlyrGameOpt);
-		JMenuItem new4PlyrGameOpt = new JMenuItem( "New 4 Player Game" );
-		new4PlyrGameOpt.setBorder( null );
-		new4PlyrGameOpt.setForeground( Color.WHITE );
-		new4PlyrGameOpt.setBackground( Color.BLACK );
-		new4PlyrGameOpt.addActionListener( new ActionListener(){
-			public void actionPerformed( ActionEvent e ){
-				Game.new4PlayerGame();
-			}
-		});
-		fileMenu.add(new4PlyrGameOpt);
-		JMenuItem quitOpt = new JMenuItem( "Quit" );
-		quitOpt.setBorder( null );
-		quitOpt.setForeground( Color.WHITE );
-		quitOpt.setBackground( Color.BLACK );
-		quitOpt.addActionListener( new ActionListener(){
-			public void actionPerformed( ActionEvent e ){
-				//When quit option is selected the program terminates
-				// closes the window
-				System.exit( 0 );	
-			}
-		});
-		fileMenu.add( quitOpt );
-
->>>>>>> 80fc6831db8d73cd63afb544661715673ee73cb4
 		//creates "help" in menubar
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setForeground( Color.WHITE );
