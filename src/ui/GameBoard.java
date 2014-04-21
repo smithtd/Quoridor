@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.Observable;  
 import java.util.Observer;  
 
+import terminal.Terminal;
 import main.Game;
 import board.Board;
 import walls.Wall;
-import parser.Parser;
 import players.Player;
 
 /**
