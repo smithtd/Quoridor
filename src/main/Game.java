@@ -32,14 +32,14 @@ public class Game extends Observable{
 	public static int WallGap = 10;
 	public static int PlayerWidth = 40;
 	public static int PlayerHeight = 40;
-	public static int sleepTime = 333;
+	public static int sleepTime = 200;
 	
 	public static Dimension HWall = new Dimension( Game.PlayerWidth, Game.WallGap );
 	public static Dimension VWall = new Dimension( Game.WallGap, Game.PlayerHeight );
 	public static Dimension Intersection = new Dimension( VWall.width, HWall.height );
 	public static Dimension PlayerSize = new Dimension( HWall.width, VWall.height );
 	
-	public static Game g;
+	//public static Game g;
 	
 	/* Private Instance variables */
 	
@@ -53,7 +53,7 @@ public class Game extends Observable{
 	private static int curr;					// index of current Player
 	private static boolean gameWon;				// whether the game has been won
 	private static GameClient networker; 		// networking client
-	
+	private static Parser parser;
 	
 	/* Constructor */
 	
@@ -285,22 +285,13 @@ public class Game extends Observable{
 	 * Disposes of the previous GameBoard (UI) and creates a new Game.
 	 * 
 	 */
-	public static void new4PlayerGame(){
-		GameBoard ui = (GameBoard) Game.ui.get(0);
-		ui.getFrame().dispose();
-		g = new Game( 4, NUM_OF_WALLS );
+
+	public static void newGame( int players ){
+		GameBoard.closeFrame();
+		Game g = new Game( players, NUM_OF_WALLS );
 		g.startGame();
-	}
-	
-	/**
-	 * Disposes of the previous GameBoard (UI) and creates a new Game.
-	 * 
-	 */
-	public static void new2PlayerGame(){
-		GameBoard ui = (GameBoard) Game.ui.get(0);
-		ui.getFrame().dispose();
-		g = new Game( 2, NUM_OF_WALLS );
-		g.startGame();
+		parser = new Parser();
+		g.playGame(parser);
 	}
 	
 	/**
@@ -448,16 +439,16 @@ public class Game extends Observable{
 		}
 		
 		// parser to parse moves
-		Parser p = new Parser();
+		parser = new Parser();
 		
 		// start game and call up UI
 		Game g = new Game( players, NUM_OF_WALLS );
 		g.startGame();
 		
 		if(fileName.length() == 0)
-			g.playGame(p);
+			g.playGame(parser);
 		else
-			g.playGame(p, fileName);
+			g.playGame(parser, fileName);
 		
 		// notify observer, since we have a winner, ui will execute end of game
 		g.notifyObservers(g, Game.getBoard());

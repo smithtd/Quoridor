@@ -22,7 +22,7 @@ public class Player implements Players {
 	private String name; 	// players name
 	private int pNumber; 	// which player it is (1-4)
 	private int wallTotal;	// how many walls player has
-	private Scanner sc;		// prompt player for moves
+	public Scanner sc;		// prompt player for moves
 	private Point position; // current position of the player
 	private int startX;	
 	private int startY;
@@ -113,8 +113,12 @@ public class Player implements Players {
 		sc = new Scanner(System.in);
 		System.out.println("Enter move: ");
 		// TODO figure a check mechanism for moves.
-		if(sc.hasNextLine())
+		
+		if(sc.hasNextLine()){
+			System.out.println("HERESGBNJFAEGHAWFGRHTJDHAGEHTDMHAFwaqfadfasgswrndfvsgbsnedsaegrbnfhshbdv");
+			
 			return sc.nextLine().trim();
+		}
 		return "";
 	}
 

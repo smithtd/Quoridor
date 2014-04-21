@@ -43,6 +43,7 @@ public class GameBoard extends JPanel implements Observer {
 	private static JPanel holder1;
 	private static JPanel holder2;
 	private static JPanel holder3;
+	private static boolean closeFromX;
 	/* Constructor */
 
 	/**
@@ -52,7 +53,7 @@ public class GameBoard extends JPanel implements Observer {
 	 */
 	public GameBoard(){
 		super();
-		
+		closeFromX = true;
 		FlowLayout flow = new FlowLayout();
 		flow.setHgap( 0 );
 		flow.setVgap( 0 );
@@ -92,6 +93,11 @@ public class GameBoard extends JPanel implements Observer {
 		
 
 		setFrameStats();
+	}
+	
+	public static void closeFrame(){
+		closeFromX = false;
+		frame.dispose();
 	}
 	
 	/* Get Methods */
@@ -186,13 +192,13 @@ public class GameBoard extends JPanel implements Observer {
 		// add action listeners to dialog buttons
 		b1.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
-				Game.new2PlayerGame();
+				Game.newGame( 2 );
 				LongWallButtonFrame.dispose();
 			}
 		});
 		b2.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
-				Game.new4PlayerGame();
+				Game.newGame( 4 );
 				LongWallButtonFrame.dispose();
 			}
 		});
@@ -235,7 +241,8 @@ public class GameBoard extends JPanel implements Observer {
 		frame.pack();	//collapses frame to minimum size around all JObjects inside it
 		frame.addWindowListener(new WindowAdapter() {
 		    public void windowClosing(WindowEvent windowEvent) {
-		    	System.exit( 0 );
+		    	if(closeFromX)
+		    		System.exit( 0 );
 		    }
 		});
 	}
@@ -532,7 +539,7 @@ public class GameBoard extends JPanel implements Observer {
 			new2PlyrGameOpt.setBackground( Color.BLACK );
 			new2PlyrGameOpt.addActionListener( new ActionListener(){
 				public void actionPerformed( ActionEvent e ){
-					Game.new2PlayerGame();
+					Game.newGame( 2 );
 				}
 			});
 			fileMenu.add(new2PlyrGameOpt);
@@ -542,7 +549,7 @@ public class GameBoard extends JPanel implements Observer {
 			new4PlyrGameOpt.setBackground( Color.BLACK );
 			new4PlyrGameOpt.addActionListener( new ActionListener(){
 				public void actionPerformed( ActionEvent e ){
-					Game.new4PlayerGame();
+					Game.newGame( 4 );
 				}
 			});
 			fileMenu.add(new4PlyrGameOpt);

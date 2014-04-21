@@ -125,7 +125,7 @@ public class Board {
 				return false;
 		}
 		
-		System.out.println(p.getColorName()+" can move to "+x+","+y);
+		System.out.println( p.getColorName() + " can move to " +  (char)(y+65) + "," + (x+1) );
 		
 		// we've checked illegal conditions 
 		return true;
