@@ -10,6 +10,8 @@ import java.util.Scanner;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
+import main.Game;
+
 @SuppressWarnings("serial")
 public class Terminal extends JPanel {
 	
@@ -63,7 +65,7 @@ public class Terminal extends JPanel {
          textComponent.setText("");
 
          printStream.println(text);
-         textArea.append(Terminal.PRE_TEXT + text + "\n");
+         textArea.append(Game.getCurrPlayer().getColorName() + ">" + text + "\n");
       }
    }
 
