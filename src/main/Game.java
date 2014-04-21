@@ -126,7 +126,8 @@ public class Game extends Observable{
 			if(this.playTurn(move)){
 				if(this.checkForWin())
 					break;
-				Game.nextTurn();
+				Game.nextTurn();					
+				System.out.println("CHECKING AVAILABLE MOVES FOR "+players[curr].getColorName()+"!!!!!!!!!!!");
 				Game.updatePlayer(players[curr]);
 				this.notifyObservers(this, Game.getBoard());
 			}else{
@@ -167,6 +168,7 @@ public class Game extends Observable{
 					if(this.checkForWin())
 						break;
 					Game.nextTurn();
+					System.out.println("CHECKING AVAILABLE MOVES FOR "+players[curr].getColorName()+"!!!!!!!!!!!");
 					Game.updatePlayer(players[curr]);
 					this.notifyObservers(this, Game.getBoard());
 				}else{
