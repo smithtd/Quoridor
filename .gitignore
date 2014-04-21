@@ -10,4 +10,7 @@
 *.*~
 
 *.class
+# Ignore the classpath options
 .classpath
+classpath
+*/.classpath
