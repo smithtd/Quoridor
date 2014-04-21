@@ -7,6 +7,8 @@ import java.io.PrintStream;
 import javax.swing.JTextArea;
 import javax.swing.text.JTextComponent;
 
+import main.Game;
+
 public class TextFieldListener implements ActionListener {
     private PrintStream printStream;
     private JTextArea textArea;
@@ -23,6 +25,7 @@ public class TextFieldListener implements ActionListener {
        textComponent.setText("");
 
        printStream.println(text);
-       textArea.append(Terminal.PRE_TEXT + text + "\n");
+       textArea.append(Game.getCurrPlayer().getColorName() + ">" + text + "\n");
+
     }
  }
