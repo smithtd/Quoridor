@@ -39,10 +39,12 @@ public class Game extends Observable{
 	public static Dimension Intersection = new Dimension( VWall.width, HWall.height );
 	public static Dimension PlayerSize = new Dimension( HWall.width, VWall.height );
 	
+	public static Game g;
+	
+	/* Private Instance variables */
+	
 	private static final int NUM_OF_WALLS = 20; 
 	private static final int MAX_NUMBER_PLAYERS = 4;
-	
-	/* Instance variables */
 	
 	private static ArrayList<Observer> ui = new ArrayList<Observer>();  
 	private static Board board;					// holds board info
@@ -51,6 +53,7 @@ public class Game extends Observable{
 	private static int curr;					// index of current Player
 	private static boolean gameWon;				// whether the game has been won
 	private static GameClient networker; 		// networking client
+	
 	
 	/* Constructor */
 	
@@ -91,6 +94,7 @@ public class Game extends Observable{
 	public void startGame(){
 		Game.updatePlayer(players.get(curr));
 		GameBoard gb = new GameBoard();
+		gameWon = false;
 		this.registerObserver(gb);
 		gb.update(this, board);
 	}
@@ -284,7 +288,7 @@ public class Game extends Observable{
 	public static void new4PlayerGame(){
 		GameBoard ui = (GameBoard) Game.ui.get(0);
 		ui.getFrame().dispose();
-		Game g = new Game( 4, NUM_OF_WALLS );
+		g = new Game( 4, NUM_OF_WALLS );
 		g.startGame();
 	}
 	
@@ -295,7 +299,7 @@ public class Game extends Observable{
 	public static void new2PlayerGame(){
 		GameBoard ui = (GameBoard) Game.ui.get(0);
 		ui.getFrame().dispose();
-		Game g = new Game( 2, NUM_OF_WALLS );
+		g = new Game( 2, NUM_OF_WALLS );
 		g.startGame();
 	}
 	
