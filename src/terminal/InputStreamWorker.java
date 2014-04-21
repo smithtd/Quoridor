@@ -10,10 +10,10 @@ import javax.swing.SwingWorker;
 
 public class InputStreamWorker extends SwingWorker<Void, String> {
       private Scanner scanner;
-      private JTextArea textArea;
+      public static JTextArea textArea;
 
       InputStreamWorker(JTextArea textArea, InputStream inStream) {
-         this.textArea = textArea;
+         InputStreamWorker.textArea = textArea;
          scanner = new Scanner(inStream);
       }
 

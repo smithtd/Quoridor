@@ -2,9 +2,14 @@ package players;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+import terminal.InputStreamWorker;
+import terminal.Terminal;
+import terminal.TextFieldListener;
 import ui.GameBoard;
 
 
@@ -106,20 +111,22 @@ public class Player implements Players {
 	 * @return String move
 	 */
 	public String getMove() {
-		// TODO talk with the GUI
-		//Verify move is entered
-		// valid, is legal move, when the person's turn
-		// comes up
-		sc = new Scanner((Readable) System.out);
-		System.out.println("Enter move: ");
-		// TODO figure a check mechanism for moves.
-		
-		if(sc.hasNextLine()){
-			System.out.println("HERESGBNJFAEGHAWFGRHTJDHAGEHTDMHAFwaqfadfasgswrndfvsgbsnedsaegrbnfhshbdv");
+		int moves = Terminal.getMoves();
+		InputStreamWorker.textArea.append( this.getColorName() +": " );
+		while(true){
+			int moveCounter = 0;
+
+			try {
+				sc = new Scanner( new File( "GameMoves.txt" ) );
+			} catch (FileNotFoundException e) {		}
 			
-			return sc.nextLine().trim();
+			while( sc.hasNextLine() ){
+				sc.nextLine();
+				moveCounter ++;
+			}
+			if( moveCounter != moves )
+				return TextFieldListener.lastEntered;
 		}
-		return "";
 	}
 
 	/** 

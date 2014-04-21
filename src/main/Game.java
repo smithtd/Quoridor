@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import network.GameClient;
 import players.Player;
 import board.Board;
+import terminal.TextFieldListener;
 import ui.GameBoard;
 import parser.Parser;
 
@@ -32,7 +33,7 @@ public class Game extends Observable{
 	public static int WallGap = 10;
 	public static int PlayerWidth = 40;
 	public static int PlayerHeight = 40;
-	public static int sleepTime = 750;
+	public static int sleepTime = 50;
 	public static int colorIncrement = 200;
 	
 	public static Dimension HWall = new Dimension( Game.PlayerWidth, Game.WallGap );
@@ -172,10 +173,13 @@ public class Game extends Observable{
 			while(!Game.gameWon && sc.hasNextLine()){
 				// sleep 1 second so game is watchable
 				Thread.sleep( sleepTime ); 
-				System.out.println(Game.getCurrPlayer().getColorName()+" player's turn");
+				System.out.println( Game.getCurrPlayer().getColorName()+" player's turn" );
+				TextFieldListener.textArea.append( Game.getCurrPlayer().getColorName() + ": " );
 
 				// get move from player
 				String move = sc.nextLine();
+
+				TextFieldListener.textArea.append( move + "\n" );
 				if(move.length()==2){
 					move = p.moveTranslate(move);
 				}else{

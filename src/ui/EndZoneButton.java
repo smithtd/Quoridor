@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 
 import javax.swing.JButton;
 
@@ -40,5 +41,12 @@ public class EndZoneButton extends JButton{
 
 		}
 		this.setOpaque(true);
+	}
+
+	public void paint( Graphics g ){
+		g.setColor( this.getBackground() );
+		g.fillRect(0, 0, this.getWidth(), this.getHeight() );
+		g.setColor( Color.BLACK );
+		g.drawRect(0, 0, this.getWidth(), this.getHeight() );
 	}
 }
