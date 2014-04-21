@@ -179,7 +179,7 @@ public class Board {
 		
 		// check that wall is not occupied or intersected by another wall
 		for(int i=0; i<numWalls; i++)
-			if(walls[i].intersects(w))
+			if(walls[i].intersects(w) || walls[i].overlaps(w))
 				return false;
 						
 		// ADD: make sure it doesn't prevent a player from reaching end

@@ -62,6 +62,14 @@ public class Wall {
 		return this.x == w.getX() && this.y == w.getY();
 	}
 	
+	public boolean overlaps(Wall w){
+		if(this.x == w.getX()-1 && this.y == w.getY())
+			return true;
+		if(this.x == w.getX() && this.y == w.getY()-1)
+			return true;
+		return false;
+	}
+	
 	/**
 	 * Checks if this Wall is directly between two points. 
 	 * Used for checking if there is a Wall between a Player and a position it 
