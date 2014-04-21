@@ -13,10 +13,10 @@ import java.net.Socket;
 import java.util.Scanner;
 
 /** 
-  * The server in this case is a move-server. You can imagine that it is
-  * either a GUI/terminal where a player enters their moves or it is an AI
-  * that can play a game.
-  */
+ * The server in this case is a move-server. You can imagine that it is
+ * either a GUI/terminal where a player enters their moves or it is an AI
+ * that can play a game.
+ */
 
 public class MoveServer {
 
@@ -141,7 +141,7 @@ public class MoveServer {
 
 	}
 
-	
+
 	/**
 	 * Gets the move or wall placement from the player.
 	 * 
