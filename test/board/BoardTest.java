@@ -6,6 +6,8 @@ package board;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,38 +17,42 @@ import walls.Wall;
 
 public class BoardTest {
 	private Board board;
-	private Player[] players;
+	private ArrayList<Player> players;
 	
 	@Before
 	public void initialize() {
-		players = new Player[4];
-		players[0] = new Player("p1", 1, 0, 1, 5);
-		players[1] = new Player("p2", 2, 8, 2, 5);
-		players[2] = new Player("p3", 8, 1, 3, 5);
-		players[3] = new Player("p4", 8, 2, 4, 5);
+		players = new ArrayList<Player>();
+		players.add( new Player("p1", 1, 0, 1, 5));
+		players.add( new Player("p2", 2, 8, 2, 5));
+		players.add( new Player("p3", 8, 1, 3, 5));
+		players.add( new Player("p4", 8, 2, 4, 5));
 		board = new Board(players, 20);
-		board.placeWall(players[0], 3, 3, "v");
+		board.placeWall(players.get(0), 3, 3, "v");
 	}
 	
 	// test placePawn 
+	@Test
 	private void testPawnResults(Player p, int x, int y, boolean expected) {
 		boolean result = board.placePawn(p, x, y);
 	    assertThat(result, equalTo(expected));    
 	}
 	
-	// test placeWall 
+	// test placeWall
+	@Test
 	private void testResults(Player p, int x, int y, String type, boolean expected) {
 		boolean result = board.placeWall(p, x, y, type);
 	    assertThat(result, equalTo(expected));    
 	}
 	
 	// test isLegalMove (pawn version)
+	@Test
 	private void testResults(Player p, int x, int y, boolean expected) {
 		boolean result = board.isLegalMove(p, x, y);
 	    assertThat(result, equalTo(expected));  
 	}
 	
 	// test isLegalMove (wall version)
+	@Test
 	private void testResults(Player p, Wall w, boolean expected) {
 		boolean result = board.isLegalWallPlacement(p, w);
 	    assertThat(result, equalTo(expected));  
@@ -60,7 +66,7 @@ public class BoardTest {
 		int y=0;
 		boolean expected = true;
 		
-		testPawnResults(players[0], x, y, expected);
+		testPawnResults(players.get(0), x, y, expected);
 	}
 
 	@Test
@@ -69,7 +75,7 @@ public class BoardTest {
 		int y=1;
 		boolean expected = false;
 	
-		testResults(players[3], x, y, expected);
+		testResults(players.get(3), x, y, expected);
 	}
 	
 	@Test
@@ -78,7 +84,7 @@ public class BoardTest {
 		int y=1;
 		boolean expected = false;
 	
-		testResults(players[2], x, y, expected);
+		testResults(players.get(2), x, y, expected);
 	}
 	
 	@Test
@@ -87,7 +93,7 @@ public class BoardTest {
 		int y=-1;
 		boolean expected = false;
 	
-		testResults(players[0], x, y, expected);
+		testResults(players.get(0), x, y, expected);
 	}
 
 	/* Test placeWall() */
@@ -99,7 +105,7 @@ public class BoardTest {
 		String type = "v";
 		boolean expected = true;
 		
-		testResults(players[0], x, y, type, expected);
+		testResults(players.get(0), x, y, type, expected);
 	}
 	
 	@Test
@@ -109,7 +115,7 @@ public class BoardTest {
 		String type = "h";
 		boolean expected = true;
 		
-		testResults(players[0], x, y, type, expected);
+		testResults(players.get(0), x, y, type, expected);
 	}
 	
 	/* Test isLegalMove() - pawn version */
@@ -121,7 +127,7 @@ public class BoardTest {
 		int y=0;
 		boolean expected = true;
 	
-		testResults(players[0], x, y, expected);
+		testResults(players.get(0), x, y, expected);
 	} 
 	
 	@Test
@@ -130,7 +136,7 @@ public class BoardTest {
 		int y=0;
 		boolean expected = true;
 	
-		testResults(players[0], x, y, expected);
+		testResults(players.get(0), x, y, expected);
 	} 
 	
 	@Test
@@ -139,7 +145,7 @@ public class BoardTest {
 		int y=1;
 		boolean expected = true;
 	
-		testResults(players[0], x, y, expected);
+		testResults(players.get(0), x, y, expected);
 	}
 	
 	@Test
@@ -148,7 +154,7 @@ public class BoardTest {
 		int y=7;
 		boolean expected = true;
 	
-		testResults(players[1], x, y, expected);
+		testResults(players.get(1), x, y, expected);
 	}
 	
 	@Test
@@ -157,7 +163,7 @@ public class BoardTest {
 		int y=-1;
 		boolean expected = false;
 	
-		testResults(players[0], x, y, expected);
+		testResults(players.get(0), x, y, expected);
 	} 
 	
 	@Test
@@ -166,7 +172,7 @@ public class BoardTest {
 		int y=7;
 		boolean expected = false;
 	
-		testResults(players[1], x, y, expected);
+		testResults(players.get(1), x, y, expected);
 	}
 	
 	@Test
@@ -175,7 +181,7 @@ public class BoardTest {
 		int y=7;
 		boolean expected = false;
 	
-		testResults(players[1], x, y, expected);
+		testResults(players.get(1), x, y, expected);
 	}
 	
 	@Test
@@ -184,7 +190,7 @@ public class BoardTest {
 		int y=9;
 		boolean expected = false;
 	
-		testResults(players[1], x, y, expected);
+		testResults(players.get(1), x, y, expected);
 	}
 	
 	/* Test isLegalMove() - wall version */
@@ -195,7 +201,7 @@ public class BoardTest {
 		Wall w = new Wall(1, 1, "Pizza");
 		boolean expected = false;
 	
-		testResults(players[0], w, expected);
+		testResults(players.get(0), w, expected);
 	} 
 	
 	@Test
@@ -203,7 +209,7 @@ public class BoardTest {
 		Wall w = new Wall(5, 1, "h");
 		boolean expected = true;
 	
-		testResults(players[0], w, expected);
+		testResults(players.get(0), w, expected);
 	} 
 	
 	@Test
@@ -211,7 +217,7 @@ public class BoardTest {
 		Wall w = new Wall(1, 1, "v");
 		boolean expected = true;
 
-		testResults(players[0], w, expected);
+		testResults(players.get(0), w, expected);
 	}
 	
 	@Test
@@ -219,7 +225,7 @@ public class BoardTest {
 		Wall w = new Wall(-1, 1, "h");
 		boolean expected = false;
 	
-		testResults(players[0], w, expected);
+		testResults(players.get(0), w, expected);
 	}
 	
 	@Test
@@ -227,7 +233,7 @@ public class BoardTest {
 		Wall w = new Wall(8, 1, "h");
 		boolean expected = false;
 	
-		testResults(players[0], w, expected);
+		testResults(players.get(0), w, expected);
 	}
 	
 	@Test
@@ -235,7 +241,7 @@ public class BoardTest {
 		Wall w = new Wall(1, -1, "v");
 		boolean expected = false;
 	
-		testResults(players[0], w, expected);
+		testResults(players.get(0), w, expected);
 	}
 	
 	@Test
@@ -243,7 +249,7 @@ public class BoardTest {
 		Wall w = new Wall(1, 8, "v");
 		boolean expected = false;
 	
-		testResults(players[0], w, expected);
+		testResults(players.get(0), w, expected);
 	}
 	
 	@Test
@@ -251,7 +257,7 @@ public class BoardTest {
 		Wall w = new Wall(3, 3, "v");
 		boolean expected = false;
 	
-		testResults(players[0], w, expected);
+		testResults(players.get(0), w, expected);
 	}
 	
 }
