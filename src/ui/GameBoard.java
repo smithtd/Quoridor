@@ -63,7 +63,7 @@ public class GameBoard extends JPanel implements Observer {
 		BHBorder = new JPanel();
 		rightBarPanel = new JPanel();
 		topBarPanel = new JPanel();
-		bottomBarPanel = new Terminal( 6, 60 );
+		bottomBarPanel = new Terminal( 7, 65 );
 		leftBarPanel = new JPanel();
 		holder1 = new JPanel();
 		holder2 = new JPanel();

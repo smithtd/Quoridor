@@ -30,9 +30,9 @@ import parser.Parser;
 public class Game extends Observable{
 
 	/* Static variables */
-	public static int WallGap = 10;
-	public static int PlayerWidth = 40;
-	public static int PlayerHeight = 40;
+	public static int WallGap = 12;
+	public static int PlayerWidth = 45;
+	public static int PlayerHeight = 45;
 	public static int sleepTime = 50;
 	public static int colorIncrement = 200;
 	

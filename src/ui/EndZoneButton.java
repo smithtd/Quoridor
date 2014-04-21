@@ -47,6 +47,6 @@ public class EndZoneButton extends JButton{
 		g.setColor( this.getBackground() );
 		g.fillRect(0, 0, this.getWidth(), this.getHeight() );
 		g.setColor( Color.BLACK );
-		g.drawRect(0, 0, this.getWidth(), this.getHeight() );
+		g.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1 );
 	}
 }

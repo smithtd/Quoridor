@@ -1,10 +1,13 @@
 package terminal;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
+
 import ui.GameBoard;
 
 @SuppressWarnings("serial")
@@ -31,10 +34,14 @@ public class Terminal extends JPanel {
 	  textarea = prepareTextArea(rows, cols, inStream);
       textfield = prepareTextField(cols, printStream, textarea);
 
-      setLayout(new BorderLayout(GAP, GAP));
-      setBorder(BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
-      add(new JScrollPane(textarea), BorderLayout.CENTER);
-      add(textfield, BorderLayout.SOUTH);
+      setLayout( new BorderLayout( GAP, GAP ) );
+      setBorder( BorderFactory.createEmptyBorder( GAP, GAP, GAP, GAP ) );
+      JScrollPane JSP = new JScrollPane( textarea );
+      DefaultCaret caret = ( DefaultCaret )textarea.getCaret();
+      caret.setUpdatePolicy( DefaultCaret.ALWAYS_UPDATE );
+      textarea.setLineWrap(true);
+      add( JSP, BorderLayout.CENTER );
+      add( textfield, BorderLayout.SOUTH );
    }
 
    public InputStream getInputStream(){
@@ -42,12 +49,16 @@ public class Terminal extends JPanel {
    }
    private JTextField prepareTextField(int cols, PrintStream printStream, JTextArea textArea) {
       JTextField textField = new JTextField(cols);
+      textField.setBackground( Color.BLACK );
+      textField.setForeground( Color.WHITE );
       textField.addActionListener(new TextFieldListener(printStream, textArea));
       return textField;
    }
 
    private JTextArea prepareTextArea(int rows, int cols, InputStream inStream) {
       JTextArea textArea = new JTextArea(rows, cols);
+      textArea.setBackground( Color.BLACK );
+      textArea.setForeground( Color.WHITE );
       textArea.setEditable(false);
       textArea.setFocusable(false);
       instreamWorker = new InputStreamWorker(textArea, inStream);

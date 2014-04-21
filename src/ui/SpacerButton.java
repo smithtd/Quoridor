@@ -60,10 +60,11 @@ public class SpacerButton extends JButton{
 		g.setColor( c );
 		g.fillRect(0, 0, this.getWidth(), this.getHeight() );
 		if(!this.getText().equals("") ){
+			g.setFont( getFont() );
 			FontMetrics fm = g.getFontMetrics( g.getFont() );
 			String s = this.getText();
 			g.setColor( (c == Color.DARK_GRAY || c == Color.BLACK) ? Color.WHITE : Color.BLACK );
-			g.drawString( s, (this.getWidth()/2 - fm.stringWidth( s )/2), (this.getHeight()/2+fm.getHeight()/4) );
+			g.drawString( s, (this.getWidth()/2 - fm.stringWidth( s )/2), (this.getHeight()/2+fm.getHeight()/4+2) );
 			
 		}
 	}
