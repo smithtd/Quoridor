@@ -21,7 +21,7 @@ public class StatButton extends JButton {
 		this.setOpaque(true);
 		this.setBorderPainted(false);
 		this.playerNum = pNum;
-		c = Game.getPlayerAry()[playerNum].getColor();
+		c = Game.getPlayerAry().get(playerNum).getColor();
 		this.setBackground( c );
 		
 		this.setForeground( ( c==Color.red || c== Color.blue ?  Color.WHITE : Color.BLACK ) );
@@ -57,7 +57,7 @@ public class StatButton extends JButton {
 		//Text
 		g.setFont( new Font( "" , Font.BOLD, (GameBoard.getRightBarDim().width==180 ? 10 : (int)(Game.PlayerWidth*(12.0/50.0)) ) ) );
 		FontMetrics fm = g.getFontMetrics( g.getFont() );
-		String s = "Walls remaining: " + Game.getPlayerAry()[playerNum].getWalls();
+		String s = "Walls remaining: " + Game.getPlayerAry().get(playerNum).getWalls();
 		g.setColor( Color.BLACK );
 		g.drawString( s, (this.getWidth()/2 - fm.stringWidth( s )/2), (this.getHeight()/2+fm.getHeight()/2) );
 

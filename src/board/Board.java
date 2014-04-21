@@ -18,7 +18,7 @@ public class Board {
 	
 	/* Instance variables */
 	
-	private Player[] players;	// holds players on board
+	private ArrayList<Player> players;	// holds players on board
 	private Wall[] walls;		// holds walls on board
 	private int numWalls;		// total # walls on board
 	
@@ -31,7 +31,7 @@ public class Board {
 	 * @param players array of Players in the game
 	 * @param walls array of Wall objects to hold walls as they are played
 	 */
-	public Board(Player[] players, int walls) {
+	public Board(ArrayList<Player> players, int walls) {
 		this.players = players;			// passed in from Game
 		this.walls = new Wall[walls];	// Wall array length = max num of walls
 		numWalls = 0;
@@ -44,7 +44,7 @@ public class Board {
 	 * 
 	 * @return array of Players
 	 */
-	public Player[] players(){
+	public ArrayList<Player> players(){
 		return players;
 	}
 	
@@ -240,7 +240,7 @@ public class Board {
 	 */
 	public String toString(){
 		String s = "Board: ";
-		s += players.length + " players | ";
+		s += players.size() + " players | ";
 		s += numWalls + " walls";
 		return s;
 	}
@@ -287,4 +287,8 @@ public class Board {
 			return false;
 		}
 	}	
+	
+	public void updatePlayers(ArrayList<Player> p){
+		players = p;
+	}
 }

@@ -20,7 +20,7 @@ public class PlayerStatButton extends JButton {
 		this.setOpaque(true);
 		this.setBorderPainted(false);
 		this.playerNum = pNum;
-		c = Game.getPlayerAry()[playerNum].getColor();
+		c = Game.getPlayerAry().get(playerNum).getColor();
 		this.setBackground( c );
 		
 		this.setForeground( ( c==Color.red || c== Color.blue ?  Color.WHITE : Color.BLACK ) );
@@ -57,6 +57,6 @@ public class PlayerStatButton extends JButton {
 //		g.setFont( getFont() );
 	    g.setFont( new Font("Wingdings", 1, 12 ) );
 		g.setColor( Color.BLACK );
-		g.drawString( ("Walls remaining: " + Game.getPlayerAry()[playerNum].getWalls()), 30, this.getHeight()/2+5 );
+		g.drawString( ("Walls remaining: " + Game.getPlayerAry().get(playerNum).getWalls()), 30, this.getHeight()/2+5 );
 	}
 }

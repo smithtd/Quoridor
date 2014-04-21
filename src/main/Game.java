@@ -46,7 +46,7 @@ public class Game extends Observable{
 	
 	private static ArrayList<Observer> ui = new ArrayList<Observer>();  
 	private static Board board;					// holds board info
-	private static Player[] players;			// Player[] to hold players
+	private static ArrayList<Player> players;	// Player ArrayList to hold players
 	private static int numPlayers;				// number of players
 	private static int curr;					// index of current Player
 	private static boolean gameWon;				// whether the game has been won
@@ -64,17 +64,17 @@ public class Game extends Observable{
 	public Game(int numPlayers, int numWalls) {
 		curr= 0;
 		Game.numPlayers = numPlayers;
-		players = new Player[numPlayers];
+		players = new ArrayList<Player>();
 		int wallsEach = numWalls/numPlayers;
 		
 		if(Game.numPlayers == MAX_NUMBER_PLAYERS){
-			players[0] = new Player("1", 0, 4, 1, wallsEach);
-			players[1] = new Player("2", 4, 8, 2, wallsEach);
-			players[2] = new Player("3", 8, 4, 3, wallsEach);
-			players[3] = new Player("4", 4, 0, 4, wallsEach);
+			players.add(new Player("1", 0, 4, 1, wallsEach));
+			players.add(new Player("2", 4, 8, 2, wallsEach));
+			players.add(new Player("3", 8, 4, 3, wallsEach));
+			players.add(new Player("4", 4, 0, 4, wallsEach));
 		} else {
-			players[0] = new Player("1", 0, 4, 1, wallsEach);
-			players[1] = new Player("2", 8, 4, 2, wallsEach);
+			players.add(new Player("1", 0, 4, 1, wallsEach));
+			players.add(new Player("2", 8, 4, 2, wallsEach));
 		}
 		
 		board = new Board(players, numWalls);
@@ -89,7 +89,7 @@ public class Game extends Observable{
 	 * 
 	 */
 	public void startGame(){
-		Game.updatePlayer(players[curr]);
+		Game.updatePlayer(players.get(curr));
 		GameBoard gb = new GameBoard();
 		this.registerObserver(gb);
 		gb.update(this, board);
@@ -116,23 +116,37 @@ public class Game extends Observable{
 			}
 			
 			if(move.isEmpty()){
-				// invalid move, kick player when network is integrated
-				// for now, freeze game
-				System.err.println("Invalid turn. Parser returned empty string.");
-				break;
+				kickPlayer(players.get(curr));
+				System.out.println("Calling checkForWin");
+				if(this.checkForWin()){
+					notifyObservers(ui);
+					break;
+				}
 			}
 			
 			// try to play turn
 			if(this.playTurn(move)){
-				if(this.checkForWin())
+				System.out.println("Player took turn, checking if won.");
+				if(this.checkForWin()){
+					System.out.println(Game.getCurrPlayer().getColorName()+" won by reaching the end: "+players.get(curr).x()+","+players.get(curr).y());
+					players.get(curr).clearMoves();
+					notifyObservers(ui);
 					break;
+				}
 				Game.nextTurn();					
-				System.out.println("CHECKING AVAILABLE MOVES FOR "+players[curr].getColorName()+"!!!!!!!!!!!");
-				Game.updatePlayer(players[curr]);
+				System.out.println("CHECKING AVAILABLE MOVES FOR "+players.get(curr).getColorName()+"!!!!!!!!!!!");
+				Game.updatePlayer(players.get(curr));
 				this.notifyObservers(this, Game.getBoard());
 			}else{
 				System.err.println("Player turn failed!");
-				break;
+				kickPlayer(players.get(curr));
+				System.out.println("Calling checkForWin");
+				if(this.checkForWin()){
+					System.out.println(Game.getCurrPlayer().getColorName()+" won by default.");
+					players.get(curr).clearMoves();
+					notifyObservers(ui);
+					break;
+				}
 			}
 		}
 	}
@@ -165,15 +179,27 @@ public class Game extends Observable{
 			
 				// try to play turn
 				if(this.playTurn(move)){
-					if(this.checkForWin())
+					System.out.println(Game.getCurrPlayer().getColorName()+" took turn, checking if won.");
+					if(this.checkForWin()){
+						System.out.println(Game.getCurrPlayer().getColorName()+" won by reaching the end: "+players.get(curr).x()+","+players.get(curr).y());
+						players.get(curr).clearMoves();
+						notifyObservers(ui);
 						break;
+					}
 					Game.nextTurn();
-					System.out.println("CHECKING AVAILABLE MOVES FOR "+players[curr].getColorName()+"!!!!!!!!!!!");
-					Game.updatePlayer(players[curr]);
+					System.out.println("CHECKING AVAILABLE MOVES FOR "+players.get(curr).getColorName()+"!!!!!!!!!!!");
+					Game.updatePlayer(players.get(curr));
 					this.notifyObservers(this, Game.getBoard());
 				}else{
 					System.err.println("Player turn failed!");
-					break;
+					kickPlayer(players.get(curr));
+					System.out.println("Calling checkForWin");
+					if(this.checkForWin()){
+						System.out.println(Game.getCurrPlayer().getColorName()+" won by default.");
+						players.get(curr).clearMoves();
+						notifyObservers(ui);
+						break;
+					}
 				}
 			}
 			sc.close();
@@ -216,10 +242,18 @@ public class Game extends Observable{
 	 */
 	public boolean checkForWin(){
 		Player p = Game.getCurrPlayer();
+		// if player made it to win area, player won
 		if(p.won()){
 			Game.gameWon = true;
 			return true;
 		}
+		// if player is the last player on the board, player won
+		if(numPlayers == 1){
+			System.out.println(Game.getCurrPlayer().getColorName()+" won!");
+			Game.gameWon = true;
+			return true;
+		}
+		
 		return false;
 	}
 	
@@ -264,6 +298,29 @@ public class Game extends Observable{
 		Game g = new Game( 2, NUM_OF_WALLS );
 		g.startGame();
 	}
+	
+	/**
+	 * Kicks a Player from the game by removing it from the player array.
+	 * Does not remove Player's placed walls. Player will not be asked for 
+	 * turns or displayed on the board.
+	 * 
+	 * @param p Player
+	 */
+	public static void kickPlayer(Player p){
+		int beforeKick = numPlayers;
+		// remove player
+		players.remove(p);
+		// decrement number of players
+		numPlayers--;
+		// adjust curr if necessary
+		if(curr >= numPlayers)
+			curr--;
+		// update players on the board
+		board.updatePlayers(players);
+		
+		if((beforeKick==numPlayers+1) && (players.size()==numPlayers))
+			System.out.println(p.getColorName()+" was kicked. "+numPlayers+" players left.");
+	}
     
 	/**
 	 * Exits the program with exit code 0.
@@ -300,7 +357,7 @@ public class Game extends Observable{
 	 * @return	the Player currently taking its turn
 	 */
 	public static Player getCurrPlayer(){
-		return players[curr];
+		return players.get(curr);
 	}
 	
 	/**
@@ -309,12 +366,12 @@ public class Game extends Observable{
 	 * @return	the Player whose turn it just was
 	 */
 	public static Player getPrevPlayer(){
-		if(players[curr].getPnum()==1)
-			return players[players.length-1];
-		else return players[curr-1];
+		if(players.get(curr).getPnum()==1)
+			return players.get(players.size()-1);
+		else return players.get(curr-1);
 	}
 	
-	public static Player[] getPlayerAry(){
+	public static ArrayList<Player> getPlayerAry(){
 		return players;
 	}
 	/**

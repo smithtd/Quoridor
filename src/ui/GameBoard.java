@@ -139,19 +139,18 @@ public class GameBoard extends JPanel implements Observer {
 		Board b = (Board) board;
 		Game g = (Game) game;
 		
-		if(g.gameWon()){
-			this.winState(g);
-		}else{
-			// clear board
-			this.clearPlayers();
-			this.resetMoveableSpaces();
+		// clear board
+		this.clearPlayers();
+		this.resetMoveableSpaces();
+		
+		// show current pieces
+		this.addPlayerButtons(b);
+		this.addWallButtons(b);
+		this.showPlyrMoves(Game.getCurrPlayer(),b);
+		repaint();
 			
-			// show current pieces
-			this.addPlayerButtons(b);
-			this.addWallButtons(b);
-			this.showPlyrMoves(Game.getCurrPlayer(),b);
-			repaint();
-		}
+		if(g.gameWon())
+			this.winState(g);
     }  
 	
 	/**
@@ -165,6 +164,16 @@ public class GameBoard extends JPanel implements Observer {
 		JPanel jp1 = new JPanel();
 		jp1.setLayout( new FlowLayout() ) ;
 		jp1.setPreferredSize( new Dimension( 300, 75 ) );
+		
+		// set win dialog background color to player color, light
+		int increment = 150;
+		Color c = Game.getCurrPlayer().getColor();
+		int red = (c.getRed() + increment > 256 ? c.getRed() : c.getRed() + increment );
+		int green = (c.getGreen() + increment > 256 ? c.getGreen() : c.getGreen() + increment );
+		int blue = (c.getBlue() + increment > 256 ? c.getBlue() : c.getBlue() + increment );
+				
+		jp1.setBackground(new Color( red, green, blue ));
+		
 		final JFrame LongWallButtonFrame = new JFrame( "Player " + Game.getCurrPlayer().getPnum() + " wins!" );
 		LongWallButtonFrame.setLayout( new BorderLayout() );
 		
@@ -413,7 +422,7 @@ public class GameBoard extends JPanel implements Observer {
 	 * @param b
 	 */
 	public void addPlayerButtons(Board b){
-		Player[] players = b.players();
+		ArrayList<Player> players = b.players();
 		for(Player p : players)
 			pbAry[p.x()][p.y()].addPlayer(p);	
 	}
