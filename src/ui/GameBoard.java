@@ -191,14 +191,14 @@ public class GameBoard extends JPanel implements Observer {
 		// add action listeners to dialog buttons
 		b1.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
-				Game.newGame( 2 );
 				LongWallButtonFrame.dispose();
+				Game.newGame( 2 );
 			}
 		});
 		b2.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
-				Game.newGame( 4 );
 				LongWallButtonFrame.dispose();
+				Game.newGame( 4 );
 			}
 		});
 		b3.addActionListener( new ActionListener(){
