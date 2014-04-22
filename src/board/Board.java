@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.awt.Point;
 
 import players.Player;
-import ui.GameBoard;
 import walls.Wall;
 
 /**
@@ -278,8 +277,7 @@ public class Board {
 	public boolean placeWall(Player p, int x, int y, String type){
 		Wall w = new Wall(x, y, type);
 		if(isLegalWallPlacement(p, w)){
-			p.decWalls();
-			GameBoard.statAry[p.getPnum()-1].updateWalls();
+			p.useWall();
 			walls[numWalls] = w;
 			numWalls++;
 			return true;

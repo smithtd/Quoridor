@@ -5,9 +5,6 @@ import java.awt.Point;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-import ui.GameBoard;
-
-
 /**
  * Player handles what happens when you make new players and
  * defines what types of actions the player has.
@@ -17,7 +14,6 @@ import ui.GameBoard;
 public class Player implements Players {
 
 	/* Fields */
-	
 	@SuppressWarnings("unused")
 	private String name; 	// players name
 	private int pNumber; 	// which player it is (1-4)
@@ -29,6 +25,7 @@ public class Player implements Players {
 	private Color c;
 	private ArrayList<String> availableMoves;	// list of available moves
 	private Point[] winArea;  // where to win
+	private boolean kicked;
 	// TODO - Incorporate a QuoridorClient for each player to connect to a server through the client
 	
 	/* Constructor(s) */
@@ -66,6 +63,7 @@ public class Player implements Players {
 			startY=8;
 		}
 		this.setWinArea();
+		this.kicked = false;
 	}
 	
 	
@@ -94,6 +92,7 @@ public class Player implements Players {
 		wallTotal = walls; 
 		this.setWinArea();
 		this.availableMoves = new ArrayList<String>();
+		this.kicked = false;
 	}
 		
 	/* Get Methods */
@@ -128,12 +127,6 @@ public class Player implements Players {
 	public int getWalls() {
 		// Auto-generated method stub
 		return this.wallTotal;
-	}
-	
-	public void decWalls(){
-		wallTotal--;
-		for( int i=0; i< GameBoard.statAry.length; i++ )
-			GameBoard.statAry[i].repaint();
 	}
 	
 	/**
@@ -267,9 +260,8 @@ public class Player implements Players {
 	 * Precondition: Player has placed a wall.
 	 * Postcondition: Player's wall total is decremented.
 	 */
-	public void usedWall(){
+	public void useWall(){
 		wallTotal--;
-		GameBoard.statAry[this.getPnum()].updateWalls();
 	}
 
 	/**
@@ -352,5 +344,14 @@ public class Player implements Players {
 	 */
 	public void clearMoves(){
 		this.availableMoves.clear();
+	}
+	
+	public void kick(){
+		System.out.println("Kicking "+this.getColorName());
+		kicked = true;
+	}
+
+	public boolean hasBeenKicked(){
+		return kicked;
 	}
 }

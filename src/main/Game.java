@@ -117,7 +117,8 @@ public class Game extends Observable{
 			}
 			
 			if(move.isEmpty()){
-				kickPlayer(players.get(curr));
+				kickPlayer();
+				Game.nextTurn();
 				System.out.println("Calling checkForWin");
 				if(this.checkForWin()){
 					notifyObservers(ui);
@@ -134,14 +135,11 @@ public class Game extends Observable{
 					notifyObservers(ui);
 					break;
 				}
-				Game.nextTurn();					
-				System.out.println("CHECKING AVAILABLE MOVES FOR "+players.get(curr).getColorName()+"!!!!!!!!!!!");
-				Game.updatePlayer(players.get(curr));
-				this.notifyObservers(this, Game.getBoard());
+				Game.nextTurn();
 			}else{
-				System.err.println("Player turn failed!");
-				kickPlayer(players.get(curr));
-				System.out.println("Calling checkForWin");
+				System.out.println("Player turn failed!");
+				kickPlayer();
+				Game.nextTurn();
 				if(this.checkForWin()){
 					System.out.println(Game.getCurrPlayer().getColorName()+" won by default.");
 					players.get(curr).clearMoves();
@@ -149,6 +147,10 @@ public class Game extends Observable{
 					break;
 				}
 			}
+								
+			System.out.println("CHECKING AVAILABLE MOVES FOR "+players.get(curr).getColorName()+"!!!!!!!!!!!");
+			Game.updatePlayer(players.get(curr));
+			this.notifyObservers(this, Game.getBoard());
 		}
 	}
 	
@@ -177,10 +179,20 @@ public class Game extends Observable{
 				}else{
 					move = p.wallTranslate(move);
 				}
-			
+				
+				if(move.isEmpty()){
+					kickPlayer();
+					Game.nextTurn();
+					System.out.println("Calling checkForWin");
+					if(this.checkForWin()){
+						notifyObservers(ui);
+						break;
+					}
+				}
+				
 				// try to play turn
 				if(this.playTurn(move)){
-					System.out.println(Game.getCurrPlayer().getColorName()+" took turn, checking if won.");
+					System.out.println("Player took turn, checking if won.");
 					if(this.checkForWin()){
 						System.out.println(Game.getCurrPlayer().getColorName()+" won by reaching the end: "+players.get(curr).x()+","+players.get(curr).y());
 						players.get(curr).clearMoves();
@@ -188,13 +200,10 @@ public class Game extends Observable{
 						break;
 					}
 					Game.nextTurn();
-					System.out.println("CHECKING AVAILABLE MOVES FOR "+players.get(curr).getColorName()+"!!!!!!!!!!!");
-					Game.updatePlayer(players.get(curr));
-					this.notifyObservers(this, Game.getBoard());
 				}else{
-					System.err.println("Player turn failed!");
-					kickPlayer(players.get(curr));
-					System.out.println("Calling checkForWin");
+					System.out.println("Player turn failed!");
+					kickPlayer();
+					Game.nextTurn();
 					if(this.checkForWin()){
 						System.out.println(Game.getCurrPlayer().getColorName()+" won by default.");
 						players.get(curr).clearMoves();
@@ -202,6 +211,10 @@ public class Game extends Observable{
 						break;
 					}
 				}
+									
+				System.out.println("CHECKING AVAILABLE MOVES FOR "+players.get(curr).getColorName()+"!!!!!!!!!!!");
+				Game.updatePlayer(players.get(curr));
+				this.notifyObservers(this, Game.getBoard());
 			}
 			sc.close();
 		}catch(FileNotFoundException e){	
@@ -249,8 +262,7 @@ public class Game extends Observable{
 			return true;
 		}
 		// if player is the last player on the board, player won
-		if(numPlayers == 1){
-			System.out.println(Game.getCurrPlayer().getColorName()+" won!");
+		if(numPlayers == 1 && !p.hasBeenKicked()){
 			Game.gameWon = true;
 			return true;
 		}
@@ -264,8 +276,13 @@ public class Game extends Observable{
 	 */
 	public static void nextTurn(){
 		curr++;
-		if(curr >= numPlayers)
+		if(curr >= players.size())
 			curr=0;
+		
+		if(players.get(curr).hasBeenKicked()){
+			System.out.println(players.get(curr).getColorName()+" has been kicked. Check next player.");
+			nextTurn();
+		}
 	}
 	
     /**
@@ -307,20 +324,14 @@ public class Game extends Observable{
 	 * 
 	 * @param p Player
 	 */
-	public static void kickPlayer(Player p){
-		int beforeKick = numPlayers;
+	public static void kickPlayer(){
 		// remove player
-		players.remove(p);
+		players.get(curr).kick();
 		// decrement number of players
 		numPlayers--;
-		// adjust curr if necessary
-		if(curr >= numPlayers)
-			curr--;
 		// update players on the board
 		board.updatePlayers(players);
-		
-		if((beforeKick==numPlayers+1) && (players.size()==numPlayers))
-			System.out.println(p.getColorName()+" was kicked. "+numPlayers+" players left.");
+		System.out.println("Kicked "+players.get(curr).getColorName()+" player.");
 	}
     
 	/**
@@ -328,6 +339,7 @@ public class Game extends Observable{
 	 * 
 	 */
 	public void quit(){
+		System.out.println("Quitting game");
 		System.exit(0);
 	}
 	
