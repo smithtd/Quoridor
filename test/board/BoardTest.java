@@ -30,29 +30,25 @@ public class BoardTest {
 		board.placeWall(players.get(0), 3, 3, "v");
 	}
 	
-	// test placePawn 
-	@Test
-	private void testPawnResults(Player p, int x, int y, boolean expected) {
+	// test placePawn - unused param is to distinguish from isLegalMove test
+	private void testResults(Player p, int x, int y, boolean expected, int unused) {
 		boolean result = board.placePawn(p, x, y);
 	    assertThat(result, equalTo(expected));    
 	}
 	
 	// test placeWall
-	@Test
 	private void testResults(Player p, int x, int y, String type, boolean expected) {
 		boolean result = board.placeWall(p, x, y, type);
 	    assertThat(result, equalTo(expected));    
 	}
 	
 	// test isLegalMove (pawn version)
-	@Test
 	private void testResults(Player p, int x, int y, boolean expected) {
 		boolean result = board.isLegalMove(p, x, y);
 	    assertThat(result, equalTo(expected));  
 	}
 	
 	// test isLegalMove (wall version)
-	@Test
 	private void testResults(Player p, Wall w, boolean expected) {
 		boolean result = board.isLegalWallPlacement(p, w);
 	    assertThat(result, equalTo(expected));  
@@ -66,7 +62,7 @@ public class BoardTest {
 		int y=0;
 		boolean expected = true;
 		
-		testPawnResults(players.get(0), x, y, expected);
+		testResults(players.get(0), x, y, expected, players.get(0).getPnum());
 	}
 
 	@Test
@@ -75,7 +71,7 @@ public class BoardTest {
 		int y=1;
 		boolean expected = false;
 	
-		testResults(players.get(3), x, y, expected);
+		testResults(players.get(3), x, y, expected, players.get(3).getPnum());
 	}
 	
 	@Test
@@ -84,7 +80,7 @@ public class BoardTest {
 		int y=1;
 		boolean expected = false;
 	
-		testResults(players.get(2), x, y, expected);
+		testResults(players.get(2), x, y, expected, players.get(2).getPnum());
 	}
 	
 	@Test
@@ -93,7 +89,7 @@ public class BoardTest {
 		int y=-1;
 		boolean expected = false;
 	
-		testResults(players.get(0), x, y, expected);
+		testResults(players.get(0), x, y, expected, players.get(0).getPnum());
 	}
 
 	/* Test placeWall() */

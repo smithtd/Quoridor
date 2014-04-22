@@ -50,6 +50,7 @@ public class Game extends Observable{
 	private static int numPlayers;				// number of players
 	private static int curr;					// index of current Player
 	private static boolean gameWon;				// whether the game has been won
+	@SuppressWarnings("unused")
 	private static GameClient networker; 		// networking client
 	
 	/* Constructor */
