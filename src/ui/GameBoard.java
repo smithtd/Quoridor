@@ -95,6 +95,7 @@ public class GameBoard extends JPanel implements Observer {
 
 		setFrameStats();
 	}
+	
 	public static void closeFrame(){
 		closeFromX = false;
 		frame.dispose();

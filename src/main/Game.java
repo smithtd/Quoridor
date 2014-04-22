@@ -47,14 +47,14 @@ public class Game extends Observable{
 	private static final int NUM_OF_WALLS = 20; 
 	private static final int MAX_NUMBER_PLAYERS = 4;
 
-	private static ArrayList<Observer> ui = new ArrayList<Observer>();  
-	private static Board board;					// holds board info
+	private static ArrayList<Observer> ui = new ArrayList<Observer>();
 	private static ArrayList<Player> players;	// Player ArrayList to hold players
 	private static int numPlayers;				// number of players
 	private static int curr;					// index of current Player
 	private static boolean gameWon;				// whether the game has been won
 	@SuppressWarnings("unused")
-	private static GameClient networker; 		// networking client
+	private static GameClient networker; 		// networking client  
+	private static Board board;					// holds board info
 	private static Parser parser;
 
 	/* Constructor */
@@ -293,6 +293,13 @@ public class Game extends Observable{
 
 	public static void newGame( int players ){
 		GameBoard.closeFrame();
+		/*
+		for(Player p : Game.players)
+			p = null;
+		for(Observer o : Game.ui)
+			o=null;
+		*/
+		System.out.println("NEWGAME");
 		Game g = new Game( players, NUM_OF_WALLS );
 		g.startGame();
 		parser = new Parser();
