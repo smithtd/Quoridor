@@ -121,11 +121,7 @@ public class Game extends Observable{
 			String move = (fileName.equals("")) ? Game.getCurrPlayer().getMove() : sc.nextLine();
 			TextFieldListener.textArea.append( move + "\n" );
 			System.out.println(move);
-			if(move.length()==2){
-				move = parser.moveTranslate(move);
-			}else{
-				move = parser.wallTranslate(move);
-			}
+			move = (move.length()==2) ? parser.moveTranslate(move) : parser.wallTranslate(move);
 
 			if( !fileName.equals("") )
 				if(move.isEmpty()){
