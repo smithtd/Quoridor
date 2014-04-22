@@ -33,7 +33,7 @@ public class Game extends Observable{
 	public static int WallGap = 12;
 	public static int PlayerWidth = 45;
 	public static int PlayerHeight = 45;
-	public static int sleepTime = 50;
+	public static int sleepTime = 500;
 	public static int colorIncrement = 200;
 	
 	public static Dimension HWall = new Dimension( Game.PlayerWidth, Game.WallGap );
@@ -66,11 +66,11 @@ public class Game extends Observable{
 	 * @param numPlayers	the number of players in this Game
 	 * @param numWalls		the maximum number of walls to divide among Players
 	 */
-	public Game(int numPlayers, int numWalls) {
+	public Game(int numPlayers) {
 		curr= 0;
 		Game.numPlayers = numPlayers;
 		players = new ArrayList<Player>();
-		int wallsEach = numWalls/numPlayers;
+		int wallsEach = Game.NUM_OF_WALLS/numPlayers;
 
 		if(Game.numPlayers == MAX_NUMBER_PLAYERS){
 			players.add(new Player("1", 0, 4, 1, wallsEach));
@@ -82,24 +82,12 @@ public class Game extends Observable{
 			players.add(new Player("2", 8, 4, 2, wallsEach));
 		}
 
-		board = new Board(players, numWalls);
+		board = new Board(players, NUM_OF_WALLS);
 	}
 
 	/* Game Play Methods */
 
 
-
-	/**
-	 * Starts the game by adding a GameBoard (UI) to this Game.
-	 * 
-	 */
-	public void startGame(){
-		Game.updatePlayer(players.get(curr));
-		GameBoard gb = new GameBoard();
-		gameWon = false;
-		this.registerObserver(gb);
-		gb.update(this, board);
-	}
 
 	/**
 	 * Loops through the Players' turns until someone wins.
@@ -108,27 +96,46 @@ public class Game extends Observable{
 	 * 
 	 * @param p	the Parser to parse Players' turns
 	 */
-	public void playGame(Parser p){
+	public void playGame(int numStartingPlayers, String fileName){
+
+		// parser to parse moves
+		parser = new Parser();
+		// start game and call up UI
+		Game g = new Game( numStartingPlayers );
+
+		Game.updatePlayer(players.get(curr));
+		GameBoard gb = new GameBoard();
+		gameWon = false;
+		this.registerObserver(gb);
+		gb.update(this, board);
+		Scanner sc = null;
+		if( !fileName.equals("") )
+			try { /*System.out.println("HERE");*/sc = new Scanner( new File( fileName ) ); } catch (FileNotFoundException e) {}
+		
 		// until someone wins, loop through turns
-		while(!Game.gameWon){
-			System.out.println(Game.getCurrPlayer().getColorName()+" player's turn");
-
+		while( !Game.gameWon ){
 			// get move from player
-			String move = Game.getCurrPlayer().getMove();
+			TextFieldListener.textArea.append(Game.getCurrPlayer().getColorName() + ": ");
+			if( !fileName.equals("") )
+				try{ Thread.sleep(sleepTime);}catch(Exception e){}
+			String move = (fileName.equals("")) ? Game.getCurrPlayer().getMove() : sc.nextLine();
+			TextFieldListener.textArea.append( move + "\n" );
+			System.out.println(move);
 			if(move.length()==2){
-				move = p.moveTranslate(move);
+				move = parser.moveTranslate(move);
 			}else{
-				move = p.wallTranslate(move);
+				move = parser.wallTranslate(move);
 			}
 
-			if(move.isEmpty()){
-				kickPlayer(players.get(curr));
-				System.out.println("Calling checkForWin");
-				if(this.checkForWin()){
-					notifyObservers(ui);
-					break;
+			if( !fileName.equals("") )
+				if(move.isEmpty()){
+					kickPlayer(players.get(curr));
+					System.out.println("Calling checkForWin");
+					if(this.checkForWin()){
+						notifyObservers(ui);
+						break;
+					}
 				}
-			}
 
 			// try to play turn
 			if(this.playTurn(move)){
@@ -155,65 +162,6 @@ public class Game extends Observable{
 				}
 			}
 		}
-	}
-
-	/**
-	 * Loops through a file of Players' turns until someone wins.
-	 * Gets the move, translates the move, plays the move, and then updates
-	 * the UI.
-	 * 
-	 * @param p	the Parser to parse Players' turns
-	 * @param fileName	the name of the file to scan for moves
-	 */
-	public void playGame(Parser p, String fileName){
-		try{
-			Scanner sc = new Scanner(new File(fileName));
-
-			// until someone wins, loop through turns
-			while(!Game.gameWon && sc.hasNextLine()){
-				// sleep 1 second so game is watchable
-				Thread.sleep( sleepTime ); 
-				System.out.println( Game.getCurrPlayer().getColorName()+" player's turn" );
-				TextFieldListener.textArea.append( Game.getCurrPlayer().getColorName() + ": " );
-
-				// get move from player
-				String move = sc.nextLine();
-
-				TextFieldListener.textArea.append( move + "\n" );
-				if(move.length()==2){
-					move = p.moveTranslate(move);
-				}else{
-					move = p.wallTranslate(move);
-				}
-
-				// try to play turn
-				if(this.playTurn(move)){
-					System.out.println(Game.getCurrPlayer().getColorName()+" took turn, checking if won.");
-					if(this.checkForWin()){
-						System.out.println(Game.getCurrPlayer().getColorName()+" won by reaching the end: "+players.get(curr).x()+","+players.get(curr).y());
-						players.get(curr).clearMoves();
-						notifyObservers(ui);
-						break;
-					}
-					Game.nextTurn();
-					System.out.println("CHECKING AVAILABLE MOVES FOR "+players.get(curr).getColorName()+"!!!!!!!!!!!");
-					Game.updatePlayer(players.get(curr));
-					this.notifyObservers(this, Game.getBoard());
-				}else{
-					System.err.println("Player turn failed!");
-					kickPlayer(players.get(curr));
-					System.out.println("Calling checkForWin");
-					if(this.checkForWin()){
-						System.out.println(Game.getCurrPlayer().getColorName()+" won by default.");
-						players.get(curr).clearMoves();
-						notifyObservers(ui);
-						break;
-					}
-				}
-			}
-			sc.close();
-		}catch(FileNotFoundException e){	
-		}catch (InterruptedException e) {}
 	}
 
 	/**
@@ -291,7 +239,7 @@ public class Game extends Observable{
 	 * 
 	 */
 
-	public static void newGame( int players ){
+	public static void newGame( int numStartingPlayers ){
 		GameBoard.closeFrame();
 		/*
 		for(Player p : Game.players)
@@ -300,10 +248,7 @@ public class Game extends Observable{
 			o=null;
 		*/
 		System.out.println("NEWGAME");
-		Game g = new Game( players, NUM_OF_WALLS );
-		g.startGame();
-		parser = new Parser();
-		g.playGame(parser);
+		g.playGame(numStartingPlayers, "");
 	}
 
 	/**
@@ -439,28 +384,18 @@ public class Game extends Observable{
 	 */
 	public static void main(String[] args) {
 		// optionally can pass in file to run as demo or pass in num of players
-		int players = 2;
+		int numStartingPlayers = 2;
 		String fileName = "";
 
 		if( args.length == 1 )
-			players = Integer.parseInt(args[0]);
+			numStartingPlayers = Integer.parseInt(args[0]);
 
 		if( args.length == 2 ){
-			players = Integer.parseInt(args[0]);
+			numStartingPlayers = Integer.parseInt(args[0]);
 			fileName = args[1];
 		}
-
-		// parser to parse moves
-		parser = new Parser();
-		// start game and call up UI
-		Game g = new Game( players, NUM_OF_WALLS );
-		g.startGame();
-
-		if(fileName.length() == 0)
-			g.playGame(parser);
-		else
-			g.playGame(parser, fileName);
-		// notify observer, since we have a winner, ui will execute end of game
+		Game g = new Game(numStartingPlayers);
+		g.playGame( numStartingPlayers, fileName);
 		g.notifyObservers(g, Game.getBoard());
 	}
 

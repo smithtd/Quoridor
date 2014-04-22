@@ -26,7 +26,7 @@ public class TextFieldListener implements ActionListener {
        Terminal.moves++;
        printStream.println(lastEntered);
        Terminal.ps.println(lastEntered);
-       textArea.append(lastEntered + "\n");
+       //textArea.append(lastEntered + "\n");
 
     }
  }
