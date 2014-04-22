@@ -25,12 +25,12 @@ public class WallButton extends JButton {
 	 * @param x integer x coordinate
 	 * @param y integer y coordinate
 	 */
-	public WallButton( int x, int y ){
+	public WallButton( int x, int y, Game game ){
 		super();
 		this.setBorder(null);
 		this.x = x;
 		this.y = y;
-		this.setPreferredSize( Game.Intersection );
+		this.setPreferredSize( game.getIntersection() );
 		this.setBackground( Color.DARK_GRAY );
 		this.setOpaque(true);
 	}

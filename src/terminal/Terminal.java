@@ -23,8 +23,8 @@ public class Terminal extends JPanel {
    public static int moves;
    
    
-   public Terminal(int rows, int cols) {
-	  this.setPreferredSize( GameBoard.getBottomBarDim() );
+   public Terminal(int rows, int cols, GameBoard gb) {
+	  this.setPreferredSize( gb.getBottomBarDim() );
 	  
 	  moves = 0;
 	  try {

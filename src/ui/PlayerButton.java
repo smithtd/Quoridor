@@ -21,6 +21,7 @@ public class PlayerButton extends JButton {
 	private int x;
 	private int y;
 	private Player plyr;
+	private Game game;
 	
 	/* Constructor	*/
 	
@@ -30,11 +31,12 @@ public class PlayerButton extends JButton {
 	 * @param x integer x coordinate
 	 * @param y integer y coordinate
 	 */
-	public PlayerButton( int x, int y ){
+	public PlayerButton( int x, int y, Game game ){
 		super();
+		this.game = game;
 		this.x = x;
 		this.y = y;
-		this.setPreferredSize( new Dimension( Game.HWall.width, Game.VWall.height ) );
+		this.setPreferredSize( new Dimension( game.getHWall().width, game.getVWall().height ) );
 		this.setBackground( Color.BLACK );
 		this.setOpaque(true);
 		this.setBorderPainted(false);
@@ -94,14 +96,14 @@ public class PlayerButton extends JButton {
 	
 	public void paint( Graphics g ){
 		if( this.getBackground() == Color.MAGENTA ){
-			int increment = Game.colorIncrement;
-			Color c = Game.getCurrPlayer().getColor();
+			int increment = game.getColorIncrement();
+			Color c = game.getCurrPlayer().getColor();
 			int red = (c.getRed() + increment > 256 ? c.getRed() : c.getRed() + increment );
 			int green = (c.getGreen() + increment > 256 ? c.getGreen() : c.getGreen() + increment );
 			int blue = (c.getBlue() + increment > 256 ? c.getBlue() : c.getBlue() + increment );
 			
 			g.setColor( new Color( red, green, blue ) );
-			g.fillRect( 0, 0, Game.PlayerSize.width, Game.PlayerSize.height );
+			g.fillRect( 0, 0, game.getPlayerSize().width, game.getPlayerSize().height );
 			
 			g.setFont( getFont() );
 			FontMetrics fm = g.getFontMetrics( g.getFont() );
@@ -111,7 +113,7 @@ public class PlayerButton extends JButton {
 			
 		}else{
 			g.setColor( this.getBackground() );
-			g.fillRect( 0, 0, Game.PlayerSize.width, Game.PlayerSize.height );
+			g.fillRect( 0, 0, game.getPlayerSize().width, game.getPlayerSize().height );
 		}
 		
 	}

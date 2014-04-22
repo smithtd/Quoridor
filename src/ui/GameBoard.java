@@ -17,8 +17,8 @@ import walls.Wall;
 import players.Player;
 
 /**
- * The GameBoard serves as the UI for the Quoridor game. It updates from the 
- * back end via a Subject/Observer design pattern. The Game object is the 
+ * The GameBoard serves as the UI for the Quoridor g. It updates from the 
+ * back end via a Subject/Observer design pattern. The g object is the 
  * subject and the GameBoard object is the observer.
  * 
  * @author Dylan Woythol, Tyler Smith, Eli Donahue
@@ -29,22 +29,23 @@ public class GameBoard extends JPanel implements Observer {
 
 	/* Instance Variables */
 
-	private static JFrame frame;
-	private static PlayerButton[][] pbAry;
-	private static WallButton[][] wbAry;
-	private static LongWallButton[][] vertWalls;
-	private static LongWallButton[][] horzWalls;
-	public static StatButton[] statAry;
-	private static JPanel buttonHolder;
-	private static JPanel BHBorder;
-	private static JPanel rightBarPanel;
-	private static JPanel topBarPanel;
-	public static Terminal bottomBarPanel;
-	private static JPanel leftBarPanel;
-	private static JPanel holder1;
-	private static JPanel holder2;
-	private static JPanel holder3;
-	private static boolean closeFromX;
+	private JFrame frame;
+	private PlayerButton[][] pbAry;
+	private WallButton[][] wbAry;
+	private LongWallButton[][] vertWalls;
+	private LongWallButton[][] horzWalls;
+	public StatButton[] statAry;
+	private JPanel buttonHolder;
+	private JPanel BHBorder;
+	private JPanel rightBarPanel;
+	private JPanel topBarPanel;
+	public Terminal bottomBarPanel;
+	private JPanel leftBarPanel;
+	private JPanel holder1;
+	private JPanel holder2;
+	private JPanel holder3;
+	private boolean closeFromX;
+	private Game g;
 	/* Constructor */
 
 	/**
@@ -52,8 +53,9 @@ public class GameBoard extends JPanel implements Observer {
 	 * use to add JObjects. 
 	 * 
 	 */
-	public GameBoard(){
+	public GameBoard(Game g){
 		super();
+		this.g=g;
 		closeFromX = true;
 		FlowLayout flow = new FlowLayout();
 		flow.setHgap( 0 );
@@ -63,7 +65,7 @@ public class GameBoard extends JPanel implements Observer {
 		BHBorder = new JPanel();
 		rightBarPanel = new JPanel();
 		topBarPanel = new JPanel();
-		bottomBarPanel = new Terminal( getBottomBarDim().height/15-2, getBottomBarDim().width/11-2 );
+		bottomBarPanel = new Terminal( getBottomBarDim().height/15-2, getBottomBarDim().width/11-2, this );
 		leftBarPanel = new JPanel();
 		holder1 = new JPanel();
 		holder2 = new JPanel();
@@ -96,7 +98,7 @@ public class GameBoard extends JPanel implements Observer {
 		setFrameStats();
 	}
 	
-	public static void closeFrame(){
+	public void closeFrame(){
 		closeFromX = false;
 		frame.dispose();
 	}
@@ -108,7 +110,7 @@ public class GameBoard extends JPanel implements Observer {
 	 * @return JFrame
 	 */
 	public JFrame getFrame(){
-		return GameBoard.frame;
+		return this.frame;
 	}
 
 	/**
@@ -137,13 +139,13 @@ public class GameBoard extends JPanel implements Observer {
 	 * Updates the UI by clearing previous Players and movable spaces
 	 * and then adding current Players, Walls, and movable spaces.
 	 * 
-	 * @param game Observable Game object
+	 * @param g Observable g object
 	 * @param board Object Board object
 	 */
 	public void update(Observable game, Object board) {  
 		// convert from observable and object
 		Board b = (Board) board;
-		Game g = (Game) game;
+		this.g = (Game) game;
 
 		// clear board
 		this.clearPlayers();
@@ -152,7 +154,7 @@ public class GameBoard extends JPanel implements Observer {
 		// show current pieces
 		this.addPlayerButtons(b);
 		this.addWallButtons(b);
-		this.showPlyrMoves(Game.getCurrPlayer(),b);
+		this.showPlyrMoves(g.getCurrPlayer(),b);
 		repaint();
 
 		if(g.gameWon())
@@ -163,7 +165,7 @@ public class GameBoard extends JPanel implements Observer {
 	 * Handles display in the event a Player wins. 
 	 * Dialog box appears with options for new games or quit.
 	 * 
-	 * @param g Game object
+	 * @param g g object
 	 */
 	public void winState(final Game g){
 		// display a win dialog
@@ -172,34 +174,34 @@ public class GameBoard extends JPanel implements Observer {
 		jp1.setPreferredSize( new Dimension( 300, 75 ) );
 
 		// set win dialog background color to player color, light
-		int increment = Game.colorIncrement;
-		Color c = Game.getCurrPlayer().getColor();
+		int increment = g.getColorIncrement();
+		Color c = g.getCurrPlayer().getColor();
 		int red = (c.getRed() + increment > 256 ? c.getRed() : c.getRed() + increment );
 		int green = (c.getGreen() + increment > 256 ? c.getGreen() : c.getGreen() + increment );
 		int blue = (c.getBlue() + increment > 256 ? c.getBlue() : c.getBlue() + increment );
 
 		jp1.setBackground(new Color( red, green, blue ));
 
-		final JFrame LongWallButtonFrame = new JFrame( "Player " + Game.getCurrPlayer().getPnum() + " wins!" );
-		LongWallButtonFrame.setLayout( new BorderLayout() );
+		final JFrame WinMessageFrame = new JFrame( "Player " + g.getCurrPlayer().getPnum() + " wins!" );
+		WinMessageFrame.setLayout( new BorderLayout() );
 
 		// display buttons in dialog
 		ButtonGroup btngrp = new ButtonGroup();
-		final JRadioButton b1 = new JRadioButton("New 2 player game",false);
-		final JRadioButton b2 = new JRadioButton("New 4 player game",false);
+		final JRadioButton b1 = new JRadioButton("New 2 player g",false);
+		final JRadioButton b2 = new JRadioButton("New 4 player g",false);
 		final JRadioButton b3 = new JRadioButton("Quit",false);
 
 		// add action listeners to dialog buttons
 		b1.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
-				LongWallButtonFrame.dispose();
-				Game.newGame( 2 );
+				WinMessageFrame.dispose();
+				g.newGame( 2 );
 			}
 		});
 		b2.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
-				LongWallButtonFrame.dispose();
-				Game.newGame( 4 );
+				WinMessageFrame.dispose();
+				g.newGame( 4 );
 			}
 		});
 		b3.addActionListener( new ActionListener(){
@@ -213,12 +215,12 @@ public class GameBoard extends JPanel implements Observer {
 		jp1.add(b3, FlowLayout.LEFT);
 		jp1.add(b2, FlowLayout.LEFT);
 		jp1.add(b1, FlowLayout.LEFT);
-		LongWallButtonFrame.add( jp1, BorderLayout.NORTH );
-		LongWallButtonFrame.setLocation( 350, 300 );
-		LongWallButtonFrame.setSize( 300, 300 );
-		LongWallButtonFrame.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
-		LongWallButtonFrame.setVisible( true );
-		LongWallButtonFrame.pack();
+		WinMessageFrame.add( jp1, BorderLayout.NORTH );
+		WinMessageFrame.setLocation( 350, 300 );
+		WinMessageFrame.setSize( 300, 300 );
+		WinMessageFrame.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
+		WinMessageFrame.setVisible( true );
+		WinMessageFrame.pack();
 	}
 
 	/**
@@ -243,6 +245,7 @@ public class GameBoard extends JPanel implements Observer {
 		    public void windowClosing(WindowEvent windowEvent) {
 		    	if(closeFromX)
 		    		System.exit( 0 );
+		    	frame.dispose();
 		    }
 		});
 	}
@@ -274,16 +277,16 @@ public class GameBoard extends JPanel implements Observer {
 		return (new Dimension( getLeftBarDim().width + getButtonHolderBorderDim().width + getRightBarDim().width, getTopBarDim().height + getButtonHolderBorderDim().height + getBottomBarDim().height ) );
 	}
 
-	private static Dimension getLeftBarDim(){
-		return (new Dimension( Game.HWall.width, getButtonHolderBorderDim().height+ getTopBarDim().height ) );
+	private Dimension getLeftBarDim(){
+		return (new Dimension( g.getHWall().width, getButtonHolderBorderDim().height+ getTopBarDim().height ) );
 	}
 
-	private static Dimension getButtonHolderBorderDim(){
-		return (new Dimension(getButtonHolderDim().width + Game.Intersection.width*2, getButtonHolderDim().height + Game.Intersection.height*2) );
+	private Dimension getButtonHolderBorderDim(){
+		return (new Dimension(getButtonHolderDim().width + g.getIntersection().width*2, getButtonHolderDim().height + g.getIntersection().height*2) );
 	}
 
-	public static Dimension getButtonHolderDim(){
-		return (new Dimension( (Game.HWall.width*9 + Game.VWall.width*8), (Game.VWall.height*9 + Game.HWall.height*8) ));
+	public Dimension getButtonHolderDim(){
+		return (new Dimension( (g.getHWall().width*9 + g.getVWall().width*8), (g.getVWall().height*9 + g.getHWall().height*8) ));
 	}
 
 	private Dimension getHolder1Dim(){
@@ -294,22 +297,22 @@ public class GameBoard extends JPanel implements Observer {
 		return (new Dimension( getTopBarDim().width, getTopBarDim().height + getRightBarDim().height ) );
 	}
 
-	private static Dimension getHolder3Dim(){
+	private Dimension getHolder3Dim(){
 		return (new Dimension( getRightBarDim().width + getButtonHolderBorderDim().width + getLeftBarDim().width, getTopBarDim().height + getButtonHolderBorderDim().height ) );
 	}
 
-	private static Dimension getTopBarDim(){
-		return (new Dimension( getButtonHolderBorderDim().width + getRightBarDim().width, Game.VWall.height));
+	private Dimension getTopBarDim(){
+		return (new Dimension( getButtonHolderBorderDim().width + getRightBarDim().width, g.getVWall().height));
 	}
 
-	public static Dimension getBottomBarDim(){
+	public Dimension getBottomBarDim(){
 		int width = getHolder3Dim().width;
-		int height = Game.PlayerHeight*3;
+		int height = g.getPlayerHeight()*3;
 
 		return (height < 50 ? new Dimension( width, 50 ) : new Dimension( width, height ) );
 	}
 
-	public static Dimension getRightBarDim(){
+	public Dimension getRightBarDim(){
 		int width = getButtonHolderBorderDim().width/3+10;
 		int height = getButtonHolderBorderDim().height;
 		return (width<180 ? new Dimension( 180, height ) : new Dimension( width , height ));
@@ -341,20 +344,20 @@ public class GameBoard extends JPanel implements Observer {
 					//layer 0 is PlayerButton && Vert Walls
 					//Layer 1 is HorzWalls && WallButton
 					if( layer == 0 ){
-						PlayerButton plyrBtn = new PlayerButton( x, y );
+						PlayerButton plyrBtn = new PlayerButton( x, y, g );
 						buttonHolder.add( plyrBtn );
 						pbAry[x][y] = plyrBtn;
 						if( y!= 8 ){
-							LongWallButton w = new LongWallButton( x, y, "v");
+							LongWallButton w = new LongWallButton( x, y, "v", g, this);
 							buttonHolder.add( w );
 							vertWalls[x][y] = w;
 						}
 					} else if(layer == 1 && x != 8) {
-						LongWallButton w = new LongWallButton( x, y, "h" );
+						LongWallButton w = new LongWallButton( x, y, "h", g, this );
 						buttonHolder.add( w );
 						horzWalls[x][y] = w;
 						if( y!= 8 && x!=8 ){
-							WallButton wb = new WallButton( x, y );
+							WallButton wb = new WallButton( x, y, g );
 							buttonHolder.add( wb );
 							wbAry[x][y] = wb;
 						}
@@ -365,57 +368,57 @@ public class GameBoard extends JPanel implements Observer {
 	}
 
 	private void setUpThisPanel(){
-		EndZoneButton up = new EndZoneButton( Game.getNumPlayers(), "U" );
-		EndZoneButton down = new EndZoneButton( Game.getNumPlayers(), "D" );
-		EndZoneButton left = new EndZoneButton( Game.getNumPlayers(), "L" );
-		EndZoneButton right = new EndZoneButton( Game.getNumPlayers(), "R" );
-		BHBorder.add( new SpacerButton( Game.Intersection, Color.DARK_GRAY ) );
+		EndZoneButton up = new EndZoneButton( g.getNumPlayers(), "U", g, this );
+		EndZoneButton down = new EndZoneButton( g.getNumPlayers(), "D", g, this );
+		EndZoneButton left = new EndZoneButton( g.getNumPlayers(), "L", g, this );
+		EndZoneButton right = new EndZoneButton( g.getNumPlayers(), "R", g, this );
+		BHBorder.add( new SpacerButton( g.getIntersection(), Color.DARK_GRAY ) );
 		BHBorder.add( up );
-		BHBorder.add( new SpacerButton( Game.Intersection, Color.DARK_GRAY ) );
+		BHBorder.add( new SpacerButton( g.getIntersection(), Color.DARK_GRAY ) );
 		BHBorder.add( left );
 		BHBorder.add( buttonHolder );
 		BHBorder.add( right );
-		BHBorder.add( new SpacerButton( Game.Intersection, Color.DARK_GRAY ) );
+		BHBorder.add( new SpacerButton( g.getIntersection(), Color.DARK_GRAY ) );
 		BHBorder.add( down );
-		BHBorder.add( new SpacerButton( Game.Intersection, Color.DARK_GRAY ) );
+		BHBorder.add( new SpacerButton( g.getIntersection(), Color.DARK_GRAY ) );
 		holder1.add( BHBorder );
 		holder1.add( rightBarPanel );
-		if(Game.getNumPlayers()==2){
+		if(g.getNumPlayers()==2){
 			statAry = new StatButton[2];
 			for(int i=0; i<2; i++){
-				StatButton b = new StatButton(i);
+				StatButton b = new StatButton(i, g, this);
 				rightBarPanel.add( b );
 				statAry[i] = b;
 			}
 		}else{
 			statAry = new StatButton[4];
 			for(int i=0; i<4; i++){
-				StatButton b = new StatButton(i);
+				StatButton b = new StatButton(i, g, this);
 				rightBarPanel.add( b );
 				statAry[i] = b;
 			}
 		}	
 
-		topBarPanel.add( new SpacerButton( Game.VWall.width, getTopBarDim().height, Color.DARK_GRAY ) );
-		topBarPanel.add( new SpacerButton( Game.HWall.width, getTopBarDim().height, Color.LIGHT_GRAY, "" + (char)('A') ) );
+		topBarPanel.add( new SpacerButton( g.getVWall().width, getTopBarDim().height, Color.DARK_GRAY ) );
+		topBarPanel.add( new SpacerButton( g.getHWall().width, getTopBarDim().height, Color.LIGHT_GRAY, "" + (char)('A') ) );
 		for(int i=0; i<8; i++){
-			topBarPanel.add( new SpacerButton( Game.VWall.width, getTopBarDim().height, Color.DARK_GRAY , "" + (char)('A'+i) ) );
-			topBarPanel.add( new SpacerButton( Game.HWall.width, getTopBarDim().height, Color.LIGHT_GRAY, "" + (char)('B'+i) ) );
+			topBarPanel.add( new SpacerButton( g.getVWall().width, getTopBarDim().height, Color.DARK_GRAY , "" + (char)('A'+i) ) );
+			topBarPanel.add( new SpacerButton( g.getHWall().width, getTopBarDim().height, Color.LIGHT_GRAY, "" + (char)('B'+i) ) );
 		}
-		topBarPanel.add( new SpacerButton( Game.VWall.width, getTopBarDim().height, Color.DARK_GRAY ) );
+		topBarPanel.add( new SpacerButton( g.getVWall().width, getTopBarDim().height, Color.DARK_GRAY ) );
 		topBarPanel.add( new SpacerButton( getRightBarDim().width, getTopBarDim().height, Color.LIGHT_GRAY, "STATS" ) );
 
 		holder2.add( topBarPanel );
 		holder2.add( holder1 );
 
 		leftBarPanel.add( new SpacerButton( getLeftBarDim().width, getTopBarDim().height, Color.LIGHT_GRAY) );
-		leftBarPanel.add( new SpacerButton( getLeftBarDim().width, Game.HWall.height, Color.DARK_GRAY ) );
-		leftBarPanel.add( new SpacerButton( getLeftBarDim().width, Game.VWall.height, Color.LIGHT_GRAY, "" + (char)('1')) );
+		leftBarPanel.add( new SpacerButton( getLeftBarDim().width, g.getHWall().height, Color.DARK_GRAY ) );
+		leftBarPanel.add( new SpacerButton( getLeftBarDim().width, g.getVWall().height, Color.LIGHT_GRAY, "" + (char)('1')) );
 		for(int i=0; i<8; i++){
-			leftBarPanel.add( new SpacerButton( getLeftBarDim().width,Game.HWall.height, Color.DARK_GRAY , "" + (char)('1'+i)) );
-			leftBarPanel.add( new SpacerButton( getLeftBarDim().width, Game.VWall.height, Color.LIGHT_GRAY, "" + (char)('2'+i)) );
+			leftBarPanel.add( new SpacerButton( getLeftBarDim().width,g.getHWall().height, Color.DARK_GRAY , "" + (char)('1'+i)) );
+			leftBarPanel.add( new SpacerButton( getLeftBarDim().width, g.getVWall().height, Color.LIGHT_GRAY, "" + (char)('2'+i)) );
 		}
-		leftBarPanel.add( new SpacerButton( getLeftBarDim().width,Game.HWall.height, Color.DARK_GRAY ) );
+		leftBarPanel.add( new SpacerButton( getLeftBarDim().width,g.getHWall().height, Color.DARK_GRAY ) );
 
 		holder3.add(leftBarPanel);
 		holder3.add(holder2);
@@ -534,22 +537,22 @@ public class GameBoard extends JPanel implements Observer {
 		fileMenu.setBorder( null );
 		fileMenu.setForeground( Color.WHITE );
 		fileMenu.setBackground( Color.BLACK );
-			JMenuItem new2PlyrGameOpt = new JMenuItem( "New 2 Player Game" );
+			JMenuItem new2PlyrGameOpt = new JMenuItem( "New 2 Player g" );
 			new2PlyrGameOpt.setForeground( Color.WHITE );
 			new2PlyrGameOpt.setBackground( Color.BLACK );
 			new2PlyrGameOpt.addActionListener( new ActionListener(){
 				public void actionPerformed( ActionEvent e ){
-					Game.newGame( 2 );
+					g.newGame( 2 );
 				}
 			});
 			fileMenu.add(new2PlyrGameOpt);
-			JMenuItem new4PlyrGameOpt = new JMenuItem( "New 4 Player Game" );
+			JMenuItem new4PlyrGameOpt = new JMenuItem( "New 4 Player g" );
 			new4PlyrGameOpt.setBorder( null );
 			new4PlyrGameOpt.setForeground( Color.WHITE );
 			new4PlyrGameOpt.setBackground( Color.BLACK );
 			new4PlyrGameOpt.addActionListener( new ActionListener(){
 				public void actionPerformed( ActionEvent e ){
-					Game.newGame( 4 );
+					g.newGame( 4 );
 				}
 			});
 			fileMenu.add(new4PlyrGameOpt);
@@ -577,9 +580,9 @@ public class GameBoard extends JPanel implements Observer {
 		rulesOpt.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				String LongWallButton = "";
-				LongWallButton += "Quoridor is played on a game board of 81 square spaces (9x9). \n" +
+				LongWallButton += "Quoridor is played on a g board of 81 square spaces (9x9). \n" +
 						"Each player is represented by a pawn which begins at the center \n" +
-						"space of one edge of the board (in a two-player game, the pawns \n" +
+						"space of one edge of the board (in a two-player g, the pawns \n" +
 						"begin opposite each other). The object is to be the first player \n" +
 						"to move their pawn to any space on the opposite side of the \n" +
 						"gameboard from which it begins.\n\n";

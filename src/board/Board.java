@@ -18,6 +18,7 @@ public class Board {
 	
 	/* Instance variables */
 	
+	private GameBoard gb;
 	private ArrayList<Player> players;	// holds players on board
 	private Wall[] walls;		// holds walls on board
 	private int numWalls;		// total # walls on board
@@ -31,7 +32,7 @@ public class Board {
 	 * @param players array of Players in the game
 	 * @param walls array of Wall objects to hold walls as they are played
 	 */
-	public Board(ArrayList<Player> players, int walls) {
+	public Board(ArrayList<Player> players, int walls, GameBoard gb) {
 		this.players = players;			// passed in from Game
 		this.walls = new Wall[walls];	// Wall array length = max num of walls
 		numWalls = 0;
@@ -279,7 +280,7 @@ public class Board {
 		Wall w = new Wall(x, y, type);
 		if(isLegalWallPlacement(p, w)){
 			p.decWalls();
-			GameBoard.statAry[p.getPnum()-1].updateWalls();
+			gb.statAry[p.getPnum()-1].updateWalls();
 			walls[numWalls] = w;
 			numWalls++;
 			return true;

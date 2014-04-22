@@ -14,26 +14,29 @@ public class PlayerStatButton extends JButton {
 	
 	public int playerNum;
 	public Color c;
+	private Game game;
+	private GameBoard gb;
 	
-	public PlayerStatButton(int pNum){
+	public PlayerStatButton(int pNum, Game game, GameBoard gb){
 		super();
+		this.gb = gb;
 		this.setOpaque(true);
 		this.setBorderPainted(false);
 		this.playerNum = pNum;
-		c = Game.getPlayerAry().get(playerNum).getColor();
+		c = game.getPlayerAry().get(playerNum).getColor();
 		this.setBackground( c );
 		
 		this.setForeground( ( c==Color.red || c== Color.blue ?  Color.WHITE : Color.BLACK ) );
-		this.setText("Walls remaining: " + Game.getCurrPlayer().getWalls());
+		this.setText("Walls remaining: " + game.getCurrPlayer().getWalls());
 
-		if(Game.getNumPlayers()==2)
-			this.setPreferredSize( new Dimension( GameBoard.getRightBarDim().width, GameBoard.getRightBarDim().height/2 ) );
+		if(game.getNumPlayers()==2)
+			this.setPreferredSize( new Dimension( gb.getRightBarDim().width, gb.getRightBarDim().height/2 ) );
 		else
-			this.setPreferredSize( new Dimension( GameBoard.getRightBarDim().width, GameBoard.getRightBarDim().height/4 ) );
+			this.setPreferredSize( new Dimension( gb.getRightBarDim().width, gb.getRightBarDim().height/4 ) );
 	}
 	
 	public void updateWalls(){
-		this.setText("Walls remaining: " + Game.getCurrPlayer().getWalls());
+		this.setText("Walls remaining: " + game.getCurrPlayer().getWalls());
 	}
 	
 	public void paint( Graphics g ){
@@ -57,6 +60,6 @@ public class PlayerStatButton extends JButton {
 //		g.setFont( getFont() );
 	    g.setFont( new Font("Wingdings", 1, 12 ) );
 		g.setColor( Color.BLACK );
-		g.drawString( ("Walls remaining: " + Game.getPlayerAry().get(playerNum).getWalls()), 30, this.getHeight()/2+5 );
+		g.drawString( ("Walls remaining: " + game.getPlayerAry().get(playerNum).getWalls()), 30, this.getHeight()/2+5 );
 	}
 }

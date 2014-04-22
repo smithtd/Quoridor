@@ -11,16 +11,20 @@ import main.Game;
 @SuppressWarnings("serial")
 public class EndZoneButton extends JButton{
 	
-	String position;
-	public EndZoneButton( int numPlayers, String position ){
+	private String position;
+	private Game game;
+	private GameBoard gb;
+	public EndZoneButton( int numPlayers, String position, Game game, GameBoard gb ){
 		super();
+		this.game = game;
+		this.gb = gb;
 		this.setBorder(null);
 		this.position = position;
 		
 		if( position.equals("U") || position.equals("D") )
-			this.setPreferredSize( new Dimension( GameBoard.getButtonHolderDim().width, Game.Intersection.height ) );
+			this.setPreferredSize( new Dimension( gb.getButtonHolderDim().width, game.getIntersection().height ) );
 		else
-			this.setPreferredSize( new Dimension( Game.Intersection.width, GameBoard.getButtonHolderDim().height ) );
+			this.setPreferredSize( new Dimension( game.getIntersection().width, gb.getButtonHolderDim().height ) );
 		
 		if( numPlayers == 2 ){
 			if( position.equals( "U" ) )

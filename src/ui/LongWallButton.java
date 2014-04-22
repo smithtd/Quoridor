@@ -30,13 +30,13 @@ public class LongWallButton extends JButton {
 	 * @param y integer y coordinate
 	 * @param type String wall orientation
 	 */
-	public LongWallButton(int x, int y, String type){
+	public LongWallButton(int x, int y, String type, Game game, GameBoard gb){
 		super();
         this.setBorder(null);
         this.x = x;
         this.y = y;
         /* set the dimensions upon string identifier */
-       	this.setPreferredSize( type.equals( "h" ) ? Game.HWall : Game.VWall );
+       	this.setPreferredSize( type.equals( "h" ) ? game.getHWall() : game.getVWall() );
         this.setBackground( Color.DARK_GRAY );
         this.setOpaque(true);	// needed to display on macs   
    }

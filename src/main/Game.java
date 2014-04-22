@@ -20,72 +20,58 @@ import ui.GameBoard;
 import parser.Parser;
 
 /**
- * The Game class drives the Quoridor game logic. It extends 
+ * The this class drives the Quoridor this logic. It extends 
  * java.util.Observable and acts as a subject for the 
- * GameBoard class, which observes/subscribes to a Game object.
+ * GameBoard class, which observes/subscribes to a this object.
  * 
  * @author Eli Donahue, M. Dean
  * Team 511-tactical
  */
 public class Game extends Observable{
 
-	/* Static variables */
-	public static int WallGap = 12;
-	public static int PlayerWidth = 45;
-	public static int PlayerHeight = 45;
-	public static int sleepTime = 500;
-	public static int colorIncrement = 200;
+	/*  variables */
+	private  int WallGap = 12;
+	private  int PlayerWidth = 45;
+	private  int PlayerHeight = 45;
+	private  int sleepTime = 50;
+	private  int colorIncrement = 200;
 	
-	public static Dimension HWall = new Dimension( Game.PlayerWidth, Game.WallGap );
-	public static Dimension VWall = new Dimension( Game.WallGap, Game.PlayerHeight );
-	public static Dimension Intersection = new Dimension( VWall.width, HWall.height );
-	public static Dimension PlayerSize = new Dimension( HWall.width, VWall.height );
-	public static Game g;
+	private  Dimension HWall = new Dimension( this.getPlayerWidth(), this.WallGap );
+	private  Dimension VWall = new Dimension( this.WallGap, this.getPlayerHeight() );
+	private  Dimension Intersection = new Dimension( getVWall().width, getHWall().height );
+	private  Dimension PlayerSize = new Dimension( getHWall().width, getVWall().height );
+	private  Game g;
+	private GameBoard gb;
 
 	/* Private Instance variables */
 
-	private static final int NUM_OF_WALLS = 20; 
-	private static final int MAX_NUMBER_PLAYERS = 4;
+	private  final int NUM_OF_WALLS = 20; 
+	private  final int MAX_NUMBER_PLAYERS = 4;
 
-	private static ArrayList<Observer> ui = new ArrayList<Observer>();
-	private static ArrayList<Player> players;	// Player ArrayList to hold players
-	private static int numPlayers;				// number of players
-	private static int curr;					// index of current Player
-	private static boolean gameWon;				// whether the game has been won
+	private  ArrayList<Observer> ui = new ArrayList<Observer>();
+	private  ArrayList<Player> players;	// Player ArrayList to hold players
+	private  int numPlayers;				// number of players
+	private  int curr;					// index of current Player
+	private  boolean gameWon;				// whether the this has been won
 	@SuppressWarnings("unused")
-	private static GameClient networker; 		// networking client  
-	private static Board board;					// holds board info
-	private static Parser parser;
+	private  GameClient networker; 		// networking client  
+	private  Board board;					// holds board info
+	private  Parser parser;
 
 	/* Constructor */
 
 	/**
-	 * Constructs a Game object with an array of initialized players 
+	 * Constructs a this object with an array of initialized players 
 	 * and a Board object.
 	 * 
-	 * @param numPlayers	the number of players in this Game
+	 * @param numPlayers	the number of players in this this
 	 * @param numWalls		the maximum number of walls to divide among Players
 	 */
-	public Game(int numPlayers) {
-		curr= 0;
-		Game.numPlayers = numPlayers;
-		players = new ArrayList<Player>();
-		int wallsEach = Game.NUM_OF_WALLS/numPlayers;
+	public Game() {
 
-		if(Game.numPlayers == MAX_NUMBER_PLAYERS){
-			players.add(new Player("1", 0, 4, 1, wallsEach));
-			players.add(new Player("2", 4, 8, 2, wallsEach));
-			players.add(new Player("3", 8, 4, 3, wallsEach));
-			players.add(new Player("4", 4, 0, 4, wallsEach));
-		} else {
-			players.add(new Player("1", 0, 4, 1, wallsEach));
-			players.add(new Player("2", 8, 4, 2, wallsEach));
-		}
-
-		board = new Board(players, NUM_OF_WALLS);
 	}
 
-	/* Game Play Methods */
+	/* this Play Methods */
 
 
 
@@ -96,37 +82,52 @@ public class Game extends Observable{
 	 * 
 	 * @param p	the Parser to parse Players' turns
 	 */
-	public void playGame(int numStartingPlayers, String fileName){
+	public void playthis(int numStartingPlayers, String fileName){
 
+		curr= 0;
+		this.numPlayers = numStartingPlayers;
+		players = new ArrayList<Player>();
+		int wallsEach = this.NUM_OF_WALLS/numPlayers;
+
+		if(this.numPlayers == MAX_NUMBER_PLAYERS){
+			players.add(new Player("1", 0, 4, 1, wallsEach));
+			players.add(new Player("2", 4, 8, 2, wallsEach));
+			players.add(new Player("3", 8, 4, 3, wallsEach));
+			players.add(new Player("4", 4, 0, 4, wallsEach));
+		} else {
+			players.add(new Player("1", 0, 4, 1, wallsEach));
+			players.add(new Player("2", 8, 4, 2, wallsEach));
+		}
+
+		board = new Board(players, NUM_OF_WALLS, gb);
 		// parser to parse moves
 		parser = new Parser();
-		// start game and call up UI
-		Game g = new Game( numStartingPlayers );
+		// start this and call up UI
 
-		Game.updatePlayer(players.get(curr));
-		GameBoard gb = new GameBoard();
+		this.updatePlayer(players.get(curr));
+		gb = new GameBoard(this);
 		gameWon = false;
 		this.registerObserver(gb);
 		gb.update(this, board);
 		Scanner sc = null;
 		if( !fileName.equals("") )
-			try { /*System.out.println("HERE");*/sc = new Scanner( new File( fileName ) ); } catch (FileNotFoundException e) {}
+			try { sc = new Scanner( new File( fileName ) ); } catch (FileNotFoundException e) {}
 		
 		// until someone wins, loop through turns
-		while( !Game.gameWon ){
+		while( !this.gameWon ){
 			// get move from player
-			TextFieldListener.textArea.append(Game.getCurrPlayer().getColorName() + ": ");
+			TextFieldListener.textArea.setForeground( this.getCurrPlayer().getColor() );
+			TextFieldListener.textArea.append(this.getCurrPlayer().getColorName() + ": ");
 			if( !fileName.equals("") )
-				try{ Thread.sleep(sleepTime);}catch(Exception e){}
-			String move = (fileName.equals("")) ? Game.getCurrPlayer().getMove() : sc.nextLine();
+				try{ Thread.sleep(sleepTime/4*3);}catch(Exception e){}
+			String move = (fileName.equals("")) ? this.getCurrPlayer().getMove() : sc.nextLine();
 			TextFieldListener.textArea.append( move + "\n" );
-			System.out.println(move);
 			move = (move.length()==2) ? parser.moveTranslate(move) : parser.wallTranslate(move);
 
 			if( !fileName.equals("") )
 				if(move.isEmpty()){
 					kickPlayer(players.get(curr));
-					System.out.println("Calling checkForWin");
+//					System.out.println("Calling checkForWin");
 					if(this.checkForWin()){
 						notifyObservers(ui);
 						break;
@@ -135,29 +136,32 @@ public class Game extends Observable{
 
 			// try to play turn
 			if(this.playTurn(move)){
-				System.out.println("Player took turn, checking if won.");
+//				System.out.println("Player took turn, checking if won.");
 				if(this.checkForWin()){
-					System.out.println(Game.getCurrPlayer().getColorName()+" won by reaching the end: "+players.get(curr).x()+","+players.get(curr).y());
+//					System.out.println(this.getCurrPlayer().getColorName()+" won by reaching the end: "+players.get(curr).x()+","+players.get(curr).y());
 					players.get(curr).clearMoves();
 					notifyObservers(ui);
 					break;
 				}
-				Game.nextTurn();					
-				System.out.println("CHECKING AVAILABLE MOVES FOR "+players.get(curr).getColorName()+"!!!!!!!!!!!");
-				Game.updatePlayer(players.get(curr));
-				this.notifyObservers(this, Game.getBoard());
+				this.nextTurn();					
+//				System.out.println("CHECKING AVAILABLE MOVES FOR "+players.get(curr).getColorName()+"!!!!!!!!!!!");
+				this.updatePlayer(players.get(curr));
+				this.notifyObservers(this, this.getBoard());
 			}else{
-				System.err.println("Player turn failed!");
+//				System.err.println("Player turn failed!");
 				kickPlayer(players.get(curr));
-				System.out.println("Calling checkForWin");
+//				System.out.println("Calling checkForWin");
 				if(this.checkForWin()){
-					System.out.println(Game.getCurrPlayer().getColorName()+" won by default.");
+//					System.out.println(this.getCurrPlayer().getColorName()+" won by default.");
 					players.get(curr).clearMoves();
 					notifyObservers(ui);
 					break;
 				}
 			}
+			if( !fileName.equals("") )
+				try{ Thread.sleep(sleepTime/4);}catch(Exception e){}
 		}
+		System.out.println("WE GOT HERE");
 	}
 
 	/**
@@ -165,7 +169,7 @@ public class Game extends Observable{
 	 * 
 	 * @param p Player
 	 */
-	public static void updatePlayer(Player p){
+	public void updatePlayer(Player p){
 		p.clearMoves();
 		board.possibleMoves(p);
 	}
@@ -181,29 +185,29 @@ public class Game extends Observable{
 		int y = Integer.parseInt(""+s.charAt(1));
 
 		if(s.length()==2){
-			return board.placePawn(Game.getCurrPlayer(), x, y);
+			return board.placePawn(this.getCurrPlayer(), x, y);
 		}else{
-			return board.placeWall(Game.getCurrPlayer(), x, y, ""+s.charAt(2));
+			return board.placeWall(this.getCurrPlayer(), x, y, ""+s.charAt(2));
 		}
 	}
 
 	/**
 	 * Checks to see if the current Player has made it into its "win area."
-	 * Sets Game.gameWon to true if the Player won.
+	 * Sets this.gameWon to true if the Player won.
 	 * 
 	 * @return	a boolean telling whether or not this Player has won
 	 */
 	public boolean checkForWin(){
-		Player p = Game.getCurrPlayer();
+		Player p = this.getCurrPlayer();
 		// if player made it to win area, player won
 		if(p.won()){
-			Game.gameWon = true;
+			this.gameWon = true;
 			return true;
 		}
 		// if player is the last player on the board, player won
 		if(numPlayers == 1){
-			System.out.println(Game.getCurrPlayer().getColorName()+" won!");
-			Game.gameWon = true;
+//			System.out.println(this.getCurrPlayer().getColorName()+" won!");
+			this.gameWon = true;
 			return true;
 		}
 
@@ -214,47 +218,48 @@ public class Game extends Observable{
 	 * Increments the current player to begin the next Player's turn.
 	 * 
 	 */
-	public static void nextTurn(){
+	public  void nextTurn(){
 		curr++;
 		if(curr >= numPlayers)
 			curr=0;
 	}
 
 	/**
-	 * Notifies Observer (the UI) of changes to the Game.
+	 * Notifies Observer (the UI) of changes to the this.
 	 * 
-	 * @param observable	an Observable object (this Game)
-	 * @param board			this Game's Board
+	 * @param observable	an Observable object (this this)
+	 * @param board			this this's Board
 	 */
 	public void notifyObservers(Observable observable,Board board) {    
-		Game.ui.get(0).update(observable,board);  
+		this.ui.get(0).update(observable,board);  
 	}
 
 	/**
-	 * Disposes of the previous GameBoard (UI) and creates a new Game.
+	 * Disposes of the previous GameBoard (UI) and creates a new this.
 	 * 
 	 */
 
-	public static void newGame( int numStartingPlayers ){
-		GameBoard.closeFrame();
+	public  void newGame( int numStartingPlayers ){
+		gb.closeFrame();
 		/*
-		for(Player p : Game.players)
+		for(Player p : this.players)
 			p = null;
-		for(Observer o : Game.ui)
+		for(Observer o : this.ui)
 			o=null;
 		*/
-		System.out.println("NEWGAME");
-		g.playGame(numStartingPlayers, "");
+//		System.out.println("newGame");
+		g = new Game();
+		g.playthis(numStartingPlayers, "");
 	}
 
 	/**
-	 * Kicks a Player from the game by removing it from the player array.
+	 * Kicks a Player from the this by removing it from the player array.
 	 * Does not remove Player's placed walls. Player will not be asked for 
 	 * turns or displayed on the board.
 	 * 
 	 * @param p Player
 	 */
-	public static void kickPlayer(Player p){
+	public  void kickPlayer(Player p){
 		int beforeKick = numPlayers;
 		// remove player
 		players.remove(p);
@@ -281,21 +286,21 @@ public class Game extends Observable{
 	/* Get Methods */
 
 	/**
-	 * Gets an ArrayList of this Game's Observers. We only ever use 
+	 * Gets an ArrayList of this this's Observers. We only ever use 
 	 * the first one.
 	 * 
-	 * @return	the list of observers for this game (the UI)	
+	 * @return	the list of observers for this this (the UI)	
 	 */
 	public ArrayList<Observer> getObservers() {  
 		return ui;  
 	}
 
 	/**
-	 * Gets the Board from this Game.
+	 * Gets the Board from this this.
 	 * 
 	 * @return		a Board object
 	 */
-	public static Board getBoard(){
+	public  Board getBoard(){
 		return board;
 	}
 
@@ -304,7 +309,7 @@ public class Game extends Observable{
 	 * 
 	 * @return	the Player currently taking its turn
 	 */
-	public static Player getCurrPlayer(){
+	public  Player getCurrPlayer(){
 		return players.get(curr);
 	}
 
@@ -313,46 +318,46 @@ public class Game extends Observable{
 	 * 
 	 * @return	the Player whose turn it just was
 	 */
-	public static Player getPrevPlayer(){
+	public  Player getPrevPlayer(){
 		if(players.get(curr).getPnum()==1)
 			return players.get(players.size()-1);
 		else return players.get(curr-1);
 	}
 
-	public static ArrayList<Player> getPlayerAry(){
+	public  ArrayList<Player> getPlayerAry(){
 		return players;
 	}
 	/**
-	 * Gets the number of Players in this Game.
+	 * Gets the number of Players in this this.
 	 * 
 	 * @return	an integer number of Players
 	 */
-	public static int getNumPlayers(){
+	public  int getNumPlayers(){
 		return numPlayers;
 	}
 
 	/**
-	 * Gets this Game's gameWon boolean.
+	 * Gets this this's thisWon boolean.
 	 * 
-	 * @return	a boolean telling whether or not this Game has been won
+	 * @return	a boolean telling whether or not this this has been won
 	 */
 	public boolean gameWon(){
-		return Game.gameWon;
+		return this.gameWon;
 	}
 
 	/* Set Methods */
 
 	/**
-	 * Sets an ArrayList of Observers as this Game's UI.
+	 * Sets an ArrayList of Observers as this this's UI.
 	 * 
 	 * @param observers		an ArrayList of Observers (one GameBoard)
 	 */
 	public void setObservers(ArrayList<Observer> observers) {  
-		Game.ui = observers;  
+		this.ui = observers;  
 	}
 
 	/**
-	 * Adds an Observer (GameBoard) to this Game's Observers.
+	 * Adds an Observer (GameBoard) to this this's Observers.
 	 * 
 	 * @param observer		a GameBoard object
 	 */
@@ -362,7 +367,7 @@ public class Game extends Observable{
 	}
 
 	/**
-	 * Removes an Observer from this Game's Observers
+	 * Removes an Observer from this this's Observers
 	 * 
 	 * @param observer		a GameBoard object
 	 */
@@ -370,9 +375,41 @@ public class Game extends Observable{
 		ui.remove(observer);  
 
 	}
+	
+	public int getWallGap(){
+		return this.WallGap;
+	}
+
+	public Dimension getHWall() {
+		return HWall;
+	}
+
+	public Dimension getIntersection() {
+		return Intersection;
+	}
+
+	public Dimension getVWall() {
+		return VWall;
+	}
+
+	public int getPlayerHeight() {
+		return PlayerHeight;
+	}
+
+	public int getColorIncrement() {
+		return colorIncrement;
+	}
+
+	public int getPlayerWidth() {
+		return PlayerWidth;
+	}
+
+	public Dimension getPlayerSize() {
+		return PlayerSize;
+	}
 
 	/**
-	 * Main method constructs and starts a Game based on optional command line
+	 * Main method constructs and starts a this based on optional command line
 	 * arguments. Arguments may be (int numberOfPlayers) or 
 	 * (int numberOfPlayers, String fileName).
 	 * 
@@ -390,9 +427,8 @@ public class Game extends Observable{
 			numStartingPlayers = Integer.parseInt(args[0]);
 			fileName = args[1];
 		}
-		Game g = new Game(numStartingPlayers);
-		g.playGame( numStartingPlayers, fileName);
-		g.notifyObservers(g, Game.getBoard());
+		Game g = new Game();
+		g.playthis( numStartingPlayers, fileName);
+		g.notifyObservers(g, g.getBoard());
 	}
-
 }
