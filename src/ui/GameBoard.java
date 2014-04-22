@@ -384,14 +384,14 @@ public class GameBoard extends JPanel implements Observer {
 		holder1.add( BHBorder );
 		holder1.add( rightBarPanel );
 		if(g.getNumPlayers()==2){
-			statAry = new StatButton[2];
+			this.statAry = new StatButton[2];
 			for(int i=0; i<2; i++){
 				StatButton b = new StatButton(i, g, this);
 				rightBarPanel.add( b );
 				statAry[i] = b;
 			}
 		}else{
-			statAry = new StatButton[4];
+			this.statAry = new StatButton[4];
 			for(int i=0; i<4; i++){
 				StatButton b = new StatButton(i, g, this);
 				rightBarPanel.add( b );

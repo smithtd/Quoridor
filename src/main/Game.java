@@ -137,7 +137,7 @@ public class Game extends Observable{
 			// try to play turn
 			if(this.playTurn(move)){
 //				System.out.println("Player took turn, checking if won.");
-				if(this.checkForWin()){
+ 				if(this.checkForWin()){
 //					System.out.println(this.getCurrPlayer().getColorName()+" won by reaching the end: "+players.get(curr).x()+","+players.get(curr).y());
 					players.get(curr).clearMoves();
 					notifyObservers(ui);
