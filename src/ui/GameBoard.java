@@ -429,7 +429,8 @@ public class GameBoard extends JPanel implements Observer {
 	public void addPlayerButtons(Board b){
 		ArrayList<Player> players = b.players();
 		for(Player p : players)
-			pbAry[p.x()][p.y()].addPlayer(p);	
+			if(!p.hasBeenKicked())
+				pbAry[p.x()][p.y()].addPlayer(p);	
 	}
 	
 	/**
