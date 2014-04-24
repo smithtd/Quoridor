@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -145,8 +146,11 @@ public class Player implements Players {
 	
 	public void decWalls(){
 		wallTotal--;
-		for( int i=0; i< gb.statAry.length; i++ )
-			gb.statAry[i].repaint();
+		
+		System.out.println(Arrays.toString(gb.getStatAry()));
+		
+		for( int i=0; i< gb.getStatAry().length; i++ )
+			gb.getStatAry()[i].repaint();
 	}
 	
 	/**
@@ -282,7 +286,7 @@ public class Player implements Players {
 	 */
 	public void usedWall(){
 		wallTotal--;
-		gb.statAry[this.getPnum()].updateWalls();
+		gb.getStatAry()[this.getPnum()].updateWalls();
 	}
 
 	/**

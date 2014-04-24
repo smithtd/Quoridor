@@ -18,7 +18,7 @@ public class Board {
 	
 	/* Instance variables */
 	
-	private GameBoard gb;
+	private static GameBoard gb;
 	private ArrayList<Player> players;	// holds players on board
 	private Wall[] walls;		// holds walls on board
 	private int numWalls;		// total # walls on board
@@ -280,7 +280,7 @@ public class Board {
 		Wall w = new Wall(x, y, type);
 		if(isLegalWallPlacement(p, w)){
 			p.decWalls();
-			gb.statAry[p.getPnum()-1].updateWalls();
+			gb.getStatAry()[p.getPnum()-1].updateWalls();
 			walls[numWalls] = w;
 			numWalls++;
 			return true;

@@ -14,12 +14,10 @@ public class PlayerStatButton extends JButton {
 	
 	public int playerNum;
 	public Color c;
-	private Game game;
-	private GameBoard gb;
+	private static Game game;
 	
 	public PlayerStatButton(int pNum, Game game, GameBoard gb){
 		super();
-		this.gb = gb;
 		this.setOpaque(true);
 		this.setBorderPainted(false);
 		this.playerNum = pNum;

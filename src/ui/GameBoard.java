@@ -7,6 +7,7 @@ import javax.swing.*;
 
 // use to implement Subject/Observer design pattern
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Observable;  
 import java.util.Observer;  
 
@@ -34,7 +35,7 @@ public class GameBoard extends JPanel implements Observer {
 	private WallButton[][] wbAry;
 	private LongWallButton[][] vertWalls;
 	private LongWallButton[][] horzWalls;
-	public StatButton[] statAry;
+	private static StatButton[] statAry;
 	private JPanel buttonHolder;
 	private JPanel BHBorder;
 	private JPanel rightBarPanel;
@@ -45,7 +46,7 @@ public class GameBoard extends JPanel implements Observer {
 	private JPanel holder2;
 	private JPanel holder3;
 	private boolean closeFromX;
-	private Game g;
+	private static Game g;
 	/* Constructor */
 
 	/**
@@ -55,7 +56,7 @@ public class GameBoard extends JPanel implements Observer {
 	 */
 	public GameBoard(Game g){
 		super();
-		this.g=g;
+		GameBoard.g=g;
 		closeFromX = true;
 		FlowLayout flow = new FlowLayout();
 		flow.setHgap( 0 );
@@ -145,7 +146,7 @@ public class GameBoard extends JPanel implements Observer {
 	public void update(Observable game, Object board) {  
 		// convert from observable and object
 		Board b = (Board) board;
-		this.g = (Game) game;
+		GameBoard.g = (Game) game;
 
 		// clear board
 		this.clearPlayers();
@@ -383,21 +384,23 @@ public class GameBoard extends JPanel implements Observer {
 		BHBorder.add( new SpacerButton( g.getIntersection(), Color.DARK_GRAY ) );
 		holder1.add( BHBorder );
 		holder1.add( rightBarPanel );
+		System.out.println("HERE");
 		if(g.getNumPlayers()==2){
-			this.statAry = new StatButton[2];
+			statAry = new StatButton[2];
 			for(int i=0; i<2; i++){
 				StatButton b = new StatButton(i, g, this);
 				rightBarPanel.add( b );
 				statAry[i] = b;
 			}
 		}else{
-			this.statAry = new StatButton[4];
+			statAry = new StatButton[4];
 			for(int i=0; i<4; i++){
 				StatButton b = new StatButton(i, g, this);
 				rightBarPanel.add( b );
 				statAry[i] = b;
 			}
 		}	
+		System.out.println(Arrays.toString(statAry));
 
 		topBarPanel.add( new SpacerButton( g.getVWall().width, getTopBarDim().height, Color.DARK_GRAY ) );
 		topBarPanel.add( new SpacerButton( g.getHWall().width, getTopBarDim().height, Color.LIGHT_GRAY, "" + (char)('A') ) );
@@ -511,6 +514,9 @@ public class GameBoard extends JPanel implements Observer {
 			btn.setBackground( Color.MAGENTA );
 	}	
 
+	public StatButton[] getStatAry(){
+		return GameBoard.statAry;
+	}
 	/**
 	 * Set all highlighted buttons back to black.
 	 */

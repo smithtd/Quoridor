@@ -40,8 +40,8 @@ public class Game extends Observable{
 	private  Dimension VWall = new Dimension( this.WallGap, this.getPlayerHeight() );
 	private  Dimension Intersection = new Dimension( getVWall().width, getHWall().height );
 	private  Dimension PlayerSize = new Dimension( getHWall().width, getVWall().height );
-	private  Game g;
-	private GameBoard gb;
+	private static Game g;
+	private static GameBoard gb;
 
 	/* Private Instance variables */
 

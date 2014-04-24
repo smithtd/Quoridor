@@ -11,15 +11,10 @@ import main.Game;
 @SuppressWarnings("serial")
 public class EndZoneButton extends JButton{
 	
-	private String position;
-	private Game game;
-	private GameBoard gb;
+	
 	public EndZoneButton( int numPlayers, String position, Game game, GameBoard gb ){
 		super();
-		this.game = game;
-		this.gb = gb;
 		this.setBorder(null);
-		this.position = position;
 		
 		if( position.equals("U") || position.equals("D") )
 			this.setPreferredSize( new Dimension( gb.getButtonHolderDim().width, game.getIntersection().height ) );
