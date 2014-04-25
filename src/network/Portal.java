@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 
 /**
@@ -31,6 +32,8 @@ public class Portal {
 	private BufferedReader incoming;
 	/** Send data out */
 	private PrintStream outgoing;
+	/** AI Identifier */
+	private String aiIdentifier;
 	
 	/** Tell if still in game or not */
 	private boolean inGame;
@@ -55,6 +58,11 @@ public class Portal {
 		}
 		
 		this.inGame = true;
+		
+		String helloMessage = this.getMessage();
+		Scanner sc = new Scanner(helloMessage);
+		sc.next(); this.aiIdentifier = sc.next();
+		sc.close();
 		
 	}
 	
@@ -97,5 +105,12 @@ public class Portal {
 		return this.inGame;
 	}
 	
+	/** 
+	 * 
+	 * @return - AI Identifier of this Portal.
+	 */
+	public String getAIIdentifier(){
+		return this.aiIdentifier;
+	}
 	
 }

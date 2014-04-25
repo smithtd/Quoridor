@@ -37,8 +37,13 @@ public class GameClient {
 		
 	}
 	
+	
 	public void run() {
-		System.out.println("hello");
+		// Send the initial QUORIDOR message to each move server
+		for(int i = 0; i < players.length; i++) {
+			players[i].sendMessage(Messages.START_GAME + " " + (i+1) + " " + players[players.length/(i+1)].getAIIdentifier());
+		}
+		
 	}
 	
 	/**
