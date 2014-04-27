@@ -183,34 +183,16 @@ public class GameBoard extends JPanel implements Observer {
 		
 		// display buttons in dialog
 		ButtonGroup btngrp = new ButtonGroup();
-		final JRadioButton b1 = new JRadioButton("New 2 player game",false);
-		final JRadioButton b2 = new JRadioButton("New 4 player game",false);
 		final JRadioButton b3 = new JRadioButton("Quit",false);
 		
 		// add action listeners to dialog buttons
-		b1.addActionListener( new ActionListener(){
-			public void actionPerformed( ActionEvent e ){
-				Game.new2PlayerGame();
-				LongWallButtonFrame.dispose();
-			}
-		});
-		b2.addActionListener( new ActionListener(){
-			public void actionPerformed( ActionEvent e ){
-				Game.new4PlayerGame();
-				LongWallButtonFrame.dispose();
-			}
-		});
 		b3.addActionListener( new ActionListener(){
 			public void actionPerformed( ActionEvent e ){
 				System.exit(0);
 			}
 		});
-		btngrp.add(b1);
-	    btngrp.add(b2);
 	    btngrp.add(b3);
 	    jp1.add(b3, FlowLayout.LEFT);
-	    jp1.add(b2, FlowLayout.LEFT);
-		jp1.add(b1, FlowLayout.LEFT);
 		LongWallButtonFrame.add( jp1, BorderLayout.NORTH );
 		LongWallButtonFrame.setLocation( 350, 300 );
 		LongWallButtonFrame.setSize( 300, 300 );
