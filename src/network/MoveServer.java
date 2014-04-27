@@ -151,7 +151,10 @@ public class MoveServer {
 	private String getMove() {
 
 		System.out.print("Enter a move/wall placement >> ");
-		return "MOVE " + this.playerInput.next();
+		String m = this.playerInput.next();
+		if (m.isEmpty())
+			m = "z4";	// some random illegal move since they didn't enter anything in
+		return "MOVE " + m;
 
 	}
 

@@ -12,6 +12,8 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import network.GameClient;
+
 import players.Player;
 import board.Board;
 import ui.GameBoard;
@@ -26,33 +28,34 @@ import parser.Parser;
  * Team 511-tactical
  */
 public class Game extends Observable{
-	
+
 	/* Static variables */
 	public static int WallGap = 10;
 	public static int PlayerWidth = 40;
 	public static int PlayerHeight = 40;
 	public static int sleepTime = 333;
-	
+
 	public static Dimension HWall = new Dimension( Game.PlayerWidth, Game.WallGap );
 	public static Dimension VWall = new Dimension( Game.WallGap, Game.PlayerHeight );
 	public static Dimension Intersection = new Dimension( VWall.width, HWall.height );
 	public static Dimension PlayerSize = new Dimension( HWall.width, VWall.height );
-	
+
 	private static final int NUM_OF_WALLS = 20; 
 	private static final int MAX_NUMBER_PLAYERS = 4;
-	
+
 	/* Instance variables */
-	
+
 	private static ArrayList<Observer> ui = new ArrayList<Observer>();  
 	private static Board board;					// holds board info
 	private static ArrayList<Player> players;	// Player ArrayList to hold players
 	private static int numPlayers;				// number of players
 	private static int curr;					// index of current Player
 	private static boolean gameWon;				// whether the game has been won
-	
-	
+	private GameClient network;			// access to the information in the client
+
+
 	/* Constructor */
-	
+
 	/**
 	 * Constructs a Game object with an array of initialized players 
 	 * and a Board object.
@@ -60,12 +63,12 @@ public class Game extends Observable{
 	 * @param numPlayers	the number of players in this Game
 	 * @param numWalls		the maximum number of walls to divide among Players
 	 */
-	public Game(int numPlayers) {
+	public Game(int numPlayers, GameClient g) {
 		curr= 0;
 		Game.numPlayers = numPlayers;
 		players = new ArrayList<Player>();
 		int wallsEach = NUM_OF_WALLS/numPlayers;
-		
+
 		if(Game.numPlayers == MAX_NUMBER_PLAYERS){
 			players.add(new Player("1", 0, 4, 1, wallsEach));
 			players.add(new Player("2", 4, 8, 2, wallsEach));
@@ -75,25 +78,28 @@ public class Game extends Observable{
 			players.add(new Player("1", 0, 4, 1, wallsEach));
 			players.add(new Player("2", 8, 4, 2, wallsEach));
 		}
-		
+
+		this.network = g;
 		board = new Board(players, NUM_OF_WALLS);
 	}
-	
-	/* Game Play Methods */
-	
 
-	
+	/* Game Play Methods */
+
+
+
 	/**
 	 * Starts the game by adding a GameBoard (UI) to this Game.
 	 * 
 	 */
 	public void startGame(){
+
 		Game.updatePlayer(players.get(curr));
 		GameBoard gb = new GameBoard();
 		this.registerObserver(gb);
 		gb.update(this, board);
+
 	}
-	
+
 	/**
 	 * Loops through the Players' turns until someone wins.
 	 * Gets the move, translates the move, plays the move, and then updates
@@ -105,15 +111,17 @@ public class Game extends Observable{
 		// until someone wins, loop through turns
 		while(!Game.gameWon){
 			System.out.println(Game.getCurrPlayer().getColorName()+" player's turn");
-			
+
 			// get move from player
-			String move = Game.getCurrPlayer().getMove();
+
+			// String move = Game.getCurrPlayer().getMove();
+			String move = this.network.getMove();
 			if(move.length()==2){
 				move = p.moveTranslate(move);
 			}else{
 				move = p.wallTranslate(move);
 			}
-			
+
 			if(move.isEmpty()){
 				kickPlayer();
 				Game.nextTurn();
@@ -123,7 +131,7 @@ public class Game extends Observable{
 					break;
 				}
 			}
-			
+
 			// try to play turn
 			if(this.playTurn(move)){
 				System.out.println("Player took turn, checking if won.");
@@ -145,13 +153,13 @@ public class Game extends Observable{
 					break;
 				}
 			}
-								
+
 			System.out.println("CHECKING AVAILABLE MOVES FOR "+players.get(curr).getColorName()+"!!!!!!!!!!!");
 			Game.updatePlayer(players.get(curr));
 			this.notifyObservers(this, Game.getBoard());
 		}
 	}
-	
+
 	/**
 	 * Loops through a file of Players' turns until someone wins.
 	 * Gets the move, translates the move, plays the move, and then updates
@@ -163,13 +171,13 @@ public class Game extends Observable{
 	public void playGame(Parser p, String fileName){
 		try{
 			Scanner sc = new Scanner(new File(fileName));
-			
+
 			// until someone wins, loop through turns
 			while(!Game.gameWon && sc.hasNextLine()){
 				// sleep 1 second so game is watchable
 				Thread.sleep( sleepTime ); 
 				System.out.println(Game.getCurrPlayer().getColorName()+" player's turn");
-				
+
 				// get move from player
 				String move = sc.nextLine();
 				if(move.length()==2){
@@ -177,7 +185,7 @@ public class Game extends Observable{
 				}else{
 					move = p.wallTranslate(move);
 				}
-				
+
 				if(move.isEmpty()){
 					kickPlayer();
 					Game.nextTurn();
@@ -187,7 +195,7 @@ public class Game extends Observable{
 						break;
 					}
 				}
-				
+
 				// try to play turn
 				if(this.playTurn(move)){
 					System.out.println("Player took turn, checking if won.");
@@ -209,7 +217,7 @@ public class Game extends Observable{
 						break;
 					}
 				}
-									
+
 				System.out.println("CHECKING AVAILABLE MOVES FOR "+players.get(curr).getColorName()+"!!!!!!!!!!!");
 				Game.updatePlayer(players.get(curr));
 				this.notifyObservers(this, Game.getBoard());
@@ -218,7 +226,7 @@ public class Game extends Observable{
 		}catch(FileNotFoundException e){	
 		}catch (InterruptedException e) {}
 	}
-	
+
 	/**
 	 * Resets Player's moves and retrieves current available moves.
 	 * 
@@ -228,7 +236,7 @@ public class Game extends Observable{
 		p.clearMoves();
 		board.possibleMoves(p);
 	}
-	
+
 	/**
 	 * Parse and play the turn.
 	 * 
@@ -238,14 +246,14 @@ public class Game extends Observable{
 	public boolean playTurn(String s){
 		int x = Integer.parseInt(""+s.charAt(0));
 		int y = Integer.parseInt(""+s.charAt(1));
-		
+
 		if(s.length()==2){
 			return board.placePawn(Game.getCurrPlayer(), x, y);
 		}else{
 			return board.placeWall(Game.getCurrPlayer(), x, y, ""+s.charAt(2));
 		}
 	}
-	
+
 	/**
 	 * Checks to see if the current Player has made it into its "win area."
 	 * Sets Game.gameWon to true if the Player won.
@@ -264,10 +272,10 @@ public class Game extends Observable{
 			Game.gameWon = true;
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Increments the current player to begin the next Player's turn.
 	 * 
@@ -276,45 +284,24 @@ public class Game extends Observable{
 		curr++;
 		if(curr >= players.size())
 			curr=0;
-		
+
 		if(players.get(curr).hasBeenKicked()){
 			System.out.println(players.get(curr).getColorName()+" has been kicked. Check next player.");
 			nextTurn();
 		}
 	}
-	
-    /**
-     * Notifies Observer (the UI) of changes to the Game.
-     * 
-     * @param observable	an Observable object (this Game)
-     * @param board			this Game's Board
-     */
-    public void notifyObservers(Observable observable,Board board) {    
-    	Game.ui.get(0).update(observable,board);  
-    }
-	
+
 	/**
-	 * Disposes of the previous GameBoard (UI) and creates a new Game.
+	 * Notifies Observer (the UI) of changes to the Game.
 	 * 
+	 * @param observable	an Observable object (this Game)
+	 * @param board			this Game's Board
 	 */
-	public static void new4PlayerGame(){
-		GameBoard ui = (GameBoard) Game.ui.get(0);
-		ui.getFrame().dispose();
-		Game g = new Game( 4 );
-		g.startGame();
+	public void notifyObservers(Observable observable,Board board) {    
+		Game.ui.get(0).update(observable,board);  
 	}
-	
-	/**
-	 * Disposes of the previous GameBoard (UI) and creates a new Game.
-	 * 
-	 */
-	public static void new2PlayerGame(){
-		GameBoard ui = (GameBoard) Game.ui.get(0);
-		ui.getFrame().dispose();
-		Game g = new Game( 2 );
-		g.startGame();
-	}
-	
+
+
 	/**
 	 * Kicks a Player from the game by removing it from the player array.
 	 * Does not remove Player's placed walls. Player will not be asked for 
@@ -331,7 +318,7 @@ public class Game extends Observable{
 		board.updatePlayers(players);
 		System.out.println("Kicked "+players.get(curr).getColorName()+" player.");
 	}
-    
+
 	/**
 	 * Exits the program with exit code 0.
 	 * 
@@ -340,9 +327,9 @@ public class Game extends Observable{
 		System.out.println("Quitting game");
 		System.exit(0);
 	}
-	
+
 	/* Get Methods */
-	
+
 	/**
 	 * Gets an ArrayList of this Game's Observers. We only ever use 
 	 * the first one.
@@ -350,9 +337,9 @@ public class Game extends Observable{
 	 * @return	the list of observers for this game (the UI)	
 	 */
 	public ArrayList<Observer> getObservers() {  
-        return ui;  
-    }
-	
+		return ui;  
+	}
+
 	/**
 	 * Gets the Board from this Game.
 	 * 
@@ -361,7 +348,7 @@ public class Game extends Observable{
 	public static Board getBoard(){
 		return board;
 	}
-	
+
 	/**
 	 * Gets the current Player.
 	 * 
@@ -370,7 +357,7 @@ public class Game extends Observable{
 	public static Player getCurrPlayer(){
 		return players.get(curr);
 	}
-	
+
 	/**
 	 * Gets the previous Player.
 	 * 
@@ -381,7 +368,7 @@ public class Game extends Observable{
 			return players.get(players.size()-1);
 		else return players.get(curr-1);
 	}
-	
+
 	public static ArrayList<Player> getPlayerAry(){
 		return players;
 	}
@@ -393,7 +380,7 @@ public class Game extends Observable{
 	public static int getNumPlayers(){
 		return numPlayers;
 	}
-	
+
 	/**
 	 * Gets this Game's gameWon boolean.
 	 * 
@@ -402,37 +389,37 @@ public class Game extends Observable{
 	public boolean gameWon(){
 		return Game.gameWon;
 	}
-	
+
 	/* Set Methods */
-	
-    /**
-     * Sets an ArrayList of Observers as this Game's UI.
-     * 
-     * @param observers		an ArrayList of Observers (one GameBoard)
-     */
-    public void setObservers(ArrayList<Observer> observers) {  
-        Game.ui = observers;  
-    }
-    
-    /**
-     * Adds an Observer (GameBoard) to this Game's Observers.
-     * 
-     * @param observer		a GameBoard object
-     */
-    public void registerObserver(Observer observer) {  
-         ui.add(observer);  
-          
-    }
-  
-    /**
-     * Removes an Observer from this Game's Observers
-     * 
-     * @param observer		a GameBoard object
-     */
-    public void removeObserver(Observer observer) {  
-         ui.remove(observer);  
-          
-    }
+
+	/**
+	 * Sets an ArrayList of Observers as this Game's UI.
+	 * 
+	 * @param observers		an ArrayList of Observers (one GameBoard)
+	 */
+	public void setObservers(ArrayList<Observer> observers) {  
+		Game.ui = observers;  
+	}
+
+	/**
+	 * Adds an Observer (GameBoard) to this Game's Observers.
+	 * 
+	 * @param observer		a GameBoard object
+	 */
+	public void registerObserver(Observer observer) {  
+		ui.add(observer);  
+
+	}
+
+	/**
+	 * Removes an Observer from this Game's Observers
+	 * 
+	 * @param observer		a GameBoard object
+	 */
+	public void removeObserver(Observer observer) {  
+		ui.remove(observer);  
+
+	}
 
 	/**
 	 * Main method constructs and starts a Game based on optional command line
@@ -441,11 +428,13 @@ public class Game extends Observable{
 	 * 
 	 * @param args	(optional) (int numberOfPlayers) or (int numberOfPlayers, String fileName)
 	 */
+
+	/*
 	public static void main(String[] args) {
 		// optionally can pass in file to run as demo or pass in num of players
 		int players = 2;
 		String fileName = "";
-		
+
 		if( args.length == 1 )
 			players = Integer.parseInt(args[0]);
 
@@ -453,21 +442,22 @@ public class Game extends Observable{
 			players = Integer.parseInt(args[0]);
 			fileName = args[1];
 		}
-		
+
 		// parser to parse moves
 		Parser p = new Parser();
-		
+
 		// start game and call up UI
 		Game g = new Game( players );
 		g.startGame();
-		
+
 		if(fileName.length() == 0)
 			g.playGame(p);
 		else
 			g.playGame(p, fileName);
-		
+
 		// notify observer, since we have a winner, ui will execute end of game
 		g.notifyObservers(g, Game.getBoard());
 	}
-    
+
+	 */
 }

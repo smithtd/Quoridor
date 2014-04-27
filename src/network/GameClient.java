@@ -8,6 +8,7 @@
 
 package network;
 
+import main.Game;
 import parser.Parser;
 
 /**
@@ -24,6 +25,12 @@ public class GameClient {
 
 	/** Hold the information of the player */
 	private Portal[] players;
+	/** Input Streams from Move Servers */
+	
+	/** Access the correct player for moves, etc */
+	private int turnNumber;
+	
+	private Game game;
 	
 	public GameClient(String[] args){
 		// The number of portals(connections) should equal the number
@@ -34,6 +41,8 @@ public class GameClient {
 			p = args[i].split(":");
 			this.players[i] = new Portal(p[0], Integer.parseInt(p[1]));
 		}
+		this.turnNumber = 0;
+		this.game = new Game(this.players.length, this);
 		
 	}
 	
@@ -46,7 +55,9 @@ public class GameClient {
 			players[0].sendMessage(Messages.START_GAME + " " + 1 + " " + players[1].getAIIdentifier());
 			
 			players[1].sendMessage(Messages.START_GAME + " " + 2 + " " + players[0].getAIIdentifier());
+			
 		} else {
+			
 			players[0].sendMessage(Messages.START_GAME + " " + 1 + " " + players[1].getAIIdentifier() 
 					+ " " + players[2].getAIIdentifier() + " " + players[3].getAIIdentifier());
 			
@@ -60,6 +71,15 @@ public class GameClient {
 					+ " " + players[1].getAIIdentifier() + " " + players[2].getAIIdentifier());
 			
 		}
+		// Start the game
+		this.game.startGame();
+		
+		// Parser for the moves, walls
+		Parser p = new Parser(); 
+		game.playGame(p);
+		
+		game.notifyObservers(game, Game.getBoard());
+		// While noone has won, continue servicing players.
 		
 
 		
@@ -82,11 +102,6 @@ public class GameClient {
 			gameClient.start();
 		} 	else
 			usage();	// This exits the program.
-			
-		
-		
-		
-		
 	}
 	
 	/**
@@ -120,6 +135,19 @@ public class GameClient {
 		System.exit(0);
 	}
 	
+	/**
+	 * Get a move from a specific portal
+	 */
+	public String getMove() {
+		while(!this.players[this.turnNumber].inGame())
+			this.turnNumber = (this.turnNumber+1) % this.players.length;
+			
+		this.players[this.turnNumber].sendMessage(Messages.ASK_FOR_MOVE);
+		int temp = this.turnNumber;
+		this.turnNumber++; this.turnNumber = this.turnNumber % this.players.length;
+		return this.players[temp].getMessage();
+		
+	}
 	
 
 }

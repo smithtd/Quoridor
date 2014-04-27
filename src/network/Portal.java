@@ -34,10 +34,10 @@ public class Portal {
 	private PrintStream outgoing;
 	/** AI Identifier */
 	private String aiIdentifier;
-	
+
 	/** Tell if still in game or not */
 	private boolean inGame;
-	
+
 	/**
 	 * Create an instance of a portal for communication with a server.
 	 * @param name - Machine name of the machine that is running the moveServer
@@ -46,7 +46,7 @@ public class Portal {
 	public Portal(String name, int p){
 		this.machineName = name;
 		this.port = p;
-		
+
 		try {
 			this.socket = new Socket(this.machineName, this.port);
 			this.incoming = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
@@ -56,32 +56,32 @@ public class Portal {
 		} catch (IOException e) {
 			System.out.println("Could not find " + this.machineName + ":" + this.port);
 		}
-		
+
 		this.inGame = true;
-		
+
 		String helloMessage = this.getMessage();
 		Scanner sc = new Scanner(helloMessage);
 		sc.next(); this.aiIdentifier = sc.next();
 		sc.close();
-		
+
 	}
-	
+
 	/**
 	 * Get a message from the moveServer.
 	 * @return - Message from the moveServer.
 	 */
 	public String getMessage() {
-		
+
 		String message = "";
-		
+
 		try {
 			message = this.incoming.readLine();
 		} catch (IOException e) {
-			
+
 		}
 		return message;
 	}
-	
+
 	/**
 	 * Send a message to the moveServer
 	 * @param message - Message to send to the server
@@ -89,14 +89,14 @@ public class Portal {
 	public void sendMessage(String message) {
 		this.outgoing.println(message);
 	}
-	
+
 	/**
 	 * Set this flag to boot the player.
 	 */
 	public void bootPlayer() {
 		this.inGame = false;
 	}
-	
+
 	/**
 	 * Tell if the player is still in the game.
 	 * @return - True if in game, else false
@@ -104,7 +104,7 @@ public class Portal {
 	public boolean inGame() {
 		return this.inGame;
 	}
-	
+
 	/** 
 	 * 
 	 * @return - AI Identifier of this Portal.
@@ -113,4 +113,6 @@ public class Portal {
 		return this.aiIdentifier;
 	}
 	
+	
+
 }
