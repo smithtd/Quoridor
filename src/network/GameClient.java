@@ -8,6 +8,8 @@
 
 package network;
 
+import java.util.Scanner;
+
 import main.Game;
 import parser.Parser;
 
@@ -21,17 +23,17 @@ import parser.Parser;
  *
  */
 public class GameClient {
-	
+
 
 	/** Hold the information of the player */
 	private Portal[] players;
 	/** Input Streams from Move Servers */
-	
+
 	/** Access the correct player for moves, etc */
 	private int turnNumber;
-	
+
 	private Game game;
-	
+
 	public GameClient(String[] args){
 		// The number of portals(connections) should equal the number
 		// of command line arguments.
@@ -43,67 +45,67 @@ public class GameClient {
 		}
 		this.turnNumber = 0;
 		this.game = new Game(this.players.length, this);
-		
+
 	}
-	
-	
-	
+
+
+
 	public void start() {
 		// Send the initial QUORIDOR message to each move server
-		
+
 		if(players.length == 2) {
 			players[0].sendMessage(Messages.START_GAME + " " + 1 + " " + players[1].getAIIdentifier());
-			
+
 			players[1].sendMessage(Messages.START_GAME + " " + 2 + " " + players[0].getAIIdentifier());
-			
+
 		} else {
-			
+
 			players[0].sendMessage(Messages.START_GAME + " " + 1 + " " + players[1].getAIIdentifier() 
 					+ " " + players[2].getAIIdentifier() + " " + players[3].getAIIdentifier());
-			
+
 			players[1].sendMessage(Messages.START_GAME + " " + 4 + " " + players[2].getAIIdentifier() 
 					+ " " + players[3].getAIIdentifier() + " " + players[0].getAIIdentifier());
-			
+
 			players[2].sendMessage(Messages.START_GAME + " " + 3 + " " + players[3].getAIIdentifier() 
 					+ " " + players[0].getAIIdentifier() + " " + players[1].getAIIdentifier());
-			
+
 			players[3].sendMessage(Messages.START_GAME + " " + 2 + " " + players[0].getAIIdentifier() 
 					+ " " + players[1].getAIIdentifier() + " " + players[2].getAIIdentifier());
-			
+
 		}
 		// Start the game
 		this.game.startGame();
-		
+
 		// Parser for the moves, walls
 		Parser p = new Parser(); 
 		game.playGame(p);
-		
+
 		game.notifyObservers(game, Game.getBoard());
 		// While noone has won, continue servicing players.
-		
 
-		
+
+
 	}
-	
+
 	/**
 	 * Handle command line parameters, set up an instance of the GameClient
 	 * start the game
 	 * @param args - IPP Pairs.. Hopefully.
 	 */
 	public static void main(String[] args) {
-		
+
 		System.out.println(args.length);
-		
+
 		if(!(args.length == 2 || args.length == 4))
 			usage();	// This exits the program
-		
+
 		if(testArgs(args)) {
 			GameClient gameClient = new GameClient(args);
 			gameClient.start();
 		} 	else
 			usage();	// This exits the program.
 	}
-	
+
 	/**
 	 * Test if the strings given from command line are valid
 	 * IPP Pairs.
@@ -113,15 +115,15 @@ public class GameClient {
 	 * @return - True if the Command line values are IPP Pairs.
 	 */
 	private static boolean testArgs(String[] args) {
-		
+
 		Parser p = new Parser();
-		
+
 		for(int i = 0; i < args.length; i++) {
 			if(!p.isPair(args[i]))
 				return false;
 		}
-		
-		
+
+
 		return true;
 	}
 
@@ -134,20 +136,52 @@ public class GameClient {
 				"Must have 2 or 4.\n");
 		System.exit(0);
 	}
-	
+
 	/**
 	 * Get a move from a specific portal
 	 */
 	public String getMove() {
 		while(!this.players[this.turnNumber].inGame())
 			this.turnNumber = (this.turnNumber+1) % this.players.length;
-			
+
 		this.players[this.turnNumber].sendMessage(Messages.ASK_FOR_MOVE);
 		int temp = this.turnNumber;
 		this.turnNumber++; this.turnNumber = this.turnNumber % this.players.length;
-		return this.players[temp].getMessage();
-		
+		String move = this.players[temp].getMessage();
+		Scanner sc = new Scanner(move);
+		sc.next(); 
+		String mv =  sc.next();
+
+		String notify = Messages.TELL_MOVE + " " + temp + " " + mv;
+		this.sendAll(notify);
+
+		return mv;
+
+	}
+
+	/** 
+	 * Sends a message to everyone that is currently playing
+	 * @param s - Message to send.
+	 */
+	private void sendAll(String s) { 
+		for(int i = 0; i < this.players.length; i++) {
+			if(this.players[i].inGame())
+				this.players[i].sendMessage(s);
+		}
+
 	}
 	
+	public void kickLastPlayer() {
+		// find the last player
+		int temp = this.turnNumber;
+		do {
+			// reverse the player list
+			if(temp == 0) 
+				temp = this.players.length - 1;
+			else
+				--temp;
+		} while(!this.players[temp].inGame());
+		this.players[temp].bootPlayer();
+	}
 
 }

@@ -188,6 +188,7 @@ public class Game extends Observable{
 
 				if(move.isEmpty()){
 					kickPlayer();
+					this.network.kickLastPlayer();
 					Game.nextTurn();
 					System.out.println("Calling checkForWin");
 					if(this.checkForWin()){
@@ -209,6 +210,7 @@ public class Game extends Observable{
 				}else{
 					System.out.println("Player turn failed!");
 					kickPlayer();
+					this.network.kickLastPlayer();
 					Game.nextTurn();
 					if(this.checkForWin()){
 						System.out.println(Game.getCurrPlayer().getColorName()+" won by default.");
