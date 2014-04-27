@@ -38,6 +38,7 @@ public class GameClient {
 	}
 	
 	
+	
 	public void start() {
 		// Send the initial QUORIDOR message to each move server
 		

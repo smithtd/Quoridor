@@ -41,6 +41,7 @@ public class MoveServer {
 		this.port = pNum;
 	}
 
+	
 	/**
 	 * Starts the Server and waits for the connection. Once connected gets input
 	 * and handles it so it can send back the proper responses.
