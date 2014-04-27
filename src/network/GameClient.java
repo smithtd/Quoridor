@@ -38,11 +38,29 @@ public class GameClient {
 	}
 	
 	
-	public void run() {
+	public void start() {
 		// Send the initial QUORIDOR message to each move server
-		for(int i = 0; i < players.length; i++) {
-			players[i].sendMessage(Messages.START_GAME + " " + (i+1) + " " + players[players.length/(i+1)].getAIIdentifier());
+		
+		if(players.length == 2) {
+			players[0].sendMessage(Messages.START_GAME + " " + 1 + " " + players[1].getAIIdentifier());
+			
+			players[1].sendMessage(Messages.START_GAME + " " + 2 + " " + players[0].getAIIdentifier());
+		} else {
+			players[0].sendMessage(Messages.START_GAME + " " + 1 + " " + players[1].getAIIdentifier() 
+					+ " " + players[2].getAIIdentifier() + " " + players[3].getAIIdentifier());
+			
+			players[1].sendMessage(Messages.START_GAME + " " + 4 + " " + players[2].getAIIdentifier() 
+					+ " " + players[3].getAIIdentifier() + " " + players[0].getAIIdentifier());
+			
+			players[2].sendMessage(Messages.START_GAME + " " + 3 + " " + players[3].getAIIdentifier() 
+					+ " " + players[0].getAIIdentifier() + " " + players[1].getAIIdentifier());
+			
+			players[3].sendMessage(Messages.START_GAME + " " + 2 + " " + players[0].getAIIdentifier() 
+					+ " " + players[1].getAIIdentifier() + " " + players[2].getAIIdentifier());
+			
 		}
+		
+
 		
 	}
 	
@@ -53,12 +71,14 @@ public class GameClient {
 	 */
 	public static void main(String[] args) {
 		
-		if(args.length != 2 || args.length != 4)
+		System.out.println(args.length);
+		
+		if(!(args.length == 2 || args.length == 4))
 			usage();	// This exits the program
 		
 		if(testArgs(args)) {
 			GameClient gameClient = new GameClient(args);
-			gameClient.run();
+			gameClient.start();
 		} 	else
 			usage();	// This exits the program.
 			

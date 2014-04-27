@@ -178,7 +178,7 @@ public class MoveServer {
 	 * then quit.
 	 */
 	private static void usage() {
-		System.out.println("\tTo start MoveServer : \n \n\t$ java MoveServer <portNumber>");
+		System.out.println("\tTo start MoveServer : \n \n\t$ java MoveServer <portNumber>\n");
 		System.exit(0);
 	}
 }
