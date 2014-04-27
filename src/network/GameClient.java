@@ -170,7 +170,7 @@ public class GameClient {
 		}
 
 	}
-	
+
 	public void kickLastPlayer() {
 		// find the last player
 		int temp = this.turnNumber;
@@ -181,7 +181,9 @@ public class GameClient {
 			else
 				--temp;
 		} while(!this.players[temp].inGame());
+		this.sendAll(Messages.REMOVED + " " + temp);
 		this.players[temp].bootPlayer();
+
 	}
 
 }
