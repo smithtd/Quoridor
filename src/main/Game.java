@@ -12,7 +12,6 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import network.GameClient;
 import players.Player;
 import board.Board;
 import ui.GameBoard;
@@ -50,8 +49,7 @@ public class Game extends Observable{
 	private static int numPlayers;				// number of players
 	private static int curr;					// index of current Player
 	private static boolean gameWon;				// whether the game has been won
-	@SuppressWarnings("unused")
-	private static GameClient networker; 		// networking client
+	
 	
 	/* Constructor */
 	
@@ -62,11 +60,11 @@ public class Game extends Observable{
 	 * @param numPlayers	the number of players in this Game
 	 * @param numWalls		the maximum number of walls to divide among Players
 	 */
-	public Game(int numPlayers, int numWalls) {
+	public Game(int numPlayers) {
 		curr= 0;
 		Game.numPlayers = numPlayers;
 		players = new ArrayList<Player>();
-		int wallsEach = numWalls/numPlayers;
+		int wallsEach = NUM_OF_WALLS/numPlayers;
 		
 		if(Game.numPlayers == MAX_NUMBER_PLAYERS){
 			players.add(new Player("1", 0, 4, 1, wallsEach));
@@ -78,7 +76,7 @@ public class Game extends Observable{
 			players.add(new Player("2", 8, 4, 2, wallsEach));
 		}
 		
-		board = new Board(players, numWalls);
+		board = new Board(players, NUM_OF_WALLS);
 	}
 	
 	/* Game Play Methods */
@@ -302,7 +300,7 @@ public class Game extends Observable{
 	public static void new4PlayerGame(){
 		GameBoard ui = (GameBoard) Game.ui.get(0);
 		ui.getFrame().dispose();
-		Game g = new Game( 4, NUM_OF_WALLS );
+		Game g = new Game( 4 );
 		g.startGame();
 	}
 	
@@ -313,7 +311,7 @@ public class Game extends Observable{
 	public static void new2PlayerGame(){
 		GameBoard ui = (GameBoard) Game.ui.get(0);
 		ui.getFrame().dispose();
-		Game g = new Game( 2, NUM_OF_WALLS );
+		Game g = new Game( 2 );
 		g.startGame();
 	}
 	
@@ -460,7 +458,7 @@ public class Game extends Observable{
 		Parser p = new Parser();
 		
 		// start game and call up UI
-		Game g = new Game( players, NUM_OF_WALLS );
+		Game g = new Game( players );
 		g.startGame();
 		
 		if(fileName.length() == 0)
