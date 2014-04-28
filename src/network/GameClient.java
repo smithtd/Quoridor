@@ -73,6 +73,11 @@ public class GameClient {
 					+ " " + players[1].getAIIdentifier() + " " + players[2].getAIIdentifier());
 
 		}
+		
+		// get the messages back from everyone
+		for(int i = 0; i < this.players.length; i++) 
+			System.out.println(this.players[i].getMessage());
+		
 		// Start the game
 		this.game.startGame();
 
@@ -181,7 +186,7 @@ public class GameClient {
 			else
 				--temp;
 		} while(!this.players[temp].inGame());
-		this.sendAll(Messages.REMOVED + " " + temp);
+		this.sendAll(Messages.REMOVED + " " + (temp + 1));
 		this.players[temp].bootPlayer();
 
 	}
