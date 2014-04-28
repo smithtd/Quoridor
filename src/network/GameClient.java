@@ -27,7 +27,6 @@ public class GameClient {
 
 	/** Hold the information of the player */
 	private Portal[] players;
-	/** Input Streams from Move Servers */
 
 	/** Access the correct player for moves, etc */
 	private int turnNumber;
@@ -73,11 +72,11 @@ public class GameClient {
 					+ " " + players[1].getAIIdentifier() + " " + players[2].getAIIdentifier());
 
 		}
-		
+
 		// get the messages back from everyone
 		for(int i = 0; i < this.players.length; i++) 
 			System.out.println(this.players[i].getMessage());
-		
+
 		// Start the game
 		this.game.startGame();
 
@@ -86,10 +85,19 @@ public class GameClient {
 		game.playGame(p);
 
 		game.notifyObservers(game, Game.getBoard());
-		// While noone has won, continue servicing players.
+		
+		terminate();
 
 
-
+	}
+	
+	/** 
+	 * Terminate all portals.
+	 */
+	private void terminate() {
+		for(int i = 0; i < this.players.length; i++) {
+			this.players[i].endSession();
+		}
 	}
 
 	/**
@@ -146,6 +154,7 @@ public class GameClient {
 	 * Get a move from a specific portal
 	 */
 	public String getMove() {
+		
 		while(!this.players[this.turnNumber].inGame())
 			this.turnNumber = (this.turnNumber+1) % this.players.length;
 
@@ -157,7 +166,7 @@ public class GameClient {
 		sc.next(); 
 		String mv =  sc.next();
 
-		String notify = Messages.TELL_MOVE + " " + temp + " " + mv;
+		String notify = Messages.TELL_MOVE + " " + this.players[temp].getAIIdentifier() + " " + mv;
 		this.sendAll(notify);
 
 		return mv;
@@ -169,26 +178,42 @@ public class GameClient {
 	 * @param s - Message to send.
 	 */
 	private void sendAll(String s) { 
+		System.out.println("In sendAll");
 		for(int i = 0; i < this.players.length; i++) {
-			if(this.players[i].inGame())
+			if(this.players[i].inGame()){
 				this.players[i].sendMessage(s);
+
+			}
 		}
 
 	}
 
+	/**
+	 * Find the last person who went, and kick them.
+	 */
 	public void kickLastPlayer() {
 		// find the last player
+		System.out.println("Here I am");
 		int temp = this.turnNumber;
 		do {
 			// reverse the player list
 			if(temp == 0) 
 				temp = this.players.length - 1;
 			else
-				--temp;
+				temp = temp - 1;
 		} while(!this.players[temp].inGame());
-		this.sendAll(Messages.REMOVED + " " + (temp + 1));
+		this.sendAll(Messages.REMOVED + " " + this.players[temp].getAIIdentifier());
 		this.players[temp].bootPlayer();
+		this.players[temp].endSession();
 
+	}
+	
+	/** tells how many people are in the current game
+	 * 
+	 * @return Number of players.
+	 */
+	public int numOfPlayers() {
+		return this.players.length;
 	}
 
 }

@@ -26,7 +26,6 @@ public class Player implements Players {
 	private ArrayList<String> availableMoves;	// list of available moves
 	private Point[] winArea;  // where to win
 	private boolean kicked;
-	// TODO - Incorporate a QuoridorClient for each player to connect to a server through the client
 	
 	/* Constructor(s) */
 	

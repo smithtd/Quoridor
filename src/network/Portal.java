@@ -112,6 +112,22 @@ public class Portal {
 	public String getAIIdentifier(){
 		return this.aiIdentifier;
 	}
+
+	/**
+	 * Close communication channels
+	 */
+	public void endSession() {
+		System.out.println("GoodBye");
+		try {
+			this.socket.close();
+			this.incoming.close();
+			this.outgoing.close();
+		} catch (IOException e) {
+		
+			
+		}
+		
+	}
 	
 	
 

@@ -21,17 +21,17 @@ import java.util.Scanner;
 public class MoveServer {
 
 	/** Port that this server will listen on */
-	private int port;
+	protected int port;
 	/** get input from the game client */
-	private Scanner clientInput;
+	protected Scanner clientInput;
 	/** Send moves/placements to the game client */
-	private PrintStream clientOutput;
+	protected PrintStream clientOutput;
 	/** AI-Identifier or name */
-	private String identifier;
+	protected String identifier;
 	/** Player ID number */
-	private int playerId;
+	protected int playerId;
 	/** Scanner on System.in for getting name, moves */
-	private Scanner playerInput;
+	protected Scanner playerInput;
 
 	/**
 	 * Construct an instance of a MoveServer
@@ -96,7 +96,7 @@ public class MoveServer {
 	 * and makes them easy to understand for the player. 
 	 * @param input - Message from the GameClient. 
 	 */
-	private void getResponse(String input) {
+	public void getResponse(String input) {
 
 		if(input.equalsIgnoreCase(Messages.ASK_FOR_MOVE)){
 			String move = getMove();
@@ -148,7 +148,7 @@ public class MoveServer {
 	 * 
 	 * @return - Players next move.
 	 */
-	private String getMove() {
+	public String getMove() {
 
 		System.out.print("Enter a move/wall placement >> ");
 		String m = this.playerInput.next();
@@ -181,7 +181,7 @@ public class MoveServer {
 	 * Tell the user the correct parameters to be used to start this program 
 	 * then quit.
 	 */
-	private static void usage() {
+	protected static void usage() {
 		System.out.println("\tTo start MoveServer : \n \n\t$ java MoveServer <portNumber>\n");
 		System.exit(0);
 	}
