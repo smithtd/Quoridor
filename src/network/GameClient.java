@@ -43,7 +43,7 @@ public class GameClient {
 			this.players[i] = new Portal(p[0], Integer.parseInt(p[1]));
 		}
 		this.turnNumber = 0;
-		this.game = new Game(this.players.length, this);
+		
 
 	}
 
@@ -51,7 +51,8 @@ public class GameClient {
 
 	public void start() {
 		// Send the initial QUORIDOR message to each move server
-
+		this.game = new Game(this.players.length, this);
+		
 		if(players.length == 2) {
 			players[0].sendMessage(Messages.START_GAME + " " + 1 + " " + players[1].getAIIdentifier());
 
