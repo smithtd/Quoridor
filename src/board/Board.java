@@ -286,6 +286,11 @@ public class Board {
 		}
 	}	
 	
+	/**
+	 * Updates the board's player list after the game has kicked someone.
+	 * 
+	 * @param p ArrayList of Players
+	 */
 	public void updatePlayers(ArrayList<Player> p){
 		players = p;
 	}

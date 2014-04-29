@@ -72,6 +72,26 @@ public class Game extends Observable{
 		this.network = g;
 		board = new Board(players, NUM_OF_WALLS);
 	}
+	
+	// for testing w/o client
+	public Game(int numPlayers) {
+		curr= 0;
+		Game.numPlayers = numPlayers;
+		players = new ArrayList<Player>();
+		int wallsEach = NUM_OF_WALLS/numPlayers;
+
+		if(Game.numPlayers == MAX_NUMBER_PLAYERS){
+			players.add(new Player("1", 0, 4, 1, wallsEach));
+			players.add(new Player("2", 4, 8, 2, wallsEach));
+			players.add(new Player("3", 8, 4, 3, wallsEach));
+			players.add(new Player("4", 4, 0, 4, wallsEach));
+		} else {
+			players.add(new Player("1", 0, 4, 1, wallsEach));
+			players.add(new Player("2", 8, 4, 2, wallsEach));
+		}
+
+		board = new Board(players, NUM_OF_WALLS);
+	}
 
 	/* Game Play Methods */
 

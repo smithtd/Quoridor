@@ -77,13 +77,13 @@ public class Wall {
 	public boolean overlaps(Wall w){
 		if(!this.type.equals(w.type()))
 			return false;
-		if(this.x-1 == w.getX() && this.y == w.getY())
+		if(this.x-1 == w.getX() && this.y == w.getY() && this.type().equals("v"))
 			return true;
-		if(this.x == w.getX() && this.y-1 == w.getY())
+		if(this.x == w.getX() && this.y-1 == w.getY() && this.type().equals("h"))
 			return true;
-		if(this.x == w.getX()-1 && this.y == w.getY())
+		if(this.x == w.getX()-1 && this.y == w.getY() && this.type().equals("v"))
 			return true;
-		if(this.x == w.getX() && this.y == w.getY()-1)
+		if(this.x == w.getX() && this.y == w.getY()-1 && this.type().equals("h"))
 			return true;
 		return false;
 	}

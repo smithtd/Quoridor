@@ -16,6 +16,7 @@ import players.Player;
 import walls.Wall;
 
 public class BoardTest {
+	
 	private Board board;
 	private ArrayList<Player> players;
 	
@@ -28,6 +29,10 @@ public class BoardTest {
 		players.add( new Player("p4", 8, 2, 4, 5));
 		board = new Board(players, 20);
 		board.placeWall(players.get(0), 3, 3, "v");
+		board.placeWall(players.get(0), 5, 1, "h");
+		for(Player p : players){
+			board.possibleMoves(p);
+		}
 	}
 	
 	// test placePawn - unused param is to distinguish from isLegalMove test
@@ -202,7 +207,7 @@ public class BoardTest {
 	
 	@Test
 	public void checkValidHorizontalType(){
-		Wall w = new Wall(5, 1, "h");
+		Wall w = new Wall(4, 1, "h");
 		boolean expected = true;
 	
 		testResults(players.get(0), w, expected);
@@ -255,6 +260,71 @@ public class BoardTest {
 	
 		testResults(players.get(0), w, expected);
 	}
+	
+	@Test
+	public void checkUprightTH(){
+		Wall w = new Wall(2, 3, "h");
+		boolean expected = true;
+	
+		testResults(players.get(0), w, expected);
+	}
+	
+	@Test
+	public void checkUpsideDownTH(){
+		Wall w = new Wall(4, 3, "h");
+		boolean expected = true;
+	
+		testResults(players.get(0), w, expected);
+	}
+	
+	@Test
+	public void checkTOnLeftH(){
+		Wall w = new Wall(3, 4, "h");
+		boolean expected = true;
+	
+		testResults(players.get(0), w, expected);
+	}
+	
+	@Test
+	public void checkTOnRightH(){
+		Wall w = new Wall(3, 2, "h");
+		boolean expected = true;
+	
+		testResults(players.get(0), w, expected);
+	}
+	
+	@Test
+	public void checkUprightTV(){
+		Wall w = new Wall(6, 1, "v");
+		boolean expected = true;
+	
+		testResults(players.get(0), w, expected);
+	}
+	
+	@Test
+	public void checkUpsideDownTV(){
+		Wall w = new Wall(4, 1, "v");
+		boolean expected = true;
+	
+		testResults(players.get(0), w, expected);
+	}
+	
+	@Test
+	public void checkTOnLeftV(){
+		Wall w = new Wall(5, 0, "v");
+		boolean expected = true;
+	
+		testResults(players.get(0), w, expected);
+	}
+	
+	@Test
+	public void checkTOnRightV(){
+		Wall w = new Wall(5, 2, "v");
+		boolean expected = true;
+	
+		testResults(players.get(0), w, expected);
+	}
+	
 	
 }
 
