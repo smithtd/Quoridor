@@ -42,13 +42,13 @@ public class BoardTest {
 	    assertThat(result, equalTo(expected));    
 	}
 	
-	// test isLegalMove (pawn version)
+	// test isLegalMove 
 	private void testResults(Player p, int x, int y, boolean expected) {
 		boolean result = board.isLegalMove(p, x, y);
 	    assertThat(result, equalTo(expected));  
 	}
 	
-	// test isLegalMove (wall version)
+	// test isLegalWall 
 	private void testResults(Player p, Wall w, boolean expected) {
 		boolean result = board.isLegalWallPlacement(p, w);
 	    assertThat(result, equalTo(expected));  

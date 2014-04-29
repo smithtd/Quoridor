@@ -6,6 +6,10 @@ package walls;
  * @author Eli Donahue
  *
  */
+/**
+ * @author emilydonahue
+ *
+ */
 public class Wall {
 	
 	/* Instance Variables */
@@ -62,7 +66,17 @@ public class Wall {
 		return this.x == w.getX() && this.y == w.getY();
 	}
 	
+	
+	/**
+	 * Checks if a given wall overlaps this wall. Used to check whether two 
+	 * vertical or two horizontal walls overlap.
+	 * 
+	 * @param w
+	 * @return
+	 */
 	public boolean overlaps(Wall w){
+		if(this.type.equals(w.type()))
+			return false;
 		if(this.x == w.getX()-1 && this.y == w.getY())
 			return true;
 		if(this.x == w.getX() && this.y == w.getY()-1)
