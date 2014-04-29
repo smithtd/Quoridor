@@ -2,8 +2,6 @@ package ui;
 
 import javax.swing.*;
 
-import main.Game;
-
 import java.awt.*;
 
 /**
@@ -30,7 +28,7 @@ public class WallButton extends JButton {
 		this.setBorder(null);
 		this.x = x;
 		this.y = y;
-		this.setPreferredSize( Game.Intersection );
+		this.setPreferredSize( GameBoard.Intersection );
 		this.setBackground( Color.DARK_GRAY );
 		this.setOpaque(true);
 	}

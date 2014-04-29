@@ -26,6 +26,18 @@ import players.Player;
 @SuppressWarnings("serial")
 public class GameBoard extends JPanel implements Observer {
 
+	/* Static Variables */
+	
+	public static int WallGap = 10;
+	public static int PlayerWidth = 40;
+	public static int PlayerHeight = 40;
+	private static int colorIncrement = 200;
+
+	public static Dimension HWall = new Dimension( PlayerWidth, WallGap );
+	public static Dimension VWall = new Dimension( WallGap, PlayerHeight );
+	public static Dimension Intersection = new Dimension( VWall.width, HWall.height );
+	public static Dimension PlayerSize = new Dimension( HWall.width, VWall.height );
+	
 	/* Instance Variables */
 	
 	private static JFrame frame;
@@ -254,15 +266,15 @@ public class GameBoard extends JPanel implements Observer {
 	}
 	
 	private Dimension getLeftBarDim(){
-		return (new Dimension( Game.HWall.width, getButtonHolderBorderDim().height+ getTopBarDim().height ) );
+		return (new Dimension( HWall.width, getButtonHolderBorderDim().height+ getTopBarDim().height ) );
 	}
 	
 	private static Dimension getButtonHolderBorderDim(){
-		return (new Dimension(getButtonHolderDim().width + Game.Intersection.width*2, getButtonHolderDim().height + Game.Intersection.height*2) );
+		return (new Dimension(getButtonHolderDim().width + Intersection.width*2, getButtonHolderDim().height + Intersection.height*2) );
 	}
 	
 	public static Dimension getButtonHolderDim(){
-		return (new Dimension( (Game.HWall.width*9 + Game.VWall.width*8), (Game.VWall.height*9 + Game.HWall.height*8) ));
+		return (new Dimension( (HWall.width*9 + VWall.width*8), (VWall.height*9 + HWall.height*8) ));
 	}
 	
 	private Dimension getHolder1Dim(){
@@ -278,12 +290,12 @@ public class GameBoard extends JPanel implements Observer {
 	}
 
 	private Dimension getTopBarDim(){
-		return (new Dimension( getButtonHolderBorderDim().width + getRightBarDim().width, Game.VWall.height));
+		return (new Dimension( getButtonHolderBorderDim().width + getRightBarDim().width, VWall.height));
 	}
 	
 	private Dimension getBottomBarDim(){
 		int width = getHolder3Dim().width;
-		int height = Game.PlayerHeight*3;
+		int height = PlayerHeight*3;
 		
 		return (height < 50 ? new Dimension( width, 50 ) : new Dimension( width, height ) );
 	}
@@ -352,20 +364,22 @@ public class GameBoard extends JPanel implements Observer {
 	}
 	
 	private void setUpThisPanel(){
-		EndZoneButton up = new EndZoneButton( Game.getNumPlayers(), "U" );
-		EndZoneButton down = new EndZoneButton( Game.getNumPlayers(), "D" );
-		EndZoneButton left = new EndZoneButton( Game.getNumPlayers(), "L" );
-		EndZoneButton right = new EndZoneButton( Game.getNumPlayers(), "R" );
-		BHBorder.add( new SpacerButton( Game.Intersection, Color.DARK_GRAY ) );
+		EndZoneButton up = new EndZoneButton( Game.getNumPlayers(), "U", this );
+		EndZoneButton down = new EndZoneButton( Game.getNumPlayers(), "D", this );
+		EndZoneButton left = new EndZoneButton( Game.getNumPlayers(), "L", this );
+		EndZoneButton right = new EndZoneButton( Game.getNumPlayers(), "R", this );
+		BHBorder.add( new SpacerButton( getIntersection(), Color.DARK_GRAY ) );
 		BHBorder.add( up );
-		BHBorder.add( new SpacerButton( Game.Intersection, Color.DARK_GRAY ) );
+		BHBorder.add( new SpacerButton( getIntersection(), Color.DARK_GRAY ) );
 		BHBorder.add( left );
 		BHBorder.add( buttonHolder );
 		BHBorder.add( right );
-		BHBorder.add( new SpacerButton( Game.Intersection, Color.DARK_GRAY ) );
+		BHBorder.add( new SpacerButton( getIntersection(), Color.DARK_GRAY ) );
 		BHBorder.add( down );
-		BHBorder.add( new SpacerButton( Game.Intersection, Color.DARK_GRAY ) );
+		BHBorder.add( new SpacerButton( getIntersection(), Color.DARK_GRAY ) );
 		holder1.add( BHBorder );
+		holder1.add( rightBarPanel );
+
 		
 		// initialize stat buttons
 		holder1.add( rightBarPanel );
@@ -376,27 +390,27 @@ public class GameBoard extends JPanel implements Observer {
 			statAry[i] = b;
 		}
 		
-		topBarPanel.add( new SpacerButton( Game.VWall.width, getTopBarDim().height, Color.DARK_GRAY ) );
-		topBarPanel.add( new SpacerButton( Game.HWall.width, getTopBarDim().height, Color.LIGHT_GRAY, "" + (char)('A') ) );
+		topBarPanel.add( new SpacerButton( getVWall().width, getTopBarDim().height, Color.DARK_GRAY ) );
+		topBarPanel.add( new SpacerButton( getHWall().width, getTopBarDim().height, Color.LIGHT_GRAY, "" + (char)('A') ) );
 		for(int i=0; i<8; i++){
-			topBarPanel.add( new SpacerButton( Game.VWall.width, getTopBarDim().height, Color.DARK_GRAY , "" + (char)('A'+i) ) );
-			topBarPanel.add( new SpacerButton( Game.HWall.width, getTopBarDim().height, Color.LIGHT_GRAY, "" + (char)('B'+i) ) );
+			topBarPanel.add( new SpacerButton( getVWall().width, getTopBarDim().height, Color.DARK_GRAY , "" + (char)('A'+i) ) );
+			topBarPanel.add( new SpacerButton( getHWall().width, getTopBarDim().height, Color.LIGHT_GRAY, "" + (char)('B'+i) ) );
 		}
-		topBarPanel.add( new SpacerButton( Game.VWall.width, getTopBarDim().height, Color.DARK_GRAY ) );
+		topBarPanel.add( new SpacerButton( getVWall().width, getTopBarDim().height, Color.DARK_GRAY ) );
 		topBarPanel.add( new SpacerButton( getRightBarDim().width, getTopBarDim().height, Color.LIGHT_GRAY, "STATS" ) );
-		
+
 		holder2.add( topBarPanel );
 		holder2.add( holder1 );
-		
+
 		leftBarPanel.add( new SpacerButton( getLeftBarDim().width, getTopBarDim().height, Color.LIGHT_GRAY) );
-		leftBarPanel.add( new SpacerButton( getLeftBarDim().width, Game.HWall.height, Color.DARK_GRAY ) );
-		leftBarPanel.add( new SpacerButton( getLeftBarDim().width, Game.VWall.height, Color.LIGHT_GRAY, "" + (char)('1')) );
+		leftBarPanel.add( new SpacerButton( getLeftBarDim().width, getHWall().height, Color.DARK_GRAY ) );
+		leftBarPanel.add( new SpacerButton( getLeftBarDim().width, getVWall().height, Color.LIGHT_GRAY, "" + (char)('1')) );
 		for(int i=0; i<8; i++){
-			leftBarPanel.add( new SpacerButton( getLeftBarDim().width,Game.HWall.height, Color.DARK_GRAY , "" + (char)('1'+i)) );
-			leftBarPanel.add( new SpacerButton( getLeftBarDim().width, Game.VWall.height, Color.LIGHT_GRAY, "" + (char)('2'+i)) );
+			leftBarPanel.add( new SpacerButton( getLeftBarDim().width,getHWall().height, Color.DARK_GRAY , "" + (char)('1'+i)) );
+			leftBarPanel.add( new SpacerButton( getLeftBarDim().width, getVWall().height, Color.LIGHT_GRAY, "" + (char)('2'+i)) );
 		}
-		leftBarPanel.add( new SpacerButton( getLeftBarDim().width,Game.HWall.height, Color.DARK_GRAY ) );
-		
+		leftBarPanel.add( new SpacerButton( getLeftBarDim().width,getHWall().height, Color.DARK_GRAY ) );
+
 		holder3.add(leftBarPanel);
 		holder3.add(holder2);
 
@@ -511,5 +525,37 @@ public class GameBoard extends JPanel implements Observer {
 		menuBar.setForeground( Color.WHITE );
 		menuBar.setBackground( Color.BLACK );	
 		return menuBar;
+	}
+	
+	public int get(){
+		return WallGap;
+	}
+
+	public Dimension getHWall() {
+		return HWall;
+	}
+
+	public Dimension getIntersection() {
+		return Intersection;
+	}
+
+	public Dimension getVWall() {
+		return VWall;
+	}
+
+	public int getPlayerHeight() {
+		return PlayerHeight;
+	}
+
+	public static int getColorIncrement() {
+		return colorIncrement;
+	}
+
+	public int getPlayerWidth() {
+		return PlayerWidth;
+	}
+
+	public static Dimension getPlayerSize() {
+		return PlayerSize;
 	}
 }

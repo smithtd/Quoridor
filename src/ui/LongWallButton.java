@@ -3,9 +3,9 @@ package ui;
 import java.awt.Color;
 //import java.awt.Graphics;
 
-import javax.swing.JButton;
 
-import main.Game;
+
+import javax.swing.JButton;
 
 /**
  * Class defines settings for LongWallButtons, or the buttons that display 
@@ -36,7 +36,7 @@ public class LongWallButton extends JButton {
         this.x = x;
         this.y = y;
         /* set the dimensions upon string identifier */
-       	this.setPreferredSize( type.equals( "h" ) ? Game.HWall : Game.VWall );
+       	this.setPreferredSize( type.equals( "h" ) ? GameBoard.HWall : GameBoard.VWall );
         this.setBackground( Color.DARK_GRAY );
         this.setOpaque(true);	// needed to display on macs   
    }

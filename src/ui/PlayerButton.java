@@ -34,7 +34,7 @@ public class PlayerButton extends JButton {
 		super();
 		this.x = x;
 		this.y = y;
-		this.setPreferredSize( new Dimension( Game.HWall.width, Game.VWall.height ) );
+		this.setPreferredSize( new Dimension( GameBoard.HWall.width, GameBoard.VWall.height ) );
 		this.setBackground( Color.BLACK );
 		this.setOpaque(true);
 		this.setBorderPainted(false);
@@ -94,18 +94,26 @@ public class PlayerButton extends JButton {
 	
 	public void paint( Graphics g ){
 		if( this.getBackground() == Color.MAGENTA ){
-			int increment = 150;
+			int increment = GameBoard.getColorIncrement();
 			Color c = Game.getCurrPlayer().getColor();
 			int red = (c.getRed() + increment > 256 ? c.getRed() : c.getRed() + increment );
 			int green = (c.getGreen() + increment > 256 ? c.getGreen() : c.getGreen() + increment );
 			int blue = (c.getBlue() + increment > 256 ? c.getBlue() : c.getBlue() + increment );
 			
 			g.setColor( new Color( red, green, blue ) );
-			g.fillRect( 0, 0, Game.PlayerSize.width, Game.PlayerSize.height );
+			g.fillRect( 0, 0, GameBoard.getPlayerSize().width, GameBoard.getPlayerSize().height );
+			g.setColor( Color.BLACK );
 		}else{
 			g.setColor( this.getBackground() );
-			g.fillRect( 0, 0, Game.PlayerSize.width, Game.PlayerSize.height );
+			g.fillRect( 0, 0, GameBoard.getPlayerSize().width, GameBoard.getPlayerSize().height );
+			g.setColor( Color.WHITE );
 		}
+		
+		g.setFont( getFont() );
+		FontMetrics fm = g.getFontMetrics( g.getFont() );
+		String s = "" + (char)(this.y+65) + (this.x+1) ;
+		g.drawString( s, (this.getWidth()/2 - fm.stringWidth( s )/2), (this.getHeight()/2 + fm.getHeight()/4 ) );
+		//g.drawString( s, 0, 0 );
 		
 	}
 }

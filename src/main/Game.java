@@ -8,7 +8,6 @@ import java.util.Observer;
 
 // use to get input from command line/file
 import java.util.Scanner;
-import java.awt.Dimension;
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -30,16 +29,7 @@ import parser.Parser;
 public class Game extends Observable{
 
 	/* Static variables */
-	public static int WallGap = 10;
-	public static int PlayerWidth = 40;
-	public static int PlayerHeight = 40;
 	public static int sleepTime = 333;
-
-	public static Dimension HWall = new Dimension( Game.PlayerWidth, Game.WallGap );
-	public static Dimension VWall = new Dimension( Game.WallGap, Game.PlayerHeight );
-	public static Dimension Intersection = new Dimension( VWall.width, HWall.height );
-	public static Dimension PlayerSize = new Dimension( HWall.width, VWall.height );
-
 	private static final int NUM_OF_WALLS = 20; 
 	private static final int MAX_NUMBER_PLAYERS = 4;
 

@@ -75,7 +75,7 @@ public class StatButton extends JButton {
 			int green = (c.getGreen() + increment>256 ? c.getGreen() : c.getGreen() + increment );
 			int blue = (c.getBlue() + increment>256 ? c.getBlue() : c.getBlue() + increment );
 			g.setColor( new Color( red, green, blue ) );
-			g.fillRect( Game.WallGap, Game.WallGap, this.getWidth()-Game.WallGap*2, this.getHeight()-Game.WallGap*2 );
+			g.fillRect( GameBoard.WallGap, GameBoard.WallGap, this.getWidth()-GameBoard.WallGap*2, this.getHeight()-GameBoard.WallGap*2 );
 
 			//Text
 			printStatString(g);
@@ -88,7 +88,7 @@ public class StatButton extends JButton {
 	}
 	
 	public void printStatString( Graphics g ){
-		g.setFont( new Font( "" , Font.BOLD, (GameBoard.getRightBarDim().width==180 ? 10 : (int)(Game.PlayerWidth*(12.0/50.0)) ) ) );
+		g.setFont( new Font( "" , Font.BOLD, (GameBoard.getRightBarDim().width==180 ? 10 : (int)(GameBoard.PlayerWidth*(12.0/50.0)) ) ) );
 		FontMetrics fm = g.getFontMetrics( g.getFont() );
 		String s = "";
 		if(p.hasBeenKicked()){
