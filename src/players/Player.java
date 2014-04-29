@@ -124,7 +124,6 @@ public class Player implements Players {
 	 * @return integer number of walls available to place
 	 */
 	public int getWalls() {
-		// Auto-generated method stub
 		return this.wallTotal;
 	}
 	
@@ -345,11 +344,21 @@ public class Player implements Players {
 		this.availableMoves.clear();
 	}
 	
+	
+	/**
+	 * Sets a Player's kicked flag to true. Method is called by 
+	 * kickPlayer() in Game.
+	 */
 	public void kick(){
 		System.out.println("Kicking "+this.getColorName());
 		kicked = true;
 	}
 
+	/**
+	 * Checks whether this player has been kicked.
+	 * 
+	 * @return boolean whether Player has been kicked
+	 */
 	public boolean hasBeenKicked(){
 		return kicked;
 	}
