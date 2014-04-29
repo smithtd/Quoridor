@@ -7,7 +7,7 @@ package walls;
  *
  */
 /**
- * @author emilydonahue
+ * @author Eli Donahue
  *
  */
 public class Wall {
@@ -75,8 +75,12 @@ public class Wall {
 	 * @return
 	 */
 	public boolean overlaps(Wall w){
-		if(this.type.equals(w.type()))
+		if(!this.type.equals(w.type()))
 			return false;
+		if(this.x-1 == w.getX() && this.y == w.getY())
+			return true;
+		if(this.x == w.getX() && this.y-1 == w.getY())
+			return true;
 		if(this.x == w.getX()-1 && this.y == w.getY())
 			return true;
 		if(this.x == w.getX() && this.y == w.getY()-1)

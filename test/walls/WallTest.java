@@ -13,10 +13,14 @@ import walls.Wall;
 
 public class WallTest {
 	private Wall wall;
+	private Wall wall2;
+	private Wall wall3;
 	
 	@Before
 	public void initialize() {
 		wall = new Wall(1,0,"v");		// vertical wall starting at (0,1)
+		wall2 = new Wall(3,3,"h");		// horizontal wall starting at (3,3)
+		wall3 = new Wall(5,0,"v");		// vertical wall starting at (0,5)
 	}
 	
 	// test intersects(Wall)
@@ -24,6 +28,12 @@ public class WallTest {
 		boolean result = wall.intersects(w);
 	    assertThat(result, equalTo(expectedResult));    
 	}
+	
+	// test overlaps(Wall)
+		private void testResults(Wall w, Wall original, boolean expectedResult) {
+			boolean result = original.overlaps(w);
+		    assertThat(result, equalTo(expectedResult));    
+		}
 	
 	// test isBetween(x1, y1, x2, y2)
 	private void testResults(Wall w, int x1, int y1, int x2, int y2, boolean expectedResult) {
@@ -69,6 +79,72 @@ public class WallTest {
 		boolean expected = true;
 		
 		testResults(w, expected);
+	}
+	
+	/* Test overlaps() */
+	
+	@Test
+	public void checkThatHorizontalWallOnLeftOverlaps(){
+		Wall w = new Wall(3,2,"h");
+		boolean expected = true;
+		
+		testResults(w, wall2, expected);
+	}
+	
+	@Test
+	public void checkThatHorizontalWallOnLeftDoesNotOverlap(){
+		Wall w = new Wall(3,1,"h");
+		boolean expected = false;
+		
+		testResults(w, wall2, expected);
+	}
+	
+	@Test
+	public void checkThatHorizontalWallOnRightOverlaps(){
+		Wall w = new Wall(3,4,"h");
+		boolean expected = true;
+		
+		testResults(w, wall2, expected);
+	}
+	
+	@Test
+	public void checkThatHorizontalWallOnRightDoesNotOverlap(){
+		Wall w = new Wall(3,5,"h");
+		boolean expected = false;
+		
+		testResults(w, wall2, expected);
+	}
+	
+	@Test
+	public void checkThatVerticalWallOnTopOverlaps(){
+		Wall w = new Wall(4,0,"v");
+		boolean expected = true;
+		
+		testResults(w, wall3, expected);
+	}
+	
+	@Test
+	public void checkThatVerticalWallOnTopDoesNotOverlap(){
+		Wall w = new Wall(3,0,"v");
+		boolean expected = false;
+		
+		testResults(w, wall3, expected);
+	}
+	
+	@Test
+	public void checkThatVerticalWallOnBottomOverlaps(){
+		Wall w = new Wall(6,0,"v");
+		boolean expected = true;
+		
+		testResults(w, wall3, expected);
+	}
+	
+	@Test
+	public void checkThatVerticalWallOnBottomDoesNotOverlap(){
+		Wall w = new Wall(7,0,"v");
+		boolean expected = false;
+		
+		testResults(w, wall3, expected);
 	}
 	
 	/* Test isBetween() for Horizontal Walls */
