@@ -27,6 +27,7 @@ public class GameClient {
 
 	/** Hold the information of the player */
 	private Portal[] players;
+	private int[] pId;
 
 	/** Access the correct player for moves, etc */
 	private int turnNumber;
@@ -43,6 +44,7 @@ public class GameClient {
 			this.players[i] = new Portal(p[0], Integer.parseInt(p[1]));
 		}
 		this.turnNumber = 0;
+		this.pId = new int[args.length];
 		
 
 	}
@@ -55,23 +57,24 @@ public class GameClient {
 		
 		if(players.length == 2) {
 			players[0].sendMessage(Messages.START_GAME + " " + 1 + " " + players[1].getAIIdentifier());
+			this.pId[0] = 1;
 
 			players[1].sendMessage(Messages.START_GAME + " " + 2 + " " + players[0].getAIIdentifier());
-
+			this.pId[1] = 2;
 		} else {
 
 			players[0].sendMessage(Messages.START_GAME + " " + 1 + " " + players[1].getAIIdentifier() 
 					+ " " + players[2].getAIIdentifier() + " " + players[3].getAIIdentifier());
-
+			this.pId[0] = 1;
 			players[1].sendMessage(Messages.START_GAME + " " + 4 + " " + players[2].getAIIdentifier() 
 					+ " " + players[3].getAIIdentifier() + " " + players[0].getAIIdentifier());
-
+			this.pId[1] = 4;
 			players[2].sendMessage(Messages.START_GAME + " " + 3 + " " + players[3].getAIIdentifier() 
 					+ " " + players[0].getAIIdentifier() + " " + players[1].getAIIdentifier());
-
+			this.pId[2] = 3;
 			players[3].sendMessage(Messages.START_GAME + " " + 2 + " " + players[0].getAIIdentifier() 
 					+ " " + players[1].getAIIdentifier() + " " + players[2].getAIIdentifier());
-
+			this.pId[3] = 2;
 		}
 
 		// get the messages back from everyone
@@ -167,8 +170,9 @@ public class GameClient {
 		sc.next(); 
 		String mv =  sc.next();
 
-		String notify = Messages.TELL_MOVE + " " + this.players[temp].getAIIdentifier() + " " + mv;
+		String notify = Messages.TELL_MOVE + " " + this.pId[temp] + " " + mv;
 		this.sendAll(notify);
+		sc.close();
 
 		return mv;
 
