@@ -8,6 +8,8 @@
 
 package network;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import main.Game;
@@ -26,8 +28,10 @@ public class GameClient {
 
 
 	/** Hold the information of the player */
-	private Portal[] players;
-	private int[] pId;
+	//	private Portal[] players;
+	private List<Portal> players;
+	//private int[] pId;
+	private List<Integer> pId;
 
 	/** Access the correct player for moves, etc */
 	private int turnNumber;
@@ -37,15 +41,15 @@ public class GameClient {
 	public GameClient(String[] args){
 		// The number of portals(connections) should equal the number
 		// of command line arguments.
-		this.players = new Portal[args.length];
+		this.players = new ArrayList<Portal>(args.length);
 		String[] p;
 		for(int i = 0; i < args.length; i++){
 			p = args[i].split(":");
-			this.players[i] = new Portal(p[0], Integer.parseInt(p[1]));
+			this.players.add(i, new Portal(p[0], Integer.parseInt(p[1])));
 		}
 		this.turnNumber = 0;
-		this.pId = new int[args.length];
-		
+		this.pId =  new ArrayList<Integer>(args.length);
+
 
 	}
 
@@ -53,33 +57,33 @@ public class GameClient {
 
 	public void start() {
 		// Send the initial QUORIDOR message to each move server
-		this.game = new Game(this.players.length, this);
-		
-		if(players.length == 2) {
-			players[0].sendMessage(Messages.START_GAME + " " + 1 + " " + players[1].getAIIdentifier());
-			this.pId[0] = 1;
+		this.game = new Game(this.players.size(), this);
 
-			players[1].sendMessage(Messages.START_GAME + " " + 2 + " " + players[0].getAIIdentifier());
-			this.pId[1] = 2;
+		if(this.players.size() == 2) {
+			this.players.get(0).sendMessage(Messages.START_GAME + " " + 1 + " " + players.get(1).getAIIdentifier());
+			this.pId.add(0, 1);
+
+			players.get(1).sendMessage(Messages.START_GAME + " " + 2 + " " + players.get(0).getAIIdentifier());
+			this.pId.add(1,2);
 		} else {
 
-			players[0].sendMessage(Messages.START_GAME + " " + 1 + " " + players[1].getAIIdentifier() 
-					+ " " + players[2].getAIIdentifier() + " " + players[3].getAIIdentifier());
-			this.pId[0] = 1;
-			players[1].sendMessage(Messages.START_GAME + " " + 4 + " " + players[2].getAIIdentifier() 
-					+ " " + players[3].getAIIdentifier() + " " + players[0].getAIIdentifier());
-			this.pId[1] = 4;
-			players[2].sendMessage(Messages.START_GAME + " " + 3 + " " + players[3].getAIIdentifier() 
-					+ " " + players[0].getAIIdentifier() + " " + players[1].getAIIdentifier());
-			this.pId[2] = 3;
-			players[3].sendMessage(Messages.START_GAME + " " + 2 + " " + players[0].getAIIdentifier() 
-					+ " " + players[1].getAIIdentifier() + " " + players[2].getAIIdentifier());
-			this.pId[3] = 2;
+			players.get(0).sendMessage(Messages.START_GAME + " " + 1 + " " + players.get(1).getAIIdentifier() 
+					+ " " + players.get(2).getAIIdentifier() + " " + players.get(3).getAIIdentifier());
+			this.pId.add(0,1);
+			players.get(1).sendMessage(Messages.START_GAME + " " + 4 + " " + players.get(2).getAIIdentifier() 
+					+ " " + players.get(3).getAIIdentifier() + " " + players.get(0).getAIIdentifier());
+			this.pId.add(1,4);
+			players.get(2).sendMessage(Messages.START_GAME + " " + 3 + " " + players.get(3).getAIIdentifier() 
+					+ " " + players.get(0).getAIIdentifier() + " " + players.get(1).getAIIdentifier());
+			this.pId.add(2,3);
+			players.get(3).sendMessage(Messages.START_GAME + " " + 2 + " " + players.get(0).getAIIdentifier() 
+					+ " " + players.get(1).getAIIdentifier() + " " + players.get(2).getAIIdentifier());
+			this.pId.add(3,2);
 		}
 
 		// get the messages back from everyone
-		for(int i = 0; i < this.players.length; i++) 
-			System.out.println(this.players[i].getMessage());
+		for(int i = 0; i < this.players.size(); i++) 
+			System.out.println(this.players.get(i).getMessage());
 
 		// Start the game
 		this.game.startGame();
@@ -89,18 +93,18 @@ public class GameClient {
 		game.playGame(p);
 
 		game.notifyObservers(game, Game.getBoard());
-		
+
 		terminate();
 
 
 	}
-	
+
 	/** 
 	 * Terminate all portals.
 	 */
 	private void terminate() {
-		for(int i = 0; i < this.players.length; i++) {
-			this.players[i].endSession();
+		for(int i = 0; i < this.players.size(); i++) {
+			this.players.get(i).endSession();
 		}
 	}
 
@@ -158,19 +162,19 @@ public class GameClient {
 	 * Get a move from a specific portal
 	 */
 	public String getMove() {
-		
-		while(!this.players[this.turnNumber].inGame())
-			this.turnNumber = (this.turnNumber+1) % this.players.length;
 
-		this.players[this.turnNumber].sendMessage(Messages.ASK_FOR_MOVE);
+		while(!this.players.get(this.turnNumber).inGame())
+			this.turnNumber = (this.turnNumber+1) % this.players.size();
+
+		this.players.get(this.turnNumber).sendMessage(Messages.ASK_FOR_MOVE);
 		int temp = this.turnNumber;
-		this.turnNumber++; this.turnNumber = this.turnNumber % this.players.length;
-		String move = this.players[temp].getMessage();
+		this.turnNumber++; this.turnNumber = this.turnNumber % this.players.size();
+		String move = this.players.get(temp).getMessage();
 		Scanner sc = new Scanner(move);
 		sc.next(); 
 		String mv =  sc.next();
 
-		String notify = Messages.TELL_MOVE + " " + this.pId[temp] + " " + mv;
+		String notify = Messages.TELL_MOVE + " " + this.pId.get(temp) + " " + mv;
 		this.sendAll(notify);
 		sc.close();
 
@@ -184,9 +188,9 @@ public class GameClient {
 	 */
 	private void sendAll(String s) { 
 		System.out.println("In sendAll");
-		for(int i = 0; i < this.players.length; i++) {
-			if(this.players[i].inGame()){
-				this.players[i].sendMessage(s);
+		for(int i = 0; i < this.players.size(); i++) {
+			if(this.players.get(i).inGame()){
+				this.players.get(i).sendMessage(s);
 
 			}
 		}
@@ -203,22 +207,24 @@ public class GameClient {
 		do {
 			// reverse the player list
 			if(temp == 0) 
-				temp = this.players.length - 1;
+				temp = this.players.size() - 1;
 			else
 				temp = temp - 1;
-		} while(!this.players[temp].inGame());
-		this.sendAll(Messages.REMOVED + " " + this.players[temp].getAIIdentifier());
-		this.players[temp].bootPlayer();
-		this.players[temp].endSession();
+		} while(!this.players.get(temp).inGame());
+		this.sendAll(Messages.REMOVED + " " + this.players.get(temp).getAIIdentifier());
+		this.players.get(temp).bootPlayer();
+		this.players.get(temp).endSession();
+		this.players.remove(temp);
+		this.pId.remove(temp);
 
 	}
-	
+
 	/** tells how many people are in the current game
 	 * 
 	 * @return Number of players.
 	 */
 	public int numOfPlayers() {
-		return this.players.length;
+		return this.players.size();
 	}
 
 }
