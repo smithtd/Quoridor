@@ -3,6 +3,7 @@ package main;
 
 // use to implement subject/observer
 import java.util.ArrayList;  
+import java.util.Arrays;
 import java.util.Observable;  
 import java.util.Observer; 
 
@@ -30,10 +31,10 @@ import parser.Parser;
 public class Game extends Observable{
 
 	/*  variables */
-	private  int WallGap = 12;
-	private  int PlayerWidth = 45;
-	private  int PlayerHeight = 45;
-	private  int sleepTime = 50;
+	private  int WallGap = 10;
+	private  int PlayerWidth = 40;
+	private  int PlayerHeight = 40;
+	private  int sleepTime = 250;
 	private  int colorIncrement = 200;
 	
 	private  Dimension HWall = new Dimension( this.getPlayerWidth(), this.WallGap );
@@ -105,10 +106,12 @@ public class Game extends Observable{
 		// start this and call up UI
 
 		this.updatePlayer(players.get(curr));
-		gb = new GameBoard(this);
 		gameWon = false;
+
+		gb = new GameBoard(this);
 		this.registerObserver(gb);
 		gb.update(this, board);
+		
 		Scanner sc = null;
 		if( !fileName.equals("") )
 			try { sc = new Scanner( new File( fileName ) ); } catch (FileNotFoundException e) {}
@@ -158,6 +161,10 @@ public class Game extends Observable{
 					break;
 				}
 			}
+			System.out.println(Arrays.toString(gb.getStatAry()));
+
+			if(sc.hasNext() == false)
+				fileName = "";
 			if( !fileName.equals("") )
 				try{ Thread.sleep(sleepTime/4);}catch(Exception e){}
 		}

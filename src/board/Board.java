@@ -126,7 +126,7 @@ public class Board {
 				return false;
 		}
 		
-		System.out.println( p.getColorName() + " can move to " +  (char)(y+65) + "," + (x+1) );
+//		System.out.println( p.getColorName() + " can move to " +  (char)(y+65) + "," + (x+1) );
 		
 		// we've checked illegal conditions 
 		return true;
@@ -141,13 +141,13 @@ public class Board {
 	 * @param checking Player, adjacent to original Player
 	 */
 	private void isLegalMove(Player initial, ArrayList<Player> calling, Player checking){
-		System.out.println("-------------------------------------------------------");
+//		System.out.println("-------------------------------------------------------");
 		System.out.println();
-		System.out.println("Checking where "+checking.getColorName()+" can move.");
-		System.out.print("Have checked: ");
+//		System.out.println("Checking where "+checking.getColorName()+" can move.");
+//		System.out.print("Have checked: ");
 		for(Player p: calling)
 			System.out.print(p.getColorName()+" ");
-		System.out.println();
+//		System.out.println();
 		// check four directions
 		Point[] directions = {new Point(checking.x(), checking.y()+1), 
 				new Point(checking.x(), checking.y()-1), new Point(checking.x()+1, checking.y()), 
@@ -158,17 +158,18 @@ public class Board {
 			int y = (int) d.getY();
 			
 			if(this.isOccupiedByPlayer(x,y) && calling.contains(this.getPlayerAt(x,y))){
+				;
 				// ignore, already checked
-				System.out.println(checking.getColorName()+" can jump off "+this.getPlayerAt(x,y).getColorName()+" but we've already checked it.");
+//				System.out.println(checking.getColorName()+" can jump off "+this.getPlayerAt(x,y).getColorName()+" but we've already checked it.");
 			}else if(this.isOccupiedByPlayer(x,y)&&this.isLegalMove(checking, x, y)){
 				// there's a player here, so we get that player's moves
-				System.out.println(checking.getColorName()+" can jump off "+this.getPlayerAt(x,y).getColorName()+". Checking next.");
+//				System.out.println(checking.getColorName()+" can jump off "+this.getPlayerAt(x,y).getColorName()+". Checking next.");
 				calling.add(checking);
 				isLegalMove(initial, calling, this.getPlayerAt(x,y));
 			}else{
 				if(isLegalMove(checking, x, y)){
 					initial.addToMoves(x+""+y);
-					System.out.println(checking.getColorName()+" and "+initial.getColorName()+" can move to "+x+","+y);
+//					System.out.println(checking.getColorName()+" and "+initial.getColorName()+" can move to "+x+","+y);
 				}
 			}
 		}

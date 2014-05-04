@@ -40,7 +40,7 @@ public class GameBoard extends JPanel implements Observer {
 	private JPanel BHBorder;
 	private JPanel rightBarPanel;
 	private JPanel topBarPanel;
-	public Terminal bottomBarPanel;
+	private Terminal bottomBarPanel;
 	private JPanel leftBarPanel;
 	private JPanel holder1;
 	private JPanel holder2;
@@ -400,7 +400,7 @@ public class GameBoard extends JPanel implements Observer {
 				statAry[i] = b;
 			}
 		}	
-		System.out.println(Arrays.toString(statAry));
+		System.out.println(Arrays.toString(this.getStatAry()));
 
 		topBarPanel.add( new SpacerButton( g.getVWall().width, getTopBarDim().height, Color.DARK_GRAY ) );
 		topBarPanel.add( new SpacerButton( g.getHWall().width, getTopBarDim().height, Color.LIGHT_GRAY, "" + (char)('A') ) );

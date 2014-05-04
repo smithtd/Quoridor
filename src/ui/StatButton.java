@@ -72,4 +72,9 @@ public class StatButton extends JButton {
 
 		//		g.drawString( s, 0, 0 );
 	}
+	
+	public String toString(){
+		return game.getPlayerAry().get(playerNum).getColorName().charAt(0) + ""
+				+ game.getPlayerAry().get(playerNum).getWalls();
+	}
 }

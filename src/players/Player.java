@@ -35,7 +35,7 @@ public class Player implements Players {
 	private Color c;
 	private ArrayList<String> availableMoves;	// list of available moves
 	private Point[] winArea;  // where to win
-	private GameBoard gb;
+	private static GameBoard gb;
 	// TODO - Incorporate a QuoridorClient for each player to connect to a server through the client
 	
 	/* Constructor(s) */
@@ -49,7 +49,7 @@ public class Player implements Players {
 	 * @param pNum integer Player number
 	 */
 	public Player(String name, int walls, String pos, int pNum, GameBoard gb) {
-		this.gb = gb;
+		Player.gb = gb;
 		this.name = name;
 		this.wallTotal = walls;
 		// to get moves (DEBUG)
