@@ -499,8 +499,10 @@ public class GameBoard extends JPanel implements Observer {
 		// get available spaces
 		ArrayList<PlayerButton> btnsToChange = this.possibleMoves(p, b);
 		// set available spaces to pink
-		for(PlayerButton btn : btnsToChange )
+		for(PlayerButton btn : btnsToChange ){
 			btn.setBackground( Color.MAGENTA );
+			btn.setMovable( true );
+		}
 	}	
 
 	/**
@@ -525,6 +527,10 @@ public class GameBoard extends JPanel implements Observer {
 		menuBar.setForeground( Color.WHITE );
 		menuBar.setBackground( Color.BLACK );	
 		return menuBar;
+	}
+	
+	public static PlayerButton [][] getPBAry(){
+		return pbAry;
 	}
 	
 	public int get(){

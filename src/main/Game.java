@@ -16,6 +16,7 @@ import network.GameClient;
 import players.Player;
 import board.Board;
 import ui.GameBoard;
+import ui.PlayerButton;
 import parser.Parser;
 
 /**
@@ -273,6 +274,14 @@ public class Game extends Observable{
 	 * 
 	 */
 	public static void nextTurn(){
+		PlayerButton [][] ary = GameBoard.getPBAry();
+		
+		for( int x=0; x< ary.length; x++ ){
+			for( int y=0; y<ary[x].length; y++ ){
+				ary[x][y].setMovable( false );
+			}
+		}
+		
 		curr++;
 		if(curr >= players.size())
 			curr=0;
