@@ -203,19 +203,13 @@ public class GameClient {
 	public void kickLastPlayer() {
 		// find the last player
 		System.out.println("Here I am");
-		int temp = this.turnNumber;
-		do {
-			// reverse the player list
-			if(temp == 0) 
-				temp = this.players.size() - 1;
-			else
-				temp = temp - 1;
-		} while(!this.players.get(temp).inGame());
-		this.sendAll(Messages.REMOVED + " " + this.players.get(temp).getAIIdentifier());
+		int temp = lastPlayer();
+		this.sendAll(Messages.REMOVED + " " + this.pId.get(temp));
 		this.players.get(temp).bootPlayer();
 		this.players.get(temp).endSession();
-		this.players.remove(temp);
-		this.pId.remove(temp);
+		//this.players.remove(temp);
+		//this.pId.remove(temp);
+		
 
 	}
 
@@ -227,4 +221,16 @@ public class GameClient {
 		return this.players.size();
 	}
 
+	private int lastPlayer() {
+		int temp = this.turnNumber;
+		do {
+			// reverse the player list
+			if(temp == 0) 
+				temp = this.players.size() - 1;
+			else
+				temp = temp - 1;
+		} while(!this.players.get(temp).inGame());
+		return temp;
+	}
+	
 }
