@@ -194,8 +194,7 @@ public class GameBoard extends JPanel implements Observer {
 		LongWallButtonFrame.setLayout( new BorderLayout() );
 		
 		// display buttons in dialog
-		ButtonGroup btngrp = new ButtonGroup();
-		final JRadioButton b3 = new JRadioButton("Quit",false);
+		final JButton b3 = new JButton("Quit");
 		
 		// add action listeners to dialog buttons
 		b3.addActionListener( new ActionListener(){
@@ -203,7 +202,6 @@ public class GameBoard extends JPanel implements Observer {
 				System.exit(0);
 			}
 		});
-	    btngrp.add(b3);
 	    jp1.add(b3, FlowLayout.LEFT);
 		LongWallButtonFrame.add( jp1, BorderLayout.NORTH );
 		LongWallButtonFrame.setLocation( 350, 300 );
