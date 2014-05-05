@@ -233,4 +233,9 @@ public class GameClient {
 		return temp;
 	}
 	
+	public void sendWin() {
+		sendAll(Messages.WINNER + " " + this.pId.get(lastPlayer()));
+		System.out.println("Thanks for playing, GOODBYE");
+	}
+	
 }

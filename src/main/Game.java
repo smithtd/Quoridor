@@ -256,15 +256,18 @@ public class Game extends Observable{
 	 * @return	a boolean telling whether or not this Player has won
 	 */
 	public boolean checkForWin(){
+		
 		Player p = Game.getCurrPlayer();
 		// if player made it to win area, player won
 		if(p.won()){
 			Game.gameWon = true;
+			this.network.sendWin();
 			return true;
 		}
 		// if player is the last player on the board, player won
 		if(numPlayers == 1 && !p.hasBeenKicked()){
 			Game.gameWon = true;
+			this.network.sendWin();
 			return true;
 		}
 
