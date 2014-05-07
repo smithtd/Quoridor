@@ -35,6 +35,12 @@ public class BoardTest {
 		}
 	}
 	
+	// test checkForPath
+	private void testResults(int x, int y, boolean expected) {
+		boolean result = board.checkForPath(x, y);
+	    assertThat(result, equalTo(expected));    
+	}
+	
 	// test placePawn - unused param is to distinguish from isLegalMove test
 	private void testResults(Player p, int x, int y, boolean expected, int unused) {
 		boolean result = board.placePawn(p, x, y);
@@ -59,6 +65,18 @@ public class BoardTest {
 	    assertThat(result, equalTo(expected));  
 	}
 
+	
+	/* Test checkForPath() */
+	
+	@Test
+	public void check(){
+		int x=1;
+		int y=0;
+		boolean expected = true;
+		
+		testResults(x, y, expected);
+	}
+	
 	/* Test placePawn() */
 	
 	@Test
