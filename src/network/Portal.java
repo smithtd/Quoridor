@@ -63,6 +63,7 @@ public class Portal {
 		Scanner sc = new Scanner(helloMessage);
 		sc.next(); this.aiIdentifier = sc.next();
 		sc.close();
+		System.out.println("Got hello message from " + this.socket + " and AI identifier is " + this.aiIdentifier);
 
 	}
 

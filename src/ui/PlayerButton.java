@@ -20,6 +20,7 @@ public class PlayerButton extends JButton {
 	public int buttonSize;
 	private int x;
 	private int y;
+	private boolean moveable;
 	private Player plyr;
 	
 	/* Constructor	*/
@@ -34,6 +35,7 @@ public class PlayerButton extends JButton {
 		super();
 		this.x = x;
 		this.y = y;
+		this.moveable = false;
 		this.setPreferredSize( new Dimension( GameBoard.HWall.width, GameBoard.VWall.height ) );
 		this.setBackground( Color.BLACK );
 		this.setOpaque(true);
@@ -49,6 +51,11 @@ public class PlayerButton extends JButton {
 	 */
 	public int x(){
 		return this.x;
+	}
+	
+	public void setMovable( boolean b ){
+		this.moveable = b;
+		this.repaint();
 	}
 	
 	/**
@@ -108,12 +115,12 @@ public class PlayerButton extends JButton {
 			g.fillRect( 0, 0, GameBoard.getPlayerSize().width, GameBoard.getPlayerSize().height );
 			g.setColor( Color.WHITE );
 		}
-		
-		g.setFont( getFont() );
-		FontMetrics fm = g.getFontMetrics( g.getFont() );
-		String s = "" + (char)(this.y+65) + (this.x+1) ;
-		g.drawString( s, (this.getWidth()/2 - fm.stringWidth( s )/2), (this.getHeight()/2 + fm.getHeight()/4 ) );
-		//g.drawString( s, 0, 0 );
-		
+		if( moveable ){
+			g.setFont( getFont() );
+			FontMetrics fm = g.getFontMetrics( g.getFont() );
+			String s = "" + (char)(this.y+65) + (this.x+1) ;
+			g.drawString( s, (this.getWidth()/2 - fm.stringWidth( s )/2), (this.getHeight()/2 + fm.getHeight()/4 ) );
+			//g.drawString( s, 0, 0 );
+		}
 	}
 }

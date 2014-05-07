@@ -16,6 +16,7 @@ import network.GameClient;
 import players.Player;
 import board.Board;
 import ui.GameBoard;
+import ui.PlayerButton;
 import parser.Parser;
 
 /**
@@ -112,6 +113,7 @@ public class Game extends Observable{
 
 			if(move.isEmpty()){
 				kickPlayer();
+				this.network.kickLastPlayer();
 				Game.nextTurn();
 				System.out.println("Calling checkForWin");
 				if(this.checkForWin()){
@@ -133,6 +135,7 @@ public class Game extends Observable{
 			}else{
 				System.out.println("Player turn failed!");
 				kickPlayer();
+				this.network.kickLastPlayer();
 				Game.nextTurn();
 				if(this.checkForWin()){
 					System.out.println(Game.getCurrPlayer().getColorName()+" won by default.");
@@ -253,15 +256,18 @@ public class Game extends Observable{
 	 * @return	a boolean telling whether or not this Player has won
 	 */
 	public boolean checkForWin(){
+		
 		Player p = Game.getCurrPlayer();
 		// if player made it to win area, player won
 		if(p.won()){
 			Game.gameWon = true;
+			this.network.sendWin();
 			return true;
 		}
 		// if player is the last player on the board, player won
 		if(numPlayers == 1 && !p.hasBeenKicked()){
 			Game.gameWon = true;
+			this.network.sendWin();
 			return true;
 		}
 
@@ -273,6 +279,14 @@ public class Game extends Observable{
 	 * 
 	 */
 	public static void nextTurn(){
+		PlayerButton [][] ary = GameBoard.getPBAry();
+		
+		for( int x=0; x< ary.length; x++ ){
+			for( int y=0; y<ary[x].length; y++ ){
+				ary[x][y].setMovable( false );
+			}
+		}
+		
 		curr++;
 		if(curr >= players.size())
 			curr=0;

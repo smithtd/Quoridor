@@ -194,8 +194,7 @@ public class GameBoard extends JPanel implements Observer {
 		LongWallButtonFrame.setLayout( new BorderLayout() );
 		
 		// display buttons in dialog
-		ButtonGroup btngrp = new ButtonGroup();
-		final JRadioButton b3 = new JRadioButton("Quit",false);
+		final JButton b3 = new JButton("Quit");
 		
 		// add action listeners to dialog buttons
 		b3.addActionListener( new ActionListener(){
@@ -203,7 +202,6 @@ public class GameBoard extends JPanel implements Observer {
 				System.exit(0);
 			}
 		});
-	    btngrp.add(b3);
 	    jp1.add(b3, FlowLayout.LEFT);
 		LongWallButtonFrame.add( jp1, BorderLayout.NORTH );
 		LongWallButtonFrame.setLocation( 350, 300 );
@@ -499,8 +497,10 @@ public class GameBoard extends JPanel implements Observer {
 		// get available spaces
 		ArrayList<PlayerButton> btnsToChange = this.possibleMoves(p, b);
 		// set available spaces to pink
-		for(PlayerButton btn : btnsToChange )
+		for(PlayerButton btn : btnsToChange ){
 			btn.setBackground( Color.MAGENTA );
+			btn.setMovable( true );
+		}
 	}	
 
 	/**
@@ -525,6 +525,10 @@ public class GameBoard extends JPanel implements Observer {
 		menuBar.setForeground( Color.WHITE );
 		menuBar.setBackground( Color.BLACK );	
 		return menuBar;
+	}
+	
+	public static PlayerButton [][] getPBAry(){
+		return pbAry;
 	}
 	
 	public int get(){
