@@ -56,7 +56,7 @@ public class Artie extends MoveServer {
 		// Remove this when AI is making its own decisions
 		this.playerInput = new Scanner(System.in);
 		System.out.println("Starting the move server");
-		this.hasWon = true;
+		this.hasWon = true;  
 		try{
 			
 			// Start the listening Socket on port
