@@ -69,16 +69,19 @@ public class GameClient {
 
 			players.get(0).sendMessage(Messages.START_GAME + " " + 1 + " " + players.get(1).getAIIdentifier() 
 					+ " " + players.get(2).getAIIdentifier() + " " + players.get(3).getAIIdentifier());
-			this.pId.add(0,1);
+
 			players.get(1).sendMessage(Messages.START_GAME + " " + 4 + " " + players.get(2).getAIIdentifier() 
 					+ " " + players.get(3).getAIIdentifier() + " " + players.get(0).getAIIdentifier());
-			this.pId.add(1,4);
-			players.get(2).sendMessage(Messages.START_GAME + " " + 3 + " " + players.get(3).getAIIdentifier() 
+
+			// this used to be .get(2)
+			players.get(3).sendMessage(Messages.START_GAME + " " + 3 + " " + players.get(3).getAIIdentifier() 
 					+ " " + players.get(0).getAIIdentifier() + " " + players.get(1).getAIIdentifier());
-			this.pId.add(2,3);
-			players.get(3).sendMessage(Messages.START_GAME + " " + 2 + " " + players.get(0).getAIIdentifier() 
+
+			// this used to be .get(3)
+			players.get(2).sendMessage(Messages.START_GAME + " " + 2 + " " + players.get(0).getAIIdentifier() 
 					+ " " + players.get(1).getAIIdentifier() + " " + players.get(2).getAIIdentifier());
-			this.pId.add(3,2);
+			
+			this.pId.add(0,1); this.pId.add(1,4); this.pId.add(2,2); this.pId.add(3,3);
 		}
 
 		// get the messages back from everyone
