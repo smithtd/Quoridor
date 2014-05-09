@@ -49,14 +49,16 @@ public class MoveServer {
 	 * and handles it so it can send back the proper responses.
 	 */
 	public void run() {
+		
+		// Protocol says first message after connecting should
+					// be HELLO <ai-identifier>
+					System.out.print("Name or AI-Identifier >> ");
+					this.playerInput = new Scanner(System.in);
+					this.identifier = this.playerInput.next();
+
 		while(true) {
 			this.hasWon = true;
-			// Protocol says first message after connecting should
-			// be HELLO <ai-identifier>
-			System.out.print("Name or AI-Identifier >> ");
-			this.playerInput = new Scanner(System.in);
-			this.identifier = this.playerInput.next();
-
+			
 			System.out.println("Starting a move server");
 
 			try {
