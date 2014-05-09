@@ -180,6 +180,8 @@ public class GameClient {
 		String notify = Messages.TELL_MOVE + " " + this.pId.get(temp) + " " + mv;
 		this.sendAll(notify);
 		sc.close();
+		
+		System.out.println(notify);
 
 		return mv;
 

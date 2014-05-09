@@ -62,9 +62,9 @@ public class Game extends Observable{
 
 		if(Game.numPlayers == MAX_NUMBER_PLAYERS){
 			players.add(new Player("1", 0, 4, 1, wallsEach));
-			players.add(new Player("4", 4, 8, 2, wallsEach));
-			players.add(new Player("2", 8, 4, 3, wallsEach));
-			players.add(new Player("3", 4, 0, 4, wallsEach));
+			players.add(new Player("2", 4, 8, 2, wallsEach));
+			players.add(new Player("3", 8, 4, 3, wallsEach));
+			players.add(new Player("4", 4, 0, 4, wallsEach));
 		} else {
 			players.add(new Player("1", 0, 4, 1, wallsEach));
 			players.add(new Player("2", 8, 4, 2, wallsEach));
