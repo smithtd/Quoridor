@@ -195,7 +195,6 @@ public class Board {
 		//System.out.println("-------------------------------------------------------");
 		//System.out.println();
 		//System.out.println("Checking where "+checking.getColorName()+" can move.");
-		System.out.println("Path: " + possibleMoves(checking));
 		//System.out.print("Have checked: ");
 		//for(Player p: calling)
 			//System.out.print(p.getColorName()+" ");
