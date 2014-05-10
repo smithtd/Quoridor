@@ -118,7 +118,7 @@ public class MoveServer {
 			Scanner getID = new Scanner(input);
 			getID.next();
 			this.playerId = Integer.parseInt(getID.next());
-			this.clientOutput.println(Messages.READY + " " + this.playerId);
+			this.clientOutput.println(Messages.READY + " " + this.identifier);
 			System.out.println("Playing as player # " + this.playerId);
 			getID.close();
 		} else if(input.startsWith(Messages.REMOVED)){
