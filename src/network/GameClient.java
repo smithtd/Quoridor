@@ -173,6 +173,7 @@ public class GameClient {
 		int temp = this.turnNumber;
 		this.turnNumber++; this.turnNumber = this.turnNumber % this.players.size();
 		String move = this.players.get(temp).getMessage();
+		System.out.println("Move from player in client is: " + move);
 		Scanner sc = new Scanner(move);
 		sc.next(); 
 		String mv =  sc.next();

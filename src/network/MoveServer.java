@@ -93,6 +93,9 @@ public class MoveServer {
 
 			} catch (IOException e) {
 				System.out.println("Connection Terminated");
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 
@@ -102,8 +105,9 @@ public class MoveServer {
 	 * Handles the messages that should be seen from the game client
 	 * and makes them easy to understand for the player. 
 	 * @param input - Message from the GameClient. 
+	 * @throws InterruptedException 
 	 */
-	public void getResponse(String input) {
+	public void getResponse(String input) throws InterruptedException {
 
 		if(input.equalsIgnoreCase(Messages.ASK_FOR_MOVE)){
 			String move = getMove();
@@ -154,7 +158,7 @@ public class MoveServer {
 	 * 
 	 * @return - Players next move.
 	 */
-	public String getMove() {
+	private String getMove() {
 
 		System.out.print("Enter a move/wall placement >> ");
 		String m = this.playerInput.next();
