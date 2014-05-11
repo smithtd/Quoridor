@@ -17,16 +17,16 @@ import network.Messages;
 import network.MoveServer;
 
 public class Artie extends MoveServer {
-	
+
 	/** AI-Identifier -- Team Decided */
 	public static final String AI_IDENTIFIER = "tactical";
-	
+
 	// Player representations
 	private static final char PLAYER_NORTH = 1;	// e1
 	private static final char PLAYER_SOUTH = 2; 	// e9
 	private static final char PLAYER_WEST = 3;	// a5
 	private static final char PLAYER_EAST = 4;	// i5
-	
+
 	/** Map of starting positions to player numbers */
 	private Map<Integer, String> startPos;
 	/** Board Representations */
@@ -36,7 +36,7 @@ public class Artie extends MoveServer {
 	/** Number of walls we have */
 	int walls;
 	private String currentPosition;
-	
+
 	/**
 	 * Create an instance of our AI
 	 * @param - Port to listen on 
@@ -44,13 +44,13 @@ public class Artie extends MoveServer {
 	 */
 	public Artie (int port) {
 		super(port);
-		
+
 		this.startPos = new HashMap<Integer, String>();
 		this.startPos.put(1, "e1"); this.startPos.put(2, "e9");
 		this.startPos.put(3, "a5"); this.startPos.put(4, "i5");
-		
+
 	}
-	
+
 	/**
 	 *  
 	 * Allows the AI to start listening on the port. Once connected it will
@@ -59,73 +59,75 @@ public class Artie extends MoveServer {
 	 * 
 	 */
 	public void run() { 
-		
+
 		// Protocol says first message after connecting should be 
 		// HELLO <AI-IDENTIFIER>
 		System.out.println("Your AI Identifier is: " + AI_IDENTIFIER);
 		this.identifier = AI_IDENTIFIER;
-		
+
 		// Remove this when AI is making its own decisions
 		this.playerInput = new Scanner(System.in);
-		System.out.println("Starting the move server");
-		this.hasWon = true;  
-		try{
-			
-			// Start the listening Socket on port
-			ServerSocket server = new ServerSocket(this.port);
-			System.out.println("Waiting for a client...");
-			Socket gameClient;
-			
-			while((gameClient = server.accept()) != null) {
-				
-				server.close();
-				System.out.println("Now connected to client at: " + gameClient);
-				
-				this.clientOutput = new PrintStream(gameClient.getOutputStream());
-				
-				// Send output stream 
-				System.out.println("Sending HELLO " + AI_IDENTIFIER + " message to " + gameClient);
-				this.clientOutput.println(Messages.HELLO_MESSAGE + " " + AI_IDENTIFIER);
-				
-				// Read input that comes in from the game client
-				this.clientInput = new Scanner(gameClient.getInputStream());
-				
-				while(this.clientInput.hasNext() && this.hasWon) { 
-					String input = this.clientInput.nextLine();
-					getResponse(input);
+		while(true) {
+			System.out.println("Starting the move server");
+			this.hasWon = true;  
+			try{
+
+				// Start the listening Socket on port
+				ServerSocket server = new ServerSocket(this.port);
+				System.out.println("Waiting for a client...");
+				Socket gameClient;
+
+
+				while((gameClient = server.accept()) != null) {
+
+					server.close();
+					System.out.println("Now connected to client at: " + gameClient);
+
+					this.clientOutput = new PrintStream(gameClient.getOutputStream());
+
+					// Send output stream 
+					System.out.println("Sending HELLO " + AI_IDENTIFIER + " message to " + gameClient);
+					this.clientOutput.println(Messages.HELLO_MESSAGE + " " + AI_IDENTIFIER);
+
+					// Read input that comes in from the game client
+					this.clientInput = new Scanner(gameClient.getInputStream());
+
+					while(this.clientInput.hasNext() && this.hasWon) { 
+						String input = this.clientInput.nextLine();
+						getResponse(input);
+					}
+
 				}
-				
+
+			} catch (IOException ioe) {
+				System.out.println("Connection Terminated, Restarting :)");
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			
-		} catch (IOException ioe) {
-			System.out.println("Connection Terminated or Error in Artie");
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
 		}
-		
-		this.playerInput.close();
-		
+
 	}
-	
-	
+
+
 	/** 
 	 * Starts an instance of this AI, handles command line args 
 	 * @param args -- Port number to listen on. 
 	 */
 	public static void main(String[] args) {
-		
+
 		// Should have a port number as a command line argument
 		if(args.length != 1) 
 			usage();
-		
+
 		// Try and parse the port from the command
 		int port = Integer.parseInt(args[0]);
 		Artie aiArtie = new Artie(port);
-	
+
 		aiArtie.run();
 	}
-	
+
 
 	/**
 	 * Handles the messages that should be seen from the game client
@@ -134,12 +136,12 @@ public class Artie extends MoveServer {
 	 * @throws InterruptedException 
 	 */
 	public void getResponse(String input) throws InterruptedException {
-		Thread.sleep(1000);
+		Thread.sleep(250); // try to watch what is happening
 
 		if(input.equalsIgnoreCase(Messages.ASK_FOR_MOVE)){
 			String move = getMove();
 			this.currentPosition = move;
-			
+
 			this.clientOutput.println("MOVE " + move);
 
 		} else if(input.startsWith(Messages.TELL_MOVE)){
@@ -181,9 +183,9 @@ public class Artie extends MoveServer {
 
 
 	}
-	
+
 	private String getMove()  { 
-	
+
 		String curPos = this.currentPosition;
 		Random rand = new Random();
 		int whichWay = rand.nextInt(2);
@@ -196,8 +198,8 @@ public class Artie extends MoveServer {
 				curPos = curPos.charAt(0) + "" + (Integer.parseInt(curPos.substring(1)) + 1);
 				return curPos;
 			}
-				
-				
+
+
 		} else {
 			// we are going to go side to side
 			int leftOrRight = rand.nextInt(2);
@@ -212,10 +214,10 @@ public class Artie extends MoveServer {
 				return (char)(curPos.charAt(0) + leftOrRight) + "" + curPos.charAt(1);
 			}
 		}
-		
+
 	}
 
-	
-	
+
+
 
 }
