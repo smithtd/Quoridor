@@ -50,11 +50,11 @@ public class GameBoard extends JPanel implements Observer {
 	private static JPanel BHBorder;
 	private static JPanel rightBarPanel;
 	private static JPanel topBarPanel;
-	private static JPanel bottomBarPanel;
+	//private static JPanel bottomBarPanel;
 	private static JPanel leftBarPanel;
 	private static JPanel holder1;
 	private static JPanel holder2;
-	private static JPanel holder3;
+	//private static JPanel holder3;
 	/* Constructor */
 
 	/**
@@ -73,33 +73,33 @@ public class GameBoard extends JPanel implements Observer {
 		BHBorder = new JPanel();
 		rightBarPanel = new JPanel();
 		topBarPanel = new JPanel();
-		bottomBarPanel = new JPanel();
+		//bottomBarPanel = new JPanel();
 		leftBarPanel = new JPanel();
 		holder1 = new JPanel();
 		holder2 = new JPanel();
-		holder3 = new JPanel();
+		//holder3 = new JPanel();
 
 
 		buttonHolder.setLayout( flow );
 		BHBorder.setLayout( flow );
 		rightBarPanel.setLayout( flow );
 		topBarPanel.setLayout( flow );
-		bottomBarPanel.setLayout( flow );
+		//bottomBarPanel.setLayout( flow );
 		leftBarPanel.setLayout( flow );
 		holder1.setLayout( flow );
 		holder2.setLayout( flow );
-		holder3.setLayout( flow );
+		//holder3.setLayout( flow );
 		this.setLayout( flow );
 				
 		buttonHolder.setPreferredSize( getButtonHolderDim() );
 		BHBorder.setPreferredSize( getButtonHolderBorderDim() );
 		rightBarPanel.setPreferredSize( getRightBarDim() );
 		topBarPanel.setPreferredSize( getTopBarDim() );
-		bottomBarPanel.setPreferredSize( getBottomBarDim() );
+		//bottomBarPanel.setPreferredSize( getBottomBarDim() );
 		leftBarPanel.setPreferredSize( getLeftBarDim() );
 		holder1.setPreferredSize( getHolder1Dim() );
 		holder2.setPreferredSize( getHolder2Dim() );
-		holder3.setPreferredSize( getHolder3Dim() );
+		//holder3.setPreferredSize( getHolder3Dim() );
 		this.setPreferredSize( getThisDim() );
 		
 
@@ -260,7 +260,7 @@ public class GameBoard extends JPanel implements Observer {
 	}
 	
 	private Dimension getThisDim(){
-		return (new Dimension( getLeftBarDim().width + getButtonHolderBorderDim().width + getRightBarDim().width, getTopBarDim().height + getButtonHolderBorderDim().height + getBottomBarDim().height ) );
+		return (new Dimension( getLeftBarDim().width + getButtonHolderBorderDim().width + getRightBarDim().width, getTopBarDim().height + getButtonHolderBorderDim().height ) );
 	}
 	
 	private Dimension getLeftBarDim(){
@@ -409,11 +409,11 @@ public class GameBoard extends JPanel implements Observer {
 		}
 		leftBarPanel.add( new SpacerButton( getLeftBarDim().width,getHWall().height, Color.DARK_GRAY ) );
 
-		holder3.add(leftBarPanel);
-		holder3.add(holder2);
+		//holder3.add(leftBarPanel);
+		//holder3.add(holder2);
 
-		this.add(holder3);
-		this.add(bottomBarPanel);
+		this.add(leftBarPanel);
+		this.add(holder2);
 	}
 	
 	/**

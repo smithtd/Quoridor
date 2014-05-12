@@ -163,7 +163,7 @@ public class Player implements Players {
 	 * @return integer number of walls available to place
 	 */
 	public int getWalls() {
-		return this.wallTotal;
+		return wallTotal;
 	}
 	
 	/**

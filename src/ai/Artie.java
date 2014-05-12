@@ -21,12 +21,6 @@ public class Artie extends MoveServer {
 	/** AI-Identifier -- Team Decided */
 	public static final String AI_IDENTIFIER = "tactical";
 
-	// Player representations
-	private static final char PLAYER_NORTH = 1;	// e1
-	private static final char PLAYER_SOUTH = 2; 	// e9
-	private static final char PLAYER_WEST = 3;	// a5
-	private static final char PLAYER_EAST = 4;	// i5
-
 	/** Map of starting positions to player numbers */
 	private Map<Integer, String> startPos;
 	/** Board Representations */
@@ -44,11 +38,10 @@ public class Artie extends MoveServer {
 	 */
 	public Artie (int port) {
 		super(port);
-
+		
 		this.startPos = new HashMap<Integer, String>();
 		this.startPos.put(1, "e1"); this.startPos.put(2, "e9");
 		this.startPos.put(3, "a5"); this.startPos.put(4, "i5");
-
 	}
 
 	/**
@@ -77,7 +70,6 @@ public class Artie extends MoveServer {
 				System.out.println("Waiting for a client...");
 				Socket gameClient;
 
-
 				while((gameClient = server.accept()) != null) {
 
 					server.close();
@@ -96,18 +88,14 @@ public class Artie extends MoveServer {
 						String input = this.clientInput.nextLine();
 						getResponse(input);
 					}
-
 				}
-
 			} catch (IOException ioe) {
 				System.out.println("Connection Terminated, Restarting :)");
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		}
-
 	}
 
 
@@ -123,6 +111,7 @@ public class Artie extends MoveServer {
 
 		// Try and parse the port from the command
 		int port = Integer.parseInt(args[0]);
+		
 		Artie aiArtie = new Artie(port);
 
 		aiArtie.run();
@@ -180,8 +169,6 @@ public class Artie extends MoveServer {
 				System.out.println("Player " + player + " won! You lose!");
 			}
 		}
-
-
 	}
 
 	private String getMove()  { 
@@ -199,7 +186,6 @@ public class Artie extends MoveServer {
 				return curPos;
 			}
 
-
 		} else {
 			// we are going to go side to side
 			int leftOrRight = rand.nextInt(2);
@@ -214,10 +200,5 @@ public class Artie extends MoveServer {
 				return (char)(curPos.charAt(0) + leftOrRight) + "" + curPos.charAt(1);
 			}
 		}
-
 	}
-
-
-
-
 }
