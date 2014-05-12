@@ -139,7 +139,7 @@ public class Artie extends MoveServer {
 			System.out.println("Player " + info.next() + " made move: " + info.next());
 			info.close();
 		} else if(input.startsWith(Messages.START_GAME)){
-			System.out.println( input );
+			System.out.println( input );///////////////////////////////////////////////////////////////////////////////////////
 			Scanner getID = new Scanner(input);
 			getID.next();
 			this.playerId = Integer.parseInt(getID.next());
