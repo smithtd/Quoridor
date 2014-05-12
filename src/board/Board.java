@@ -67,57 +67,84 @@ public class Board {
 		return numWalls;
 	}
 	
-	public boolean checkForPath(int x, int y){
-		System.out.println("First to check = "+x+","+y);
-		Player tmp = new Player("tmp", x, y, 1, 0);
-		// get available moves
-		possibleMoves(tmp);
-		ArrayList<String> newToCheck = tmp.getAvailableMoves();
-		System.err.println(newToCheck);
-		if(newToCheck == null){
-			return false;
-		}else{
-			for(String loc : newToCheck){
-				System.err.println(loc);
-				ArrayList<String> checked = new ArrayList<String>();
-				checked.add(loc);
-				int locx = Integer.parseInt(loc.substring(0, 1));
-				int locy = Integer.parseInt(loc.substring(1));
-				if(checkForPath(locx, locy, checked)){
-					System.err.println(locx+","+locy+" works");
-					return true;
-				}
-			}
+	public void checkPath(int x, int y, int mark, int[][] board, Player p, ArrayList<String> path){
+		if(!p.getPath().isEmpty())
+			return;
+		
+		// make sure we're on the board
+		if (x < 0 || y < 0 || x >= 9 || y >= 9){
+        	path = new ArrayList<String>();
+        	return;
 		}
-		return false;	
-	}
-	
-	public boolean checkForPath(int x, int y, ArrayList<String> checked){
-		System.out.println("Checking moves for = "+x+","+y);
-		Player tmp = new Player("tmp", x, y, 1, 0);
-		if(tmp.won()){
-			//System.err.println(checked);
-			return true;
-		}
-		// get available moves
-		possibleMoves(tmp);
-		ArrayList<String> newToCheck = tmp.getAvailableMoves();
-		if(newToCheck == null){
-			return false;
-		}else{
-			for(String loc : newToCheck){
-				if(checked.contains(loc))
-					return false;
-				checked.add(loc);
-				int locx = Integer.parseInt(loc.substring(0, 1));
-				int locy = Integer.parseInt(loc.substring(1));
-				if(checkForPath(locx, locy, checked)){
-					System.err.println(locx+","+locy+" works");
-					return true;
-				}
-			}
-		}
-		return false;	
+		
+        // make sure we haven't already been here
+        if(board[x][y]>0){
+        	path = new ArrayList<String>();
+        	return;
+        }
+        
+        // make sure this is a legal move
+        if (!isLegalMove(p, x, y)){
+        	path = new ArrayList<String>();
+        	return;
+        }
+        
+        // set visited
+        board[x][y]=mark;
+        path.add(x+""+y);
+        System.out.println("Can reach "+x+""+y+" Path = "+path);
+        
+        // see if it's a winner
+        if(p.won(x,y)){
+    		System.out.println("We did it = "+x+""+y);
+    		if(p.getPath().isEmpty()){
+    			System.out.println("setting player path = "+path);
+    			p.setPath(path);
+    		}
+    		return;
+    	}else{
+    		// look down first
+    		if(p.getPnum()==1){
+    			p.setPos(x+1, y);
+    			checkPath(x+1, y, mark+1, board, p, path);
+    			p.setPos(x, y+1);
+    			checkPath(x, y+1, mark+1, board, p, path);
+    			p.setPos(x, y-1);
+    			checkPath(x, y-1, mark+1, board, p, path);
+    			p.setPos(x-1, y);
+    			checkPath(x-1, y, mark+1, board, p, path);
+    		// up first
+    		}else if(p.getPnum()==2){
+    			p.setPos(x-1, y);
+    			checkPath(x-1, y, mark+1, board, p, path);
+    			p.setPos(x, y+1);
+    			checkPath(x, y+1, mark+1, board, p, path);
+    			p.setPos(x, y-1);
+    			checkPath(x, y-1, mark+1, board, p, path);
+    			p.setPos(x+1, y);
+    			checkPath(x+1, y, mark+1, board, p, path);
+    		// right first
+    		}else if(p.getPnum()==3){
+    			p.setPos(x, y-1);
+    			checkPath(x, y-1, mark+1, board, p, path);
+    			p.setPos(x-1, y);
+    			checkPath(x-1, y, mark+1, board, p, path);
+    			p.setPos(x+1, y);
+    			checkPath(x+1, y, mark+1, board, p, path);
+    			p.setPos(x, y+1);
+    			checkPath(x, y+1, mark+1, board, p, path);
+    		// left first
+    		}else{
+    			p.setPos(x, y+1);
+    			checkPath(x, y+1, mark+1, board, p, path);
+    			p.setPos(x-1, y);
+    			checkPath(x-1, y, mark+1, board, p, path);
+    			p.setPos(x+1, y);
+    			checkPath(x+1, y, mark+1, board, p, path);
+    			p.setPos(x, y-1);
+    			checkPath(x, y-1, mark+1, board, p, path);
+    		}
+    	}
 	}
 	
 	/**
@@ -142,8 +169,9 @@ public class Board {
 				checked.add(p);
 				isLegalMove(p, checked, this.getPlayerAt(x,y));
 			}else{
-				if(isLegalMove(p, x, y))
+				if(isLegalMove(p, x, y)){
 					p.addToMoves(x+""+y);
+				}
 			}
 		}
 		

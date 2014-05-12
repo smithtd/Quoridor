@@ -6,6 +6,7 @@ package board;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 
+//import java.awt.Point;
 import java.util.ArrayList;
 
 import org.junit.Before;
@@ -23,10 +24,10 @@ public class BoardTest {
 	@Before
 	public void initialize() {
 		players = new ArrayList<Player>();
-		players.add( new Player("p1", 1, 0, 1, 5));
-		players.add( new Player("p2", 2, 8, 2, 5));
-		players.add( new Player("p3", 8, 1, 3, 5));
-		players.add( new Player("p4", 8, 2, 4, 5));
+		players.add( new Player("p1", 1, 0, 1, 5, null));	//e1 (top)(check x+1 first)
+		players.add( new Player("p2", 2, 8, 2, 5, null));	//e9 (bottom)(check x-1 first)
+		players.add( new Player("p3", 8, 1, 3, 5, null));	//a5 (left)(check y+1 first)
+		players.add( new Player("p4", 8, 2, 4, 5, null));	//i5 (right)(check y-1 first)
 		board = new Board(players, 20);
 		board.placeWall(players.get(0), 3, 3, "v");
 		board.placeWall(players.get(0), 5, 1, "h");
@@ -36,8 +37,10 @@ public class BoardTest {
 	}
 	
 	// test checkForPath
-	private void testResults(int x, int y, boolean expected) {
-		boolean result = board.checkForPath(x, y);
+	private void testResults(Player p, int x, int y, ArrayList<String> expected) {
+		board.checkPath(x, y, 1, new int[9][9], p, new ArrayList<String>());
+		System.out.println("path = "+p.getPath());
+		ArrayList<String> result = p.getPath();
 	    assertThat(result, equalTo(expected));    
 	}
 	
@@ -69,12 +72,75 @@ public class BoardTest {
 	/* Test checkForPath() */
 	
 	@Test
-	public void check(){
-		int x=1;
-		int y=0;
-		boolean expected = true;
+	public void check1(){
+		Player p = players.get(0);
+		int x=p.x();
+		int y=p.y();
+		System.out.println("Starting point = "+x+""+y);
+		ArrayList<String> expected = new ArrayList<String>();
+		expected.add("10");
+		expected.add("20");
+		expected.add("30");
+		expected.add("40");
+		expected.add("50");
+		expected.add("60");
+		expected.add("70");
+		expected.add("80");
 		
-		testResults(x, y, expected);
+		testResults(p, x, y, expected);
+	}
+	
+	@Test
+	public void check2(){
+		Player p = players.get(1);
+		int x=p.x();
+		int y=p.y();
+		System.out.println("Starting point = "+x+""+y);
+		ArrayList<String> expected = new ArrayList<String>();
+		expected.add("28");
+		expected.add("18");
+		expected.add("08");
+		
+		testResults(p, x, y, expected);
+	}
+	
+	@Test
+	public void check3(){
+		Player p = players.get(2);
+		int x=p.x();
+		int y=p.y();
+		System.out.println("Starting point = "+x+""+y);
+		ArrayList<String> expected = new ArrayList<String>();
+		expected.add("81");
+		expected.add("71");
+		expected.add("61");
+		expected.add("51");
+		expected.add("41");
+		expected.add("31");
+		expected.add("21");
+		expected.add("11");
+		expected.add("01");
+		expected.add("00");
+		
+		testResults(p, x, y, expected);
+	}
+	
+	@Test
+	public void check4(){
+		Player p = players.get(3);
+		int x=p.x();
+		int y=p.y();
+		System.out.println("Starting point = "+x+""+y);
+		ArrayList<String> expected = new ArrayList<String>();
+		expected.add("82");
+		expected.add("83");
+		expected.add("84");
+		expected.add("85");
+		expected.add("86");
+		expected.add("87");
+		expected.add("88");
+		
+		testResults(p, x, y, expected);
 	}
 	
 	/* Test placePawn() */

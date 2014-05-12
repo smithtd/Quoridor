@@ -26,6 +26,7 @@ public class Player implements Players {
 	private ArrayList<String> availableMoves;	// list of available moves
 	private Point[] winArea;  // where to win
 	private boolean kicked;
+	private ArrayList<String> path;
 	
 	/* Constructor(s) */
 	
@@ -63,6 +64,7 @@ public class Player implements Players {
 		}
 		this.setWinArea();
 		this.kicked = false;
+		this.path = new ArrayList<String>();
 	}
 	
 	
@@ -75,8 +77,44 @@ public class Player implements Players {
 	 * @param pNum integer Player number
 	 * @param walls integer number of walls
 	 */
+	public Player( String name, int x, int y, int pNum, int walls, ArrayList<String> path ){
+		this.name = name;
+		if(pNum==1){
+			startX=0;
+			startY=4;
+		}
+		if(pNum==2){
+			startX=8;
+			startY=4;
+		}
+		if(pNum==3){
+			startX=4;
+			startY=0;
+		}
+		if(pNum==4){
+			startX=4;
+			startY=8;
+		}
+		this.setPos(x, y);
+		this.pNumber = pNum;
+		if(pNumber== 1)
+			c = Color.BLUE;
+		else if(pNumber == 2)
+			c = Color.RED;
+		else if(pNumber == 3)
+			c = Color.GREEN;
+		else if(pNumber == 4)
+			c = Color.YELLOW;
+		wallTotal = walls; 
+		this.setWinArea();
+		this.availableMoves = new ArrayList<String>();
+		this.kicked = false;
+		this.path = new ArrayList<String>();
+	}
+	
 	public Player( String name, int startX, int startY, int pNum, int walls ){
 		this.name = name;
+		this.setPos(startX, startY);
 		this.startX = startX;
 		this.startY = startY;
 		this.pNumber = pNum;
@@ -92,6 +130,7 @@ public class Player implements Players {
 		this.setWinArea();
 		this.availableMoves = new ArrayList<String>();
 		this.kicked = false;
+		this.path = new ArrayList<String>();
 	}
 		
 	/* Get Methods */
@@ -135,6 +174,10 @@ public class Player implements Players {
 		return startX;
 	}
 	
+	public void setStartx(int x){
+		this.startX = x;
+	}
+	
 	/**
 	 * Purpose: Gets the initial y coordinate for this Player.
 	 * 
@@ -142,6 +185,10 @@ public class Player implements Players {
 	 */
 	public int getStarty(){
 		return startY;
+	}
+	
+	public void setStarty(int y){
+		startY = y;
 	}
 	
 	/**
@@ -198,8 +245,17 @@ public class Player implements Players {
 	 * @return
 	 */
 	public boolean won(){
+		//System.out.println(Arrays.toString(winArea));
 		for(Point p : winArea)
 			if(p.getX()==this.x() && p.getY()==this.y())
+				return true;
+		return false;
+	}
+	
+	public boolean won(int x, int y){
+		//System.out.println(Arrays.toString(winArea));
+		for(Point p : winArea)
+			if(p.getX()==x && p.getY()==y)
 				return true;
 		return false;
 	}
@@ -361,5 +417,13 @@ public class Player implements Players {
 	 */
 	public boolean hasBeenKicked(){
 		return kicked;
+	}
+	
+	public void setPath(ArrayList<String> a){
+		this.path = a;
+	}
+	
+	public ArrayList<String> getPath(){
+		return this.path;
 	}
 }
