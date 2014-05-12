@@ -364,23 +364,28 @@ public class Player implements Players {
 				this.winArea[y] = new Point(8,y);
 		}
 		
-		if(this.getPnum()==2 && this.getStartx()==8){
+		/*if(this.getPnum()==2 && this.getStartx()==8){
 			for(int y=0; y<9; y++)
 				this.winArea[y] = new Point(0,y);
 		
 		}else if(this.getPnum()==2 && this.getStartx()==4){
 			for(int x=0; x<9; x++)
 				this.winArea[x] = new Point(x,0);
-		}
+		}*/
 		
-		if(this.getPnum()==3){
+		if(this.getPnum()==2){
 			for(int y=0; y<9; y++)
 				this.winArea[y] = new Point(0,y);
 		}
 		
-		if(this.getPnum()==4){
+		if(this.getPnum()==3){
 			for(int x=0; x<9; x++)
 				this.winArea[x] = new Point(x,8);
+		}
+		
+		if(this.getPnum()==4){
+			for(int x=0; x<9; x++)
+				this.winArea[x] = new Point(x,0);
 		}
 	}
 	
