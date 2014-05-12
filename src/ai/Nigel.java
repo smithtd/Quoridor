@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 import network.Messages;
 import network.MoveServer;
@@ -15,7 +16,8 @@ import network.MoveServer;
 public class Nigel extends MoveServer {
 
 	private static int[][] playerMatrix;
-	private static boolean[][] wallMatrix;
+	private static boolean[][] vWallMatrix;
+	private static boolean[][] hWallMatrix;
 	private static int playerTurnNum = 1;
 	public static final String AI_IDENTIFIER = "tactical";
 
@@ -62,79 +64,85 @@ public class Nigel extends MoveServer {
 					   { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 					   { 0, 0, 0, 0, 2, 0, 0, 0, 0 } };
 		}
-		wallMatrix = new boolean [][] 
-				{  { false, false, false, false, false, false, false, false, false }, 
-				   { false, false, false, false, false, false, false, false, false }, 
-				   { false, false, false, false, false, false, false, false, false }, 
-				   { false, false, false, false, false, false, false, false, false }, 
-				   { false, false, false, false, false, false, false, false, false }, 
-				   { false, false, false, false, false, false, false, false, false }, 
-				   { false, false, false, false, false, false, false, false, false }, 
-				   { false, false, false, false, false, false, false, false, false }, 
-				   { false, false, false, false, false, false, false, false, false } };
+		
+		/* Coordinate System for walls in correspondance to the player
+		 * 
+		 * 				| h(x, y-1)	|
+		 * 			  -----------------
+		 * 				|			|
+		 * 				|			|
+		 *	  v(x-1, y)	|	p(x,y)	| v(x, y)
+		 * 				|			|
+		 * 				|			|
+		 * 			  -----------------
+		 * 				|  h(x, y)	|
+		 */
+		
+		
+		vWallMatrix = new boolean [][] // 8x9
+				{  { true, true, true, true, true, true, true, true }, 
+				   { true, true, true, true, true, true, true, true }, 
+				   { true, true, true, true, true, true, true, true }, 
+				   { true, true, true, true, true, true, true, true }, 
+				   { true, true, true, true, true, true, true, true }, 
+				   { true, true, true, true, true, true, true, true }, 
+				   { true, true, true, true, true, true, true, true }, 
+				   { true, true, true, true, true, true, true, true }, 
+				   { true, true, true, true, true, true, true, true } };
+	
+		hWallMatrix = new boolean [][] // 9x8
+				{  { true, true, true, true, true, true, true, true, true }, 
+				   { true, true, true, true, true, true, true, true, true }, 
+				   { true, true, true, true, true, true, true, true, true }, 
+				   { true, true, true, true, true, true, true, true, true }, 
+				   { true, true, true, true, true, true, true, true, true }, 
+				   { true, true, true, true, true, true, true, true, true }, 
+				   { true, true, true, true, true, true, true, true, true }, 
+				   { true, true, true, true, true, true, true, true, true } };
 	}
 	
-	/*
-	private ArrayList<GameButton> getPathToVictim( int x, int y ){
-		PlayerButton button = buttonMatrix[ x ][ y ];
-		ArrayList<ArrayList<GameButton>> possiblePaths = new ArrayList<ArrayList<GameButton>>();
-		ArrayList<GameButton> seen = new ArrayList<GameButton>();
+	
+	private ArrayList<String> getPathToVictim( int x, int y ){
+		ArrayList<ArrayList<String>> possiblePaths = new ArrayList<ArrayList<String>>();
+		ArrayList<String> seen = new ArrayList<String>();
 
-		possiblePaths.add( new ArrayList<GameButton>() );
-		possiblePaths.get( 0 ).add( button );
-		seen.add( button );
+		possiblePaths.add( new ArrayList<String>() );
+		possiblePaths.get( 0 ).add( "" + x + y );
+		seen.add( "" + x + y );
 
 		return getPath( seen, possiblePaths );
 	}
 
-	private ArrayList<GameButton> getPath( ArrayList<GameButton> seen, ArrayList<ArrayList<GameButton>> possiblePaths ){
-		if( possiblePaths.size() == 0 ){
-			int x = seen.get( 0 ).x();
-			int y = seen.get( 0 ).y();
-			chances[ x ][ y ] = 0;
-			distances[ x ][ y ] = 0;
-			return null;
-		}
-		ArrayList<ArrayList<GameButton>> newPossiblePaths = new ArrayList<ArrayList<GameButton>>();
+	private ArrayList<String> getPath( ArrayList<String> seen, ArrayList<ArrayList<String>> possiblePaths ){
+
+		ArrayList<ArrayList<String>> newPossiblePaths = new ArrayList<ArrayList<String>>();
 		//Go through all possible paths so far
 		for( int i=0; i<possiblePaths.size(); i++ ){
-			ArrayList<GameButton> list = possiblePaths.get( i );
-//			 *
-//			 * for every list, take the end button and find its 4 directions
-//			 * 
-//			 * if one of the directions has already been seen,  ignore it. 
-//			 * else add a new path with it attached at the end
-//			 *
-			GameButton current = list.get( list.size()-1 );
-			GameButton next = null;
-
+			ArrayList<String> list = possiblePaths.get( i );
+			// for every list, take the end button and find its 4 directions. If one of the directions has already been seen,  ignore it. Else add a new path with it attached at the end
+			String current = list.get( list.size()-1 );
+			String next = null;
+			int currX = Integer.parseInt( "" + current.charAt( 0 ) );
+			int currY = Integer.parseInt( "" + current.charAt( 1 ) );
+			
 			for( int k=0; k<4; k++ ){
-				int x, y;
-				if( k==0 ){ 	 x=current.x()+1; y=current.y(); }
-				else if( k==1 ){ x=current.x()-1; y=current.y(); }
-				else if( k==2 ){ x=current.x(); y=current.y()+1; }
-				else{ 			 x=current.x(); y=current.y()-1; }
+				int nextX, nextY;
+				if	   ( k==0 )	{ nextX=currX+1; nextY=currY; } //k==0 is left
+				else if( k==1 )	{ nextX=currX-1; nextY=currY; }	//k==1 is right
+				else if( k==2 )	{ nextX=currX; nextY=currY+1; }	//k==2 is down
+				else{ 			  nextX=currX; nextY=currY-1; }	//k==3 is up
 
 				try{
 					boolean winning = true;
-					next = buttonMatrix[ x ][ y ];
-					// if next isnt black and isnt the color of start node
-					if( ( next.getPlayerColor() != Color.BLACK ) && ( next.getPlayerColor()!=list.get( 0 ).getPlayerColor()) ){
-						//and not in already seen
-						if( !seen.contains( next ) ){
-							seen.add( next );
-							if( next.getPlayerColor() == Color.BLUE ) 
-								if ( ( next.getVisibility() == 3 ) && ( Battle.getResult( list.get( 0 ), next ).equals( "BLUE" ) ) ){
-									winning = false;
-//									System.out.println( "Lost obvious battle " + k );													//DEBUG
-								}
-							//make copy of current list
-							ArrayList<GameButton> newList = new ArrayList<GameButton>();
-							for( int j=0; j<list.size(); j++ )
-								newList.add( list.get( j ) );
-							//add next to the new copy
-							if( winning ){
-								newList.add( next );
+					next = "" + nextX + nextY;
+					
+					if( !seen.contains( next ) ){
+						seen.add( next );
+						ArrayList<String> newList = new ArrayList<String>();
+						for( int j=0; j<list.size(); j++ )
+							newList.add( list.get( j ) );
+						//add next to the new copy
+						newList.add( next );
 								if( next.getPlayerColor() == list.get( 0 ).getOpponetColor() )
 									return newList;
 							}
