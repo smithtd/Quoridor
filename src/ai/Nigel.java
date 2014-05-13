@@ -350,11 +350,110 @@ public class Nigel extends MoveServer {
 		 */
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public static String getWallPlacement( ArrayList< ArrayList< String > > playerPaths ){
+
+		int currentShortestPathLength = 0;
 		
-		//TODO return wall to block
+		for( int yP =0; yP<9; yP++ )
+			for( int xP=0; xP<9; xP++ )
+				if( playerMatrix[ yP ][ xP ] == Nigel.playerID )
+					currentShortestPathLength = getPathToEnd( "" + yP + xP ).size();
+		
+		String bestHWallOpt = getBestHWallOpt( currentShortestPathLength );
+		String bestVWallOpt = getBestVWallOpt( currentShortestPathLength );
 		return "";
 	}
+	
+	public static String getBestVWallOpt( int length ){
+		
+		String best = "";
+		int currentLength = length;
+		
+		int length1 = 0;
+		int length2 = 0;
+		int length3 = 0;
+		int length4 = 0;
+		
+		boolean[][] vWallCopy = new boolean[9][8];
+		for( int y=0; y< vWallCopy.length; y++ )
+			for( int x=0; x<vWallCopy[ y ].length; x++ )
+				vWallCopy[ y ][ x ] = vWallMatrix[ y ][ x ];
+		
+		for( int yV=0; yV< vWallMatrix.length-1; yV++ ){
+			for( int xV=0; xV<vWallMatrix[ yV ].length; xV++ ){
+				if( vWallMatrix[ yV ][ xV ] == false && vWallMatrix[ yV ][ xV ] == false ){
+					vWallMatrix[ yV ][ xV ] = true;
+					vWallMatrix[ yV+1 ][ xV ] = true;
+					String p1 = "", p2 = "", p3 = "", p4 = "";
+					for( int yP =0; yP<9; yP++ ){
+						for( int xP=0; xP<9; xP++ ){
+							if( playerMatrix[ yP ][ xP ] == 1 ) p1 = "" + yP + xP;
+							if( playerMatrix[ yP ][ xP ] == 2 ) p2 = "" + yP + xP;
+							if( playerMatrix[ yP ][ xP ] == 3 ) p3 = "" + yP + xP;
+							if( playerMatrix[ yP ][ xP ] == 4 ) p4 = "" + yP + xP;
+						}
+					}
+					
+					int length1a, length2a, length3a, length4a;
+					length1a = getPathToEnd( p1 ).size();
+					length2a = getPathToEnd( p2 ).size();
+					if( ! p3.equals( "" ) ){
+						length3a = getPathToEnd( p3 ).size();
+						length4a = getPathToEnd( p4 ).size();
+					}
+				}//end if(false && false)
+				vWallMatrix[ yV ][ xV ] = vWallCopy[ yV ][ xV ]; //reset every time
+			}// end xV
+		}//end yV
+		
+		
+		
+		return "";
+	}
+
+	public static String getBestHWallOpt( int length ){
+		
+		String best = "";
+		int currentLength = length;
+		
+		boolean[][] hWallCopy = new boolean[8][9];
+		for( int y=0; y< hWallCopy.length; y++ )
+			for( int x=0; x<hWallCopy[ y ].length; x++ )
+				hWallCopy[ y ][ x ] = hWallMatrix[ y ][ x ];
+		
+		
+		return "";
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public static boolean isPlayerBehindOrInDangerOfLosing( ArrayList< ArrayList< String > > playerPaths ){
 
@@ -372,7 +471,7 @@ public class Nigel extends MoveServer {
 		return false;
 	}
 	
-	private ArrayList<String> getPathToEnd( String locationOfPlayer ){
+	private static ArrayList<String> getPathToEnd( String locationOfPlayer ){
 		ArrayList<ArrayList<String>> possiblePaths = new ArrayList<ArrayList<String>>();
 		ArrayList<String> seen = new ArrayList<String>();
 		System.out.println( locationOfPlayer );
@@ -383,7 +482,7 @@ public class Nigel extends MoveServer {
 		return getPath( seen, possiblePaths );
 	}
 
-	private ArrayList<String> getPath( ArrayList<String> seen, ArrayList<ArrayList<String>> possiblePaths ){
+	private static ArrayList<String> getPath( ArrayList<String> seen, ArrayList<ArrayList<String>> possiblePaths ){
 		ArrayList<ArrayList<String>> newPossiblePaths = new ArrayList<ArrayList<String>>();
 		for( int pathIndex=0; pathIndex<possiblePaths.size(); pathIndex++ ){			//Go through all possible paths so far
 			ArrayList<String> list = possiblePaths.get( pathIndex );   // for every list, take the end button and find its 4 directions. If one of the directions has already been seen,  ignore it. Else add a new path with it attached at the end
