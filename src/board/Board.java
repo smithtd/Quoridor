@@ -98,7 +98,7 @@ public class Board {
         
         // make sure this is a legal move
         if (!isLegalMove(p, x, y)){
-        	System.out.println("[Path error]: "+x+""+y+" is not a legal move for player at "+p.x()+""+p.y());
+        	System.out.println("\t[Path error]: "+x+""+y+" is not a legal move for player at "+p.x()+""+p.y());
         	path = new ArrayList<String>();
         	return;
         }
@@ -271,19 +271,19 @@ public class Board {
 				
 		// check that the space is only one away (add logic for jumping later)
 		if(x > p.x()+1 || x < p.x()-1){
-			System.out.println("[Illegal move error]: "+x+""+y+" is too far away.");
+			System.out.println("\t[Illegal move error]: "+x+""+y+" is too far away.");
 			return false;
 		}
 			
 		if(y > p.y()+1 || y < p.y()-1){
-			System.out.println("[Illegal move error]: "+x+""+y+" is too far away.");
+			System.out.println("\t[Illegal move error]: "+x+""+y+" is too far away.");
 			return false;
 		}
 		
 		// make sure no wall is in the way
 		for(int i=0; i<numWalls; i++){
 			if(walls[i].isBetween(p.x(), p.y(), x, y)){
-				System.out.println("[Illegal move error]: "+walls[i]+" is in the way.");
+				System.out.println("\t[Illegal move error]: "+walls[i]+" is in the way.");
 				return false;
 			}
 		}
@@ -335,26 +335,26 @@ public class Board {
 	public boolean isLegalWallPlacement(Player p, Wall w) {
 		// check that player can play a wall
 		if(p.getWalls()<=0){
-			System.out.println("[Wall error]: Player "+p.getPnum()+" has no walls to place");
+			System.out.println("\t[Wall error]: Player "+p.getPnum()+" has no walls to place");
 			return false;
 		}
 		
 		// check that the wall's type is valid
 		if(!(w.type().equals("h") || w.type().equals("v"))){
-			System.out.println("[Wall error]: '"+w.type()+"' is not a legal wall type.");
+			System.out.println("\t[Wall error]: '"+w.type()+"' is not a legal wall type.");
 			return false;
 		}
 		
 		// check that (x,y) is on grid and it's ok to place a wall there
 		if(w.getX() > 7 || w.getY() > 7 || w.getX() < 0 || w.getY() < 0){
-			System.out.println("[Wall error]: "+w.getX()+""+w.getY()+" is out of bounds.");
+			System.out.println("\t[Wall error]: "+w.getX()+""+w.getY()+" is out of bounds.");
 			return false;	
 		}
 		
 		// check that wall is not occupied or intersected by another wall
 		for(int i=0; i<numWalls; i++){
 			if(walls[i].intersects(w) || walls[i].overlaps(w)){
-				System.out.println("[Wall error]: "+w+" collides with "+walls[i]);
+				System.out.println("\t[Wall error]: "+w+" collides with "+walls[i]);
 				return false;
 			}
 		}
@@ -364,10 +364,10 @@ public class Board {
 		if(tmp.addWallWithoutValidation(w)){
 			for(Player player : tmp.players()){
 				checkPath(player.x(), player.y(), 1, true, new int[9][9], player, new ArrayList<String>());
-				System.out.println("Player "+player.getPnum()+" at "+player.x()+""+player.y());
-				System.out.println(player.getPath());
+				//System.out.println("Player "+player.getPnum()+" at "+player.x()+""+player.y());
+				//System.out.println(player.getPath());
 				if(player.getPath().isEmpty()){
-					System.out.println("[Wall error]: "+w+" will block Player "+player.getPnum()+" from reaching win area.");
+					System.out.println("\t[Wall error]: "+w+" will block Player "+player.getPnum()+" from reaching win area.");
 					tmp.removeLastWall();
 					return false;
 				}
