@@ -54,7 +54,10 @@ public class GameClient {
 	}
 
 
-
+	/**
+	 * Sends everyone the initial messages and waits for a ready from everyone
+	 * and starts the game. 
+	 */
 	public void start() {
 		// Send the initial QUORIDOR message to each move server
 		this.game = new Game(this.players.size(), this);

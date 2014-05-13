@@ -38,7 +38,7 @@ public class Artie extends MoveServer {
 	 */
 	public Artie (int port) {
 		super(port);
-		
+
 		this.startPos = new HashMap<Integer, String>();
 		this.startPos.put(1, "e1"); this.startPos.put(2, "e9");
 		this.startPos.put(3, "a5"); this.startPos.put(4, "i5");
@@ -92,7 +92,7 @@ public class Artie extends MoveServer {
 			} catch (IOException ioe) {
 				System.out.println("Connection Terminated, Restarting :)");
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+
 				e.printStackTrace();
 			}
 		}
@@ -111,7 +111,7 @@ public class Artie extends MoveServer {
 
 		// Try and parse the port from the command
 		int port = Integer.parseInt(args[0]);
-		
+
 		Artie aiArtie = new Artie(port);
 
 		aiArtie.run();
@@ -127,26 +127,30 @@ public class Artie extends MoveServer {
 	public void getResponse(String input) throws InterruptedException {
 		Thread.sleep(250); // try to watch what is happening
 
+		// If the client asks for a move get one 
 		if(input.equalsIgnoreCase(Messages.ASK_FOR_MOVE)){
 			String move = getMove();
 			this.currentPosition = move;
 
 			this.clientOutput.println("MOVE " + move);
-
+			// If the client is being told what move is being made
 		} else if(input.startsWith(Messages.TELL_MOVE)){
 			Scanner info = new Scanner(input);
 			info.next();
 			System.out.println("Player " + info.next() + " made move: " + info.next());
 			info.close();
+			// Quoridor message
 		} else if(input.startsWith(Messages.START_GAME)){
 			System.out.println( input );///////////////////////////////////////////////////////////////////////////////////////
 			Scanner getID = new Scanner(input);
 			getID.next();
+			// Skip the quoridor token and grab your player number
 			this.playerId = Integer.parseInt(getID.next());
 			this.clientOutput.println(Messages.READY + " " + this.identifier);
 			System.out.println("Playing as player # " + this.playerId);
 			this.currentPosition = this.startPos.get(this.playerId);
 			getID.close();
+			// Booted a player
 		} else if(input.startsWith(Messages.REMOVED)){
 			Scanner removed = new Scanner(input);
 			removed.next();
@@ -172,6 +176,12 @@ public class Artie extends MoveServer {
 		}
 	}
 
+	/**
+	 * Randomly chooses a direction to go and makes it without taking into consideration
+	 * anything on the board.
+	 * 
+	 * @return - A move to be made in the game. 
+	 */
 	private String getMove()  { 
 
 		String curPos = this.currentPosition;
