@@ -117,7 +117,7 @@ public class Wall {
 		}
 		return false;
 	}
-	
+
 	public String toString(){
 		if(this.type.equals("v")) 
 			return "Vertical wall at "+this.x+""+this.y;

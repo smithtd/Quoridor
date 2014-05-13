@@ -143,13 +143,11 @@ public class Player implements Players {
 	 * @return String move
 	 */
 	public String getMove() {
-		// TODO talk with the GUI
 		//Verify move is entered
 		// valid, is legal move, when the person's turn
 		// comes up
 		sc = new Scanner(System.in);
 		System.out.println("Enter move: ");
-		// TODO figure a check mechanism for moves.
 		if(sc.hasNextLine())
 			return sc.nextLine().trim();
 		return "";
@@ -245,7 +243,6 @@ public class Player implements Players {
 	 * @return
 	 */
 	public boolean won(){
-		//System.out.println(Arrays.toString(winArea));
 		for(Point p : winArea)
 			if(p.getX()==this.x() && p.getY()==this.y())
 				return true;
@@ -253,7 +250,6 @@ public class Player implements Players {
 	}
 	
 	public boolean won(int x, int y){
-		//System.out.println(Arrays.toString(winArea));
 		for(Point p : winArea)
 			if(p.getX()==x && p.getY()==y)
 				return true;
@@ -365,15 +361,6 @@ public class Player implements Players {
 				this.winArea[y] = new Point(8,y);
 		}
 		
-		/* if(this.getPnum()==2 && this.getStartx()==8){
-			for(int y=0; y<9; y++)
-				this.winArea[y] = new Point(0,y);
-		
-		}else if(this.getPnum()==2 && this.getStartx()==4){
-			for(int x=0; x<9; x++)
-				this.winArea[x] = new Point(x,0);
-		} */
-		
 		if(this.getPnum()==2){
 			for(int y=0; y<9; y++)
 				this.winArea[y] = new Point(0,y);
@@ -425,10 +412,20 @@ public class Player implements Players {
 		return kicked;
 	}
 	
+	/**
+	 * Set a player's path to win area.
+	 * 
+	 * @param a ArrayList<String> of moves
+	 */
 	public void setPath(ArrayList<String> a){
 		this.path = a;
 	}
 	
+	/**
+	 * Retrieve Player's path to win area
+	 * 
+	 * @return
+	 */
 	public ArrayList<String> getPath(){
 		return this.path;
 	}
