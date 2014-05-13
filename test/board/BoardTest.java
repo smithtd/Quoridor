@@ -41,9 +41,14 @@ public class BoardTest {
 	
 	// test checkForPath
 	private void testResults(Player p, int x, int y, ArrayList<String> expected) {
-		System.out.println("Player loc = "+p.x()+""+p.y());
+		System.out.println();
+		System.out.println();
+		System.out.println("Running checkPath test with standard board");
+		System.out.println("----------------------------------------------------------");
+		
+		//System.out.println("Player loc = "+p.x()+""+p.y());
 		board.checkPath(x, y, 1, true, new int[9][9], p, new ArrayList<String>());
-		System.out.println("Player after loc = "+p.x()+""+p.y());
+		//System.out.println("Player after loc = "+p.x()+""+p.y());
 		System.out.println("path = "+p.getPath());
 		ArrayList<String> result = p.getPath();
 		assertThat(result, equalTo(expected));  
@@ -51,6 +56,11 @@ public class BoardTest {
 	
 	// test checkForPath with specific board
 	private void testResults(Board b, Player p, int x, int y, ArrayList<String> expected) {
+		System.out.println();
+		System.out.println();
+		System.out.println("Running checkPath test with custom board");
+		System.out.println("----------------------------------------------------------");
+		
 		b.checkPath(x, y, 1, true, new int[9][9], p, new ArrayList<String>());
 		System.out.println("path = "+p.getPath());
 		ArrayList<String> result = p.getPath();
@@ -59,30 +69,55 @@ public class BoardTest {
 	
 	// test placePawn - unused param is to distinguish from isLegalMove test
 	private void testResults(Player p, int x, int y, boolean expected, int unused) {
+		System.out.println();
+		System.out.println();
+		System.out.println("Running placePawn test - expect error? "+!expected);
+		System.out.println("----------------------------------------------------------");
+		
 		boolean result = board.placePawn(p, x, y);
 	    assertThat(result, equalTo(expected));    
 	}
 	
 	// test placeWall
 	private void testResults(Player p, int x, int y, String type, boolean expected) {
+		System.out.println();
+		System.out.println();
+		System.out.println("Running placeWall test with standard board - expect error? "+!expected);
+		System.out.println("-----------------------------------------------------------------------------");
+		
 		boolean result = board.placeWall(p, x, y, type);
 	    assertThat(result, equalTo(expected));    
 	}
 
 	// test placeWall with specific board
 		private void testResults(Board b, Player p, int x, int y, String type, boolean expected) {
+			System.out.println();
+			System.out.println();
+			System.out.println("Running placeWall test with custom board - expect error? "+!expected);
+			System.out.println("----------------------------------------------------------");
+			
 			boolean result = b.placeWall(p, x, y, type);
 		    assertThat(result, equalTo(expected));    
 		}
 	
 	// test isLegalMove 
 	private void testResults(Player p, int x, int y, boolean expected) {
+		System.out.println();
+		System.out.println();
+		System.out.println("Running isLegalMove test - expect error? "+!expected);
+		System.out.println("----------------------------------------------------------");
+		
 		boolean result = board.isLegalMove(p, x, y);
 	    assertThat(result, equalTo(expected));  
 	}
 	
 	// test isLegalWall 
 	private void testResults(Player p, Wall w, boolean expected) {
+		System.out.println();
+		System.out.println();
+		System.out.println("Running isLegalWallPlacement test - expect error? "+!expected);
+		System.out.println("----------------------------------------------------------");
+		
 		boolean result = board.isLegalWallPlacement(p, w);
 	    assertThat(result, equalTo(expected));  
 	}
@@ -95,7 +130,7 @@ public class BoardTest {
 		Player p = players.get(0);
 		int x=p.x();
 		int y=p.y();
-		System.out.println("Starting point = "+x+""+y);
+		//System.out.println("Starting point = "+x+""+y);
 		ArrayList<String> expected = new ArrayList<String>();
 		expected.add("20");
 		expected.add("21");
@@ -116,7 +151,7 @@ public class BoardTest {
 		Player p = players.get(1);
 		int x=p.x();
 		int y=p.y();
-		System.out.println("Starting point = "+x+""+y);
+		//System.out.println("Starting point = "+x+""+y);
 		ArrayList<String> expected = new ArrayList<String>();
 		expected.add("18");
 		expected.add("08");
@@ -129,7 +164,7 @@ public class BoardTest {
 		Player p = players.get(2);
 		int x=p.x();
 		int y=p.y();
-		System.out.println("Starting point = "+x+""+y);
+		//System.out.println("Starting point = "+x+""+y);
 		ArrayList<String> expected = new ArrayList<String>();
 		expected.add("83");
 		expected.add("84");
@@ -146,7 +181,7 @@ public class BoardTest {
 		Player p = players.get(3);
 		int x=p.x();
 		int y=p.y();
-		System.out.println("Starting point = "+x+""+y);
+		//System.out.println("Starting point = "+x+""+y);
 		ArrayList<String> expected = new ArrayList<String>();
 		expected.add("80");
 		
