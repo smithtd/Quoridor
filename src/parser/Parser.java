@@ -44,7 +44,7 @@ public class Parser {
 	public Parser() {
 		this.moves = Pattern.compile("[a-i][1-9]");
 		this.walls = Pattern.compile("[a-i][1-9][vh]");
-		this.pairs = Pattern.compile("[a-zA-Z\\W]+:[0-9]+");
+		this.pairs = Pattern.compile("[\\w*\\W*]+:[0-9]+");
 		this.ipAddress = Pattern.compile("[0-9\\W]+[0-9]+:[0-9]+");
 	}
 	
@@ -57,6 +57,7 @@ public class Parser {
 	public boolean isPair(String s) {
 		Matcher isP = this.pairs.matcher(s);
 		Matcher ipIs = this.ipAddress.matcher(s);
+		
 		return isP.matches() || ipIs.matches();
 	}
 	
