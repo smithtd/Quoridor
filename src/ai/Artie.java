@@ -22,14 +22,14 @@ public class Artie extends MoveServer {
 	public static final String AI_IDENTIFIER = "tactical";
 
 	/** Map of starting positions to player numbers */
-	private Map<Integer, String> startPos;
+	protected Map<Integer, String> startPos;
 	/** Board Representations */
 	char[][] board;
 	// Do we need to keep two??
 	char[][] tempBoard;
 	/** Number of walls we have */
 	int walls;
-	private String currentPosition;
+	protected String currentPosition;
 
 	/**
 	 * Create an instance of our AI

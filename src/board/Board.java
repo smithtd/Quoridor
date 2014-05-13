@@ -333,6 +333,7 @@ public class Board {
 	 * @return boolean, whether or not the move is legal
 	 */
 	public boolean isLegalWallPlacement(Player p, Wall w) {
+		System.out.println("******************************************");
 		// check that player can play a wall
 		if(p.getWalls()<=0){
 			System.out.println("\t[Wall error]: Player "+p.getPnum()+" has no walls to place");
@@ -367,7 +368,8 @@ public class Board {
 				//System.out.println("Player "+player.getPnum()+" at "+player.x()+""+player.y());
 				//System.out.println(player.getPath());
 				if(player.getPath().isEmpty()){
-					System.out.println("\t[Wall error]: "+w+" will block Player "+player.getPnum()+" from reaching win area.");
+					System.out.println("\t[Wall error]: "+w+" will block Player "+player.getPnum()+" at "+player.x()+""+player.y()+" from reaching win area.");
+					
 					tmp.removeLastWall();
 					return false;
 				}
@@ -453,6 +455,7 @@ public class Board {
 	public boolean placeWall(Player p, int x, int y, String type){
 		Wall w = new Wall(x, y, type);
 		if(isLegalWallPlacement(p, w)){
+			
 			p.useWall();
 			walls[numWalls] = w;
 			numWalls++;
@@ -477,8 +480,11 @@ public class Board {
 	 * @param w Wall
 	 */
 	public boolean addWallWithoutValidation(Wall w){
-		if(numWalls>=walls.length)
+		if(numWalls>=walls.length){
+			System.out.println("Too many walls already");
+			System.out.println("NUM OF WALLS" + walls.length);
 			return false;
+		}
 		walls[numWalls] = w;
 		numWalls++;
 		return true;
