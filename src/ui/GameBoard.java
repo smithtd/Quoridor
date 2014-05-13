@@ -283,19 +283,8 @@ public class GameBoard extends JPanel implements Observer {
 		return (new Dimension( getTopBarDim().width, getTopBarDim().height + getRightBarDim().height ) );
 	}
 	
-	private Dimension getHolder3Dim(){
-		return (new Dimension( getRightBarDim().width + getButtonHolderBorderDim().width + getLeftBarDim().width, getTopBarDim().height + getButtonHolderBorderDim().height ) );
-	}
-
 	private Dimension getTopBarDim(){
 		return (new Dimension( getButtonHolderBorderDim().width + getRightBarDim().width, VWall.height));
-	}
-	
-	private Dimension getBottomBarDim(){
-		int width = getHolder3Dim().width;
-		int height = PlayerHeight*3;
-		
-		return (height < 50 ? new Dimension( width, 50 ) : new Dimension( width, height ) );
 	}
 	
 	public static Dimension getRightBarDim(){
