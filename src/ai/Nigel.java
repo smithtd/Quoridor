@@ -5,9 +5,11 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 import network.Messages;
 import network.MoveServer;
@@ -25,7 +27,7 @@ public class Nigel extends MoveServer {
 	private static int playerID;
 
 	/** Map of starting positions to player numbers */
-	private String[] startPos;
+//	private String[] startPos;
 	/** Board Representations */
 	char[][] board;
 	// Do we need to keep two??
@@ -38,7 +40,7 @@ public class Nigel extends MoveServer {
 	}
 
 	public void setupBoards( int numPlayers ){
-		startPos = new String[]{ "04", "84", "40", "48" };
+//		startPos = new String[]{ "04", "84", "40", "48" };
 
 		endZones = new String[][]{ 
 				new String[]{ "80", "81", "82", "83", "84", "85", "86", "87", "88" }, 
@@ -359,31 +361,42 @@ public class Nigel extends MoveServer {
 		 */
 	}
 
-
-
-
-
-
-
-
-
-
 	public static String getWallPlacement( ArrayList< ArrayList< String > > playerPaths ){
 
-		int currentShortestPathLength = 0;
-
+		String bestHWallOpt = getBestHWallOpt( );
+		String bestVWallOpt = getBestVWallOpt( );
+		
+		int yH = Integer.parseInt( "" + bestHWallOpt.charAt( 0 ) );
+		int xH = Integer.parseInt( "" + bestHWallOpt.charAt( 1 ) );
+		int yV = Integer.parseInt( "" + bestVWallOpt.charAt( 0 ) );
+		int xV = Integer.parseInt( "" + bestVWallOpt.charAt( 1 ) );
+		
+		hWallMatrix[ yH ][ xH ] = true;
+		hWallMatrix[ yH ][ xH+1 ] = true;
+		int hPathLength = 100 ;
 		for( int yP =0; yP<9; yP++ )
 			for( int xP=0; xP<9; xP++ )
 				if( playerMatrix[ yP ][ xP ] == Nigel.playerID )
-					currentShortestPathLength = getPathToEnd( "" + yP + xP ).size();
+					hPathLength = getPathToEnd( "" + yP+xP ).size();
+		hWallMatrix[ yH ][ xH ] = false;
+		hWallMatrix[ yH ][ xH+1 ] = false;
 
-		String bestHWallOpt = getBestHWallOpt( currentShortestPathLength );
-		String bestVWallOpt = getBestVWallOpt( currentShortestPathLength );
-		return "";
+
+		hWallMatrix[ yV ][ xV ] = true;
+		hWallMatrix[ yV ][ xV+1 ] = true;
+		int vPathLength = 100;
+		for( int yP =0; yP<9; yP++ )
+			for( int xP=0; xP<9; xP++ )
+				if( playerMatrix[ yP ][ xP ] == Nigel.playerID )
+					hPathLength = getPathToEnd( "" + yP+xP ).size();
+		hWallMatrix[ yV ][ xV ] = false;
+		hWallMatrix[ yV ][ xV+1 ] = false;
+
+		return (vPathLength >= hPathLength) ? bestHWallOpt : bestVWallOpt;
 	}
 
 
-	public static String getBestVWallOpt( int length ){
+	public static String getBestVWallOpt(){
 
 		//Find Player Locations
 		String [] playerLocal = new String [ numPlayers ];
@@ -402,10 +415,11 @@ public class Nigel extends MoveServer {
 			for( int x=0; x<vWallCopy[ y ].length; x++ )
 				vWallCopy[ y ][ x ] = vWallMatrix[ y ][ x ];
 
-		Map<Integer, ArrayList<String>> [] HOYLFUCKMAP = new TreeMap[ numPlayers ];
+		@SuppressWarnings("unchecked")
+		Map<Integer, ArrayList<String>> [] HOLYFUCKMAP = new HashMap[ numPlayers ];
 
 		for( int z=0; z<numPlayers; z++){
-			Map<Integer, ArrayList<String>> playerWallMap = new TreeMap<Integer, ArrayList<String>> ();
+			Map<Integer, ArrayList<String>> playerWallMap = new HashMap<Integer, ArrayList<String>> ();
 			for( int y=0; y< vWallMatrix.length-1; y++ ){
 				for( int x=0; x<vWallMatrix[ y ].length; x++ ){
 
@@ -416,135 +430,123 @@ public class Nigel extends MoveServer {
 
 					// if no wall then place temp wall and test
 					if( vWallMatrix[ y ][ x ] == false && vWallMatrix[ y+1 ][ x ] == false ){
-						
+
 						vWallMatrix[ y ][ x ] = true;
 						vWallMatrix[ y+1 ][ x ] = true;
 						int pathLength = getPathToEnd( playerLocal[ z ] ).size();
 						ArrayList<String> temp;
-						
+
 						if( playerWallMap.keySet().contains( pathLength ) )
 							temp = playerWallMap.get( pathLength );
 						else 
 							temp = new ArrayList<String> ();
-						
+
 						temp.add( "" + y + x );
 						playerWallMap.put( pathLength, temp );
-						
+
 					} // end if( false && false )
 				} // end x
 			} // end y
+			HOLYFUCKMAP[ z ] = playerWallMap;
 		} // end z
 
-		
-		
-		
-		
-		/*
+		Map<Integer, ArrayList<String>> minimal = HOLYFUCKMAP[ Nigel.playerID ];
 
-		String best = "";
-		int currentLength1 = length;
+		ArrayList<String> bestForNigel = minimal.get( Collections.min( minimal.keySet() ) );
 
-		int length1 = 0;
-		int length2 = 0;
-		int length3 = 0;
-		int length4 = 0;
-		int differences = 0;
-
-
-		for( int y=0; y< vWallCopy.length; y++ )
-			for( int x=0; x<vWallCopy[ y ].length; x++ )
-				vWallCopy[ y ][ x ] = vWallMatrix[ y ][ x ];
-
-		for( int yV=0; yV< vWallMatrix.length-1; yV++ ){
-			for( int xV=0; xV<vWallMatrix[ yV ].length; xV++ ){
-
-
-
-				if( vWallMatrix[ yV ][ xV ] == false && vWallMatrix[ yV ][ xV ] == false ){
-					vWallMatrix[ yV ][ xV ] = true;
-					vWallMatrix[ yV+1 ][ xV ] = true;
-					String p1 = "", p2 = "", p3 = "", p4 = "";
-					for( int yP =0; yP<9; yP++ ){
-						for( int xP=0; xP<9; xP++ ){
-							if( playerMatrix[ yP ][ xP ] == 1 ) p1 = "" + yP + xP;
-							if( playerMatrix[ yP ][ xP ] == 2 ) p2 = "" + yP + xP;
-							if( playerMatrix[ yP ][ xP ] == 3 ) p3 = "" + yP + xP;
-							if( playerMatrix[ yP ][ xP ] == 4 ) p4 = "" + yP + xP;
-						}
-					}
-
-					int length1a = 0, length2a = 0, length3a = 0, length4a = 0;
-					length1a = getPathToEnd( p1 ).size();
-					length2a = getPathToEnd( p2 ).size();
-					if( Nigel.numPlayers == 4 ){
-						length3a = getPathToEnd( p3 ).size();
-						length4a = getPathToEnd( p4 ).size();
-						if( length3a == 0 || length4a == 0 )
-							continue loop;					//blocked path
-					}
-					if( length1a == 0 || length2a == 0 )
-						continue loop; 					//blocked path
-
-					if( length1==0 && length2==0 && length3==0 && length4==0 ){
-						length1 = length1a;
-						length2 = length2a;
-						length3 = length3a;
-						length4 = length4a;
-					} else {
-						int tempDifferences = 0;
-						if( length1a > currentLength && length)
-
-
-						(length1a - length1) + (length2a - length2) +
-											  (length3a - length3) + (length4a - length4);
-						if( tempDifferences >)
-
-
-				}//end if(false && false)
-			}// end xV
-		}//end yV
-
-		 */
-
-		for( int y=0; y< vWallCopy.length; y++ )
-			for( int x=0; x<vWallCopy[ y ].length; x++ )
-				vWallMatrix[ y ][ x ] = vWallCopy[ y ][ x ]; //reset after tests		
-
-		return "";
+		for( int i=0; i< bestForNigel.size(); i++ ){
+			String targetWall = bestForNigel.get( i );
+			boolean checksOut = true;
+			for( int j=0; j<numPlayers; j++ ){
+				if( j != Nigel.playerID ){
+					Map<Integer, ArrayList<String>> max = HOLYFUCKMAP[ j ];
+					ArrayList<String> worstForOpponent = max.get( Collections.max( minimal.keySet() ) );
+					if( !worstForOpponent.contains( targetWall ) )
+						checksOut = false;
+				}
+			}
+			if( checksOut )
+				return targetWall;
+		}
+		Random rand = new Random();
+		return bestForNigel.get( rand.nextInt( bestForNigel.size() ) );
 	}
 
-	public static String getBestHWallOpt( int length ){
+	public static String getBestHWallOpt( ){
 
-		String best = "";
-		int currentLength = length;
+		//Find Player Locations
+		String [] playerLocal = new String [ numPlayers ];
+		for( int yP =0; yP<9; yP++ ){
+			for( int xP=0; xP<9; xP++ ){
+				if( playerMatrix[ yP ][ xP ] == 1 ) playerLocal[ 0 ] = "" + yP + xP;
+				if( playerMatrix[ yP ][ xP ] == 2 ) playerLocal[ 1 ] = "" + yP + xP;
+				if( playerMatrix[ yP ][ xP ] == 3 ) playerLocal[ 2 ] = "" + yP + xP;
+				if( playerMatrix[ yP ][ xP ] == 4 ) playerLocal[ 3 ] = "" + yP + xP;
+			}
+		}
 
-		boolean[][] hWallCopy = new boolean[8][9];
+		//Make copy of walls
+		boolean[][] hWallCopy = new boolean[9][8];
 		for( int y=0; y< hWallCopy.length; y++ )
 			for( int x=0; x<hWallCopy[ y ].length; x++ )
 				hWallCopy[ y ][ x ] = hWallMatrix[ y ][ x ];
 
+		@SuppressWarnings("unchecked")
+		Map<Integer, ArrayList<String>> [] HOLYFUCKMAP = new HashMap[ numPlayers ];
 
-		return "";
+		for( int z=0; z<numPlayers; z++){
+			Map<Integer, ArrayList<String>> playerWallMap = new HashMap<Integer, ArrayList<String>> ();
+			for( int y=0; y< hWallMatrix.length-1; y++ ){
+				for( int x=0; x<hWallMatrix[ y ].length; x++ ){
 
+					//reset before tests
+					for( int i=0; i< hWallCopy.length; i++ )
+						for( int j=0; j<hWallCopy[ i ].length; j++ )
+							hWallMatrix[ i ][ j ] = hWallCopy[ i ][ j ]; 
+
+					// if no wall then place temp wall and test
+					if( hWallMatrix[ y ][ x ] == false && hWallMatrix[ y+1 ][ x ] == false ){
+
+						hWallMatrix[ y ][ x ] = true;
+						hWallMatrix[ y+1 ][ x ] = true;
+						int pathLength = getPathToEnd( playerLocal[ z ] ).size();
+						ArrayList<String> temp;
+
+						if( playerWallMap.keySet().contains( pathLength ) )
+							temp = playerWallMap.get( pathLength );
+						else 
+							temp = new ArrayList<String> ();
+
+						temp.add( "" + y + x );
+						playerWallMap.put( pathLength, temp );
+
+					} // end if( false && false )
+				} // end x
+			} // end y
+			HOLYFUCKMAP[ z ] = playerWallMap;
+		} // end z
+
+		Map<Integer, ArrayList<String>> minimal = HOLYFUCKMAP[ Nigel.playerID ];
+
+		ArrayList<String> bestForNigel = minimal.get( Collections.min( minimal.keySet() ) );
+
+		for( int i=0; i< bestForNigel.size(); i++ ){
+			String targetWall = bestForNigel.get( i );
+			boolean checksOut = true;
+			for( int j=0; j<numPlayers; j++ ){
+				if( j != Nigel.playerID ){
+					Map<Integer, ArrayList<String>> max = HOLYFUCKMAP[ j ];
+					ArrayList<String> worstForOpponent = max.get( Collections.max( minimal.keySet() ) );
+					if( !worstForOpponent.contains( targetWall ) )
+						checksOut = false;
+				}
+			}
+			if( checksOut )
+				return targetWall;
+		}
+		Random rand = new Random();
+		return bestForNigel.get( rand.nextInt( bestForNigel.size() ) );
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
