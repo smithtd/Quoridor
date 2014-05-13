@@ -362,6 +362,7 @@ public class Board {
 						
 		// make sure it doesn't prevent a player from reaching end
 		Board tmp = this;
+		
 		if(tmp.addWallWithoutValidation(w)){
 			for(Player player : tmp.players()){
 				checkPath(player.x(), player.y(), 1, true, new int[9][9], player, new ArrayList<String>());
@@ -480,6 +481,7 @@ public class Board {
 	 * @param w Wall
 	 */
 	public boolean addWallWithoutValidation(Wall w){
+	    /*
 		if(numWalls>=walls.length){
 			System.out.println("Too many walls already");
 			System.out.println("NUM OF WALLS" + walls.length);
@@ -487,6 +489,7 @@ public class Board {
 		}
 		walls[numWalls] = w;
 		numWalls++;
+		*/
 		return true;
 	}
 	

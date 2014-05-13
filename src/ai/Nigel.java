@@ -18,7 +18,7 @@ import network.MoveServer;
 public class Nigel extends MoveServer {
 
 	
-	private static long SLEEPTIME = 500;
+	private static long SLEEPTIME = 200;
 	private static int[][] playerMatrix;
 	private static boolean[][] vWallMatrix;
 	private static boolean[][] hWallMatrix;
