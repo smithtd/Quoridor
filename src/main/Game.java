@@ -99,7 +99,6 @@ public class Game extends Observable{
 	public void playGame(Parser p){
 		// until someone wins, loop through turns
 		while(!Game.gameWon){
-			System.out.println(Game.getCurrPlayer().getColorName()+" player's turn");
 
 			// get move from player
 
@@ -115,7 +114,6 @@ public class Game extends Observable{
 				kickPlayer();
 				this.network.kickLastPlayer();
 				Game.nextTurn();
-				System.out.println("Calling checkForWin");
 				if(this.checkForWin()){
 					notifyObservers(ui);
 					break;
@@ -124,28 +122,23 @@ public class Game extends Observable{
 
 			// try to play turn
 			if(this.playTurn(move)){
-				System.out.println("Player took turn, checking if won.");
 				if(this.checkForWin()){
-					System.out.println(Game.getCurrPlayer().getColorName()+" won by reaching the end: "+players.get(curr).x()+","+players.get(curr).y());
 					players.get(curr).clearMoves();
 					notifyObservers(ui);
 					break;
 				}
 				Game.nextTurn();
 			}else{
-				System.out.println("Player turn failed!");
 				kickPlayer();
 				this.network.kickLastPlayer();
 				Game.nextTurn();
 				if(this.checkForWin()){
-					System.out.println(Game.getCurrPlayer().getColorName()+" won by default.");
 					players.get(curr).clearMoves();
 					notifyObservers(ui);
 					break;
 				}
 			}
 
-			System.out.println("CHECKING AVAILABLE MOVES FOR "+players.get(curr).getColorName()+"!!!!!!!!!!!");
 			Game.updatePlayer(players.get(curr));
 			this.notifyObservers(this, Game.getBoard());
 		}
@@ -167,7 +160,6 @@ public class Game extends Observable{
 			while(!Game.gameWon && sc.hasNextLine()){
 				// sleep 1 second so game is watchable
 				Thread.sleep( sleepTime ); 
-				System.out.println(Game.getCurrPlayer().getColorName()+" player's turn");
 
 				// get move from player
 				String move = sc.nextLine();
@@ -182,7 +174,6 @@ public class Game extends Observable{
 					kickPlayer();
 
 					Game.nextTurn();
-					System.out.println("Calling checkForWin");
 					if(this.checkForWin()){
 						notifyObservers(ui);
 						break;
@@ -191,29 +182,24 @@ public class Game extends Observable{
 
 				// try to play turn
 				if(this.playTurn(move)){
-					System.out.println("Player took turn, checking if won.");
 					if(this.checkForWin()){
-						System.out.println(Game.getCurrPlayer().getColorName()+" won by reaching the end: "+players.get(curr).x()+","+players.get(curr).y());
 						players.get(curr).clearMoves();
 						notifyObservers(ui);
 						break;
 					}
 					Game.nextTurn();
 				}else{
-					System.out.println("Player turn failed!");
 					this.network.kickLastPlayer();
 					kickPlayer();
 
 					Game.nextTurn();
 					if(this.checkForWin()){
-						System.out.println(Game.getCurrPlayer().getColorName()+" won by default.");
 						players.get(curr).clearMoves();
 						notifyObservers(ui);
 						break;
 					}
 				}
 
-				System.out.println("CHECKING AVAILABLE MOVES FOR "+players.get(curr).getColorName()+"!!!!!!!!!!!");
 				Game.updatePlayer(players.get(curr));
 				this.notifyObservers(this, Game.getBoard());
 			}
@@ -292,7 +278,6 @@ public class Game extends Observable{
 			curr=0;
 
 		if(players.get(curr).hasBeenKicked()){
-			System.out.println(players.get(curr).getColorName()+" has been kicked. Check next player.");
 			nextTurn();
 		}
 	}

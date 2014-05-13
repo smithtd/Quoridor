@@ -67,6 +67,18 @@ public class Board {
 		return numWalls;
 	}
 	
+	/**
+	 * Checks if a player has a path from its current location to its win area.
+	 * Path can be accessed by Player.getPath().
+	 * 
+	 * @param x int x coord of player
+	 * @param y int y coord of player
+	 * @param mark positive int to mark were we've checked
+	 * @param isJump boolean whether we're jumping/adding to path
+	 * @param board int[][] to track where we've checked
+	 * @param p Player
+	 * @param path ArrayList<String> of moves
+	 */
 	public void checkPath(int x, int y, int mark, boolean isJump, int[][] board, Player p, ArrayList<String> path){
 		// we already found the path. stop looking.
 		if(!p.getPath().isEmpty())
@@ -93,82 +105,63 @@ public class Board {
         
         // set visited
         board[x][y]=mark;
-        if(!isJump)
+        if(!isJump || p.won(x,y))
         	path.add(x+""+y);
-        //System.out.println("Can reach "+x+""+y+" Path = "+path);
         
         // see if it's a winner
         if(p.won(x,y)){
-    		/*System.out.print("Player "+p.getPnum()+" won at "+x+""+y);
-    		if(p.getPnum()==1){
-    			System.out.println(" ... Looking for (8,y)");
-    		}
-    		if(p.getPnum()==2){
-    			System.out.println(" ... Looking for (0,y)");
-    		}
-    		if(p.getPnum()==3){
-    			System.out.println(" ... Looking for (x,8)");
-    		}
-    		if(p.getPnum()==4){
-    			System.out.println(" ... Looking for (x,0)");
-    		}*/
     		if(p.getPath().isEmpty()){
-    			//System.out.println("setting player path = "+path);
     			p.setPath(path);
     		}
     		return;
     	}else{
     		// look down first
     		if(p.getPnum()==1){
-    			if (isLegalMove(p, x+1, y)){
+    			if (isLegalMove(p, x+1, y)&&p.getPath().isEmpty()){
     				isJump = isOccupiedByPlayer(x+1, y);
 	    			p.setPos(x+1, y);
 	    			checkPath(x+1, y, mark+1, isJump, board, p, path);
-	    			//if(p.getPath().isEmpty())
-	    				p.setPos(x, y);
+	    			p.setPos(x, y);
     			}
-    			if (isLegalMove(p, x, y+1)){
+    			if (isLegalMove(p, x, y+1)&&p.getPath().isEmpty()){
     				isJump = isOccupiedByPlayer(x, y+1);
     				p.setPos(x, y+1);
     				checkPath(x, y+1, mark+1, isJump, board, p, path);
-    				//if(p.getPath().isEmpty())
-	    				p.setPos(x, y);
+	    			p.setPos(x, y);
     			}
-    			if (isLegalMove(p, x, y-1)){
-    				isJump = isOccupiedByPlayer(x, y-1);
-	    			p.setPos(x, y-1);
-	    			checkPath(x, y-1, mark+1, isJump, board, p, path);
-	    			//if(p.getPath().isEmpty())
-	    				p.setPos(x, y);
-    			}
-    			if (isLegalMove(p, x-1, y)){
-    				isJump = isOccupiedByPlayer(x-1, y);
-    				p.setPos(x-1, y);
-    				checkPath(x-1, y, mark+1,  isJump, board, p, path);
-    				//if(p.getPath().isEmpty())
-	    				p.setPos(x, y);
-    			}
-    		// up first
-    		}else if(p.getPnum()==2){
-    			if (isLegalMove(p, x-1, y)){
-    				isJump = isOccupiedByPlayer(x-1, y);
-    				p.setPos(x-1, y);
-    				checkPath(x-1, y, mark+1,  isJump, board, p, path);
-    				p.setPos(x, y);
-    			}
-    			if (isLegalMove(p, x, y+1)){
-    				isJump = isOccupiedByPlayer(x, y+1);
-    				p.setPos(x, y+1);
-    				checkPath(x, y+1, mark+1, isJump, board, p, path);
-    				p.setPos(x, y);
-    			}
-    			if (isLegalMove(p, x, y-1)){
+    			if (isLegalMove(p, x, y-1)&&p.getPath().isEmpty()){
     				isJump = isOccupiedByPlayer(x, y-1);
 	    			p.setPos(x, y-1);
 	    			checkPath(x, y-1, mark+1, isJump, board, p, path);
 	    			p.setPos(x, y);
     			}
-    			if (isLegalMove(p, x+1, y)){
+    			if (isLegalMove(p, x-1, y)&&p.getPath().isEmpty()){
+    				isJump = isOccupiedByPlayer(x-1, y);
+    				p.setPos(x-1, y);
+    				checkPath(x-1, y, mark+1,  isJump, board, p, path);
+	    			p.setPos(x, y);
+    			}
+    		// up first
+    		}else if(p.getPnum()==2){
+    			if (isLegalMove(p, x-1, y)&&p.getPath().isEmpty()){
+    				isJump = isOccupiedByPlayer(x-1, y);
+    				p.setPos(x-1, y);
+    				checkPath(x-1, y, mark+1,  isJump, board, p, path);
+    				p.setPos(x, y);
+    			}
+    			if (isLegalMove(p, x, y+1)&&p.getPath().isEmpty()){
+    				isJump = isOccupiedByPlayer(x, y+1);
+    				p.setPos(x, y+1);
+    				checkPath(x, y+1, mark+1, isJump, board, p, path);
+    				p.setPos(x, y);
+    			}
+    			if (isLegalMove(p, x, y-1)&&p.getPath().isEmpty()){
+    				isJump = isOccupiedByPlayer(x, y-1);
+	    			p.setPos(x, y-1);
+	    			checkPath(x, y-1, mark+1, isJump, board, p, path);
+	    			p.setPos(x, y);
+    			}
+    			if (isLegalMove(p, x+1, y)&&p.getPath().isEmpty()){
     				isJump = isOccupiedByPlayer(x+1, y);
 	    			p.setPos(x+1, y);
 	    			checkPath(x+1, y, mark+1, isJump, board, p, path);
@@ -176,25 +169,25 @@ public class Board {
     			}
     		// right first
     		}else if(p.getPnum()==3){
-    			if (isLegalMove(p, x, y+1)){
+    			if (isLegalMove(p, x, y+1)&&p.getPath().isEmpty()){
     				isJump = isOccupiedByPlayer(x, y+1);
 	    			p.setPos(x, y+1);
 	    			checkPath(x, y+1, mark+1, isJump, board, p, path);
 	    			p.setPos(x, y);
     			}
-    			if (isLegalMove(p, x-1, y)){
+    			if (isLegalMove(p, x-1, y)&&p.getPath().isEmpty()){
     				isJump = isOccupiedByPlayer(x-1, y);
     				p.setPos(x-1, y);
     				checkPath(x-1, y, mark+1,  isJump, board, p, path);
     				p.setPos(x, y);
     			}
-    			if (isLegalMove(p, x+1, y)){
+    			if (isLegalMove(p, x+1, y)&&p.getPath().isEmpty()){
     				isJump = isOccupiedByPlayer(x+1, y);
 	    			p.setPos(x+1, y);
 	    			checkPath(x+1, y, mark+1, isJump, board, p, path);
 	    			p.setPos(x, y);
     			}
-    			if (isLegalMove(p, x, y-1)){
+    			if (isLegalMove(p, x, y-1)&&p.getPath().isEmpty()){
     				isJump = isOccupiedByPlayer(x, y-1);
     				p.setPos(x, y-1);
     				checkPath(x, y-1, mark+1, isJump, board, p, path);
@@ -202,25 +195,25 @@ public class Board {
     			}
     		// left first
     		}else{
-    			if (isLegalMove(p, x, y-1)){
+    			if (isLegalMove(p, x, y-1)&&p.getPath().isEmpty()){
     				isJump = isOccupiedByPlayer(x, y-1);
     				p.setPos(x, y-1);
     				checkPath(x, y-1, mark+1, isJump, board, p, path);
     				p.setPos(x, y);
     			}
-    			if (isLegalMove(p, x-1, y)){
+    			if (isLegalMove(p, x-1, y)&&p.getPath().isEmpty()){
     				isJump = isOccupiedByPlayer(x-1, y);
     				p.setPos(x-1, y);
     				checkPath(x-1, y, mark+1,  isJump, board, p, path);
     				p.setPos(x, y);
     			}
-    			if (isLegalMove(p, x+1, y)){
+    			if (isLegalMove(p, x+1, y)&&p.getPath().isEmpty()){
     				isJump = isOccupiedByPlayer(x+1, y);
 	    			p.setPos(x+1, y);
 	    			checkPath(x+1, y, mark+1, isJump, board, p, path);
 	    			p.setPos(x, y);
     			}
-    			if (isLegalMove(p, x, y+1)){
+    			if (isLegalMove(p, x, y+1)&&p.getPath().isEmpty()){
     				isJump = isOccupiedByPlayer(x, y+1);
 	    			p.setPos(x, y+1);
 	    			checkPath(x, y+1, mark+1, isJump, board, p, path);
@@ -273,7 +266,6 @@ public class Board {
 	public boolean isLegalMove(Player p, int x, int y){
 		// check that coordinates are in the valid range
 		if(x > 8 || x < 0 || y > 8 || y < 0){
-			//System.out.println("[Illegal move error]: "+x+""+y+" is out of bounds.");
 			return false;
 		}
 				
@@ -295,9 +287,7 @@ public class Board {
 				return false;
 			}
 		}
-		
-		//System.out.println(p.getColorName()+" can move to "+x+","+y);
-		
+				
 		// we've checked illegal conditions 
 		return true;
 	}
@@ -311,13 +301,6 @@ public class Board {
 	 * @param checking Player, adjacent to original Player
 	 */
 	private void isLegalMove(Player initial, ArrayList<Player> calling, Player checking){
-		//System.out.println("-------------------------------------------------------");
-		//System.out.println();
-		//System.out.println("Checking where "+checking.getColorName()+" can move.");
-		//System.out.print("Have checked: ");
-		//for(Player p: calling)
-			//System.out.print(p.getColorName()+" ");
-		//System.out.println();
 		// check four directions
 		Point[] directions = {new Point(checking.x(), checking.y()+1), 
 				new Point(checking.x(), checking.y()-1), new Point(checking.x()+1, checking.y()), 
@@ -329,16 +312,13 @@ public class Board {
 			
 			if(this.isOccupiedByPlayer(x,y) && calling.contains(this.getPlayerAt(x,y))){
 				// ignore, already checked
-				//System.out.println(checking.getColorName()+" can jump off "+this.getPlayerAt(x,y).getColorName()+" but we've already checked it.");
 			}else if(this.isOccupiedByPlayer(x,y)&&this.isLegalMove(checking, x, y)){
 				// there's a player here, so we get that player's moves
-				//System.out.println(checking.getColorName()+" can jump off "+this.getPlayerAt(x,y).getColorName()+". Checking next.");
 				calling.add(checking);
 				isLegalMove(initial, calling, this.getPlayerAt(x,y));
 			}else{
 				if(isLegalMove(checking, x, y)){
 					initial.addToMoves(x+""+y);
-					//System.out.println(checking.getColorName()+" and "+initial.getColorName()+" can move to "+x+","+y);
 				}
 			}
 		}
@@ -379,13 +359,16 @@ public class Board {
 			}
 		}
 						
-		// ADD: make sure it doesn't prevent a player from reaching end
+		// make sure it doesn't prevent a player from reaching end
 		Board tmp = this;
 		tmp.addWallWithoutValidation(w);
 		for(Player player : tmp.players()){
 			checkPath(player.x(), player.y(), 1, true, new int[9][9], player, new ArrayList<String>());
+			System.out.println("Player "+player.getPnum()+" at "+player.x()+""+player.y());
+			System.out.println(player.getPath());
 			if(player.getPath().isEmpty()){
 				System.out.println("[Wall error]: "+w+" will block Player "+player.getPnum()+" from reaching win area.");
+				tmp.removeLastWall();
 				return false;
 			}
 			player.setPath(new ArrayList<String>());
@@ -485,9 +468,21 @@ public class Board {
 		players = p;
 	}
 	
+	/**
+	 * Add a wall without checking validity. Use only for testing.
+	 * 
+	 * @param w Wall
+	 */
 	public void addWallWithoutValidation(Wall w){
-		//System.err.println("WARNING! Placing a wall with addWallWithoutValidation() does not check for safety. Do not use outside of testing.");
 		walls[numWalls] = w;
 		numWalls++;
+	}
+	
+	/**
+	 * Remove the last wall we placed. 
+	 */
+	public void removeLastWall(){
+		this.walls[numWalls-1]=null;
+		numWalls--;
 	}
 }

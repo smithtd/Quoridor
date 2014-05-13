@@ -168,7 +168,7 @@ public class GameClient {
 	 * Get a move from a specific portal
 	 */
 	public String getMove() {
-
+		// Getting current player
 		while(!this.players.get(this.turnNumber).inGame())
 			this.turnNumber = (this.turnNumber+1) % this.players.size();
 
@@ -176,7 +176,6 @@ public class GameClient {
 		int temp = this.turnNumber;
 		this.turnNumber++; this.turnNumber = this.turnNumber % this.players.size();
 		String move = this.players.get(temp).getMessage();
-		System.out.println("Move from player in client is: " + move);
 		Scanner sc = new Scanner(move);
 		sc.next(); 
 		String mv =  sc.next();
@@ -196,7 +195,7 @@ public class GameClient {
 	 * @param s - Message to send.
 	 */
 	private void sendAll(String s) { 
-		System.out.println("In sendAll");
+		
 		for(int i = 0; i < this.players.size(); i++) {
 			if(this.players.get(i).inGame()){
 				this.players.get(i).sendMessage(s);
@@ -210,16 +209,11 @@ public class GameClient {
 	 * Find the last person who went, and kick them.
 	 */
 	public void kickLastPlayer() {
-		// find the last player
-		System.out.println("Here I am");
 		int temp = lastPlayer();
 		this.sendAll(Messages.REMOVED + " " + this.pId.get(temp));
 		this.players.get(temp).bootPlayer();
 		this.players.get(temp).endSession();
-		//this.players.remove(temp);
-		//this.pId.remove(temp);
 		
-
 	}
 
 	/** tells how many people are in the current game
