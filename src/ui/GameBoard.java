@@ -343,7 +343,6 @@ public class GameBoard extends JPanel implements Observer {
 	}
 	
 	public void updateStats(ArrayList<Player> players){
-		System.out.println("Updating stats");
 		for(int i=0; i<statAry.length; i++){
 			statAry[i].update(players.get(i));
 			statAry[i].repaint();

@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import network.GameClient;
-
 import players.Player;
 import board.Board;
 import ui.GameBoard;
@@ -111,6 +110,7 @@ public class Game extends Observable{
 			}
 
 			if(move.isEmpty()){
+	        	System.out.println("\t[Move error]: Move is empty.");
 				kickPlayer();
 				this.network.kickLastPlayer();
 				Game.nextTurn();
@@ -229,9 +229,15 @@ public class Game extends Observable{
 		int y = Integer.parseInt(""+s.charAt(1));
 
 		if(s.length()==2){
-			return board.placePawn(Game.getCurrPlayer(), x, y);
+        	System.out.println("Trying to move pawn to "+s);
+			boolean result = board.placePawn(Game.getCurrPlayer(), x, y);
+			System.out.println("Move succeeded? "+result);
+			return result;
 		}else{
-			return board.placeWall(Game.getCurrPlayer(), x, y, ""+s.charAt(2));
+			System.out.println("Trying to play wall at "+s);
+			boolean result = board.placeWall(Game.getCurrPlayer(), x, y, ""+s.charAt(2));
+			System.out.println("Move succeeded? "+result);
+			return result;
 		}
 	}
 
