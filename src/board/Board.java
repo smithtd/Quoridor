@@ -477,7 +477,7 @@ public class Board {
 	 * @param w Wall
 	 */
 	public boolean addWallWithoutValidation(Wall w){
-		if(numWalls>walls.length)
+		if(numWalls>=walls.length)
 			return false;
 		walls[numWalls] = w;
 		numWalls++;
@@ -488,7 +488,7 @@ public class Board {
 	 * Remove the last wall we placed. 
 	 */
 	public boolean removeLastWall(){
-		if(numWalls>walls.length)
+		if(numWalls>=walls.length)
 			return false;
 		this.walls[numWalls-1]=null;
 		numWalls--;
