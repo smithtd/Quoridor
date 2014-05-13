@@ -361,17 +361,20 @@ public class Board {
 						
 		// make sure it doesn't prevent a player from reaching end
 		Board tmp = this;
-		tmp.addWallWithoutValidation(w);
-		for(Player player : tmp.players()){
-			checkPath(player.x(), player.y(), 1, true, new int[9][9], player, new ArrayList<String>());
-			System.out.println("Player "+player.getPnum()+" at "+player.x()+""+player.y());
-			System.out.println(player.getPath());
-			if(player.getPath().isEmpty()){
-				System.out.println("[Wall error]: "+w+" will block Player "+player.getPnum()+" from reaching win area.");
-				tmp.removeLastWall();
-				return false;
+		if(tmp.addWallWithoutValidation(w)){
+			for(Player player : tmp.players()){
+				checkPath(player.x(), player.y(), 1, true, new int[9][9], player, new ArrayList<String>());
+				System.out.println("Player "+player.getPnum()+" at "+player.x()+""+player.y());
+				System.out.println(player.getPath());
+				if(player.getPath().isEmpty()){
+					System.out.println("[Wall error]: "+w+" will block Player "+player.getPnum()+" from reaching win area.");
+					tmp.removeLastWall();
+					return false;
+				}
+				player.setPath(new ArrayList<String>());
 			}
-			player.setPath(new ArrayList<String>());
+		}else{
+			return false;
 		}
 		return true;
 	}
@@ -473,16 +476,22 @@ public class Board {
 	 * 
 	 * @param w Wall
 	 */
-	public void addWallWithoutValidation(Wall w){
+	public boolean addWallWithoutValidation(Wall w){
+		if(numWalls>walls.length)
+			return false;
 		walls[numWalls] = w;
 		numWalls++;
+		return true;
 	}
 	
 	/**
 	 * Remove the last wall we placed. 
 	 */
-	public void removeLastWall(){
+	public boolean removeLastWall(){
+		if(numWalls>walls.length)
+			return false;
 		this.walls[numWalls-1]=null;
 		numWalls--;
+		return true;
 	}
 }
