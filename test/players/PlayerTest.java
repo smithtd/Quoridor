@@ -14,7 +14,7 @@ import org.junit.Test;
 import debug.DebugTools;
 
 /**
- * @author marc dean jr. 
+ * @author marc dean jr.
  *
  */
 public class PlayerTest extends Player {

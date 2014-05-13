@@ -1,5 +1,4 @@
 /* Author: Eli Donahue
- * Tests for Wall class
  */
 package walls;
 
@@ -26,26 +25,28 @@ public class WallTest {
 	// test intersects(Wall)
 	private void testResults(Wall w, boolean expectedResult) {
 		boolean result = wall.intersects(w);
-	    assertThat(result, equalTo(expectedResult));    
+	    
+		assertThat(result, equalTo(expectedResult));    
 	}
 	
 	// test overlaps(Wall)
 		private void testResults(Wall w, Wall original, boolean expectedResult) {
 			boolean result = original.overlaps(w);
-		    assertThat(result, equalTo(expectedResult));    
+		    
+			assertThat(result, equalTo(expectedResult));    
 		}
 	
 	// test isBetween(x1, y1, x2, y2)
 	private void testResults(Wall w, int x1, int y1, int x2, int y2, boolean expectedResult) {
 		boolean result = w.isBetween(x1, y1, x2, y2);
-	    assertThat(result, equalTo(expectedResult));    
+	    
+		assertThat(result, equalTo(expectedResult));    
 	}
 	
 	/*
 	 * X,Y COORDINATES ARE REVERSED IN TEST BECAUSE THEY WEREN'T PRODUCED
 	 * BY THE PARSER. WEIRD QUIRK, I DON'T WANT TO DEAL WITH IT.
 	 */
-	
 	
 	/* Test intersects() */
 	
