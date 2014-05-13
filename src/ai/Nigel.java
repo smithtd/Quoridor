@@ -18,7 +18,7 @@ public class Nigel extends MoveServer {
 	private static int[][] playerMatrix;
 	private static boolean[][] vWallMatrix;
 	private static boolean[][] hWallMatrix;
-	private static int numPlayers = 2;
+	private static int numPlayers = 4;
 	public static final String AI_IDENTIFIER = "tactical";
 	private static String[][] endZones;
 	private static int [] wallCount;
@@ -185,7 +185,7 @@ public class Nigel extends MoveServer {
 	}
 
 	public void getResponse(String input) throws InterruptedException {
-		Thread.sleep(250); // try to watch what is happening
+		Thread.sleep(750); // try to watch what is happening
 
 		if(input.equalsIgnoreCase(Messages.ASK_FOR_MOVE)){
 			String move = getMove();
@@ -331,12 +331,12 @@ public class Nigel extends MoveServer {
 			playerPaths.add( path4 );
 		}
 		/*
-		if( isPlayerBehindOrInDangerOfLosing( playerPaths ) && wallCount[ totalTurns%numPlayers]>0 ){
+		if( isPlayerBehindOrInDangerOfLosing( playerPaths ) && wallCount[ Nigel.playerID ]>0 ){
 			String move = getWallPlacement( playerPaths );
-			parseIncomingMove( move );
+			parseOurMove( move );
 			return move;
-		} else { 
-		*/
+		} else {
+		*/ 
 			String s = playerPaths.get( Nigel.playerID ).get(1);
 			String move = "" + (char)('a' + Integer.parseInt( "" + s.charAt( 1 ) ) ) + (Integer.parseInt( "" + s.charAt( 0 ) ) + 1 );
 			parseOurMove( move );
@@ -401,43 +401,83 @@ public class Nigel extends MoveServer {
 				else if( direction==2 )	{ nextX=currX; nextY=currY+1; }	//k==2 is down
 				else{ 			  		  nextX=currX; nextY=currY-1; }	//k==3 is up
 
-//				try{
-					if( nextX>=0 && nextX<=8 && nextY>=0 && nextY<=8 ){
-						if( ( direction==0 && vWallMatrix[currY][currX-1] ) 
-						 || ( direction==1 && vWallMatrix[currY][currX] ) 
-						 || ( direction==2 && hWallMatrix[currY][currX] ) 
-						 || ( direction==3 && hWallMatrix[currY-1][currX] ) ) {
-							System.out.println( "ABORT" );
-						}else{
-							next = "" + nextY + nextX;
-							if( !seen.contains( next ) ){
-//								System.out.println( "new space" );
-								seen.add( next );
-								ArrayList<String> newList = new ArrayList<String>();
-								for( int spotIndex=0; spotIndex<list.size(); spotIndex++ ){
+				if( nextX>=0 && nextX<=8 && nextY>=0 && nextY<=8 ){
+					if( ( direction==0 && vWallMatrix[currY][currX-1] ) 
+					 || ( direction==1 && vWallMatrix[currY][currX] ) 
+					 || ( direction==2 && hWallMatrix[currY][currX] ) 
+					 || ( direction==3 && hWallMatrix[currY-1][currX] ) ) {
+						System.out.println( "ABORT" );
+					}else{
+						int nextPiece = playerMatrix[ nextY ][ nextX ];
+						next = "" + nextY + nextX;
+						if( !seen.contains( next ) ){
+							seen.add( next );
+							ArrayList<String> newList = new ArrayList<String>();
+							
+							
+							if( nextPiece == 1 || nextPiece == 2 || nextPiece == 3 || nextPiece == 4 ){
+								for( int spotIndex=0; spotIndex<list.size(); spotIndex++ )
 									newList.add( list.get( spotIndex ) );
-//									System.out.println("Adding " + list.get( spotIndex ) + " to path" );
+								ArrayList<String> tempList = calculateJumps( seen, nextY, nextX, new ArrayList<String> () );
+								for( int tempIndex=0; tempIndex<tempList.size(); tempIndex++ ){
+									String found = tempList.get( tempIndex );
+									if( !seen.contains( found ) )
+										seen.add( found );
+									newList.add( tempList.get( tempIndex ) );
 								}
-//								System.out.println("Adding new " + next + " to path" );
+							} else {
+								for( int spotIndex=0; spotIndex<list.size(); spotIndex++ )
+									newList.add( list.get( spotIndex ) );
 								newList.add( next );		//add next to the new copy
-								for( int endZoneIndex=0; endZoneIndex<9; endZoneIndex++ )
-									if( endZones[ Nigel.playerID ][ endZoneIndex ].equals( next ) ){
-										System.out.println( "found path " + newList );
-										return newList;
-									}
-//								System.out.println( "still adding to path" );
-								newPossiblePaths.add( newList );	//add new list to the new possible paths
-							} else{
-//								System.out.println( "old space" );
 							}
+							
+							for( int endZoneIndex=0; endZoneIndex<9; endZoneIndex++ )
+								if( endZones[ Nigel.playerID ][ endZoneIndex ].equals( next ) ){
+									System.out.println( "found path " + newList );
+									return newList;
+								}
+							
+							
+							newPossiblePaths.add( newList );	//add new list to the new possible paths
 						}
 					}
-//				} catch( Exception e ){}
+				}
 			}
 		}
 		possiblePaths = null;
 		System.out.println( newPossiblePaths );
 		return getPath( seen, newPossiblePaths );
+	}
+	
+	private static ArrayList<String> calculateJumps( ArrayList<String> seen, int currY, int currX, ArrayList<String> foundSpots ){
+		System.out.println( "Point: " + currY + currX );
+		for( int direction=0; direction<4; direction++ ){
+			int nextY, nextX;
+			if	   ( direction==0 )	{ nextX=currX-1; nextY=currY; } //k==0 is left
+			else if( direction==1 )	{ nextX=currX+1; nextY=currY; }	//k==1 is right
+			else if( direction==2 )	{ nextX=currX; nextY=currY+1; }	//k==2 is down
+			else{ 			  		  nextX=currX; nextY=currY-1; }	//k==3 is up
+			
+			if( nextX>=0 && nextX<=8 && nextY>=0 && nextY<=8 ){
+				if( ( direction==0 && vWallMatrix[currY][currX-1] ) 
+				 || ( direction==1 && vWallMatrix[currY][currX] ) 
+				 || ( direction==2 && hWallMatrix[currY][currX] ) 
+				 || ( direction==3 && hWallMatrix[currY-1][currX] ) ) {
+					System.out.println( "ABORT" );
+				} else{
+					int nextPiece = playerMatrix[ nextY ][ nextX ];
+					String next = "" + nextY + nextX;
+					if( !seen.contains( next ) ){
+						seen.add( next );
+						if( nextPiece == 1 || nextPiece == 2 || nextPiece == 3 || nextPiece == 4 )
+							return calculateJumps( seen, nextY, nextX, foundSpots );
+						else
+							foundSpots.add( next );
+					}
+				}
+			}
+		}
+		return foundSpots;
 	}
 }
 
