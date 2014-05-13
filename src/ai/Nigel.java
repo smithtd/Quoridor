@@ -27,6 +27,7 @@ public class Nigel extends MoveServer {
 	private static String[][] endZones;
 	private static int [] wallCount;
 	private static int playerID;
+	private static boolean [] playerIDS;
 
 	/** Map of starting positions to player numbers */
 	private String[] startPos;
@@ -55,7 +56,9 @@ public class Nigel extends MoveServer {
 		else //( numPlayers == 4 )
 			wallCount = new int[]{ 0, 5, 5, 5, 5 };
 
+		
 		if( numPlayers == 2 ){
+			playerIDS = new boolean [] {false, true, true };
 			playerMatrix = new int [][]{
 					{ 0, 0, 0, 0, 1, 0, 0, 0, 0 },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -67,6 +70,7 @@ public class Nigel extends MoveServer {
 					{ 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 					{ 0, 0, 0, 0, 2, 0, 0, 0, 0 } };
 		} else {
+			playerIDS = new boolean [] {false, true, true, true, true };
 			playerMatrix = new int [][]{
 					{ 0, 0, 0, 0, 1, 0, 0, 0, 0 },
 					{ 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -365,6 +369,7 @@ public class Nigel extends MoveServer {
 		}
 		ArrayList<ArrayList<String>> playerPaths = new ArrayList<ArrayList<String>> ();
 		playerPaths.add( new ArrayList<String> () );
+
 		ArrayList<String> path1 = getPathToEnd( 1, p1 );
 		ArrayList<String> path2 = getPathToEnd( 2, p2 );
 		playerPaths.add( path1 );
@@ -374,7 +379,6 @@ public class Nigel extends MoveServer {
 			ArrayList<String> path4 = getPathToEnd( 4, p4 );
 			playerPaths.add( path3 );
 			playerPaths.add( path4 );
-			System.out.println( path1.size() == 0 || path2.size() == 0 || path3.size() == 0 || path4.size() == 0 );
 		}
 		if( wallCount[ Nigel.playerID ]>0 )
 			;
@@ -438,7 +442,6 @@ public class Nigel extends MoveServer {
 		return (rand.nextInt(2) == 0) ? bestHWallOpt : bestVWallOpt;
 	}
 
-
 	public static String getBestVWallOpt(){
 
 		//Find Player Locations
@@ -479,16 +482,17 @@ public class Nigel extends MoveServer {
 						vWallMatrix[ y ][ x ] = true;
 						vWallMatrix[ y+1 ][ x ] = true;
 						int pathLength = getPathToEnd( (z), playerLocal[ z ] ).size();
-						ArrayList<String> temp;
-
-						if( playerWallMap.keySet().contains( pathLength ) )
-							temp = playerWallMap.get( pathLength );
-						else 
-							temp = new ArrayList<String> ();
-
-						temp.add( "" + y + x );
-						playerWallMap.put( pathLength, temp );
-
+						if( pathLength != 0 ){
+							ArrayList<String> temp;
+	
+							if( playerWallMap.keySet().contains( pathLength ) )
+								temp = playerWallMap.get( pathLength );
+							else 
+								temp = new ArrayList<String> ();
+	
+							temp.add( "" + y + x );
+							playerWallMap.put( pathLength, temp );
+						}
 					} // end if( false && false )
 				} // end x
 			} // end y
@@ -567,16 +571,18 @@ public class Nigel extends MoveServer {
 						hWallMatrix[ y ][ x ] = true;
 						hWallMatrix[ y ][ x+1 ] = true;
 						int pathLength = getPathToEnd( (z), playerLocal[ z ] ).size();
-						ArrayList<String> temp;
-
-						if( playerWallMap.keySet().contains( pathLength ) )
-							temp = playerWallMap.get( pathLength );
-						else 
-							temp = new ArrayList<String> ();
-
-						temp.add( "" + y + x );
-						playerWallMap.put( pathLength, temp );
-
+						if( pathLength != 0 ){
+							
+							ArrayList<String> temp;
+	
+							if( playerWallMap.keySet().contains( pathLength ) )
+								temp = playerWallMap.get( pathLength );
+							else 
+								temp = new ArrayList<String> ();
+	
+							temp.add( "" + y + x );
+							playerWallMap.put( pathLength, temp );
+						}
 					} // end if( false && false )
 				} // end x
 			} // end y
@@ -616,30 +622,29 @@ public class Nigel extends MoveServer {
 
 	public static boolean isPlayerBehindOrInDangerOfLosing( ArrayList< ArrayList< String > > playerPaths ){
 
-		/*
-		for( int i = 0; i < playerPaths.size(); i++ )
-			System.out.println( "Best path for " + (i+1) + ": " + playerPaths.get(i));
-		*/
-		
+			
 		int playerPathLength = playerPaths.get( Nigel.playerID ).size();
 
-		for( int index=0; index<playerPaths.size(); index++ ){
-			if( index != Nigel.playerID -1 ){ //-1 because index is 0 ind. and IDS are 1 ind.
-				int opponetPathLength = playerPaths.get( index ).size();
-				if( opponetPathLength - playerPathLength >= 3 ){
-					System.out.println("HERE");
-					return true;
+		for( int index=1; index<playerPaths.size(); index++ ){
+			if( playerIDS[ playerID ] )
+				if( index != Nigel.playerID ){ 
+					int opponetPathLength = playerPaths.get( index ).size();
+					if( opponetPathLength - playerPathLength >= 3 ){
+						System.out.println("HERE");
+						return true;
+					}
+					if( opponetPathLength < 4 ){
+						System.out.println("THERE");
+						return true;
+					}
 				}
-				if( opponetPathLength < 4 ){
-					System.out.println("THERE");
-					return true;
-				}
-			}
 		}
 		return false;
 	}
 
 	private static ArrayList<String> getPathToEnd( int findingID, String locationOfPlayer ){
+		if( playerIDS[ playerID ] == false)
+			return new ArrayList<String> ();
 		ArrayList<ArrayList<String>> possiblePaths = new ArrayList<ArrayList<String>>();
 		ArrayList<String> seen = new ArrayList<String>();
 		//System.out.println( locationOfPlayer );
@@ -806,6 +811,8 @@ public class Nigel extends MoveServer {
 			for( int x=0; x<9; x++ )
 				if( playerMatrix[ y ][ x ] == playerID )
 					playerMatrix[ y ][ x ] = 0;
+		
+		playerIDS[ playerID ] = false;
 	}
 }
 
