@@ -18,48 +18,39 @@ public class Nigel extends MoveServer {
 	private static int[][] playerMatrix;
 	private static boolean[][] vWallMatrix;
 	private static boolean[][] hWallMatrix;
-	private static int totalTurns = 0;
-	private static int numPlayers = 1;
+	private static int numPlayers = 4;
 	public static final String AI_IDENTIFIER = "tactical";
-	private static Map<Integer, String[] > endZones;
+	private static String[][] endZones;
 	private static int [] wallCount;
+	private static int playerID;
 	
 	/** Map of starting positions to player numbers */
-	private Map<Integer, String> startPos;
+	private String[] startPos;
 	/** Board Representations */
 	char[][] board;
 	// Do we need to keep two??
 	char[][] tempBoard;
 	/** Number of walls we have */
 	int walls;
-	private String currentPosition;
 	
 	public Nigel( int port ){
 		super( port ); 
-		this.startPos = new HashMap<Integer, String>();
-		this.startPos.put(1, "04"); this.startPos.put(2, "84");
-		this.startPos.put(3, "48"); this.startPos.put(4, "40");
+	}
+	
+	public void setupBoards( int numPlayers ){
+		startPos = new String[]{ "04", "84", "40", "48" };
 		
-		endZones = new HashMap<Integer, String[]>();
-		String[] end1 = new String[]{ "80", "81", "82", "83", "84", "85", "86", "87", "88" };
-		String[] end2 = new String[]{ "00", "01", "02", "03", "04", "05", "06", "07", "08" };
-		String[] end3 = new String[]{ "00", "10", "20", "30", "40", "50", "60", "70", "80" };
-		String[] end4 = new String[]{ "08", "18", "28", "38", "48", "58", "68", "78", "88" };
+		endZones = new String[][]{ 
+				new String[]{ "80", "81", "82", "83", "84", "85", "86", "87", "88" }, 
+				new String[]{ "00", "01", "02", "03", "04", "05", "06", "07", "08" }, 
+				new String[]{ "08", "18", "28", "38", "48", "58", "68", "78", "88" }, 
+				new String[]{ "00", "10", "20", "30", "40", "50", "60", "70", "80" } };
 				
-		endZones.put( 1, end1 );
-		endZones.put( 2, end2 );
-		endZones.put( 3, end3 );
-		endZones.put( 4, end4 );
-		
 		if( numPlayers == 2 )
 			wallCount = new int[]{ 10, 10 };
 		else if ( numPlayers == 4 )
 			wallCount = new int[]{ 5, 5, 5, 5 };
 		
-	}
-	
-	public void setupBoards( int numPlayers ){
-
 		if( numPlayers == 2 ){
 			playerMatrix = new int [][]
 					 { { 0, 0, 0, 0, 1, 0, 0, 0, 0 },
@@ -77,7 +68,7 @@ public class Nigel extends MoveServer {
 					   { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 					   { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 					   { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-					   { 4, 0, 0, 0, 0, 0, 0, 0, 3 },
+					   { 3, 0, 0, 0, 0, 0, 0, 0, 4 },
 					   { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 					   { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 					   { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -85,7 +76,7 @@ public class Nigel extends MoveServer {
 		}
 		
 		/*
-		 *  Coordinate System for walls in correspondance to the player
+		 *  Coordinate System for walls in correspondence to the player
 		 * 
 		 * 				| h(y-1, x)	|
 		 * 			  -----------------
@@ -143,6 +134,7 @@ public class Nigel extends MoveServer {
 			this.hasWon = true;  
 			try{
 
+				setupBoards( numPlayers );
 				// Start the listening Socket on port
 				ServerSocket server = new ServerSocket(this.port);
 				System.out.println("Waiting for a client...");
@@ -193,11 +185,10 @@ public class Nigel extends MoveServer {
 	}
 
 	public void getResponse(String input) throws InterruptedException {
-		Thread.sleep(250); // try to watch what is happening
+		Thread.sleep(750); // try to watch what is happening
 
 		if(input.equalsIgnoreCase(Messages.ASK_FOR_MOVE)){
 			String move = getMove();
-			this.currentPosition = move;
 
 			this.clientOutput.println("MOVE " + move);
 
@@ -206,16 +197,16 @@ public class Nigel extends MoveServer {
 			info.next();
 			String playerID = info.next();
 			String moveMade = info.next();
-			parseIncomingMove( moveMade );
+			parseIncomingMove( moveMade, Integer.parseInt( playerID ) );
 			System.out.println("Player " + playerID + " made move: " + moveMade );
 			info.close();
 		} else if(input.startsWith(Messages.START_GAME)){
 			Scanner getID = new Scanner(input);
 			getID.next();
 			this.playerId = Integer.parseInt(getID.next());
+			Nigel.playerID = this.playerId-1;
 			this.clientOutput.println(Messages.READY + " " + this.identifier);
 			System.out.println("Playing as player # " + this.playerId);
-			this.currentPosition = this.startPos.get(this.playerId);
 			getID.close();
 		} else if(input.startsWith(Messages.REMOVED)){
 			Scanner removed = new Scanner(input);
@@ -249,19 +240,33 @@ public class Nigel extends MoveServer {
 	
 	
 	
-	private static void parseIncomingMove( String move ){
-		int playerID = ( totalTurns % numPlayers ) + 1;
-		int moveY = Integer.parseInt( "" + move.charAt( 1 ) );
-		int moveX = move.charAt( 0 )-'a';
-		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private static void parseOurMove( String move ){
+		int moveY = Integer.parseInt( "" + move.charAt( 1 ) ) - 1;
+		int moveX = move.charAt( 0 ) - 'a';
 		if( move.length() == 2 ){
+			System.out.println( "Moving " + Nigel.playerID );
 			for( int y=0; y<9; y++ ){
 				for( int x=0; x<9; x++ ){
-					if( playerMatrix[ y ][ x ] == playerID )
+					if( playerMatrix[ y ][ x ] == Nigel.playerID )
 						playerMatrix[ y ][ x ] = 0;
 				}
 			}
-			playerMatrix[ moveY ][ moveX ] = playerID;
+			playerMatrix[ moveY ][ moveX ] = Nigel.playerID;
 		} else {
 			if( move.charAt( 2 )=='h' ){
 				hWallMatrix[ moveY ][ moveX ] = true;
@@ -270,11 +275,40 @@ public class Nigel extends MoveServer {
 				vWallMatrix[ moveY ][ moveX ] = true;
 				vWallMatrix[ moveY+1 ][ moveX ] = true;
 			}
-			wallCount[ playerID-1 ]--;
+			wallCount[ Nigel.playerID-1 ]--;
 		}
+		System.out.println("\n\n\n\n\n");
+	}	
+	
+	
+	
+	private static void parseIncomingMove( String move, int opponentID ){
+		int moveY = Integer.parseInt( "" + move.charAt( 1 ) ) - 1;
+		int moveX = move.charAt( 0 ) - 'a';
+		if( move.length() == 2 ){
+			System.out.println( "Moving " + opponentID );
+			for( int y=0; y<9; y++ ){
+				for( int x=0; x<9; x++ ){
+					if( playerMatrix[ y ][ x ] == opponentID )
+						playerMatrix[ y ][ x ] = 0;
+				}
+			}
+			playerMatrix[ moveY ][ moveX ] = opponentID;
+		} else {
+			if( move.charAt( 2 )=='h' ){
+				hWallMatrix[ moveY ][ moveX ] = true;
+				hWallMatrix[ moveY ][ moveX+1 ] = true;
+			} else {
+				vWallMatrix[ moveY ][ moveX ] = true;
+				vWallMatrix[ moveY+1 ][ moveX ] = true;
+			}
+			wallCount[ opponentID - 1 ]--;
+		}
+		System.out.println("\n\n\n\n\n");
 	}
 	
 	private String getMove(){
+		System.out.println( "GETTING MOVE FROM BLUE" );
 		String p1 = "", p2 = "", p3 = "", p4 = "";
 		for( int y=0; y<9; y++ ){
 			for( int x=0; x<9; x++ ){
@@ -297,15 +331,15 @@ public class Nigel extends MoveServer {
 			playerPaths.add( path4 );
 		}
 		/*
-		if( isPlayerBehindOrInDangerOfLosing( playerPaths ) && wallCount[ totalTurns%numPlayers]>0 ){
+		if( isPlayerBehindOrInDangerOfLosing( playerPaths ) && wallCount[ Nigel.playerID ]>0 ){
 			String move = getWallPlacement( playerPaths );
-			parseIncomingMove( move );
+			parseOurMove( move );
 			return move;
-		} else { 
-		*/
-			String s = playerPaths.get( totalTurns%numPlayers ).get(1);
-			String move = "" + ('a' + Integer.parseInt( "" + s.charAt( 1 ) ) ) + s.charAt( 0 );
-			parseIncomingMove( move );
+		} else {
+		*/ 
+			String s = playerPaths.get( Nigel.playerID ).get(1);
+			String move = "" + (char)('a' + Integer.parseInt( "" + s.charAt( 1 ) ) ) + (Integer.parseInt( "" + s.charAt( 0 ) ) + 1 );
+			parseOurMove( move );
 			return move;
 //		}
 		/*
@@ -323,11 +357,11 @@ public class Nigel extends MoveServer {
 	}
 	
 	public static boolean isPlayerBehindOrInDangerOfLosing( ArrayList< ArrayList< String > > playerPaths ){
-		int playerIndex = totalTurns%numPlayers;
-		int playerPathLength = playerPaths.get( playerIndex ).size();
+
+		int playerPathLength = playerPaths.get( Nigel.playerID ).size();
 		
 		for( int index=0; index<playerPaths.size(); index++ ){
-			if( index != playerIndex ){
+			if( index != Nigel.playerID ){
 				int opponetPathLength = playerPaths.get( index ).size();
 				if( opponetPathLength - playerPathLength >= 3 )
 					return true;
@@ -341,7 +375,7 @@ public class Nigel extends MoveServer {
 	private ArrayList<String> getPathToEnd( String locationOfPlayer ){
 		ArrayList<ArrayList<String>> possiblePaths = new ArrayList<ArrayList<String>>();
 		ArrayList<String> seen = new ArrayList<String>();
-
+		System.out.println( locationOfPlayer );
 		possiblePaths.add( new ArrayList<String>() );
 		possiblePaths.get( 0 ).add( locationOfPlayer );
 		seen.add( locationOfPlayer );
@@ -350,7 +384,6 @@ public class Nigel extends MoveServer {
 	}
 
 	private ArrayList<String> getPath( ArrayList<String> seen, ArrayList<ArrayList<String>> possiblePaths ){
-
 		ArrayList<ArrayList<String>> newPossiblePaths = new ArrayList<ArrayList<String>>();
 		for( int pathIndex=0; pathIndex<possiblePaths.size(); pathIndex++ ){			//Go through all possible paths so far
 			ArrayList<String> list = possiblePaths.get( pathIndex );   // for every list, take the end button and find its 4 directions. If one of the directions has already been seen,  ignore it. Else add a new path with it attached at the end
@@ -361,7 +394,6 @@ public class Nigel extends MoveServer {
 			int currY = Integer.parseInt( "" + current.charAt( 0 ) );
 			int currX = Integer.parseInt( "" + current.charAt( 1 ) );
 			
-			DirectionLoop:
 			for( int direction=0; direction<4; direction++ ){
 				int nextY, nextX;
 				if	   ( direction==0 )	{ nextX=currX-1; nextY=currY; } //k==0 is left
@@ -369,33 +401,83 @@ public class Nigel extends MoveServer {
 				else if( direction==2 )	{ nextX=currX; nextY=currY+1; }	//k==2 is down
 				else{ 			  		  nextX=currX; nextY=currY-1; }	//k==3 is up
 
-				try{
-					int spotID = playerMatrix[nextY][nextX];
-
+				if( nextX>=0 && nextX<=8 && nextY>=0 && nextY<=8 ){
 					if( ( direction==0 && vWallMatrix[currY][currX-1] ) 
 					 || ( direction==1 && vWallMatrix[currY][currX] ) 
 					 || ( direction==2 && hWallMatrix[currY][currX] ) 
-					 || ( direction==3 && hWallMatrix[currY-1][currX] ) ) 
-						continue DirectionLoop; 
-
-					
-					next = "" + nextY + nextX;
-					if( !seen.contains( next ) ){
-						seen.add( next );
-						ArrayList<String> newList = new ArrayList<String>();
-						for( int spotIndex=0; spotIndex<list.size(); spotIndex++ )
-							newList.add( list.get( spotIndex ) );
-						newList.add( next );		//add next to the new copy
-						for( int endZoneIndex=0; endZoneIndex<9; endZoneIndex++ )
-							if( endZones.get( (totalTurns%numPlayers) )[ endZoneIndex ] == next )
-								return newList;
-						newPossiblePaths.add( newList );	//add new list to the new possible paths
+					 || ( direction==3 && hWallMatrix[currY-1][currX] ) ) {
+						System.out.println( "ABORT" );
+					}else{
+						int nextPiece = playerMatrix[ nextY ][ nextX ];
+						next = "" + nextY + nextX;
+						if( !seen.contains( next ) ){
+							seen.add( next );
+							ArrayList<String> newList = new ArrayList<String>();
+							
+							
+							if( nextPiece == 1 || nextPiece == 2 || nextPiece == 3 || nextPiece == 4 ){
+								for( int spotIndex=0; spotIndex<list.size(); spotIndex++ )
+									newList.add( list.get( spotIndex ) );
+								ArrayList<String> tempList = calculateJumps( seen, nextY, nextX, new ArrayList<String> () );
+								for( int tempIndex=0; tempIndex<tempList.size(); tempIndex++ ){
+									String found = tempList.get( tempIndex );
+									if( !seen.contains( found ) )
+										seen.add( found );
+									newList.add( tempList.get( tempIndex ) );
+								}
+							} else {
+								for( int spotIndex=0; spotIndex<list.size(); spotIndex++ )
+									newList.add( list.get( spotIndex ) );
+								newList.add( next );		//add next to the new copy
+							}
+							
+							for( int endZoneIndex=0; endZoneIndex<9; endZoneIndex++ )
+								if( endZones[ Nigel.playerID ][ endZoneIndex ].equals( next ) ){
+									System.out.println( "found path " + newList );
+									return newList;
+								}
+							
+							
+							newPossiblePaths.add( newList );	//add new list to the new possible paths
+						}
 					}
-				} catch( Exception e ){}
+				}
 			}
 		}
 		possiblePaths = null;
+		System.out.println( newPossiblePaths );
 		return getPath( seen, newPossiblePaths );
+	}
+	
+	private static ArrayList<String> calculateJumps( ArrayList<String> seen, int currY, int currX, ArrayList<String> foundSpots ){
+		System.out.println( "Point: " + currY + currX );
+		for( int direction=0; direction<4; direction++ ){
+			int nextY, nextX;
+			if	   ( direction==0 )	{ nextX=currX-1; nextY=currY; } //k==0 is left
+			else if( direction==1 )	{ nextX=currX+1; nextY=currY; }	//k==1 is right
+			else if( direction==2 )	{ nextX=currX; nextY=currY+1; }	//k==2 is down
+			else{ 			  		  nextX=currX; nextY=currY-1; }	//k==3 is up
+			
+			if( nextX>=0 && nextX<=8 && nextY>=0 && nextY<=8 ){
+				if( ( direction==0 && vWallMatrix[currY][currX-1] ) 
+				 || ( direction==1 && vWallMatrix[currY][currX] ) 
+				 || ( direction==2 && hWallMatrix[currY][currX] ) 
+				 || ( direction==3 && hWallMatrix[currY-1][currX] ) ) {
+					System.out.println( "ABORT" );
+				} else{
+					int nextPiece = playerMatrix[ nextY ][ nextX ];
+					String next = "" + nextY + nextX;
+					if( !seen.contains( next ) ){
+						seen.add( next );
+						if( nextPiece == 1 || nextPiece == 2 || nextPiece == 3 || nextPiece == 4 )
+							return calculateJumps( seen, nextY, nextX, foundSpots );
+						else
+							foundSpots.add( next );
+					}
+				}
+			}
+		}
+		return foundSpots;
 	}
 }
 
