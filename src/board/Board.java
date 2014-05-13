@@ -86,6 +86,7 @@ public class Board {
         
         // make sure this is a legal move
         if (!isLegalMove(p, x, y)){
+        	System.out.println("[Path error]: "+x+""+y+" is not a legal move for player at "+p.x()+""+p.y());
         	path = new ArrayList<String>();
         	return;
         }
@@ -98,7 +99,7 @@ public class Board {
         
         // see if it's a winner
         if(p.won(x,y)){
-    		System.out.print("Player "+p.getPnum()+" won at "+x+""+y);
+    		/*System.out.print("Player "+p.getPnum()+" won at "+x+""+y);
     		if(p.getPnum()==1){
     			System.out.println(" ... Looking for (8,y)");
     		}
@@ -110,9 +111,9 @@ public class Board {
     		}
     		if(p.getPnum()==4){
     			System.out.println(" ... Looking for (x,0)");
-    		}
+    		}*/
     		if(p.getPath().isEmpty()){
-    			System.out.println("setting player path = "+path);
+    			//System.out.println("setting player path = "+path);
     			p.setPath(path);
     		}
     		return;
@@ -271,21 +272,30 @@ public class Board {
 	 */
 	public boolean isLegalMove(Player p, int x, int y){
 		// check that coordinates are in the valid range
-		if(x > 8 || x < 0 || y > 8 || y < 0)
+		if(x > 8 || x < 0 || y > 8 || y < 0){
+			//System.out.println("[Illegal move error]: "+x+""+y+" is out of bounds.");
 			return false;
+		}
 				
 		// check that the space is only one away (add logic for jumping later)
-		if(x > p.x()+1 || x < p.x()-1)
+		if(x > p.x()+1 || x < p.x()-1){
+			System.out.println("[Illegal move error]: "+x+""+y+" is too far away.");
 			return false;
+		}
 			
-		if(y > p.y()+1 || y < p.y()-1)
+		if(y > p.y()+1 || y < p.y()-1){
+			System.out.println("[Illegal move error]: "+x+""+y+" is too far away.");
 			return false;
+		}
 		
 		// make sure no wall is in the way
-		for(int i=0; i<numWalls; i++)
-			if(walls[i].isBetween(p.x(), p.y(), x, y))
+		for(int i=0; i<numWalls; i++){
+			if(walls[i].isBetween(p.x(), p.y(), x, y)){
+				System.out.println("[Illegal move error]: "+walls[i]+" is in the way.");
 				return false;
-			
+			}
+		}
+		
 		//System.out.println(p.getColorName()+" can move to "+x+","+y);
 		
 		// we've checked illegal conditions 
@@ -344,31 +354,40 @@ public class Board {
 	 */
 	public boolean isLegalWallPlacement(Player p, Wall w) {
 		// check that player can play a wall
-		if(p.getWalls()<=0)
+		if(p.getWalls()<=0){
+			System.out.println("[Wall error]: Player "+p.getPnum()+" has no walls to place");
 			return false;
+		}
 		
 		// check that the wall's type is valid
-		if(!(w.type().equals("h") || w.type().equals("v")))
+		if(!(w.type().equals("h") || w.type().equals("v"))){
+			System.out.println("[Wall error]: '"+w.type()+"' is not a legal wall type.");
 			return false;
+		}
 		
 		// check that (x,y) is on grid and it's ok to place a wall there
-		if(w.getX() > 7 || w.getY() > 7 || w.getX() < 0 || w.getY() < 0)
+		if(w.getX() > 7 || w.getY() > 7 || w.getX() < 0 || w.getY() < 0){
+			System.out.println("[Wall error]: "+w.getX()+""+w.getY()+" is out of bounds.");
 			return false;	
+		}
 		
 		// check that wall is not occupied or intersected by another wall
-		for(int i=0; i<numWalls; i++)
-			if(walls[i].intersects(w) || walls[i].overlaps(w))
+		for(int i=0; i<numWalls; i++){
+			if(walls[i].intersects(w) || walls[i].overlaps(w)){
+				System.out.println("[Wall error]: "+w+" collides with "+walls[i]);
 				return false;
+			}
+		}
 						
 		// ADD: make sure it doesn't prevent a player from reaching end
 		Board tmp = this;
 		tmp.addWallWithoutValidation(w);
 		for(Player player : tmp.players()){
-			System.out.println("CHECKING IF WALL IS VALID. DOES PLAYER "+player.getPnum()+" HAVE PATH?");
 			checkPath(player.x(), player.y(), 1, true, new int[9][9], player, new ArrayList<String>());
-			System.out.println("**********"+player.getPath());	
-			if(player.getPath().isEmpty())
+			if(player.getPath().isEmpty()){
+				System.out.println("[Wall error]: "+w+" will block Player "+player.getPnum()+" from reaching win area.");
 				return false;
+			}
 			player.setPath(new ArrayList<String>());
 		}
 		return true;
