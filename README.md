@@ -3,7 +3,21 @@ CIS 405
 Project Quoridor:
 
 To Launch:
-prompt$ **FINISH**
+
+Enter the source directory
+
+prompt$ javac */*.java
+
+Start move servers by the following:
+prompt$ java network.MoveServer <PortNumber>
+or use an AI
+prompt$ java ai.Nigel <PortNumber>
+
+Then start the Client:
+
+java network.GameClient <IPP> <IPP> ( <IPP> <IPP> )
+
+
 
 This is our team repository for the Quoridor project. 
  
