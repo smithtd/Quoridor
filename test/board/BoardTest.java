@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 
 //import java.awt.Point;
 import java.util.ArrayList;
+//import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,19 +30,31 @@ public class BoardTest {
 		players.add( new Player("p3", 8, 1, 3, 5, null));	//a5 (left)(check y+1 first)
 		players.add( new Player("p4", 8, 2, 4, 5, null));	//i5 (right)(check y-1 first)
 		board = new Board(players, 20);
-		board.placeWall(players.get(0), 3, 3, "v");
-		board.placeWall(players.get(0), 5, 1, "h");
+		board.addWallWithoutValidation(new Wall(3, 3, "v"));
+		board.addWallWithoutValidation(new Wall(5, 1, "h"));
+		board.addWallWithoutValidation(new Wall(2, 0, "h"));
 		for(Player p : players){
 			board.possibleMoves(p);
 		}
+		
 	}
 	
 	// test checkForPath
 	private void testResults(Player p, int x, int y, ArrayList<String> expected) {
-		board.checkPath(x, y, 1, new int[9][9], p, new ArrayList<String>());
+		System.out.println("Player loc = "+p.x()+""+p.y());
+		board.checkPath(x, y, 1, true, new int[9][9], p, new ArrayList<String>());
+		System.out.println("Player after loc = "+p.x()+""+p.y());
 		System.out.println("path = "+p.getPath());
 		ArrayList<String> result = p.getPath();
-	    assertThat(result, equalTo(expected));    
+		assertThat(result, equalTo(expected));  
+	}
+	
+	// test checkForPath with specific board
+	private void testResults(Board b, Player p, int x, int y, ArrayList<String> expected) {
+		b.checkPath(x, y, 1, true, new int[9][9], p, new ArrayList<String>());
+		System.out.println("path = "+p.getPath());
+		ArrayList<String> result = p.getPath();
+		assertThat(result, equalTo(expected));  
 	}
 	
 	// test placePawn - unused param is to distinguish from isLegalMove test
@@ -55,6 +68,12 @@ public class BoardTest {
 		boolean result = board.placeWall(p, x, y, type);
 	    assertThat(result, equalTo(expected));    
 	}
+
+	// test placeWall with specific board
+		private void testResults(Board b, Player p, int x, int y, String type, boolean expected) {
+			boolean result = b.placeWall(p, x, y, type);
+		    assertThat(result, equalTo(expected));    
+		}
 	
 	// test isLegalMove 
 	private void testResults(Player p, int x, int y, boolean expected) {
@@ -78,14 +97,16 @@ public class BoardTest {
 		int y=p.y();
 		System.out.println("Starting point = "+x+""+y);
 		ArrayList<String> expected = new ArrayList<String>();
-		expected.add("10");
 		expected.add("20");
-		expected.add("30");
-		expected.add("40");
-		expected.add("50");
-		expected.add("60");
-		expected.add("70");
-		expected.add("80");
+		expected.add("21");
+		expected.add("22");
+		expected.add("32");
+		expected.add("42");
+		expected.add("52");
+		expected.add("53");
+		expected.add("63");
+		expected.add("73");
+		expected.add("83");
 		
 		testResults(p, x, y, expected);
 	}
@@ -97,7 +118,6 @@ public class BoardTest {
 		int y=p.y();
 		System.out.println("Starting point = "+x+""+y);
 		ArrayList<String> expected = new ArrayList<String>();
-		expected.add("28");
 		expected.add("18");
 		expected.add("08");
 		
@@ -111,16 +131,12 @@ public class BoardTest {
 		int y=p.y();
 		System.out.println("Starting point = "+x+""+y);
 		ArrayList<String> expected = new ArrayList<String>();
-		expected.add("81");
-		expected.add("71");
-		expected.add("61");
-		expected.add("51");
-		expected.add("41");
-		expected.add("31");
-		expected.add("21");
-		expected.add("11");
-		expected.add("01");
-		expected.add("00");
+		expected.add("83");
+		expected.add("84");
+		expected.add("85");
+		expected.add("86");
+		expected.add("87");
+		expected.add("88");
 		
 		testResults(p, x, y, expected);
 	}
@@ -132,15 +148,40 @@ public class BoardTest {
 		int y=p.y();
 		System.out.println("Starting point = "+x+""+y);
 		ArrayList<String> expected = new ArrayList<String>();
-		expected.add("82");
-		expected.add("83");
-		expected.add("84");
-		expected.add("85");
-		expected.add("86");
-		expected.add("87");
-		expected.add("88");
+		expected.add("80");
 		
 		testResults(p, x, y, expected);
+	}
+	
+	@Test
+	public void checkBoxedInPath(){
+		Player p = players.get(0);
+		int x=p.x();
+		int y=p.y();
+		// box in
+		Board b = board;
+		b.addWallWithoutValidation(new Wall(0,0,"h"));
+		b.addWallWithoutValidation(new Wall(1,1,"v"));
+		ArrayList<String> expected = new ArrayList<String>();
+		
+		testResults(b, p, x, y, expected);
+	}
+	
+	@Test
+	public void checkWalledOffPath(){
+		Player p = players.get(1);
+		int x=p.x();
+		int y=p.y();
+		// box in
+		Board b = board;
+		b.addWallWithoutValidation(new Wall(0,7,"h"));
+		b.addWallWithoutValidation(new Wall(0,5,"h"));
+		b.addWallWithoutValidation(new Wall(0,3,"h"));
+		b.addWallWithoutValidation(new Wall(0,1,"h"));
+		b.addWallWithoutValidation(new Wall(1,0,"v"));
+		ArrayList<String> expected = new ArrayList<String>();
+		
+		testResults(b, p, x, y, expected);
 	}
 	
 	/* Test placePawn() */
@@ -201,6 +242,31 @@ public class BoardTest {
 		boolean expected = true;
 		
 		testResults(players.get(0), x, y, type, expected);
+	}
+	
+	@Test
+	public void checkIfCanPlaceBlockingWall(){
+		int x = 0;
+		int y = 0;
+		String type = "h";
+		Board b = board;
+		b.addWallWithoutValidation(new Wall(1,1,"v"));
+		boolean expected = false;
+		
+		testResults(b, players.get(0), x, y, type, expected);
+	}
+	
+	@Test
+	public void checkIfCanPlaceBoxingWall(){
+		int x = 6;
+		int y = 0;
+		String type = "h";
+		Board b = board;
+		b.addWallWithoutValidation(new Wall(7,0,"v"));
+		b.addWallWithoutValidation(new Wall(7,1,"v"));
+		boolean expected = false;
+		
+		testResults(b, players.get(2), x, y, type, expected);
 	}
 	
 	/* Test isLegalMove() - pawn version */

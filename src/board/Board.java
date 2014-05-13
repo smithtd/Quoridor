@@ -67,7 +67,8 @@ public class Board {
 		return numWalls;
 	}
 	
-	public void checkPath(int x, int y, int mark, int[][] board, Player p, ArrayList<String> path){
+	public void checkPath(int x, int y, int mark, boolean isJump, int[][] board, Player p, ArrayList<String> path){
+		// we already found the path. stop looking.
 		if(!p.getPath().isEmpty())
 			return;
 		
@@ -91,12 +92,25 @@ public class Board {
         
         // set visited
         board[x][y]=mark;
-        path.add(x+""+y);
-        System.out.println("Can reach "+x+""+y+" Path = "+path);
+        if(!isJump)
+        	path.add(x+""+y);
+        //System.out.println("Can reach "+x+""+y+" Path = "+path);
         
         // see if it's a winner
         if(p.won(x,y)){
-    		System.out.println("We did it = "+x+""+y);
+    		System.out.print("Player "+p.getPnum()+" won at "+x+""+y);
+    		if(p.getPnum()==1){
+    			System.out.println(" ... Looking for (8,y)");
+    		}
+    		if(p.getPnum()==2){
+    			System.out.println(" ... Looking for (0,y)");
+    		}
+    		if(p.getPnum()==3){
+    			System.out.println(" ... Looking for (x,8)");
+    		}
+    		if(p.getPnum()==4){
+    			System.out.println(" ... Looking for (x,0)");
+    		}
     		if(p.getPath().isEmpty()){
     			System.out.println("setting player path = "+path);
     			p.setPath(path);
@@ -105,44 +119,112 @@ public class Board {
     	}else{
     		// look down first
     		if(p.getPnum()==1){
-    			p.setPos(x+1, y);
-    			checkPath(x+1, y, mark+1, board, p, path);
-    			p.setPos(x, y+1);
-    			checkPath(x, y+1, mark+1, board, p, path);
-    			p.setPos(x, y-1);
-    			checkPath(x, y-1, mark+1, board, p, path);
-    			p.setPos(x-1, y);
-    			checkPath(x-1, y, mark+1, board, p, path);
+    			if (isLegalMove(p, x+1, y)){
+    				isJump = isOccupiedByPlayer(x+1, y);
+	    			p.setPos(x+1, y);
+	    			checkPath(x+1, y, mark+1, isJump, board, p, path);
+	    			//if(p.getPath().isEmpty())
+	    				p.setPos(x, y);
+    			}
+    			if (isLegalMove(p, x, y+1)){
+    				isJump = isOccupiedByPlayer(x, y+1);
+    				p.setPos(x, y+1);
+    				checkPath(x, y+1, mark+1, isJump, board, p, path);
+    				//if(p.getPath().isEmpty())
+	    				p.setPos(x, y);
+    			}
+    			if (isLegalMove(p, x, y-1)){
+    				isJump = isOccupiedByPlayer(x, y-1);
+	    			p.setPos(x, y-1);
+	    			checkPath(x, y-1, mark+1, isJump, board, p, path);
+	    			//if(p.getPath().isEmpty())
+	    				p.setPos(x, y);
+    			}
+    			if (isLegalMove(p, x-1, y)){
+    				isJump = isOccupiedByPlayer(x-1, y);
+    				p.setPos(x-1, y);
+    				checkPath(x-1, y, mark+1,  isJump, board, p, path);
+    				//if(p.getPath().isEmpty())
+	    				p.setPos(x, y);
+    			}
     		// up first
     		}else if(p.getPnum()==2){
-    			p.setPos(x-1, y);
-    			checkPath(x-1, y, mark+1, board, p, path);
-    			p.setPos(x, y+1);
-    			checkPath(x, y+1, mark+1, board, p, path);
-    			p.setPos(x, y-1);
-    			checkPath(x, y-1, mark+1, board, p, path);
-    			p.setPos(x+1, y);
-    			checkPath(x+1, y, mark+1, board, p, path);
+    			if (isLegalMove(p, x-1, y)){
+    				isJump = isOccupiedByPlayer(x-1, y);
+    				p.setPos(x-1, y);
+    				checkPath(x-1, y, mark+1,  isJump, board, p, path);
+    				p.setPos(x, y);
+    			}
+    			if (isLegalMove(p, x, y+1)){
+    				isJump = isOccupiedByPlayer(x, y+1);
+    				p.setPos(x, y+1);
+    				checkPath(x, y+1, mark+1, isJump, board, p, path);
+    				p.setPos(x, y);
+    			}
+    			if (isLegalMove(p, x, y-1)){
+    				isJump = isOccupiedByPlayer(x, y-1);
+	    			p.setPos(x, y-1);
+	    			checkPath(x, y-1, mark+1, isJump, board, p, path);
+	    			p.setPos(x, y);
+    			}
+    			if (isLegalMove(p, x+1, y)){
+    				isJump = isOccupiedByPlayer(x+1, y);
+	    			p.setPos(x+1, y);
+	    			checkPath(x+1, y, mark+1, isJump, board, p, path);
+	    			p.setPos(x, y);
+    			}
     		// right first
     		}else if(p.getPnum()==3){
-    			p.setPos(x, y-1);
-    			checkPath(x, y-1, mark+1, board, p, path);
-    			p.setPos(x-1, y);
-    			checkPath(x-1, y, mark+1, board, p, path);
-    			p.setPos(x+1, y);
-    			checkPath(x+1, y, mark+1, board, p, path);
-    			p.setPos(x, y+1);
-    			checkPath(x, y+1, mark+1, board, p, path);
+    			if (isLegalMove(p, x, y+1)){
+    				isJump = isOccupiedByPlayer(x, y+1);
+	    			p.setPos(x, y+1);
+	    			checkPath(x, y+1, mark+1, isJump, board, p, path);
+	    			p.setPos(x, y);
+    			}
+    			if (isLegalMove(p, x-1, y)){
+    				isJump = isOccupiedByPlayer(x-1, y);
+    				p.setPos(x-1, y);
+    				checkPath(x-1, y, mark+1,  isJump, board, p, path);
+    				p.setPos(x, y);
+    			}
+    			if (isLegalMove(p, x+1, y)){
+    				isJump = isOccupiedByPlayer(x+1, y);
+	    			p.setPos(x+1, y);
+	    			checkPath(x+1, y, mark+1, isJump, board, p, path);
+	    			p.setPos(x, y);
+    			}
+    			if (isLegalMove(p, x, y-1)){
+    				isJump = isOccupiedByPlayer(x, y-1);
+    				p.setPos(x, y-1);
+    				checkPath(x, y-1, mark+1, isJump, board, p, path);
+    				p.setPos(x, y);
+    			}
     		// left first
     		}else{
-    			p.setPos(x, y+1);
-    			checkPath(x, y+1, mark+1, board, p, path);
-    			p.setPos(x-1, y);
-    			checkPath(x-1, y, mark+1, board, p, path);
-    			p.setPos(x+1, y);
-    			checkPath(x+1, y, mark+1, board, p, path);
-    			p.setPos(x, y-1);
-    			checkPath(x, y-1, mark+1, board, p, path);
+    			if (isLegalMove(p, x, y-1)){
+    				isJump = isOccupiedByPlayer(x, y-1);
+    				p.setPos(x, y-1);
+    				checkPath(x, y-1, mark+1, isJump, board, p, path);
+    				p.setPos(x, y);
+    			}
+    			if (isLegalMove(p, x-1, y)){
+    				isJump = isOccupiedByPlayer(x-1, y);
+    				p.setPos(x-1, y);
+    				checkPath(x-1, y, mark+1,  isJump, board, p, path);
+    				p.setPos(x, y);
+    			}
+    			if (isLegalMove(p, x+1, y)){
+    				isJump = isOccupiedByPlayer(x+1, y);
+	    			p.setPos(x+1, y);
+	    			checkPath(x+1, y, mark+1, isJump, board, p, path);
+	    			p.setPos(x, y);
+    			}
+    			if (isLegalMove(p, x, y+1)){
+    				isJump = isOccupiedByPlayer(x, y+1);
+	    			p.setPos(x, y+1);
+	    			checkPath(x, y+1, mark+1, isJump, board, p, path);
+	    			p.setPos(x, y);
+    			}
     		}
     	}
 	}
@@ -200,11 +282,10 @@ public class Board {
 			return false;
 		
 		// make sure no wall is in the way
-		for(int i=0; i<numWalls; i++){
+		for(int i=0; i<numWalls; i++)
 			if(walls[i].isBetween(p.x(), p.y(), x, y))
 				return false;
-		}
-		
+			
 		//System.out.println(p.getColorName()+" can move to "+x+","+y);
 		
 		// we've checked illegal conditions 
@@ -280,7 +361,16 @@ public class Board {
 				return false;
 						
 		// ADD: make sure it doesn't prevent a player from reaching end
-		
+		Board tmp = this;
+		tmp.addWallWithoutValidation(w);
+		for(Player player : tmp.players()){
+			System.out.println("CHECKING IF WALL IS VALID. DOES PLAYER "+player.getPnum()+" HAVE PATH?");
+			checkPath(player.x(), player.y(), 1, true, new int[9][9], player, new ArrayList<String>());
+			System.out.println("**********"+player.getPath());	
+			if(player.getPath().isEmpty())
+				return false;
+			player.setPath(new ArrayList<String>());
+		}
 		return true;
 	}
 	
@@ -374,5 +464,11 @@ public class Board {
 	 */
 	public void updatePlayers(ArrayList<Player> p){
 		players = p;
+	}
+	
+	public void addWallWithoutValidation(Wall w){
+		//System.err.println("WARNING! Placing a wall with addWallWithoutValidation() does not check for safety. Do not use outside of testing.");
+		walls[numWalls] = w;
+		numWalls++;
 	}
 }
